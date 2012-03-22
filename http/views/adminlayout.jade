@@ -1,0 +1,20 @@
+!!! 5
+html(lang='en')
+  head
+    meta(http-equiv='Content-type', content='text/html; charset=utf-8')
+    title!= pageTitle
+    link(rel='stylesheet', href='/css/960.css', type='text/css', media='screen', charset='utf-8')
+    link(rel='stylesheet', href='/css/template.css', type='text/css', media='screen', charset='utf-8')
+    link(rel='stylesheet', href='/css/colour.css', type='text/css', media='screen', charset='utf-8')
+    script(type='text/javascript', src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js');
+    != renderedHead
+  body
+    h1#head #{adminTitle}
+    ul#navigation
+      li
+        a(href='#{rootPath}/')
+          span.active Home
+      li
+        span.right 
+          a(href='#{rootPath}/logout') Logout
+!= body

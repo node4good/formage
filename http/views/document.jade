@@ -1,0 +1,40 @@
+script(type='text/javascript')
+  $(document).ready(function() {
+    $('#deleteButton').click(function() {
+        $.post('#{rootPath}/json/dependencies',{model:"#{modelName}",id:$('#document_id').val()},function(result){
+            if(result.length)
+            {
+                alert('there are some entities related to this entity: "' + result.join(', ') + '"');
+            }
+            else
+            {
+                $.ajax({
+                type:'DELETE',
+                url:'#{rootPath}/json/model/#{collectionName}/document?document_id=' + encodeURIComponent($('#document_id').val()),
+                success:function(result) {
+                  go_back();
+                },
+                error:function(xhr, textStatus) {
+                  alert('Unable to delete');
+                }
+              });
+
+            }
+        });
+    });
+    });
+div#content.container_16.clearfix
+  div.grid_16.clearboth
+    - if (errors)
+      p.error Saving failed, fix the following errors and try again
+    form#document(enctype="multipart/form-data",method="post" )!= renderedDocument
+      div.grid_16.clearboth
+        p.submit
+          input#saveButton(type='submit', value='Save')
+          | &nbsp;
+          input#cancelButton(type='button', value='Cancel',onclick='go_back()')
+          - if (allowDelete)
+              span(style='margin-left:20px;')
+                input#deleteButton(type='button', value='Delete')
+div#foot
+  span #{adminTitle}
