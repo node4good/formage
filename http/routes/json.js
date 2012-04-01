@@ -1,7 +1,7 @@
 var querystring = require('querystring'),
     Url = require('url'),
     sys = require('sys'),
-    forms = require('../../../node-forms/forms'),
+    forms = require('j-forms').forms,
     MongooseAdmin = require('../../mongoose-admin');
 
 
