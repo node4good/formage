@@ -461,7 +461,7 @@ MongooseAdmin.prototype.deleteDocument = function(user, collectionName, document
 
 MongooseAdmin.prototype.orderDocuments =function(user,collectionName,data,onReady)
 {
-    console.log(data);
+    //console.log(data);
     var sorting_attr = this.models[collectionName].options.sortable;
     if(sorting_attr)
     {

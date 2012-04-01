@@ -51,6 +51,8 @@ div#content.container_16.clearfix
           th.table-header-repeat.line-left.minwidth-1
             a(href='#') #{listFields[i]}
         - }
+        - if (cloneable)
+          th &nbsp;
       - for (var j = 0; j < documents.length; j++) {
         tr(elm_id="#{documents[j]._id}")
           - if (sortable) {
@@ -60,6 +62,10 @@ div#content.container_16.clearfix
           - for (var k = 0; k < listFields.length; k++) {
             td
               a(href='#{rootPath}/model/#{modelName}/document/#{documents[j]._id}') #{documents[j][listFields[k]]}&nbsp;
+          - }
+          - if ( cloneable) {
+            td
+              a(href='#{rootPath}/model/#{modelName}/document/#{documents[j]._id}?clone=true') Duplicate
           - }
       - }
     p

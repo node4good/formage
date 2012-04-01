@@ -98,6 +98,7 @@ exports.model = function(req, res) {
                                                         'listFields': options.list,
                                                         'documents': documents,
                                                         'sortable': typeof(MongooseAdmin.singleton.models[req.params.modelName].options.sortable) == 'string' ,
+                                                        'cloneable' :  typeof(MongooseAdmin.singleton.models[req.params.modelName].options.sortable) == 'string',
                                                         'rootPath': MongooseAdmin.singleton.root
                                                     }
                                                    });
@@ -165,8 +166,10 @@ exports.document_post = function(req,res) {
 
 };
 
-function render_document_from_form(form,req,res,modelName,collectionName,allowDelete)
+function render_document_from_form(form,req,res,modelName,collectionName,allowDelete,cloneable)
 {
+    if(cloneable)
+        form.exclude.push('id');
     form.render_ready(function(err)
     {
         if(err)
@@ -264,7 +267,7 @@ exports.document = function(req, res) {
                                     } else {
                                         var form_type = MongooseAdmin.singleton.models[req.params.modelName].options.form || forms.AdminForm;
                                         var form = new form_type(req,{instance:document},model);
-                                        render_document_from_form(form,req,res,model.modelName,req.params.modelName,true);
+                                        render_document_from_form(form,req,res,model.modelName,req.params.modelName,true,req.query['clone']);
     //                                            var html = form.render_str();
     //                                            var head = form.render_head();
     //                                            var config = MongooseAdmin.singleton.pushExpressConfig();

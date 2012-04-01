@@ -80,7 +80,6 @@ MongooseAdminUser.getByUsernamePassword = function(username, password, onReady) 
     var adminUserModel = mongoose.model('_MongooseAdminUser');
 
     adminUserModel.findOne({'username': username}, function(err, adminUserData) {
-        console.log(adminUserData);
         if (err) {
             console.log('Unable to get admin user because: ' + err);
             onReady('Unable to get admin user', null);
