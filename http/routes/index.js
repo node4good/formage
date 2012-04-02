@@ -5,8 +5,6 @@ var querystring = require('querystring'),
     forms = require('j-forms').forms;
  //   Renderer = require('../renderer.js').Renderer;
 
-var adminTitle = 'Spilon Backoffice';
-
 exports.index = function(req, res) {
     var adminUser = req.session._mongooseAdminUser ? MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser) : null;
     if (!adminUser) {
@@ -23,7 +21,7 @@ exports.index = function(req, res) {
                                 'pageTitle': 'Admin Site',
                                 'models': models,
                                 'renderedHead': '',
-                                'adminTitle':adminTitle,
+                                'adminTitle':MongooseAdmin.singleton.getAdminTitle(),
                                 'rootPath': MongooseAdmin.singleton.root
                             }
                            });
@@ -94,11 +92,11 @@ exports.model = function(req, res) {
                                                         'count': count,
                                                         'renderedHead':'<link type="text/css" href="/node-forms/css/forms.css" rel="stylesheet"/>' +
                                                             '<script src="/node-forms/js/jquery-ui-1.8.18.custom.min.js"></script>',
-                                                        'adminTitle':adminTitle,
+                                                        'adminTitle':MongooseAdmin.singleton.getAdminTitle(),
                                                         'listFields': options.list,
                                                         'documents': documents,
                                                         'sortable': typeof(MongooseAdmin.singleton.models[req.params.modelName].options.sortable) == 'string' ,
-                                                        'cloneable' :  typeof(MongooseAdmin.singleton.models[req.params.modelName].options.sortable) == 'string',
+                                                        'cloneable' :  typeof(MongooseAdmin.singleton.models[req.params.modelName].options.cloneable) == 'string',
                                                         'rootPath': MongooseAdmin.singleton.root
                                                     }
                                                    });
@@ -190,9 +188,9 @@ function render_document_from_form(form,req,res,modelName,collectionName,allowDe
         //                'fields': fields,
                         'renderedDocument': html,
                         'renderedHead':head,
-                        'adminTitle':adminTitle,
+                        'adminTitle':MongooseAdmin.singleton.getAdminTitle(),
                         'document': {},
-                        'errors':Object.keys(form.errors).length > 0,
+                        'errors':form.errors ? Object.keys(form.errors).length > 0: false,
                         'allowDelete':allowDelete,
                         'rootPath': MongooseAdmin.singleton.root
                     }

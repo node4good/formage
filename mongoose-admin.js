@@ -63,6 +63,7 @@ function MongooseAdmin(app, root) {
     this.app = app;
     this.root = root;
     this.models = {};
+    this.title = "Backoffice";
 };
 
 /**
@@ -72,6 +73,15 @@ function MongooseAdmin(app, root) {
  */
 MongooseAdmin.prototype.buildPath = function(path) {
     return this.root + path;
+};
+
+MongooseAdmin.prototype.getAdminTitle = function(){
+    return this.title;
+};
+
+MongooseAdmin.prototype.setAdminTitle = function(title)
+{
+    this.title = title;
 };
 
 /**
