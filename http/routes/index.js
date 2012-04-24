@@ -96,7 +96,7 @@ exports.model = function(req, res) {
                                                         'listFields': options.list,
                                                         'documents': documents,
                                                         'sortable': typeof(MongooseAdmin.singleton.models[req.params.modelName].options.sortable) == 'string' ,
-                                                        'cloneable' :  typeof(MongooseAdmin.singleton.models[req.params.modelName].options.cloneable) == 'string',
+                                                        'cloneable' :  typeof(MongooseAdmin.singleton.models[req.params.modelName].options.cloneable) != 'undefined',
                                                         'rootPath': MongooseAdmin.singleton.root
                                                     }
                                                    });

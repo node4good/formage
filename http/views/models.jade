@@ -48,12 +48,12 @@ div#content.container_16.clearfix
       h2 #{model.modelName.replace('_',' ')}
       p
         - if(model.is_single)
-          a(href='#{rootPath}/model/#{model.collection.name}/document/new') Edit
+          a(href='#{rootPath}/model/#{model.modelName}/document/new') Edit
         - else
-          a(href='#{rootPath}/model/#{model.collection.name}/document/new') New
+          a(href='#{rootPath}/model/#{model.modelName}/document/new') New
           | &nbsp;|&nbsp;
-          a(href='#{rootPath}/model/#{model.collection.name}')
-            span(id='viewAll_#{model.collection.name}') View All
+          a(href='#{rootPath}/model/#{model.modelName}')
+            span(id='viewAll_#{model.modelName}') View All
   div.grid_5
     h2 Recent Activity
     p 

@@ -116,7 +116,7 @@ MongooseAdmin.prototype.registerMongooseModel = function(modelName, model,fields
         if(!fields[field].type)
             fields[field] = {type: fields[field]};
     }
-    this.models[model.collection.name] = {model: model,
+    this.models[modelName] = {model: model,
         options: options,
         fields: fields};
     console.log('\x1b[36mMongooseAdmin registered model: \x1b[0m %s', modelName);
@@ -125,7 +125,7 @@ MongooseAdmin.prototype.registerMongooseModel = function(modelName, model,fields
 MongooseAdmin.prototype.registerSingleRowModel = function(model,name)
 {
     model.is_single = true;
-    this.models[model.collection.name] = {model:model,options:{},fields:{},is_single:true}
+    this.models[name] = {model:model,options:{},fields:{},is_single:true}
 };
 
 
@@ -141,7 +141,7 @@ MongooseAdmin.prototype.registerSingleRowModel = function(model,name)
 MongooseAdmin.prototype.registerModel = function(modelName, fields, options) {
     var schema = new mongoose.Schema(fields);
     var model = mongoose.model(modelName, schema);
-    this.models[model.collection.name] = {model: model,
+    this.models[modelName] = {model: model,
                                           options: options,
                                           fields: fields};
     console.log('\x1b[36mMongooseAdmin registered model: \x1b[0m %s', modelName);
