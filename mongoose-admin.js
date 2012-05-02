@@ -125,7 +125,7 @@ MongooseAdmin.prototype.registerMongooseModel = function(modelName, model,fields
 MongooseAdmin.prototype.registerSingleRowModel = function(model,name)
 {
     model.is_single = true;
-    this.models[name] = {model:model,options:{},fields:{},is_single:true}
+    this.models[name] = {model:model,options:{},fields:{},is_single:true,modelName:name}
 };
 
 
