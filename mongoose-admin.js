@@ -12,6 +12,7 @@ var sys = require('sys'),
     MongooseAdminUser = require('./mongoose_admin_user.js').MongooseAdminUser,
     MongooseAdminAudit = require('./mongoose_admin_audit.js').MongooseAdminAudit,
     mongoose = require('mongoose'),
+    _ = require('underscore'),
     forms = require('j-forms').forms;
 
 exports = module.exports = MongooseAdmin;
@@ -110,15 +111,17 @@ MongooseAdmin.prototype.close = function() {
     this.app.close();
 };
 
+
 MongooseAdmin.prototype.registerMongooseModel = function(modelName, model,fields, options) {
-    for(var field in fields)
+    options = options || {};
+    options.actions = options.actions || [{value:'delete', label:'Delete',func:function(user,ids,callback)
     {
-        if(!fields[field].type)
-            fields[field] = {type: fields[field]};
-    }
+        model.remove({_id:{$in:ids}},callback);
+    }}];
     this.models[modelName] = {model: model,
         options: options,
         fields: fields};
+
     console.log('\x1b[36mMongooseAdmin registered model: \x1b[0m %s', modelName);
 };
 
@@ -138,13 +141,11 @@ MongooseAdmin.prototype.registerSingleRowModel = function(model,name)
 *
 * @api public
 */
-MongooseAdmin.prototype.registerModel = function(modelName, fields, options) {
-    var schema = new mongoose.Schema(fields);
-    var model = mongoose.model(modelName, schema);
-    this.models[modelName] = {model: model,
-                                          options: options,
-                                          fields: fields};
-    console.log('\x1b[36mMongooseAdmin registered model: \x1b[0m %s', modelName);
+MongooseAdmin.prototype.registerModel = function(model, name, options) {
+    this.models[name] = {model: model,
+        options: options
+    };
+    console.log('\x1b[36mMongooseAdmin registered model: \x1b[0m %s', name);
 
 };
 
@@ -157,7 +158,7 @@ MongooseAdmin.prototype.registerModel = function(modelName, fields, options) {
  */
 MongooseAdmin.prototype.getRegisteredModels = function(onReady) {
     var models = [];
-    for (collectionName in this.models) {
+    for (var collectionName in this.models) {
         this.models[collectionName].model.is_single = this.models[collectionName].is_single;
         models.push(this.models[collectionName].model);
     };
@@ -486,6 +487,20 @@ MongooseAdmin.prototype.orderDocuments =function(user,collectionName,data,onRead
     }
     onReady(null);
 };
+
+MongooseAdmin.prototype.actionDocuments =function(user,collectionName,actionId,data,onReady)
+{
+    //console.log(data);
+    var action = _.find(this.models[collectionName].options.actions, function(action){ return action.value == actionId; });
+    if(action)
+    {
+        action.func(user,data.ids,onReady);
+    }
+    else
+        onReady('no action');
+};
+
+
 
 /**
  * Deserialize a user from a session store object

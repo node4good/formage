@@ -95,6 +95,7 @@ exports.model = function(req, res) {
                                                         'adminTitle':MongooseAdmin.singleton.getAdminTitle(),
                                                         'listFields': options.list,
                                                         'documents': documents,
+                                                        'actions':MongooseAdmin.singleton.models[req.params.modelName].options.actions || [],
                                                         'sortable': typeof(MongooseAdmin.singleton.models[req.params.modelName].options.sortable) == 'string' ,
                                                         'cloneable' :  typeof(MongooseAdmin.singleton.models[req.params.modelName].options.cloneable) != 'undefined',
                                                         'rootPath': MongooseAdmin.singleton.root
