@@ -114,10 +114,11 @@ MongooseAdmin.prototype.close = function() {
 
 MongooseAdmin.prototype.registerMongooseModel = function(modelName, model,fields, options) {
     options = options || {};
-    options.actions = options.actions || [{value:'delete', label:'Delete',func:function(user,ids,callback)
+    options.actions = options.actions || [];
+    options.actions.push({value:'delete', label:'Delete',func:function(user,ids,callback)
     {
         model.remove({_id:{$in:ids}},callback);
-    }}];
+    }});
     this.models[modelName] = {model: model,
         options: options,
         fields: fields};
