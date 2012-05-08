@@ -1,6 +1,23 @@
 script
   var startIndex = #{start};
   $(document).ready(function(){
+
+        $('#go_button').click(function(){
+            var action_id = $('.actions').val();
+            if(action_id)
+            {
+                var ids = [];
+                 $('.select_row input[type=checkbox]:checked').each(function(){
+                     ids.push($(this).parents('tr').attr('elm_id'));
+                 });
+
+                 $.post('#{rootPath}/json/model/#{modelName}/action/' + action_id ,{ids:ids},function(data){
+
+                     window.location.href = window.location.href;
+                 });
+             }
+        });
+
         $('tbody').sortable({
                         update:function()
                         {
@@ -41,9 +58,20 @@ script
 div#content.container_16.clearfix
   div#page-heading
     h1 #{modelName}
+  - if(actions.length) {
+      p actions:
+        select.actions
+          option(value='') -
+          - for (var i=0; i<actions.length; i++) {
+            option(value='#{actions[i].value}') #{actions[i].label}
+          - }
+
+        <button id="go_button">GO</button>
+  - }
   div.grid_11
     table
       tr
+        th &nbsp;
         - if (sortable) {
           th &nbsp;
         - }
@@ -51,15 +79,25 @@ div#content.container_16.clearfix
           th.table-header-repeat.line-left.minwidth-1
             a(href='#') #{listFields[i]}
         - }
+        - if (cloneable)
+          th &nbsp;
       - for (var j = 0; j < documents.length; j++) {
         tr(elm_id="#{documents[j]._id}")
           - if (sortable) {
-            td.sortable
+            td.sortable.select_row(style='padding-right:0px;')
+              input(type='checkbox')
               div.nf_listfield_drag(style='float:left')
+          - }else{
+            td.select_row(style='padding-right:0px;')
+              input(type='checkbox')
           - }
           - for (var k = 0; k < listFields.length; k++) {
             td
               a(href='#{rootPath}/model/#{modelName}/document/#{documents[j]._id}') #{documents[j][listFields[k]]}&nbsp;
+          - }
+          - if ( cloneable) {
+            td
+              a(href='#{rootPath}/model/#{modelName}/document/#{documents[j]._id}?clone=true') Duplicate
           - }
       - }
     p
@@ -70,6 +108,7 @@ div#content.container_16.clearfix
           #{page}
         - else
           a(href='#{rootPath}/model/#{modelName}?start=#{i}') #{page}
+        &nbsp;
     p.buttons
       | <a href='#{rootPath}/model/#{modelName}/document/new'>Create new <em>"#{modelName}"</em> item...</a>
   div.grid_5

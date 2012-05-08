@@ -5,8 +5,6 @@ var querystring = require('querystring'),
     forms = require('j-forms').forms;
  //   Renderer = require('../renderer.js').Renderer;
 
-var adminTitle = 'Spilon Backoffice';
-
 exports.index = function(req, res) {
     var adminUser = req.session._mongooseAdminUser ? MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser) : null;
     if (!adminUser) {
@@ -23,7 +21,7 @@ exports.index = function(req, res) {
                                 'pageTitle': 'Admin Site',
                                 'models': models,
                                 'renderedHead': '',
-                                'adminTitle':adminTitle,
+                                'adminTitle':MongooseAdmin.singleton.getAdminTitle(),
                                 'rootPath': MongooseAdmin.singleton.root
                             }
                            });
@@ -94,10 +92,12 @@ exports.model = function(req, res) {
                                                         'count': count,
                                                         'renderedHead':'<link type="text/css" href="/node-forms/css/forms.css" rel="stylesheet"/>' +
                                                             '<script src="/node-forms/js/jquery-ui-1.8.18.custom.min.js"></script>',
-                                                        'adminTitle':adminTitle,
+                                                        'adminTitle':MongooseAdmin.singleton.getAdminTitle(),
                                                         'listFields': options.list,
                                                         'documents': documents,
+                                                        'actions':MongooseAdmin.singleton.models[req.params.modelName].options.actions || [],
                                                         'sortable': typeof(MongooseAdmin.singleton.models[req.params.modelName].options.sortable) == 'string' ,
+                                                        'cloneable' :  typeof(MongooseAdmin.singleton.models[req.params.modelName].options.cloneable) != 'undefined',
                                                         'rootPath': MongooseAdmin.singleton.root
                                                     }
                                                    });
@@ -165,8 +165,10 @@ exports.document_post = function(req,res) {
 
 };
 
-function render_document_from_form(form,req,res,modelName,collectionName,allowDelete)
+function render_document_from_form(form,req,res,modelName,collectionName,allowDelete,cloneable)
 {
+    if(cloneable)
+        form.exclude.push('id');
     form.render_ready(function(err)
     {
         if(err)
@@ -187,9 +189,9 @@ function render_document_from_form(form,req,res,modelName,collectionName,allowDe
         //                'fields': fields,
                         'renderedDocument': html,
                         'renderedHead':head,
-                        'adminTitle':adminTitle,
+                        'adminTitle':MongooseAdmin.singleton.getAdminTitle(),
                         'document': {},
-                        'errors':Object.keys(form.errors).length > 0,
+                        'errors':form.errors ? Object.keys(form.errors).length > 0: false,
                         'allowDelete':allowDelete,
                         'rootPath': MongooseAdmin.singleton.root
                     }
@@ -264,7 +266,7 @@ exports.document = function(req, res) {
                                     } else {
                                         var form_type = MongooseAdmin.singleton.models[req.params.modelName].options.form || forms.AdminForm;
                                         var form = new form_type(req,{instance:document},model);
-                                        render_document_from_form(form,req,res,model.modelName,req.params.modelName,true);
+                                        render_document_from_form(form,req,res,model.modelName,req.params.modelName,true,req.query['clone']);
     //                                            var html = form.render_str();
     //                                            var head = form.render_head();
     //                                            var config = MongooseAdmin.singleton.pushExpressConfig();

@@ -135,6 +135,27 @@ exports.orderDocuments = function(req,res)
     }
 };
 
+exports.actionDocuments = function(req,res)
+{
+    var adminUser = req.session._mongooseAdminUser ? MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser) : null;
+    if (!adminUser) {
+        res.writeHead(401, {"Content-Type": "application/json"});
+        res.end();
+        return;
+    } else {
+        MongooseAdmin.singleton.actionDocuments(adminUser, req.params.collectionName,req.params.actionId, req.body, function(err) {
+            if (err) {
+                res.writeHead(500);
+                res.end();
+            } else {
+                res.writeHead(200, {"Content-Type": "application/json"});
+                res.write(JSON.stringify({"collection": req.params.collectionName}));
+                res.end();
+            }
+        });
+    }
+}
+
 exports.deleteDocument = function(req, res) {
     var adminUser = req.session._mongooseAdminUser ? MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser) : null;
     if (!adminUser) {

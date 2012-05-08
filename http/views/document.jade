@@ -8,16 +8,19 @@ script(type='text/javascript')
             }
             else
             {
-                $.ajax({
-                type:'DELETE',
-                url:'#{rootPath}/json/model/#{collectionName}/document?document_id=' + encodeURIComponent($('#document_id').val()),
-                success:function(result) {
-                  go_back();
-                },
-                error:function(xhr, textStatus) {
-                  alert('Unable to delete');
-                }
-              });
+                if(window.confirm('Are you sure you want to delete?'))
+                {
+                    $.ajax({
+                    type:'DELETE',
+                    url:'#{rootPath}/json/model/#{collectionName}/document?document_id=' + encodeURIComponent($('#document_id').val()),
+                    success:function(result) {
+                      go_back();
+                    },
+                    error:function(xhr, textStatus) {
+                      alert('Unable to delete');
+                    }
+                  });
+              }
 
             }
         });
