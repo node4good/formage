@@ -45,7 +45,7 @@ style(type="text/css")
 div#content.container_16.clearfix
   div.grid_11
     - each model in models
-      h2 #{model.modelName.replace('_',' ')}
+      h2 #{model.modelName.replace(/_/g,' ')}
       p
         - if(model.is_single)
           a(href='#{rootPath}/model/#{model.modelName}/document/new') Edit

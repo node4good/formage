@@ -93,7 +93,10 @@ div#content.container_16.clearfix
           - }
           - for (var k = 0; k < listFields.length; k++) {
             td
-              a(href='#{rootPath}/model/#{modelName}/document/#{documents[j]._id}') #{documents[j][listFields[k]]}&nbsp;
+              - if( editable)
+                a(href='#{rootPath}/model/#{modelName}/document/#{documents[j]._id}') #{documents[j][listFields[k]]}&nbsp;
+              - else
+                p #{documents[j][listFields[k]]}&nbsp;
           - }
           - if ( cloneable) {
             td
@@ -109,8 +112,10 @@ div#content.container_16.clearfix
         - else
           a(href='#{rootPath}/model/#{modelName}?start=#{i}') #{page}
         &nbsp;
-    p.buttons
-      | <a href='#{rootPath}/model/#{modelName}/document/new'>Create new <em>"#{modelName}"</em> item...</a>
+    - if(createable) {
+      p.buttons
+        | <a href='#{rootPath}/model/#{modelName}/document/new'>Create new <em>"#{modelName}"</em> item...</a>
+    - }
   div.grid_5
     h2 Recent Activity
     p

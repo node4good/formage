@@ -1,14 +1,9 @@
 var sys = require('sys'),
     mongoose = require('mongoose');
 
-try
-{
-    bcrypt = require('bcrypt');
-}
-catch(e)
-{
-    bcrypt = require('./example/bcrypt_mock.js');
-}
+bcrypt = require('./crypt');
+
+exports.bcrypt = bcrypt;
 
 
 function MongooseAdminUser() {
@@ -16,8 +11,10 @@ function MongooseAdminUser() {
 
     var AdminUserData = new mongoose.Schema({
         username:{type:String, required:true, unique:true},
-        passwordHash:{type:String, required:true}
-    });
+        passwordHash:{type:String, editable:false},
+        is_superuser :{type:Boolean,'default':false},
+        permissions:[{type:mongoose.Schema.ObjectId, ref:'_MongooseAdminPermission'}]
+    },{strict:true});
     mongoose.model('_MongooseAdminUser', AdminUserData);
 };
 
@@ -62,6 +59,7 @@ MongooseAdminUser.ensureExists = function(username, password, onReady) {
                 var salt = bcrypt.gen_salt_sync(10);
                 adminUserData.passwordHash = bcrypt.encrypt_sync(password, salt);
             }
+            adminUserData.is_superuser = true;
             adminUserData.save(function(err) {
                 if (err) {
                     console.log('Unable to create or update admin user because: ' + err);

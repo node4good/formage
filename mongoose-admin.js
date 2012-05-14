@@ -13,6 +13,7 @@ var sys = require('sys'),
     MongooseAdminAudit = require('./mongoose_admin_audit.js').MongooseAdminAudit,
     mongoose = require('mongoose'),
     _ = require('underscore'),
+    permissions = require('./permissions'),
     forms = require('j-forms').forms;
 
 exports = module.exports = MongooseAdmin;
@@ -120,16 +121,20 @@ MongooseAdmin.prototype.registerMongooseModel = function(modelName, model,fields
         model.remove({_id:{$in:ids}},callback);
     }});
     this.models[modelName] = {model: model,
+        modelName:modelName,
         options: options,
         fields: fields};
 
     console.log('\x1b[36mMongooseAdmin registered model: \x1b[0m %s', modelName);
+
+    permissions.registerModel(modelName);
 };
 
 MongooseAdmin.prototype.registerSingleRowModel = function(model,name)
 {
     model.is_single = true;
     this.models[name] = {model:model,options:{},fields:{},is_single:true,modelName:name}
+    permissions.registerModel(name);
 };
 
 
@@ -144,6 +149,7 @@ MongooseAdmin.prototype.registerSingleRowModel = function(model,name)
 */
 MongooseAdmin.prototype.registerModel = function(model, name, options) {
     this.models[name] = {model: model,
+        modelName:name,
         options: options
     };
     console.log('\x1b[36mMongooseAdmin registered model: \x1b[0m %s', name);
@@ -157,12 +163,16 @@ MongooseAdmin.prototype.registerModel = function(model, name, options) {
  *
  * @api public
  */
-MongooseAdmin.prototype.getRegisteredModels = function(onReady) {
+MongooseAdmin.prototype.getRegisteredModels = function(user,onReady) {
     var models = [];
     for (var collectionName in this.models) {
         this.models[collectionName].model.is_single = this.models[collectionName].is_single;
-        models.push(this.models[collectionName].model);
+        models.push(this.models[collectionName]);
     };
+    models = _.filter(models,function(model)
+    {
+        return permissions.hasPermissions(user,model.modelName,'view');
+    });
     onReady(null, models);
 };
 
@@ -285,68 +295,45 @@ MongooseAdmin.prototype.createDocument = function(req,user, collectionName, para
     var self = this;
     var model = this.models[collectionName].model;
     var form_type = this.models[collectionName].options.form || forms.AdminForm;
-    var form = new form_type(req,{data:params},model);
-    form.is_valid(function(err,valid)
+    if(user.is_superuser || _.indexOf(user.permissions,permissions.getPermission(collectionName,'create'))>-1)
     {
-        if(err)
+
+        var form = new form_type(req,{data:params},model);
+        form.is_valid(function(err,valid)
         {
-            onReady(err);
-            return;
-        }
-        if(valid)
-        {
-            form.save(function(err,document)
+            if(err)
             {
-                if (err) {
-                    //console.log('Error saving document: ' + err);
-                    onReady(form);
-                } else {
+                onReady(err);
+                return;
+            }
+            if(valid)
+            {
+                form.save(function(err,document)
+                {
+                    if (err) {
+                        //console.log('Error saving document: ' + err);
+                        onReady(form);
+                    } else {
 
-                    if (self.models[collectionName].options && self.models[collectionName].options.post) {
-                        document = self.models[collectionName].options.post(document);
+                        if (self.models[collectionName].options && self.models[collectionName].options.post) {
+                            document = self.models[collectionName].options.post(document);
+                        }
+                        MongooseAdminAudit.logActivity(user, self.models[collectionName].modelName, collectionName, document._id, 'add', null, function(err, auditLog) {
+                            onReady(null, document);
+                        });
                     }
-                    MongooseAdminAudit.logActivity(user, self.models[collectionName].modelName, collectionName, document._id, 'add', null, function(err, auditLog) {
-                        onReady(null, document);
-                    });
-                }
-            });
-        }
-        else
-        {
-            onReady(form,null);
-        }
-    });
-
-//    var document = new model();
-//
-//    for (field in this.models[collectionName].fields) {
-//        if (params[field]) {
-//            document[field] = params[field];
-//        } else {
-//            if (params[field + '_linked_document']) {
-//                document[field] = mongoose.Types.ObjectId.fromString(params[field + '_linked_document']);
-//            }
-//        }
-//    }
-//
-//    if (this.models[collectionName].options && this.models[collectionName].options.pre) {
-//        document = this.models[collectionName].options.pre(document);
-//    }
-//
-//    document.save(function(err) {
-//        if (err) {
-//            console.log('Error saving document: ' + err);
-//            onReady('Error saving document: ' + err);
-//        } else {
-//
-//            if (self.models[collectionName].options && self.models[collectionName].options.post) {
-//                document = self.models[collectionName].options.post(document);
-//            }
-//            MongooseAdminAudit.logActivity(user, self.models[collectionName].modelName, collectionName, document._id, 'add', null, function(err, auditLog) {
-//                onReady(null, document);
-//            });
-//        }
-//    });
+                });
+            }
+            else
+            {
+                onReady(form,null);
+            }
+        });
+    }
+    else
+    {
+        onReady('unauthorizaed');
+    }
 };
 
 /**
@@ -363,7 +350,10 @@ MongooseAdmin.prototype.updateDocument = function(req,user, collectionName, docu
     var self = this;
     var fields = this.models[collectionName].fields;
     var model = this.models[collectionName].model;
-    var form_type = this.models[collectionName].options.form || forms.AdminForm;
+    if(permissions.hasPermissions(user,collectionName,'update'))
+    {
+
+        var form_type = this.models[collectionName].options.form || forms.AdminForm;
     model.findById(documentId, function(err, document) {
         if (err) {
             console.log('Error retrieving document to update: ' + err);
@@ -402,44 +392,13 @@ MongooseAdmin.prototype.updateDocument = function(req,user, collectionName, docu
                     onReady(form,null);
                 }
             });
-//            for (field in fields) {
-//                if (params[field]) {
-//                    console.log(params['field'])
-//                    // hack to handle booleans
-//                    if (params[field] == 'true'){
-//                        params[field] = true
-//                    } else if (params[field] == 'false'){
-//                        params[field] = false
-//                    }
-//
-//                    document[field] = params[field];
-//                } else {
-//                    if (params[field + '_linked_document']) {
-//                        document[field] = mongoose.Types.ObjectId.fromString(params[field + '_linked_document']);
-//                    }
-//                }
-//            }
-//
-//            if (self.models[collectionName].options && self.models[collectionName].options.pre) {
-//                document = self.models[collectionName].options.post(document);
-//            }
-//
-//            document.save(function(err) {
-//                if (err) {
-//                    console.log('Unable to update document: ' + err);
-//                    onReady('Unable to update docuemnt', null);
-//                } else {
-//
-//                    if (self.models[collectionName].options && self.models[collectionName].options.post) {
-//                        document = self.models[collectionName].options.post(document);
-//                    }
-//                    MongooseAdminAudit.logActivity(user, self.models[collectionName].modelName, collectionName, document._id, 'edit', null, function(err, auditLog) {
-//                        onReady(null, document);
-//                    });
-//                }
-//            });
         }
     });
+    }
+    else
+    {
+        onReady('unauthorized');
+    }
 };
 
 /**
@@ -454,7 +413,9 @@ MongooseAdmin.prototype.updateDocument = function(req,user, collectionName, docu
 MongooseAdmin.prototype.deleteDocument = function(user, collectionName, documentId, onReady) {
     var self = this;
     var model = this.models[collectionName].model;
-    model.findById(documentId, function(err, document) {
+    if(permissions.hasPermissions(user,collectionName,'delete'))
+    {
+        model.findById(documentId, function(err, document) {
         if (err) {
             console.log('Error retrieving document to delete: ' + err);
             onReady('Unable to delete');
@@ -469,36 +430,52 @@ MongooseAdmin.prototype.deleteDocument = function(user, collectionName, document
             }
         }
     });
+    }
+    else
+    {
+        onReady('unauthorized')
+    }
 };
 
 MongooseAdmin.prototype.orderDocuments =function(user,collectionName,data,onReady)
 {
     //console.log(data);
-    var sorting_attr = this.models[collectionName].options.sortable;
-    if(sorting_attr)
+    if(permissions.hasPermissions(user,collectionName,'order'))
     {
-        for(var id in data)
+            var sorting_attr = this.models[collectionName].options.sortable;
+        if(sorting_attr)
         {
-            var set_dict = {};
-            set_dict[sorting_attr] = data[id];
-                this.models[collectionName].model.update({_id:id},{$set:set_dict},function(err,r)
-                {
-                });
+            for(var id in data)
+            {
+                var set_dict = {};
+                set_dict[sorting_attr] = data[id];
+                    this.models[collectionName].model.update({_id:id},{$set:set_dict},function(err,r)
+                    {
+                    });
+            }
         }
+
+        onReady(null);
     }
-    onReady(null);
+    else
+        onReady('unauthorized');
 };
 
 MongooseAdmin.prototype.actionDocuments =function(user,collectionName,actionId,data,onReady)
 {
     //console.log(data);
-    var action = _.find(this.models[collectionName].options.actions, function(action){ return action.value == actionId; });
-    if(action)
+    if(permissions.hasPermissions(user,collectionName,'action'))
     {
-        action.func(user,data.ids,onReady);
+            var action = _.find(this.models[collectionName].options.actions, function(action){ return action.value == actionId; });
+        if(action)
+        {
+            action.func(user,data.ids,onReady);
+        }
+        else
+            onReady('no action');
     }
     else
-        onReady('no action');
+        onReady('unauthorized');
 };
 
 
