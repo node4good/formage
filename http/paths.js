@@ -1,4 +1,4 @@
-var routes = require('./routes/index.js')
+var routes = require('./renders')
     , routesJson = require('./routes/json.js')
     , path = require('path');
 
