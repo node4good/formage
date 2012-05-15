@@ -35,7 +35,7 @@ exports.index = function(req, res) {
 
 exports.login = function(req, res) {
     var config = MongooseAdmin.singleton.pushExpressConfig();
-    res.render('login',
+    res.render('login.jade',
                {layout: 'anonlayout.jade',
                 locals: {
                       'pageTitle': 'Admin Login',
