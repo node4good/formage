@@ -14,7 +14,7 @@ var sys = require('sys'),
     mongoose = require('mongoose'),
     _ = require('underscore'),
     permissions = require('./permissions'),
-	paths = require('./web/register_paths'),
+	paths = require('./http/register_paths'),
     forms = require('j-forms').forms;
 	
 
@@ -33,7 +33,7 @@ var app;
  */
 exports.createAdmin = function(app,options) {
 //    if (options.port) {
-//        var app = app || (app = require('web'));
+//        var app = app || (app = require('http'));
 //
 //        app.listen(options.port);
 //        require('http/paths').registerPaths(app, '/');
@@ -52,7 +52,7 @@ exports.createAdmin = function(app,options) {
 
     paths.registerPaths(MongooseAdmin, app, '/' + root);
 	
-    app.use(require('express').static(__dirname + '/web/static'));
+    app.use(require('express').static(__dirname + '/static'));
 
     MongooseAdmin.singleton = new MongooseAdmin(app, '/' + root);
 	
@@ -97,7 +97,7 @@ MongooseAdmin.prototype.setAdminTitle = function(title)
  */
 MongooseAdmin.prototype.pushExpressConfig = function() {
     var currentViewsPath = MongooseAdmin.singleton.app.set('views');
-    this.app.set('views', __dirname + '/web/views');
+    this.app.set('views', __dirname + '/views');
     return {'views': currentViewsPath};
 };
 
