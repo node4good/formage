@@ -1,5 +1,6 @@
-var routes = require('./renders')
-    , routesJson = require('./routes/json.js')
+var 
+    routesJson = require('./routes/json.js')
+	, routes = require('./routes/index.js')
     , path = require('path');
 
 var path_join = function()
