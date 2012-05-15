@@ -52,7 +52,7 @@ exports.createAdmin = function(app,options) {
 
     paths.registerPaths(MongooseAdmin, app, '/' + root);
 	
-    app.use(require('express').static(__dirname + '/static'));
+    app.use(require('express').static(__dirname + '/public'));
 
     MongooseAdmin.singleton = new MongooseAdmin(app, '/' + root);
 	
