@@ -1,10 +1,15 @@
 var querystring = require('querystring'),
     Url = require('url'),
     sys = require('sys'),
-    MongooseAdmin = require('../../mongoose-admin.js'),
     permissions = require('../../permissions'),
     forms = require('j-forms').forms;
  //   Renderer = require('../renderer.js').Renderer;
+
+var MongooseAdmin;	
+
+exports.setAdmin = function(admin){
+	MongooseAdmin = admin;
+};
 
  
 exports.index = function(req, res) {

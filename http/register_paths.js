@@ -1,7 +1,3 @@
-var 
-    routesJson = require('./routes/json.js')
-	, routes = require('./routes/index.js')
-    , path = require('path');
 
 var path_join = function()
 {
@@ -16,7 +12,11 @@ var path_join = function()
     return str;
 }
 
-exports.registerPaths = function(app, root) {
+exports.registerPaths = function(admin,app, root) {
+
+	routes.setAdmin(admin);
+	routesJson.setAdmin(admin);
+	
     if (root.length > 1) {
         app.get(root, routes.index);
     } else {

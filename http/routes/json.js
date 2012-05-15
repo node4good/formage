@@ -1,8 +1,13 @@
 var querystring = require('querystring'),
     Url = require('url'),
     sys = require('sys'),
-    forms = require('j-forms').forms,
-    MongooseAdmin = require('../../mongoose-admin');
+    forms = require('j-forms').forms;
+
+var MongooseAdmin;
+
+exports.setAdmin = function(admin){
+	MongooseAdmin = admin;
+};
 
 
 exports.login = function(req, res) {
