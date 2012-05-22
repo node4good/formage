@@ -1,6 +1,7 @@
 {
     "name": "admin-with-forms",
-    "description": "backoffice with mongoose",
+
+    "description": "admin for mongoose and not mongoose projects which uses forms",
     "version": "0.0.41",
     "author": "Ishai Jaffe <ishai@empeeric.com>",
     "dependencies": {

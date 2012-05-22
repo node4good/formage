@@ -52,7 +52,7 @@ exports.createAdmin = function(app,options) {
 
     paths.registerPaths(MongooseAdmin, app, '/' + root);
 	
-    app.use(require('express').static(__dirname + '/public'));
+    app.use(require('express').static(__dirname + '/nada'));
 
     MongooseAdmin.singleton = new MongooseAdmin(app, '/' + root);
 	
@@ -300,7 +300,7 @@ MongooseAdmin.prototype.createDocument = function(req,user, collectionName, para
     var self = this;
     var model = this.models[collectionName].model;
     var form_type = this.models[collectionName].options.form || forms.AdminForm;
-    if(user.is_superuser || _.indexOf(user.permissions,permissions.getPermission(collectionName,'create'))>-1)
+    if(permissions.hasPermissions(user,collectionName,'create'))
     {
 
         var form = new form_type(req,{data:params},model);
