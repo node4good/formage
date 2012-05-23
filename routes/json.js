@@ -1,5 +1,6 @@
 var querystring = require('querystring'),
     Url = require('url'),
+    _ = require('underscore'),
     sys = require('sys'),
     forms = require('j-forms').forms;
 
@@ -63,11 +64,9 @@ exports.checkDependencies = function(req,res)
     var id = req.body.id;
     forms.checkDependecies(modelName,id,function(err,results)
     {
-        var json = [];
-        for(var i=0; i<results.length; i++)
-        {
-            json.push(results[i].name || results[i].title || results[i].toString());
-        }
+        var json = _.map(results,function(result) {
+            return result.name || result.title || result.toString();
+        });
         res.json(json,200);
     });
 };

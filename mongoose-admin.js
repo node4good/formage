@@ -13,6 +13,7 @@ var sys = require('sys'),
     MongooseAdminAudit = require('./mongoose_admin_audit.js').MongooseAdminAudit,
     mongoose = require('mongoose'),
     _ = require('underscore'),
+    async = require('async'),
     permissions = require('./permissions'),
 	paths = require('./http/register_paths'),
     forms = require('j-forms').forms;
@@ -123,7 +124,25 @@ MongooseAdmin.prototype.registerMongooseModel = function(modelName, model,fields
     options.actions = options.actions || [];
     options.actions.push({value:'delete', label:'Delete',func:function(user,ids,callback)
     {
-        model.remove({_id:{$in:ids}},callback);
+        async.parallel(_.map(ids,function(id)
+        {
+            return function(cbk)
+            {
+                forms.checkDependecies(modelName,id,cbk);
+            }
+        }),function(err,results)
+        {
+            if(err)
+                callback(err);
+            else
+            {
+                var no_dependecies = _.filter(ids,function(result,index)
+                {
+                    return results[index].length == 0;
+                });
+                model.remove({_id:{$in:no_dependecies}},callback);
+            }
+        });
     }});
     this.models[modelName] = {model: model,
         modelName:modelName,
