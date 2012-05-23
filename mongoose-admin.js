@@ -135,10 +135,10 @@ MongooseAdmin.prototype.registerMongooseModel = function(modelName, model,fields
     permissions.registerModel(modelName);
 };
 
-MongooseAdmin.prototype.registerSingleRowModel = function(model,name)
+MongooseAdmin.prototype.registerSingleRowModel = function(model,name,options)
 {
     model.is_single = true;
-    this.models[name] = {model:model,options:{},fields:{},is_single:true,modelName:name}
+    this.models[name] = {model:model,options:options||{},fields:{},is_single:true,modelName:name}
     permissions.registerModel(name);
 };
 
@@ -232,6 +232,7 @@ MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, cou
 
     var query = this.models[collectionName].model.find({});
     var sorts = this.models[collectionName].options.order_by;
+    var populates = this.models[collectionName].options.list_populate;
     if(sorts)
     {
         for(var i=0; i<sorts.length; i++)
@@ -241,6 +242,13 @@ MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, cou
             else
                 query.sort(sorts[i],'ascending');
         }
+    }
+    if(populates)
+    {
+        _.each(populates,function(populate)
+        {
+            query.populate(populate);
+        });
     }
     query.skip(start).limit(count).execFind(function(err, documents) {
         if (err) {
