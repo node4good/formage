@@ -455,9 +455,15 @@ MongooseAdmin.prototype.deleteDocument = function(user, collectionName, document
             if (!document) {
                 onReady('Document not found');
             } else {
-                document.remove();
-                MongooseAdminAudit.logActivity(user, self.models[collectionName].modelName, collectionName, documentId, 'del', null, function(err, auditLog) {
-                    onReady(null);
+                forms.unlinkDependencies(self.models[collectionName].modelName,documentId,function(err) {
+                    if(err)
+                        onReady('unlink dependencies failed');
+                    else {
+                        document.remove();
+                        MongooseAdminAudit.logActivity(user, self.models[collectionName].modelName, collectionName, documentId, 'del', null, function(err, auditLog) {
+                            onReady(null);
+                        });
+                    }
                 });
             }
         }
