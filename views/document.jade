@@ -2,26 +2,19 @@ script(type='text/javascript')
   $(document).ready(function() {
     $('#deleteButton').click(function() {
         $.post('#{rootPath}/json/dependencies',{model:"#{modelName}",id:$('#document_id').val()},function(result){
-            if(result.length)
+            var msg = result.length ? 'there are some entities related to this entity: "' + result.join(', ') + '"' : 'Are you sure you want to delete?';
+            if(window.confirm(msg))
             {
-                alert('there are some entities related to this entity: "' + result.join(', ') + '"');
-            }
-            else
-            {
-                if(window.confirm('Are you sure you want to delete?'))
-                {
-                    $.ajax({
-                    type:'DELETE',
-                    url:'#{rootPath}/json/model/#{collectionName}/document?document_id=' + encodeURIComponent($('#document_id').val()),
-                    success:function(result) {
-                      go_back();
-                    },
-                    error:function(xhr, textStatus) {
-                      alert('Unable to delete');
-                    }
-                  });
-              }
-
+                $.ajax({
+                type:'DELETE',
+                url:'#{rootPath}/json/model/#{collectionName}/document?document_id=' + encodeURIComponent($('#document_id').val()),
+                success:function(result) {
+                  go_back();
+                },
+                error:function(xhr, textStatus) {
+                  alert('Unable to delete');
+                }
+              });
             }
         });
     });
