@@ -8,10 +8,8 @@
  /**
   * Module dependencies
   */
-var sys = require('sys'),
-    MongooseAdminUser = require('./mongoose_admin_user.js').MongooseAdminUser,
+var MongooseAdminUser = require('./mongoose_admin_user.js').MongooseAdminUser,
     MongooseAdminAudit = require('./mongoose_admin_audit.js').MongooseAdminAudit,
-    mongoose = require('mongoose'),
     _ = require('underscore'),
     async = require('async'),
     permissions = require('./permissions'),

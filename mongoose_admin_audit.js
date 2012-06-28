@@ -1,8 +1,7 @@
 /** 
  * Module dependencies
  */
-var sys = require('sys'),
-    mongoose = require('mongoose');
+var mongoose = require('mongoose');
 
 function MongooseAdminAudit() {
     this.fields = {};

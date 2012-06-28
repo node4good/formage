@@ -1,6 +1,5 @@
 var querystring = require('querystring'),
     Url = require('url'),
-    sys = require('sys'),
     permissions = require('../permissions'),
     forms = require('j-forms').forms;
  //   Renderer = require('../renderer.js').Renderer;
