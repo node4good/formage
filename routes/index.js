@@ -84,6 +84,19 @@ exports.model = function(req, res) {
                             if (err) {
                                 res.redirect('/');
                             } else {
+                                        var makeLink = function(key,value) {
+                                            var query = _.clone(req.query);
+                                            query[key] = value;
+                                            return '?' + _.map(query,function(value,key) {
+                                                return encodeURIComponent(key) + '=' + encodeURIComponent(value);
+                                            }).join('&');
+                                        };
+
+                                        var orderLink = function(key) {
+                                            if(req.query.order_by == key )
+                                                key = '-' + key;
+                                            return makeLink('order_by',key);
+                                        };
                                 var config = MongooseAdmin.singleton.pushExpressConfig();
                                 res.render('model.jade',
                                            {layout: 'adminlayout.jade',
@@ -95,13 +108,8 @@ exports.model = function(req, res) {
                                                 'start': start,
                                                 'count': count,
                                                 'current_filters':req.query,
-                                                 makeLink:function(key,value) {
-                                                            var query = _.clone(req.query);
-                                                            query[key] = value;
-                                                            return '?' + _.map(query,function(value,key) {
-                                                                return encodeURIComponent(key) + '=' + encodeURIComponent(value);
-                                                            }).join('&');
-                                                        },
+                                                 makeLink:makeLink,
+                                                 orderLink:orderLink,
                                                 'filters':MongooseAdmin.singleton.models[req.params.modelName].filters || [],
                                                 'renderedHead':'<link type="text/css" href="/node-forms/css/forms.css" rel="stylesheet"/>' +
                                                     '<script src="/node-forms/js/jquery-ui-1.8.18.custom.min.js"></script>',

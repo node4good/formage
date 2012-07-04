@@ -82,7 +82,7 @@ div#content.container_16.clearfix
         - }
         - for (var i = 0; i < listFields.length; i++) {
           th.table-header-repeat.line-left.minwidth-1
-            a(href='#') #{listFields[i]}
+            a(href='#{orderLink(listFields[i])}') #{listFields[i]}
         - }
         - if (cloneable)
           th &nbsp;
