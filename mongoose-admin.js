@@ -13,6 +13,7 @@ var MongooseAdminUser = require('./mongoose_admin_user.js').MongooseAdminUser,
     _ = require('underscore'),
     async = require('async'),
     permissions = require('./permissions'),
+     mongoose = require('mongoose'),
 	paths = require('./http/register_paths'),
     forms = require('j-forms').forms;
 	
@@ -121,10 +122,9 @@ function buildModelFilters(model,filters,dict) {
         return;
     setTimeout(function() {
         async.forEach(filters,function(filter,cbk) {
-            console.log(filter);
             model.collection.distinct(filter, function(err,results) {
                 if(results) {
-                    if(model.schema.paths[filter].options.ref) {
+                    if(model.schema.paths[filter] && model.schema.paths[filter].options.ref) {
                         mongoose.model(model.schema.paths[filter].options.ref).find()
                             .where('_id').in(results).exec(function(err,refs) {
                                 if(refs)
