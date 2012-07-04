@@ -253,13 +253,13 @@ MongooseAdmin.prototype.getModel = function(collectionName, onReady) {
  *
  * @api public
  */
-MongooseAdmin.prototype.modelCounts = function(collectionName, onReady) {
+MongooseAdmin.prototype.modelCounts = function(collectionName,filters, onReady) {
     if(this.models[collectionName].is_single)
     {
         onReady(null,1);
         return;
     }
-    this.models[collectionName].model.count({}, function(err, count) {
+    this.models[collectionName].model.count(filters, function(err, count) {
         if (err) {
             console.log('Unable to get counts for model because: ' + err);
         } else {
@@ -278,14 +278,16 @@ MongooseAdmin.prototype.modelCounts = function(collectionName, onReady) {
  *
  * @api public
  */
-MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, count, onReady) {
+MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, count,filters,sort, onReady) {
     var listFields = this.models[collectionName].options.list;
     if(listFields)
     {
 
-    var query = this.models[collectionName].model.find({});
+    var query = this.models[collectionName].model.find(filters);
     var sorts = this.models[collectionName].options.order_by;
     var populates = this.models[collectionName].options.list_populate;
+	if(sort)
+		sorts.unshift(sort);
     if(sorts)
     {
         for(var i=0; i<sorts.length; i++)

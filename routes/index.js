@@ -60,6 +60,15 @@ exports.model = function(req, res) {
     var start = query.start ? parseInt(query.start) : 0;
     var count = query.count ? parseInt(query.count) : 50;
 
+    var filters = {};
+    for(var key in query) {
+        if(key != 'start' && key != 'count' && key != 'order_by')
+            filters[key] = query[key];
+    }
+	
+    var sort = query.order_by;
+
+
 
     var adminUser = req.session._mongooseAdminUser ? MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser) : null;
     if (!adminUser) {
@@ -76,11 +85,11 @@ exports.model = function(req, res) {
                     res.redirect(req.path.split('/model/')[0]);
                     return;
                 }
-                MongooseAdmin.singleton.modelCounts(req.params.modelName, function(err, totalCount) {
+                MongooseAdmin.singleton.modelCounts(req.params.modelName,filters, function(err, totalCount) {
                     if (err) {
                         res.redirect('/');
                     } else {
-                        MongooseAdmin.singleton.listModelDocuments(req.params.modelName, start, count, function(err, documents) {
+                        MongooseAdmin.singleton.listModelDocuments(req.params.modelName, start, count,filters,sort, function(err, documents) {
                             if (err) {
                                 res.redirect('/');
                             } else {
