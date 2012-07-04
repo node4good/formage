@@ -1,6 +1,7 @@
 var querystring = require('querystring'),
     Url = require('url'),
     permissions = require('../permissions'),
+     _ = require('underscore'),
     forms = require('j-forms').forms;
  //   Renderer = require('../renderer.js').Renderer;
 
@@ -93,6 +94,15 @@ exports.model = function(req, res) {
                                                 'model': model,
                                                 'start': start,
                                                 'count': count,
+                                                'current_filters':req.query,
+                                                 makeLink:function(key,value) {
+                                                            var query = _.clone(req.query);
+                                                            query[key] = value;
+                                                            return '?' + _.map(query,function(value,key) {
+                                                                return encodeURIComponent(key) + '=' + encodeURIComponent(value);
+                                                            }).join('&');
+                                                        },
+                                                'filters':MongooseAdmin.singleton.models[req.params.modelName].filters || [],
                                                 'renderedHead':'<link type="text/css" href="/node-forms/css/forms.css" rel="stylesheet"/>' +
                                                     '<script src="/node-forms/js/jquery-ui-1.8.18.custom.min.js"></script>',
                                                 'adminTitle':MongooseAdmin.singleton.getAdminTitle(),

@@ -116,6 +116,38 @@ MongooseAdmin.prototype.close = function() {
     this.app.close();
 };
 
+function buildModelFilters(model,filters,dict) {
+    if(!filters)
+        return;
+    setTimeout(function() {
+        async.forEach(filters,function(filter,cbk) {
+            console.log(filter);
+            model.collection.distinct(filter, function(err,results) {
+                if(results) {
+                    if(model.schema.paths[filter].options.ref) {
+                        mongoose.model(model.schema.paths[filter].options.ref).find()
+                            .where('_id').in(results).exec(function(err,refs) {
+                                if(refs)
+                                    dict.push( {key:filter, values: _.map(refs,function(ref) { return { value:ref.id, text:ref.toString()};  }) });
+                                cbk(err);
+                            })
+                    }
+                    else {
+                        dict.push({key:filter, values: _.map(results, function(result) {
+                            return { value: result, text:result};
+                        })});
+                        cbk();
+                    }
+                }
+                else
+                    cbk(err);
+            })
+
+        },function(){
+            console.log(dict);
+        })
+    },1000);
+};
 
 MongooseAdmin.prototype.registerMongooseModel = function(modelName, model,fields, options) {
     options = options || {};
@@ -142,7 +174,11 @@ MongooseAdmin.prototype.registerMongooseModel = function(modelName, model,fields
             }
         });
     }});
+    var filters = [];
+    buildModelFilters(model,options.filters,filters);
+
     this.models[modelName] = {model: model,
+        filters:filters,
         modelName:modelName,
         options: options,
         fields: fields};

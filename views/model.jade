@@ -1,6 +1,11 @@
 script
   var startIndex = #{start};
   $(document).ready(function(){
+       $('.free_search').click(function() {
+            var value = $(this).siblings('input').val();
+            var href = $(this).data('href').replace('__replace__', encodeURIComponent(value));
+            window.location.href = href;
+        });
 
         $('#go_button').click(function(){
             var action_id = $('.actions').val();
@@ -117,6 +122,21 @@ div#content.container_16.clearfix
         | <a href='#{rootPath}/model/#{modelName}/document/new'>Create new <em>"#{modelName}"</em> item...</a>
     - }
   div.grid_5
-    h2 Recent Activity
-    p
-      | This is not implemented
+    h2 Filters
+    - for(var i=0; i < filters.length; i++)
+      p #{filters[i].key}:
+      ul
+        li
+          - if ( current_filters[filters[i].key])
+            a(href='#{makeLink(filters[i].key,"")}') all
+          - else
+            span all
+        - for( var j=0; j<filters[i].values.length; j++)
+          li
+            - if ( current_filters[filters[i].key] != filters[i].values[j].value )
+              a(href='#{makeLink(filters[i].key,filters[i].values[j].value)}') #{filters[i].values[j].text}
+            - else
+              span #{filters[i].values[j].text}
+        div
+          input(type='text',style='width:217px; !important ',name='#{filters[i].key}',value='#{current_filters[filters[i].key] || ""}')
+          button.free_search(data-href='#{makeLink(filters[i].key,"__replace__")}') search
