@@ -127,6 +127,8 @@ function buildModelFilters(model,filters,dict) {
                     if(results[0] && Array.isArray(results[0])) {
                         results = _.flatten(results);
                     }
+		    if(results.length > 30)
+                        results.splice(5);
                     if(model.schema.paths[filter] && model.schema.paths[filter].options.ref) {
                         mongoose.model(model.schema.paths[filter].options.ref).find()
                             .where('_id').in(results).exec(function(err,refs) {
