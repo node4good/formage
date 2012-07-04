@@ -124,6 +124,9 @@ function buildModelFilters(model,filters,dict) {
         async.forEach(filters,function(filter,cbk) {
             model.collection.distinct(filter, function(err,results) {
                 if(results) {
+                    if(results[0] && Array.isArray(results[0])) {
+                        results = _.flatten(results);
+                    }
                     if(model.schema.paths[filter] && model.schema.paths[filter].options.ref) {
                         mongoose.model(model.schema.paths[filter].options.ref).find()
                             .where('_id').in(results).exec(function(err,refs) {
@@ -144,7 +147,6 @@ function buildModelFilters(model,filters,dict) {
             })
 
         },function(){
-            console.log(dict);
         })
     },1000);
 };
