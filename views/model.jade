@@ -77,9 +77,6 @@ div#content.container_16.clearfix
     table
       tr
         th &nbsp;
-        - if (sortable) {
-          th &nbsp;
-        - }
         - for (var i = 0; i < listFields.length; i++) {
           th.table-header-repeat.line-left.minwidth-1
             a(href='#{orderLink(listFields[i])}') #{listFields[i]}
