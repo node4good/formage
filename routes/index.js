@@ -62,7 +62,7 @@ exports.model = function(req, res) {
 
     var filters = {};
     for(var key in query) {
-        if(key != 'start' && key != 'count' && key != 'order_by' && query[key])
+        if(key != 'start' && key != 'count' && key != 'order_by' && key != 'saved' && query[key])
             filters[key] = query[key];
     }
 	

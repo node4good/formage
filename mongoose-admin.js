@@ -288,7 +288,7 @@ MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, cou
     {
 
     var query = this.models[collectionName].model.find(filters);
-    var sorts = this.models[collectionName].options.order_by;
+    var sorts = this.models[collectionName].options.order_by || [];
     var populates = this.models[collectionName].options.list_populate;
 	if(sort)
 		sorts.unshift(sort);
