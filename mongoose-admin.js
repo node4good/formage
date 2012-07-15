@@ -287,10 +287,19 @@ MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, cou
     var listFields = this.models[collectionName].options.list;
     if(listFields)
     {
+	    var model;
+		try{
+			model = mongoose.model(collectionName);
+		}
+		catch( e) {
+			model = this.models[collectionName].model;
+		}
         _.each(filters,function(value,key) {
-            var type = mongoose.model(collectionName).schema.paths[key].options.type;
-            if(type == String)
-                filters[key] = new RegExp(value,'i');
+		    if(model.schema) {
+				var type = model.schema.paths[key].options.type;
+				if(type == String)
+					filters[key] = new RegExp(value,'i');
+		    }
         });
         var query = this.models[collectionName].model.find(filters);
         var sorts = this.models[collectionName].options.order_by || [];
