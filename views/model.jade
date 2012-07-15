@@ -131,7 +131,7 @@ div#content.container_16.clearfix
         - for( var j=0; j<filters[i].values.length; j++)
           - if (filters[i].values[j])
             li
-              - if ( current_filters[filters[i].key] != filters[i].values[j].value )
+              - if ( current_filters[filters[i].key] !== filters[i].values[j].value + '' )
                 a(href='#{makeLink(filters[i].key,filters[i].values[j].value)}') #{filters[i].values[j].text}
               - else
                 span #{filters[i].values[j].text}

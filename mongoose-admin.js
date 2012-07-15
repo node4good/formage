@@ -265,7 +265,8 @@ MongooseAdmin.prototype.modelCounts = function(collectionName,filters, onReady) 
     }
     this.models[collectionName].model.count(filters, function(err, count) {
         if (err) {
-            console.log('Unable to get counts for model because: ' + err);
+            console.error('Unable to get counts for model because: ' + err);
+            onReady(null,0);
         } else {
             onReady(null, count);
         }
@@ -286,47 +287,51 @@ MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, cou
     var listFields = this.models[collectionName].options.list;
     if(listFields)
     {
-
-    var query = this.models[collectionName].model.find(filters);
-    var sorts = this.models[collectionName].options.order_by || [];
-    var populates = this.models[collectionName].options.list_populate;
-	if(sort)
-		sorts.unshift(sort);
-    if(sorts)
-    {
-        for(var i=0; i<sorts.length; i++)
-        {
-            if(sorts[i].indexOf('-') == 0)
-                query.sort(sorts[i].substring(1),'descending');
-            else
-                query.sort(sorts[i],'ascending');
-        }
-    }
-    if(populates)
-    {
-        _.each(populates,function(populate)
-        {
-            query.populate(populate);
+        _.each(filters,function(value,key) {
+            var type = mongoose.model(collectionName).schema.paths[key].options.type;
+            if(type == String)
+                filters[key] = new RegExp(value,'i');
         });
-    }
-    query.skip(start).limit(count).execFind(function(err, documents) {
-        if (err) {
-            console.log('Unable to get documents for model because: ' + err);
-            onReady('Unable to get documents for model', null);
-        } else {
-            var filteredDocuments = [];
-            documents.forEach(function(document) {
-                var d = {};
-                d['_id'] = document['_id'];
-                listFields.forEach(function(listField) {
-                  d[listField] = document.get(listField);
-                });
-                filteredDocuments.push(d);
-            });
-
-            onReady(null, filteredDocuments);
+        var query = this.models[collectionName].model.find(filters);
+        var sorts = this.models[collectionName].options.order_by || [];
+        var populates = this.models[collectionName].options.list_populate;
+        if(sort)
+            sorts.unshift(sort);
+        if(sorts)
+        {
+            for(var i=0; i<sorts.length; i++)
+            {
+                if(sorts[i].indexOf('-') == 0)
+                    query.sort(sorts[i].substring(1),'descending');
+                else
+                    query.sort(sorts[i],'ascending');
+            }
         }
-    });
+        if(populates)
+        {
+            _.each(populates,function(populate)
+            {
+                query.populate(populate);
+            });
+        }
+        query.skip(start).limit(count).execFind(function(err, documents) {
+            if (err) {
+                console.error('Unable to get documents for model because: ' + err);
+                onReady(null,[]);
+            } else {
+                var filteredDocuments = [];
+                documents.forEach(function(document) {
+                    var d = {};
+                    d['_id'] = document['_id'];
+                    listFields.forEach(function(listField) {
+                      d[listField] = document.get(listField);
+                    });
+                    filteredDocuments.push(d);
+                });
+
+                onReady(null, filteredDocuments);
+            }
+        });
     }
     else
     {
