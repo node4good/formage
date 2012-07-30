@@ -333,7 +333,7 @@ MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, cou
                     var d = {};
                     d['_id'] = document['_id'];
                     listFields.forEach(function(listField) {
-                      d[listField] = document.get(listField);
+                      d[listField] = typeof(document[listField])=='function'? document[listField]() : document.get(listField);
                     });
                     filteredDocuments.push(d);
                 });
