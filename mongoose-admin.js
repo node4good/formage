@@ -433,6 +433,7 @@ MongooseAdmin.prototype.createDocument = function(req,user, collectionName, para
  * @api public
  */
 MongooseAdmin.prototype.updateDocument = function(req,user, collectionName, documentId, params, onReady) {
+    onReady = _.once(onReady);
     var self = this;
     var fields = this.models[collectionName].fields;
     var model = this.models[collectionName].model;

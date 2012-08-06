@@ -2,7 +2,7 @@
     "name": "admin-with-forms",
 
     "description": "admin for mongoose and not mongoose projects which uses forms",
-    "version": "0.0.50",
+    "version": "0.0.51",
     "author": "Ishai Jaffe <ishai@empeeric.com>",
     "dependencies": {
         "j-forms":">= 0.0.21",
