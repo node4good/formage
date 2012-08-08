@@ -306,15 +306,9 @@ MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, cou
         var populates = this.models[collectionName].options.list_populate;
         if(sort)
             sorts.unshift(sort);
-        if(sorts)
-        {
+        if(sorts) {
             for(var i=0; i<sorts.length; i++)
-            {
-                if(sorts[i].indexOf('-') == 0)
-                    query.sort(sorts[i].substring(1),'descending');
-                else
-                    query.sort(sorts[i],'ascending');
-            }
+                query.sort(sorts[i]);
         }
         if(populates)
         {
