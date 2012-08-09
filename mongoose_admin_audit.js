@@ -9,7 +9,7 @@ function MongooseAdminAudit() {
     var AuditData = new mongoose.Schema({
         created:{type:Date, required:true, 'default':new Date},
         user:{type:mongoose.Schema.ObjectId, required:true},
-        modelName:{type:String},
+        model:{type:String},
         collectionName:{type:String},
         documentId:{type:mongoose.Schema.ObjectId},
         action:{type:String, required:true},
@@ -36,7 +36,7 @@ MongooseAdminAudit.logActivity = function(user, modelName, collectionName, docum
 
     auditLogData = new auditLogModel();
     auditLogData.user = user.fields._id;
-    auditLogData.modelName = modelName;
+    auditLogData.model = modelName;
     auditLogData.collectionName = collectionName;
     auditLogData.documentId = documentId;
     auditLogData.action = action;
