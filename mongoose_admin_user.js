@@ -4,17 +4,17 @@ bcrypt = require('./crypt');
 
 exports.bcrypt = bcrypt;
 
+var AdminUserData = new mongoose.Schema({
+    username:{type:String, required:true, unique:true},
+    passwordHash:{type:String, editable:false},
+    is_superuser :{type:Boolean,'default':false},
+    permissions:[{type:mongoose.Schema.ObjectId, ref:'_MongooseAdminPermission'}]
+},{strict:true});
+mongoose.model('_MongooseAdminUser', AdminUserData);
 
 function MongooseAdminUser() {
     this.fields = {};
 
-    var AdminUserData = new mongoose.Schema({
-        username:{type:String, required:true, unique:true},
-        passwordHash:{type:String, editable:false},
-        is_superuser :{type:Boolean,'default':false},
-        permissions:[{type:mongoose.Schema.ObjectId, ref:'_MongooseAdminPermission'}]
-    },{strict:true});
-    mongoose.model('_MongooseAdminUser', AdminUserData);
 };
 
 MongooseAdminUser.prototype.toSessionStore = function() {
