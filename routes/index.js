@@ -126,8 +126,7 @@ exports.model = function(req, res) {
                                                 'listFields': options.list,
                                                 'documents': documents,
                                                 'actions':MongooseAdmin.singleton.models[req.params.modelName].options.actions || [],
-                                                'editable': (MongooseAdmin.singleton.models[req.params.modelName].options.createable === false ? false : true) &&
-                                                    permissions.hasPermissions(adminUser,req.params.modelName,'update'),
+                                                'editable': permissions.hasPermissions(adminUser,req.params.modelName,'update'),
                                                 'sortable': typeof(MongooseAdmin.singleton.models[req.params.modelName].options.sortable) == 'string' &&
                                                     permissions.hasPermissions(adminUser,req.params.modelName,'order'),
                                                 'cloneable' :  typeof(MongooseAdmin.singleton.models[req.params.modelName].options.cloneable) != 'undefined'
