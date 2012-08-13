@@ -1,60 +1,62 @@
-script(type='text/javascript')
-  $(document).ready(function() {
-    $('#username').focus();
+extends anonlayout
+block body
+    script(type='text/javascript')
+      $(document).ready(function() {
+        $('#username').focus();
 
-    $('#password').keypress(function(e) {
-        var keycode;
-        if (window.event) {
-          keycode = window.event.keyCode;
-        } else if (e) {
-          keycode = e.which;
-        } else {
-          return true;
-        }
+        $('#password').keypress(function(e) {
+            var keycode;
+            if (window.event) {
+              keycode = window.event.keyCode;
+            } else if (e) {
+              keycode = e.which;
+            } else {
+              return true;
+            }
 
-        if (keycode == 13) {
+            if (keycode == 13) {
+              doLogin();
+            }
+        });
+        $('#loginButton').click(function(e) {
           doLogin();
-        }
-    });
-    $('#loginButton').click(function(e) {
-      doLogin();
-    });
-    $('#passwordButton').click(function(e) {
-      alert('This feature is not implemented');
-    });
+        });
+        $('#passwordButton').click(function(e) {
+          alert('This feature is not implemented');
+        });
 
-    doLogin = function() {
-      var postData = 'username=' + encodeURIComponent($('#username').val()) +
-                     '&password=' + encodeURIComponent($('#password').val());
-      $.ajax({
-        type:'POST',
-        url:'#{rootPath}/json/login',
-        data:postData,
-        success:function(result) {
-          window.location.href = '#{rootPath}/';
-        },
-        error:function(xhr, textStatus) {
-          alert(textStatus);
-        }
+        doLogin = function() {
+          var postData = 'username=' + encodeURIComponent($('#username').val()) +
+                         '&password=' + encodeURIComponent($('#password').val());
+          $.ajax({
+            type:'POST',
+            url:'#{rootPath}/json/login',
+            data:postData,
+            success:function(result) {
+              window.location.href = '#{rootPath}/';
+            },
+            error:function(xhr, textStatus) {
+              alert(textStatus);
+            }
+          });
+        };
       });
-    };
-  });
-div.grid_16.clearboth.center
-  p
-    label(for='username')
-      | Username
-      | <small>(required)</small>
-    input#username(type='text', name='username', style='width:200px;')
-div.grid_16.clearboth.center
-  p
-    label(for='password')
-      | Password
-      | <small>(required)</small>
-    input#password(type='password', name='password', style='width:200px;')
-div.grid_16.clearboth.center
-  p.submit
-    input#loginButton(type='submit', value='Login')
-    //| &nbsp;
-    //input#passwordButton(type='button', value='Forgot Password')
+    div.grid_16.clearboth.center
+      p
+        label(for='username')
+          | Username
+          | <small>(required)</small>
+        input#username(type='text', name='username', style='width:200px;')
+    div.grid_16.clearboth.center
+      p
+        label(for='password')
+          | Password
+          | <small>(required)</small>
+        input#password(type='password', name='password', style='width:200px;')
+    div.grid_16.clearboth.center
+      p.submit
+        input#loginButton(type='submit', value='Login')
+        //| &nbsp;
+        //input#passwordButton(type='button', value='Forgot Password')
 
 
