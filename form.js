@@ -17,9 +17,10 @@ var AdminForm = exports.AdminForm = j_forms.forms.MongooseForm.extend({
         this.static['css'].push('/node-forms/css/ui-lightness/jquery-ui-1.8.22.custom.css');
         this.static['css'].push('/node-forms/css/forms.css');
     },
-    get_fields: function() {
-        this._super();
-        _.each(this.fields,function(value,key) {
+
+    scanFields : function(form_fields){
+        var self = this;
+        _.each(form_fields,function(value,key) {
             if(value instanceof fields.RefField) {
                 if( (value.options.url || api_loaded)  && value.options.query) {
                     value.options.widget_options.url = value.options.url || api_path;
@@ -33,7 +34,13 @@ var AdminForm = exports.AdminForm = j_forms.forms.MongooseForm.extend({
             }
             else if(value instanceof fields.EnumField)
                 value.widget = new widgets.ComboBoxWidget(value.options.widget_options);
+            else if (value instanceof fields.ListField)
+                self.scanFields(value.fields);
         });
+    },
+    get_fields: function() {
+        this._super();
+        this.scanFields(this.fields);
     }
 });
 
@@ -67,7 +74,7 @@ exports.loadApi = function(app,path) {
             var self = this;
             var data = JSON.parse(filters.data);
             var model = mongoose.model(data.model);
-            var query = data.query.replace('__value__',escapeRegex(filters.query));
+            var query = data.query.replace(/__value__/g,escapeRegex(filters.query));
             model.find({$where:query},function(err,results) {
                 if(results) {
                     if(results.objects)

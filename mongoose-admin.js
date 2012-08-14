@@ -612,3 +612,5 @@ MongooseAdmin.prototype.login = function(username, password, onReady) {
 
 
 exports.loadApi = require('./form').loadApi;
+
+exports.AdminForm = AdminForm;
