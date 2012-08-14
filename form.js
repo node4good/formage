@@ -21,7 +21,7 @@ var AdminForm = exports.AdminForm = j_forms.forms.MongooseForm.extend({
         this._super();
         _.each(this.fields,function(value,key) {
             if(value instanceof fields.RefField) {
-                if( value.options.url || api_loaded) {
+                if( (value.options.url || api_loaded)  && value.options.query) {
                     value.options.widget_options.url = value.options.url || api_path;
                     value.options.widget_options.data = value.options.widget_options.data || {};
                     value.options.widget_options.data.data = encodeURIComponent(JSON.stringify({
