@@ -5,11 +5,12 @@
     "version": "0.0.56",
     "author": "Ishai Jaffe <ishai@empeeric.com>",
     "dependencies": {
-        "j-forms":">= 0.0.21",
+        "j-forms":">= 0.0.72",
         "mongoose":"",
         "underscore":"",
         "async":"",
-        "jade":""
+        "jade":"",
+		"jest":">= 0.1.30"
     },
     "devDependencies":{
         "express":"",

@@ -2,6 +2,7 @@ var querystring = require('querystring'),
     Url = require('url'),
     permissions = require('../permissions'),
      _ = require('underscore'),
+    AdminForm = require('../form').AdminForm,
     forms = require('j-forms').forms;
  //   Renderer = require('../renderer.js').Renderer;
 
@@ -291,7 +292,7 @@ exports.document = function(req, res) {
                         }
                         else
                         {
-                            var form_type = MongooseAdmin.singleton.models[req.params.modelName].options.form || forms.AdminForm;
+                            var form_type = MongooseAdmin.singleton.models[req.params.modelName].options.form || AdminForm;
                             var form = new form_type(req,{instance:document},model);
                             render_document_from_form(form,req,res,model.modelName,req.params.modelName,false);
                         }
@@ -300,7 +301,7 @@ exports.document = function(req, res) {
                 else
                 {
                     if (req.params.documentId === 'new') {
-                        var form_type = MongooseAdmin.singleton.models[req.params.modelName].options.form || forms.AdminForm;
+                        var form_type = MongooseAdmin.singleton.models[req.params.modelName].options.form || AdminForm;
                         var form = new form_type(req,{},model);
                         render_document_from_form(form,req,res,model.modelName,req.params.modelName,false);
 //                                    var html = form.render_str();
@@ -331,7 +332,7 @@ exports.document = function(req, res) {
                             if (err) {
                                 res.redirect('/error');
                             } else {
-                                var form_type = MongooseAdmin.singleton.models[req.params.modelName].options.form || forms.AdminForm;
+                                var form_type = MongooseAdmin.singleton.models[req.params.modelName].options.form || AdminForm;
                                 var form = new form_type(req,{instance:document},model);
                                 render_document_from_form(form,req,res,model.modelName,req.params.modelName,true,req.query['clone']);
 //                                            var html = form.render_str();

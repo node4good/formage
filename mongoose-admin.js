@@ -15,6 +15,7 @@ var MongooseAdminUser = require('./mongoose_admin_user.js').MongooseAdminUser,
     permissions = require('./permissions'),
      mongoose = require('mongoose'),
 	paths = require('./http/register_paths'),
+    AdminForm = require('./form').AdminForm,
     forms = require('j-forms').forms;
 	
 
@@ -374,7 +375,7 @@ MongooseAdmin.prototype.getDocument = function(collectionName, documentId, onRea
 MongooseAdmin.prototype.createDocument = function(req,user, collectionName, params, onReady) {
     var self = this;
     var model = this.models[collectionName].model;
-    var form_type = this.models[collectionName].options.form || forms.AdminForm;
+    var form_type = this.models[collectionName].options.form || AdminForm;
     if(permissions.hasPermissions(user,collectionName,'create'))
     {
 
@@ -434,7 +435,7 @@ MongooseAdmin.prototype.updateDocument = function(req,user, collectionName, docu
     if(permissions.hasPermissions(user,collectionName,'update'))
     {
 
-        var form_type = this.models[collectionName].options.form || forms.AdminForm;
+        var form_type = this.models[collectionName].options.form || AdminForm;
     model.findById(documentId, function(err, document) {
         if (err) {
             console.log('Error retrieving document to update: ' + err);
@@ -610,3 +611,4 @@ MongooseAdmin.prototype.login = function(username, password, onReady) {
 };
 
 
+exports.loadApi = require('./form').loadApi;
