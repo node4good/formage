@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    objects:
+    <table>
+        <thead>
+            <th>id</th>
+            <% for(var i=0; i<list_fields.length; i++) { %>
+            <th><%= list_fields[i] %></th>
+            <% } %>
+        </thead>
+        <tbody>
+        <% for(var i=0; i<objects.length; i++) { %>
+        <tr>
+            <td>
+                <a href="<%= objects[i].id %>/edit"><%= objects[i].id %></a>
+            </td>
+            <% for(var j=0; j<list_fields.length; j++) { %>
+                <td><%= objects[i].get(list_fields[j]) %></td>
+            <% } %>
+        </tr>
+        <% } %>
+        </tbody>
+    </table>
+</body>
+</html>
