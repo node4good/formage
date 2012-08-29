@@ -14,6 +14,7 @@ var AdminForm = exports.AdminForm = j_forms.forms.MongooseForm.extend({
     {
         this._super(request,options,model);
         this.static['js'].push('/node-forms/js/jquery-ui-1.8.22.custom.min.js');
+        this.static['js'].push('/node-forms/js/autocomplete.js');
         this.static['css'].push('/node-forms/css/ui-lightness/jquery-ui-1.8.22.custom.css');
         this.static['css'].push('/node-forms/css/forms.css');
     },
