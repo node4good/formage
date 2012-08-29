@@ -274,6 +274,19 @@ MongooseAdmin.prototype.modelCounts = function(collectionName,filters, onReady) 
     });
 };
 
+var IS_OLD_MONGOOSE = mongoose.version.split('.')[0] * 1 < 3;
+
+function mongooseSort(query,sort) {
+    if(IS_OLD_MONGOOSE) {
+        if(sort.indexOf('-') == 0)
+            query.sort(sort.slice(1),'descending');
+        else
+            query.sort(sort,'ascending');
+    }
+    else
+        query.sort(sort);
+}
+
 /**
  * List a page of documents from a model
  *
@@ -308,8 +321,8 @@ MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, cou
         if(sort)
             sorts.unshift(sort);
         if(sorts) {
-            for(var i=0; i<sorts.length; i++)
-                query.sort(sorts[i]);
+                for(var i=0; i<sorts.length; i++)
+                    mongooseSort(query,sorts[i]);
         }
         if(populates)
         {
