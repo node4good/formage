@@ -12,6 +12,7 @@ exports.setAdmin = function(admin){
 	MongooseAdmin = admin;
 };
 
+
  
 exports.index = function(req, res) {
     var adminUser = req.session._mongooseAdminUser ? MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser) : null;
