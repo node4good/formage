@@ -134,13 +134,13 @@ function buildModelFilters(model,filters,dict) {
                         mongoose.model(model.schema.paths[filter].options.ref).find()
                             .where('_id').in(results).exec(function(err,refs) {
                                 if(refs)
-                                    dict.push( {key:filter, values: _.map(refs,function(ref) { return { value:ref.id, text:ref.toString()};  }) });
+                                    dict.push( {key:filter, isString:false, values: _.map(refs,function(ref) { return { value:ref.id, text:ref.toString()};  }) });
                                 cbk(err);
                             })
                     }
                     else {
                         dict.push({key:filter, values: _.map(results, function(result) {
-                            return { value: result, text:result};
+                            return { value: result, text:result, isString:model.schema.paths[filter] && model.schema.paths[filter].options && model.schema.paths[filter].options.type == String };
                         })});
                         cbk();
                     }
