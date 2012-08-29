@@ -260,11 +260,28 @@ MongooseAdmin.prototype.getModel = function(collectionName, onReady) {
  * @api public
  */
 MongooseAdmin.prototype.modelCounts = function(collectionName,filters, onReady) {
-    if(this.models[collectionName].is_single)
-    {
+    if(this.models[collectionName].is_single) {
         onReady(null,1);
         return;
     }
+    var model;
+    try{
+        model = mongoose.model(collectionName);
+    }
+    catch( e) {
+        model = this.models[collectionName].model;
+    }
+    _.each(filters,function(value,key) {
+        if(model.schema && typeof(value) == 'string') {
+            var type = model.schema.paths[key].options.type;
+            if(type == String)
+                filters[key] = new RegExp(value,'i');
+            else if(type == Number)
+                filters[key] = Number(value) || undefined;
+            else if(type == Boolean)
+                filters[key] = value  =='true' ? true: false;
+        }
+    });
     this.models[collectionName].model.count(filters, function(err, count) {
         if (err) {
             console.error('Unable to get counts for model because: ' + err);
@@ -310,11 +327,15 @@ MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, cou
 			model = this.models[collectionName].model;
 		}
         _.each(filters,function(value,key) {
-		    if(model.schema) {
-				var type = model.schema.paths[key].options.type;
-				if(type == String)
-					filters[key] = new RegExp(value,'i');
-		    }
+            if(model.schema && typeof(value) == 'string') {
+                var type = model.schema.paths[key].options.type;
+                if(type == String)
+                    filters[key] = new RegExp(value,'i');
+                else if(type == Number)
+                    filters[key] = Number(value) || undefined;
+                else if(type == Boolean)
+                    filters[key] = value  =='true' ? true: false;
+            }
         });
         var query = this.models[collectionName].model.find(filters);
         var sorts = this.models[collectionName].options.order_by || [];
