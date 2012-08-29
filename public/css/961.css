@@ -204,3 +204,6 @@ body, textarea{color:#333;font:13px/1.5 'Helvetica Neue',Arial,'Liberation Sans'
 .grid_5 div{
 	margin-right:29px;
 }
+.grid_5 p{
+	margin-bottom: 0;
+}

@@ -139,6 +139,6 @@ block body
                     span #{filters[i].values[j].text}
 
             - if ( filters[i].isString)
-			  div
+              div
                 input(type='text',style='width:217px; !important ',name='#{filters[i].key}',value='#{current_filters[filters[i].key] || ""}')
                 button.free_search(data-href='#{makeLink(filters[i].key,"__replace__")}') search
