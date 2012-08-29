@@ -195,12 +195,12 @@ body, textarea{color:#333;font:13px/1.5 'Helvetica Neue',Arial,'Liberation Sans'
 * html .clearfix {
 	height: 1%;
 }
-grid_5 h2{
+.grid_5 h2{
 	margin-bottom:0;
 }
-grid_5 li{
+.grid_5 li{
 	padding: 3px;
 }
-grid_5 div{
+.grid_5 div{
 	margin-right:29px;
 }
