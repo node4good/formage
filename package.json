@@ -1,24 +1,41 @@
 {
-    "name": "admin-with-forms",
-
-    "description": "admin for mongoose and not mongoose projects which uses forms",
-    "version": "0.0.59",
-    "author": "Ishai Jaffe <ishai@empeeric.com>",
-    "dependencies": {
-        "j-forms":">= 0.0.72",
-        "mongoose":"",
-        "underscore":"",
-        "async":"",
-        "jade":"",
-		"jest":">= 0.1.30"
-    },
-    "devDependencies":{
-        "express":"",
-        "connect-mongo":"",
-        "ejs":""
-    },
-    "main": "index",
-    "keywords": ["admin","forms", "mongoose", "django"],
-    "repository": "git@github.com:IshaiJaffe/admin-forms.git",
-    "engines": { "node": ">= 0.4.1" }
+  "name": "admin-with-forms",
+  "description": "admin for mongoose and not mongoose projects which uses forms",
+  "version": "0.0.59",
+  "author": {
+    "name": "Ishai Jaffe",
+    "email": "ishai@empeeric.com"
+  },
+  "dependencies": {
+    "j-forms": ">= 0.0.72",
+    "mongoose": "",
+    "underscore": "",
+    "async": "",
+    "jade": "",
+    "jest": ">= 0.1.30"
+  },
+  "devDependencies": {
+    "express": "",
+    "connect-mongo": "",
+    "ejs": ""
+  },
+  "main": "index",
+  "keywords": [
+    "admin",
+    "forms",
+    "mongoose",
+    "django"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:IshaiJaffe/admin-forms.git"
+  },
+  "engines": {
+    "node": ">= 0.4.1"
+  },
+  "_id": "admin-with-forms@0.0.59",
+  "dist": {
+    "shasum": "9589be7b79fd0adc55467281e4969c751e9636d9"
+  },
+  "_from": "admin-with-forms@git://github.com/Empeeric/admin-forms.git"
 }

@@ -1,0 +1,18 @@
+header.page-header {
+    padding: 20px 30px;
+    background: #EEE;
+    border-radius: 10px;
+}
+header h1 {
+    font-size: 20px;
+    line-height: 20px;
+}
+header .btn-group {
+    margin-top: 5px;
+}
+
+ul.models {
+    width: 400px;
+    margin: 0 auto;
+    list-style: none;
+}

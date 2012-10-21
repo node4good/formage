@@ -3,12 +3,19 @@ html(lang='en')
     head
         meta(http-equiv='Content-type', content='text/html; charset=utf-8')
         title!= pageTitle
-        lik(rel='stylesheet', href='/css/bootstrap.css', charset='utf-8')
+        link(rel='stylesheet', href='/css/bootstrap.css', charset='utf-8')
         link(rel='stylesheet', href='/css/emp.css', charset='utf-8')
+        != renderedHead
     body
-        div.container
+        .container
             header.page-header.well
-                h1 Empeeric's Mongoose-Admin
+                block nav
+                    .btn-group.pull-right
+                        a.btn(href='#{rootPath}/') Home
+                        a.btn.btn-info(href='#{rootPath}/logout') Logout
+                h1
+                    block title
+                        a(href='#{rootPath}/') #{adminTitle}
             div#content
                 block body
             hr
@@ -19,6 +26,8 @@ html(lang='en')
 
         script(src='/js/jquery-1.8.2.min.js')
         script(src='/js/bootstrap.min.js')
+        script
+            var root = '#{rootPath}';
 
         block scripts
 
