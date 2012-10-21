@@ -27,3 +27,10 @@ ul.models {
 .counter, .pagination {
     text-align: center;
 }
+.divider {
+    padding: 0 5px;
+    color: #CCC;
+}
+p.submit {
+    clear: both;
+}

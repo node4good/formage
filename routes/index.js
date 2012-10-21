@@ -131,8 +131,7 @@ exports.model = function(req, res) {
                                     makeLink:makeLink,
                                     orderLink:orderLink,
                                     'filters':MongooseAdmin.singleton.models[req.params.modelName].filters || [],
-                                    'renderedHead':'<link type="text/css" href="/node-forms/css/forms.css" rel="stylesheet"/>' +
-                                        '<script src="/node-forms/js/jquery-ui-1.8.18.custom.min.js"></script>',
+                                    'renderedHead':'<script src="/node-forms/js/jquery-ui-1.8.18.custom.min.js"></script>',
                                     'adminTitle':MongooseAdmin.singleton.getAdminTitle(),
                                     'listFields': options.list,
                                     'documents': documents,

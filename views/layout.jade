@@ -5,6 +5,8 @@ html(lang='en')
         title!= pageTitle
         link(rel='stylesheet', href='/css/bootstrap.css', charset='utf-8')
         link(rel='stylesheet', href='/css/emp.css', charset='utf-8')
+        script(src='/js/jquery-1.8.2.min.js')
+        script(src='/js/bootstrap.min.js')
         != renderedHead
     body
         .container
@@ -16,6 +18,8 @@ html(lang='en')
                 h1
                     block title
                         a(href='#{rootPath}/') #{adminTitle}
+                    block breadcrumb
+
             div#content
                 block body
             hr
@@ -24,8 +28,7 @@ html(lang='en')
                 | , &nbsp;
                 a(href='http://empeeric.com') Empeeric
 
-        script(src='/js/jquery-1.8.2.min.js')
-        script(src='/js/bootstrap.min.js')
+
         script
             var root = '#{rootPath}';
 

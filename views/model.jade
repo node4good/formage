@@ -1,5 +1,9 @@
 extends layout
 
+block breadcrumb
+    span.divider /
+    | #{modelName}
+
 block body
     .page-header
         h2 #{modelName}
@@ -14,7 +18,7 @@ block body
             - if (actions.length) {
                 form.form-inline
                     label.input-prepend
-                        span.add-on With selected:&nbsp;
+                        span.add-on &nbsp;With selected:
                         select.actions.span2
                             option ...
                             - for (var i=0; i<actions.length; i++) {
@@ -34,6 +38,7 @@ block body
                         - if (cloneable)
                             th &nbsp;
                 - for (var j = 0; j < documents.length; j++) {
+                    - var url = rootPath + '/model/' + modelName + '/document/' + documents[j]._id;
                     tr(elm_id="#{documents[j]._id}")
                         - if (sortable) {
                             td.sortable.select_row.span1
@@ -46,14 +51,15 @@ block body
                         - for (var k = 0; k < listFields.length; k++) {
                             th.span6
                                 - if(editable)
-                                    a(href='#{rootPath}/model/#{modelName}/document/#{documents[j]._id}') #{documents[j][listFields[k]]}&nbsp;
+                                    a(href=url) #{documents[j][listFields[k]]}&nbsp;
                                 - else
                                     p #{documents[j][listFields[k]]}&nbsp;
                         - }
-                        - if (cloneable) {
-                            td.span2
-                                a.btn(href='#{rootPath}/model/#{modelName}/document/#{documents[j]._id}?clone=true') Duplicate
-                        - }
+                        td.span2.btn-group
+                            a.btn.btn-primary(href=url) Edit
+                            - if (cloneable) {
+                                a.btn(href=url+'?clone=true') Duplicate
+                            - }
                 - }
 
             p.counter Viewing #{start + 1}–#{start + documents.length} of #{totalCount} documents
@@ -95,4 +101,4 @@ block body
 block scripts
     script
         var startIndex = #{start};
-//    script(src="/js/model.js")
+    script(src="/js/model.js")
