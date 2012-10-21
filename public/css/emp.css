@@ -11,8 +11,19 @@ header .btn-group {
     margin-top: 5px;
 }
 
+h2 {
+    text-align: center;
+}
+
 ul.models {
     width: 400px;
     margin: 0 auto;
     list-style: none;
+}
+
+.table-striped td {
+    text-align: center;
+}
+.counter, .pagination {
+    text-align: center;
 }

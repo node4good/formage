@@ -1,144 +1,98 @@
-extends adminlayout
+extends layout
+
 block body
-    script
-      var startIndex = #{start};
-      $(document).ready(function(){
-           $('.free_search').click(function() {
-                var value = $(this).siblings('input').val();
-                var href = $(this).data('href').replace('__replace__', encodeURIComponent(value));
-                window.location.href = href;
-            });
+    .page-header
+        h2 #{modelName}
 
-            $('#go_button').click(function(){
-                var action_id = $('.actions').val();
-                if(action_id)
-                {
-                    var ids = [];
-                     $('.select_row input[type=checkbox]:checked').each(function(){
-                         ids.push($(this).parents('tr').attr('elm_id'));
-                     });
-
-                     $.post('#{rootPath}/json/model/#{modelName}/action/' + action_id ,{ids:ids},function(data){
-
-                         window.location.href = window.location.href;
-                     });
-                 }
-            });
-
-            $('tbody').sortable({
-                            update:function()
-                            {
-                            /*var new_li = $('li.new_li',list).remove();
-                            new_li.appendTo(list);
-                                var i = 0;
-                                $('>li',this).each(function(){
-                                    var li = this;
-                                    //                   if($(this).is('.new_li'))
-                                    //                       return;
-                                    $('[name]',li).each(function() {
-                                        var input = $(this);
-                                        input.attr('name',input.attr('name').replace(RegExp(name + '_li[0-9]+_'),name + '_li' + i + '_'));
-                                    });
-                                    i++;
-                                });
-                                */
-                                if($('p.buttons button#reorder').length == 0)
-                                {
-                                    var save_button = $('<button id="reorder" type="button">Save order</button>').click(function(){
-                                        var data = {};
-                                        $('tr:has(td.sortable)').each(function(index,ui){
-                                            var id = $(this).attr('elm_id');
-                                            data[id] = index + startIndex;
-                                        });
-                                        $.post('#{rootPath}/json/model/#{modelName}/order',data,function(err){
-                                            alert('saved');
-                                        });
-                                        $(this).remove();
-                                    }).appendTo('p.buttons');
-
-                                }
-                            },
-                            items:'tr:has(td.sortable)',
-                            handle:'div.nf_listfield_drag'
-                        });
-      });
-    div#content.container_16.clearfix
-      div#page-heading
-        h1 #{modelName}
-      - if(actions.length) {
-          p actions:
-            select.actions
-              option(value='') -
-              - for (var i=0; i<actions.length; i++) {
-                option(value='#{actions[i].value}') #{actions[i].label}
-              - }
-
-            <button id="go_button">GO</button>
-      - }
-      div.grid_11
-        table
-          tr
-            th &nbsp;
-            - for (var i = 0; i < listFields.length; i++) {
-              th.table-header-repeat.line-left.minwidth-1
-                a(href='#{orderLink(listFields[i])}') #{listFields[i]}
+    .row
+        - var cls = filters.length ? 'span9' : 'span12'
+        div(class=cls)
+            - if (createable) {
+                a.btn.pull-right.btn-primary(href="#{rootPath}/model/#{modelName}/document/new")
+                    | New <em>#{modelName}</em> item
             - }
-            - if (cloneable)
-              th &nbsp;
-          - for (var j = 0; j < documents.length; j++) {
-            tr(elm_id="#{documents[j]._id}")
-              - if (sortable) {
-                td.sortable.select_row(style='padding-right:0px;')
-                  input(type='checkbox')
-                  div.nf_listfield_drag(style='float:left')
-              - }else{
-                td.select_row(style='padding-right:0px;')
-                  input(type='checkbox')
-              - }
-              - for (var k = 0; k < listFields.length; k++) {
-                td
-                  - if( editable)
-                    a(href='#{rootPath}/model/#{modelName}/document/#{documents[j]._id}') #{documents[j][listFields[k]]}&nbsp;
-                  - else
-                    p #{documents[j][listFields[k]]}&nbsp;
-              - }
-              - if ( cloneable) {
-                td
-                  a(href='#{rootPath}/model/#{modelName}/document/#{documents[j]._id}?clone=true') Duplicate
-              - }
-          - }
-        p
-          | Viewing #{start + 1} - #{start + documents.length} of #{totalCount}
-          | &nbsp;&nbsp;-&nbsp;&nbsp;Page:&nbsp;
-          - for (var i = 0, page = 1; i < totalCount; i += count, page++)
-            - if (start == i)
-              #{page}
-            - else
-              a(href='#{rootPath}/model/#{modelName}?start=#{i}') #{page}
-            &nbsp;
-        - if(createable) {
-          p.buttons
-            | <a href='#{rootPath}/model/#{modelName}/document/new'>Create new <em>"#{modelName}"</em> item...</a>
-        - }
-      div.grid_5
-        h2 Filters
-        - for(var i=0; i < filters.length; i++)
-          p #{filters[i].key}:
-          ul
-            li
-              - if ( current_filters[filters[i].key])
-                a(href='#{makeLink(filters[i].key,"")}') all
-              - else
-                span all
-            - for( var j=0; j<filters[i].values.length; j++)
-              - if (filters[i].values[j])
-                li
-                  - if ( current_filters[filters[i].key] !== filters[i].values[j].value + '' )
-                    a(href='#{makeLink(filters[i].key,filters[i].values[j].value)}') #{filters[i].values[j].text}
-                  - else
-                    span #{filters[i].values[j].text}
+            - if (actions.length) {
+                form.form-inline
+                    label.input-prepend
+                        span.add-on With selected:&nbsp;
+                        select.actions.span2
+                            option ...
+                            - for (var i=0; i<actions.length; i++) {
+                                option(value='#{actions[i].value}') #{actions[i].label}
+                            - }
+                    | &nbsp;
+                    button.btn.btn-warning#go_button GO
+            - }
+            table.table.table-bordered.table-hover.table-striped
+                thead
+                    tr
+                        th &nbsp;
+                        - for (var i = 0; i < listFields.length; i++) {
+                            th.table-header-repeat.line-left.minwidth-1
+                                a(href='#{orderLink(listFields[i])}') #{listFields[i]}
+                        - }
+                        - if (cloneable)
+                            th &nbsp;
+                - for (var j = 0; j < documents.length; j++) {
+                    tr(elm_id="#{documents[j]._id}")
+                        - if (sortable) {
+                            td.sortable.select_row.span1
+                                input(type='checkbox')
+                                div.nf_listfield_drag
+                        - } else {
+                            td.select_row.span1
+                                input(type='checkbox')
+                        - }
+                        - for (var k = 0; k < listFields.length; k++) {
+                            th.span6
+                                - if(editable)
+                                    a(href='#{rootPath}/model/#{modelName}/document/#{documents[j]._id}') #{documents[j][listFields[k]]}&nbsp;
+                                - else
+                                    p #{documents[j][listFields[k]]}&nbsp;
+                        - }
+                        - if (cloneable) {
+                            td.span2
+                                a.btn(href='#{rootPath}/model/#{modelName}/document/#{documents[j]._id}?clone=true') Duplicate
+                        - }
+                - }
 
-            - if ( filters[i].isString)
-              div
-                input(type='text',style='width:217px; !important ',name='#{filters[i].key}',value='#{current_filters[filters[i].key] || ""}')
-                button.free_search(data-href='#{makeLink(filters[i].key,"__replace__")}') search
+            p.counter Viewing #{start + 1}–#{start + documents.length} of #{totalCount} documents
+            - if (totalCount > count)
+                .pagination
+                    ul
+                        - for (var i = 0, page = 1; i < totalCount; i += count, page++)
+                            - if (start == i)
+                                li.active
+                                    a #{page}
+                            - else
+                                li
+                                    a(href='#{rootPath}/model/#{modelName}?start=#{i}') #{page}
+
+        - if (filters.length)
+            .span3
+                h3 Filters
+                - for (var i=0; i < filters.length; i++)
+                    p #{filters[i].key}:
+                    ul
+                        li
+                            - if ( current_filters[filters[i].key])
+                                a(href='#{makeLink(filters[i].key,"")}') all
+                            - else
+                                span all
+                        - for( var j=0; j<filters[i].values.length; j++)
+                            - if (filters[i].values[j])
+                                li
+                                    - if ( current_filters[filters[i].key] !== filters[i].values[j].value + '' )
+                                        a(href='#{makeLink(filters[i].key,filters[i].values[j].value)}') #{filters[i].values[j].text}
+                                    - else
+                                        span #{filters[i].values[j].text}
+
+                        - if ( filters[i].isString)
+                            div
+                                input(type='text',style='width:217px; !important ',name='#{filters[i].key}',value='#{current_filters[filters[i].key] || ""}')
+                                button.free_search(data-href='#{makeLink(filters[i].key,"__replace__")}') search
+
+block scripts
+    script
+        var startIndex = #{start};
+//    script(src="/js/model.js")
