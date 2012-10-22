@@ -33,7 +33,7 @@ exports.index = function(req, res) {
                     'rootPath': MongooseAdmin.singleton.root
                 };
                 res.render('models.jade',
-                           {layout: 'adminlayout.jade' , locals: {
+                           {layout: 'layout.jade' , locals: {
                                'pageTitle': 'Admin Site',
                                'models': models,
                                'renderedHead': '',
@@ -55,7 +55,7 @@ exports.login = function(req, res) {
         renderedHead:''
     };
     res.render('login.jade',
-               {layout: 'anonlayout.jade',
+               {layout: 'layout.jade',
                 locals: {
                       'pageTitle': 'Admin Login',
                        'rootPath': MongooseAdmin.singleton.root
@@ -146,7 +146,7 @@ exports.model = function(req, res) {
                                     'rootPath': MongooseAdmin.singleton.root
                                 };
                                 res.render('model.jade',
-                                           {layout: 'adminlayout.jade',
+                                           {layout: 'layout.jade',
                                             locals: res.locals
                                            });
                                 MongooseAdmin.singleton.popExpressConfig(config);
@@ -263,7 +263,7 @@ function render_document_from_form(form,req,res,modelName,collectionName,allowDe
                 'rootPath': MongooseAdmin.singleton.root
             };
             res.render('document.jade',
-                {layout: 'adminlayout.jade',
+                {layout: 'layout.jade',
                     locals: res.locals
                 });
             MongooseAdmin.singleton.popExpressConfig(config);
