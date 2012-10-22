@@ -17,6 +17,7 @@ exports.setAdmin = function(admin){
 exports.index = function(req, res) {
     var adminUser = req.session._mongooseAdminUser ? MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser) : null;
     if (!adminUser) {
+        console.log('redirecting to', MongooseAdmin.singleton.buildPath('/login'));
         res.redirect(MongooseAdmin.singleton.buildPath('/login'));
     } else {
         MongooseAdmin.singleton.getRegisteredModels(adminUser,function(err, models) {
@@ -85,7 +86,7 @@ exports.model = function(req, res) {
 
     var adminUser = req.session._mongooseAdminUser ? MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser) : null;
     if (!adminUser) {
-        res.redirect('/login');
+        res.redirect(MongooseAdmin.singleton.buildPath('/login'));
     } else {
         if(permissions.hasPermissions(adminUser,req.params.modelName,'view'))
         {
@@ -131,7 +132,7 @@ exports.model = function(req, res) {
                                     makeLink:makeLink,
                                     orderLink:orderLink,
                                     'filters':MongooseAdmin.singleton.models[req.params.modelName].filters || [],
-                                    'renderedHead':'<script src="/node-forms/js/jquery-ui-1.8.18.custom.min.js"></script>',
+                                    'renderedHead':'<link type="text/css" href="/node-forms/css/forms.css" rel="stylesheet"/>',
                                     'adminTitle':MongooseAdmin.singleton.getAdminTitle(),
                                     'listFields': options.list,
                                     'documents': documents,
