@@ -9,58 +9,61 @@ block body
         h2 #{modelName}
 
     .row
-        - var cls = filters.length ? 'span9' : 'span12'
-        div(class=cls)
-            - if (createable) {
-                a.btn.pull-right.btn-primary(href="#{rootPath}/model/#{modelName}/document/new")
-                    | New <em>#{modelName}</em> item
-            - }
-            - if (actions.length) {
-                form.form-inline
-                    label.input-prepend
-                        span.add-on &nbsp;With selected:
-                        select.actions.span2
-                            option ...
-                            - for (var i=0; i<actions.length; i++) {
-                                option(value='#{actions[i].value}') #{actions[i].label}
-                            - }
-                    | &nbsp;
-                    button.btn.btn-warning#go_button GO
-            - }
-            table.table.table-bordered.table-hover.table-striped
+        div(class='span#{filters.length ? 9 : 12}')
+            .btn-toolbar
+                - if (createable)
+                    a.btn.pull-right.btn-primary(href="#{rootPath}/model/#{modelName}/document/new")
+                        | New <em>#{modelName}</em> item
+
+                - if (sortable)
+                    button#reorder.btn.btn-success.pull-left.hide(data-loading-text='Saving...') Save Order
+
+                - if (actions.length)
+                    form.form-inline#actions_forms
+                        label.input-prepend
+                            span.add-on &nbsp;With selected:
+                            select.actions.span2
+                                option(value="") ...
+                                - each action in actions
+                                    option(value='#{action.value}') #{action.label}
+                        | &nbsp;&nbsp;
+                        button.btn.btn-warning(type='submit') GO
+
+
+
+            table.table.table-bordered.table-hover
                 thead
                     tr
-                        th &nbsp;
-                        - for (var i = 0; i < listFields.length; i++) {
+                        th.center
+                            input.select-all-rows(type='checkbox')
+                        - each field in listFields
                             th.table-header-repeat.line-left.minwidth-1
-                                a(href='#{orderLink(listFields[i])}') #{listFields[i]}
-                        - }
+                                a(href='#{orderLink(field)}') #{field}
+
                         - if (cloneable)
                             th &nbsp;
-                - for (var j = 0; j < documents.length; j++) {
-                    - var url = rootPath + '/model/' + modelName + '/document/' + documents[j]._id;
-                    tr(elm_id="#{documents[j]._id}")
-                        - if (sortable) {
-                            td.sortable.select_row.span1
-                                input(type='checkbox')
-                                div.nf_listfield_drag
-                        - } else {
-                            td.select_row.span1
-                                input(type='checkbox')
-                        - }
-                        - for (var k = 0; k < listFields.length; k++) {
-                            th.span6
-                                - if(editable)
-                                    a(href=url) #{documents[j][listFields[k]]}&nbsp;
-                                - else
-                                    p #{documents[j][listFields[k]]}&nbsp;
-                        - }
-                        td.span2.btn-group
-                            a.btn.btn-primary(href=url) Edit
-                            - if (cloneable) {
-                                a.btn(href=url+'?clone=true') Duplicate
-                            - }
-                - }
+                tbody(class='#{sortable?'sortable':''}')
+                    - each doc in documents
+                        - var url = rootPath + '/model/' + modelName + '/document/' + doc._id
+                        tr(id=doc._id)
+                            td.span1.center
+                                input.select-row(type='checkbox')
+                                - if (sortable)
+                                    .list-drag
+                                        i.icon-resize-vertical
+
+                            - each field in listFields
+                                td.span9
+                                    - if (editable)
+                                        a(href=url) #{doc[field]} &nbsp;
+                                    - else
+                                        p #{doc[field]}&nbsp;
+
+                            td.span3.btn-group
+                                a.btn.btn-primary(href=url) Edit
+                                - if (cloneable)
+                                    a.btn(href=url+'?clone=true') Duplicate
+
 
             p.counter Viewing #{start + 1}–#{start + documents.length} of #{totalCount} documents
             - if (totalCount > count)
@@ -77,28 +80,30 @@ block body
         - if (filters.length)
             .span3
                 h3 Filters
-                - for (var i=0; i < filters.length; i++)
-                    p #{filters[i].key}:
+                - each filter in filters
+                    p #{filter.key}:
                     ul
                         li
-                            - if ( current_filters[filters[i].key])
-                                a(href='#{makeLink(filters[i].key,"")}') all
+                            - if ( current_filters[filter.key])
+                                a(href='#{makeLink(filter.key,"")}') All
                             - else
-                                span all
-                        - for( var j=0; j<filters[i].values.length; j++)
-                            - if (filters[i].values[j])
+                                span All
+                        - each value in values
+                            - if (value)
                                 li
-                                    - if ( current_filters[filters[i].key] !== filters[i].values[j].value + '' )
-                                        a(href='#{makeLink(filters[i].key,filters[i].values[j].value)}') #{filters[i].values[j].text}
+                                    - if (current_filters[filter.key] !== value.value + '' )
+                                        a(href='#{makeLink(filter.key, value.value)}') #{value.text}
                                     - else
-                                        span #{filters[i].values[j].text}
+                                        span #{value.text}
 
-                        - if ( filters[i].isString)
+                        - if (filter.isString)
                             div
-                                input(type='text',style='width:217px; !important ',name='#{filters[i].key}',value='#{current_filters[filters[i].key] || ""}')
-                                button.free_search(data-href='#{makeLink(filters[i].key,"__replace__")}') search
+                                input(type='text',style='width:217px; !important ',name='#{filter.key}',value='#{current_filters[filter.key] || ""}')
+                                button.free_search(data-href='#{makeLink(filter.key,"__replace__")}') search
 
 block scripts
     script
-        var startIndex = #{start};
+        var startIndex = #{start},
+            model = '#{modelName}';
     script(src="/js/model.js")
+    script(src="/js/jquery-ui-1.9.0.custom.js")

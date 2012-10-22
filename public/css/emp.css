@@ -1,3 +1,6 @@
+/*
+    header
+*/
 header.page-header {
     padding: 20px 30px;
     background: #EEE;
@@ -10,27 +13,75 @@ header h1 {
 header .btn-group {
     margin-top: 5px;
 }
-
+.divider {
+    padding: 0 5px;
+    color: #CCC;
+}
 h2 {
     text-align: center;
 }
 
+
+/*
+    model list
+*/
 ul.models {
     width: 400px;
     margin: 0 auto;
     list-style: none;
 }
-
 .table-striped td {
     text-align: center;
 }
 .counter, .pagination {
     text-align: center;
 }
-.divider {
-    padding: 0 5px;
-    color: #CCC;
+
+/*
+    document list
+*/
+#actions_forms button {
+    margin-left: 5px;
 }
+.center {
+    text-align: center !important;
+}
+
+
+/*
+    sortable
+*/
+.list-drag {
+    display: inline-block;
+    padding: 5px;
+}
+.ui-sortable-helper {
+    border: 1px solid #DDD;
+    border-width: 0 1px 1px 0;
+    background: whiteSmoke;
+}
+tr.sortable-placeholder {
+    height: 47px;
+}
+tr.sortable-placeholder:before {
+    position: absolute;
+    content: '';
+    width: 940px; height: 1px;
+    border-top: 1px solid #DDD;
+}
+#reorder {
+    margin-right: 20px;
+}
+
+
+/*
+    form
+*/
 p.submit {
     clear: both;
+    padding-top: 30px;
+    text-align: center;
+}
+p.submit button[type=submit] {
+    width: 160px;
 }

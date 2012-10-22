@@ -1,60 +1,79 @@
 $(function() {
+    var url = root + '/json/model/' + model;
+
     $('.free_search').click(function() {
         var value = $(this).siblings('input').val();
         var href = $(this).data('href').replace('__replace__', encodeURIComponent(value));
-        window.location.href = href;
+        location.href = href;
     });
 
-    $('#go_button').click(function(){
+
+    // highlight rows
+    $('tbody tr').each(function() {
+        var tr = $(this);
+        $('.select-row', tr).change(function() {
+            tr.toggleClass('warning', $(this).prop('checked'));
+        });
+    });
+
+    $('.select-all-rows').click(function() {
+        $(this).closest('table').find('.select-row')
+            .prop('checked', $(this).prop('checked'))
+            .trigger('change');
+    });
+
+    $('#actions_forms').submit(function(e) {
+        e.preventDefault();
+
         var action_id = $('.actions').val();
-        if(action_id)
-        {
-            var ids = [];
-            $('.select_row input[type=checkbox]:checked').each(function(){
-                ids.push($(this).parents('tr').attr('elm_id'));
-            });
+        if (!action_id) return;
 
-            $.post('#{rootPath}/json/model/#{modelName}/action/' + action_id ,{ids:ids},function(data){
+        var ids = [];
+        $('.select-row:checked').each(function(){
+            ids.push($(this).closest('tr').attr('id'));
+        });
+        if (!ids.length) return;
 
-                window.location.href = window.location.href;
-            });
-        }
+        console.log(action_id, ids);
+
+        $.post(
+            url + '/action/' + action_id,
+            { ids: ids },
+            function() {
+                location.reload();
+            }
+        );
     });
 
-    $('tbody').sortable({
-        update:function()
-        {
-            /*var new_li = $('li.new_li',list).remove();
-             new_li.appendTo(list);
-             var i = 0;
-             $('>li',this).each(function(){
-             var li = this;
-             //                   if($(this).is('.new_li'))
-             //                       return;
-             $('[name]',li).each(function() {
-             var input = $(this);
-             input.attr('name',input.attr('name').replace(RegExp(name + '_li[0-9]+_'),name + '_li' + i + '_'));
-             });
-             i++;
-             });
-             */
-            if($('p.buttons button#reorder').length == 0)
-            {
-                var save_button = $('<button id="reorder" type="button">Save order</button>').click(function(){
-                    var data = {};
-                    $('tr:has(td.sortable)').each(function(index,ui){
-                        var id = $(this).attr('elm_id');
-                        data[id] = index + startIndex;
-                    });
-                    $.post('#{rootPath}/json/model/#{modelName}/order',data,function(err){
-                        alert('saved');
-                    });
-                    $(this).remove();
-                }).appendTo('p.buttons');
+    var btn = $('button#reorder');
+    $('tbody.sortable').sortable({
+        items: 'tr',
+        handle: '.list-drag',
+        placeholder: 'sortable-placeholder',
+        axis: 'y',
+        create: function(e) {
+            btn.click(function(){
+                btn.button('loading');
 
-            }
+                var data = {};
+                $('tr', e.target).each(function(index, ui){
+                    var id = $(this).attr('id');
+                    data[id] = index + startIndex;
+                });
+
+                $.post(
+                    url + '/order',
+                    data,
+                    function() {
+                        alert('saved');
+                        btn.button('reset');
+                        btn.hide();
+                    }
+                );
+            })
         },
-        items:'tr:has(td.sortable)',
-        handle:'div.nf_listfield_drag'
+        change: function() {
+            btn.fadeIn('fast');
+        }
     });
 });
