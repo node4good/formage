@@ -1,0 +1,137 @@
+.nf_fieldset {
+    clear: both;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-color: #bbb;
+    border-style: solid;
+    border-width: 1px 0;
+}
+
+li .nf_fieldset, .nf_fieldset div {
+    margin-left: 20px;
+}
+
+.nf_fieldset>h2 {
+    cursor: pointer;
+    border-width: 0;
+    margin-bottom: 3px;
+}
+
+input { width: 300px; }
+select { width: 313px;}
+
+input[type="file"] {
+    width: 230px !important;
+}
+
+label.field {
+    clear: left;
+    float: left;
+    /*display: block !important;*/
+}
+
+label.field span.field_label {
+    float: left;
+    text-align: right;
+    padding: 5px 30px 0 0;
+    width: 190px;
+    height: 25px;
+    overflow: hidden;
+}
+
+label.field span.error {
+    float: right;
+    margin-left: 10px;
+}
+
+p.error {
+    width: 100%;
+    margin: 0 auto 10px auto;
+}
+
+li {
+    display: block;
+    margin-bottom: 5px;
+    padding: 10px;
+    list-style: none;
+    background-color: #E3E3E3;
+    clear: both;
+}
+
+li label.field {
+    clear: none;
+    display: inline;
+}
+
+li label.field span.field_label {
+    clear: none;
+    width: 110px;
+}
+
+li input, li select {
+    float: left;
+    width: 280px !important;
+    margin-right: 15px;
+}
+
+li li input, li li select {
+    width: 270px !important;
+}
+
+li .nf_fieldset .nf_fieldset .nf_fieldset label.field {
+    width: 100px;
+}
+
+li .nf_fieldset .nf_fieldset .nf_fieldset input,
+li .nf_fieldset .nf_fieldset .nf_fieldset select {
+    width: 230px !important;
+}
+
+.nf_listfield_delete {
+    background: url('/images/cross.png');
+    width: 16px;
+    height: 16px;
+    border: none;
+}
+
+.nf_listfield_drag {
+    background: url('/images/arrow_up.png');
+    width: 16px;
+    height: 16px;
+    border: none;
+    margin-right: 5px;
+}
+
+.nf_listfield_append {
+    background: url('/images/add.png');
+    width: 16px;
+    height: 16px;
+    border: none;
+}
+
+.nf_listfield_delete, .nf_listfield_drag, .nf_listfield_append {
+    float: right;
+    cursor: pointer
+}
+
+li.new_li {
+    background-color: #f6f7d0;
+}
+
+/* clearfix */
+li:after, .nf_fieldset:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+
+html[xmlns] li, html[xmlns] .nf_fieldset {
+    display: block;
+}
+
+* html li, * html .nf_fieldset {
+    height: 1%;
+}
