@@ -1,9 +1,9 @@
 var update_fieldset_behavior = function () {
     $('.nf_fieldset').each(function() {
         var t = $(this),
-            h2 = $('> h2', this),
-            div = $('> div', this),
-            i = $('<i class="icon-chevron-right" />').prependTo(this);
+            h2 = $('> h2', t),
+            div = $('> div', t),
+            i = $('<i class="icon-chevron-right" />').prependTo(t);
 
         t.click(function(e) {
             if (!(t.is('.closed') || $(e.target).is(h2) || $(e.target).is(i)))
