@@ -7,6 +7,9 @@ block breadcrumb
     | document
 
 block body
+    .page-header
+        h2 #{modelName} Editor
+
     - if (errors)
         p.alert.alert-error Saving failed, fix the following errors and try again
     form#document(enctype="multipart/form-data",method="post").clearfix
@@ -19,3 +22,4 @@ block body
 
 block scripts
     script(src="/js/document.js")
+    script(src="/js/forms.js")

@@ -21,12 +21,21 @@ h2 {
     text-align: center;
 }
 
+/*
+    bootstrap misc
+*/
+h3 [class^='icon-'],
+h2 [class^='icon-'] {
+    vertical-align: baseline;
+    margin-right: 3px;
+}
+
 
 /*
     model list
 */
 ul.models {
-    width: 400px;
+    width: 500px;
     margin: 0 auto;
     list-style: none;
 }
@@ -37,6 +46,7 @@ ul.models {
     text-align: center;
 }
 
+
 /*
     document list
 */
@@ -45,6 +55,15 @@ ul.models {
 }
 .center {
     text-align: center !important;
+}
+#filters {
+    box-sizing: border-box;
+}
+#filters h3 {
+    margin-top: 0;
+}
+#filters ul {
+    list-style: none;
 }
 
 
@@ -62,12 +81,16 @@ ul.models {
 }
 tr.sortable-placeholder {
     height: 47px;
+    overflow: hidden;
 }
 tr.sortable-placeholder:before {
     position: absolute;
     content: '';
     width: 940px; height: 1px;
     border-top: 1px solid #DDD;
+}
+.span9 tr.sortable-placeholder:before {
+    width: 700px;
 }
 #reorder {
     margin-right: 20px;

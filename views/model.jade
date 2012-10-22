@@ -8,15 +8,18 @@ block body
     .page-header
         h2 #{modelName}
 
-    .row
+    #content.row
         div(class='span#{filters.length ? 9 : 12}')
             .btn-toolbar
                 - if (createable)
                     a.btn.pull-right.btn-primary(href="#{rootPath}/model/#{modelName}/document/new")
-                        | New <em>#{modelName}</em> item
+                        i.icon-plus.icon-white
+                        |  New <em>#{modelName}</em> item
 
                 - if (sortable)
-                    button#reorder.btn.btn-success.pull-left.hide(data-loading-text='Saving...') Save Order
+                    button#reorder.btn.btn-success.pull-left.hide(data-loading-text='Saving...')
+                        i.icon-ok.icon-white
+                        |  Save Order
 
                 - if (actions.length)
                     form.form-inline#actions_forms
@@ -27,9 +30,11 @@ block body
                                 - each action in actions
                                     option(value='#{action.value}') #{action.label}
                         | &nbsp;&nbsp;
-                        button.btn.btn-warning(type='submit') GO
+                        button.btn.btn-warning(type='submit')
+                            i.icon-play.icon-white
+                            |  GO
 
-
+            p.counter Viewing #{start}–#{start + documents.length} of #{totalCount} documents
 
             table.table.table-bordered.table-hover
                 thead
@@ -53,19 +58,18 @@ block body
                                         i.icon-resize-vertical
 
                             - each field in listFields
-                                td.span9
+                                td.span3
                                     - if (editable)
                                         a(href=url) #{doc[field]} &nbsp;
                                     - else
                                         p #{doc[field]}&nbsp;
 
-                            td.span3.btn-group
+                            td.span2.btn-group
                                 a.btn.btn-primary(href=url) Edit
                                 - if (cloneable)
                                     a.btn(href=url+'?clone=true') Duplicate
 
-
-            p.counter Viewing #{start + 1}–#{start + documents.length} of #{totalCount} documents
+            p.counter Viewing #{start}–#{start + documents.length} of #{totalCount} documents
             - if (totalCount > count)
                 .pagination
                     ul
@@ -78,32 +82,38 @@ block body
                                     a(href='#{rootPath}/model/#{modelName}?start=#{i}') #{page}
 
         - if (filters.length)
-            .span3
-                h3 Filters
-                - each filter in filters
-                    p #{filter.key}:
-                    ul
-                        li
-                            - if ( current_filters[filter.key])
+            #filters.span3.well
+                h3
+                    i.icon-filter
+                    | Filters
+                    small.pull-right
+                        a(href='#{rootPath}/model/#{modelName}') Clear
+
+                ul.nav.nav-list
+                    - each filter in filters
+                        li.nav-header
+                            strong #{filter.key}:
+                        - if (current_filters[filter.key])
+                            li
                                 a(href='#{makeLink(filter.key,"")}') All
-                            - else
-                                span All
-                        - each value in values
+                        - else
+                            li.active
+                                strong All
+                        - each value in filter.values
                             - if (value)
                                 li
                                     - if (current_filters[filter.key] !== value.value + '' )
                                         a(href='#{makeLink(filter.key, value.value)}') #{value.text}
                                     - else
-                                        span #{value.text}
+                                        strong #{value.text}
 
                         - if (filter.isString)
                             div
                                 input(type='text',style='width:217px; !important ',name='#{filter.key}',value='#{current_filters[filter.key] || ""}')
-                                button.free_search(data-href='#{makeLink(filter.key,"__replace__")}') search
+                                button.free_search(data-href='#{makeLink(filter.key, "__replace__")}') search
 
 block scripts
     script
         var startIndex = #{start},
             model = '#{modelName}';
     script(src="/js/model.js")
-    script(src="/js/jquery-ui-1.9.0.custom.min.js")

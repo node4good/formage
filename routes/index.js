@@ -132,7 +132,6 @@ exports.model = function(req, res) {
                                     makeLink:makeLink,
                                     orderLink:orderLink,
                                     'filters':MongooseAdmin.singleton.models[req.params.modelName].filters || [],
-                                    'renderedHead':'<link type="text/css" href="/node-forms/css/forms.css" rel="stylesheet"/>',
                                     'adminTitle':MongooseAdmin.singleton.getAdminTitle(),
                                     'listFields': options.list,
                                     'documents': documents,
