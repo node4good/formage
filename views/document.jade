@@ -2,13 +2,13 @@ extends layout
 
 block breadcrumb
     span.divider /
-    a(href="#{rootPath}/model/#{collectionName}") #{modelName}
+    a(href="#{rootPath}/model/#{collectionName}") #{modelName.replace(/_/g,' ')}
     span.divider /
     | editor
 
 block body
     .page-header
-        h2 #{modelName} Editor
+        h2 #{modelName.replace(/_/g,' ')} Editor
 
     - if (errors)
         p.alert.alert-error Saving failed, fix the following errors and try again
@@ -16,7 +16,7 @@ block body
         != renderedDocument
         p.submit.btn-group
             button#saveButton.btn.btn-large.btn-primary(type='submit') Save
-            button#cancelButton.btn.btn-large(onclick='go_back()') Cancel
+            button#cancelButton.btn.btn-large Cancel
             - if (allowDelete)
                 button#deleteButton.btn.btn-large.btn-danger Delete
 

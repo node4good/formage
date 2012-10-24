@@ -2,11 +2,11 @@ extends layout
 
 block breadcrumb
     span.divider /
-    | #{modelName}
+    | #{modelName.replace(/_/g,' ')}
 
 block body
     .page-header
-        h2 #{modelName}
+        h2 #{modelName.replace(/_/g,' ')}
 
     #content.row
         div(class='span#{filters.length ? 9 : 12}')
@@ -34,7 +34,7 @@ block body
                             i.icon-play.icon-white
                             |  GO
 
-            p.counter Viewing #{start}–#{start + documents.length} of #{totalCount} documents
+            p.counter Viewing #{start+1}–#{start + documents.length} of #{totalCount} documents
 
             table.table.table-bordered.table-hover
                 thead
@@ -69,7 +69,7 @@ block body
                                 - if (cloneable)
                                     a.btn(href=url+'?clone=true') Duplicate
 
-            p.counter Viewing #{start}–#{start + documents.length} of #{totalCount} documents
+            p.counter Viewing #{start+1}–#{start + documents.length} of #{totalCount} documents
             - if (totalCount > count)
                 .pagination
                     ul

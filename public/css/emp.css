@@ -45,6 +45,7 @@ ul.models {
 .counter, .pagination {
     text-align: center;
 }
+a h3 { color: black; }
 
 
 /*

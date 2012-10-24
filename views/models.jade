@@ -5,15 +5,17 @@ block body
         h2 Model List
     ul.models
         - each model in models
+            - var url = rootPath + '/model/' + model.modelName
             li
                 .btn-group.pull-right
                     - if(model.is_single)
-                        a.btn(href='#{rootPath}/model/#{model.modelName}/document/new') Edit
+                        a.btn(href='/document/new') Edit
                     - else
-                        a.btn(href='#{rootPath}/model/#{model.modelName}/document/new') New
-                        a.btn.btn-info(href='#{rootPath}/model/#{model.modelName}')
+                        a.btn(href='#{url}/document/new') New
+                        a.btn.btn-info(href=url)
                             span(id='viewAll_#{model.modelName}') View All
-                h3 #{model.modelName.replace(/_/g,' ')}
+                a(href=url)
+                    h3 #{model.modelName.replace(/_/g,' ')}
 
 
 block scripts

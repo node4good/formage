@@ -1,15 +1,33 @@
-var update_fieldset_behavior = function () {
+var btn = {
+    delete: function () {
+        return $('<button class="nf_listfield_delete"><i class="icon-remove"></i></button>')
+            .click(function (e) {
+                e.preventDefault();
+                $($(this).parent()).slideUp(400, function () {
+                    $(this).remove();
+                });
+            });
+    },
+    drag: function () {
+        return $('<div class="nf_listfield_drag"><i class="icon-resize-vertical"></i></div>');
+    },
+    add: function () {
+        return $('<button class="nf_listfield_append"><i class="icon-plus"></i></button>');
+    }
+};
+
+var updateFieldset = function () {
     $('.nf_fieldset').each(function() {
         var t = $(this),
             h2 = $('> h2', t),
             div = $('> div', t),
             i = $('<i class="icon-chevron-right" />').prependTo(t);
 
-        t.click(function(e) {
+        t.css('min-height', h2.height());
+
+        t.off('click').click(function(e) {
             if (!(t.is('.closed') || $(e.target).is(h2) || $(e.target).is(i)))
                 return;
-
-            console.log(this);
 
             i.toggleClass('icon-chevron-right')
                 .toggleClass('icon-chevron-down');
@@ -20,97 +38,101 @@ var update_fieldset_behavior = function () {
     });
 };
 
-var init_listfield = function () {
-    $('.nf_listfield').each(function()
-    {
-        if($(this).attr('processed') == 'true')
-            return;
-        $(this).attr('processed','true');
-        $('<br />').insertBefore($(this).parent());
-        var name = $(this).attr('name');
-        var template = $('>.nf_hidden_template',this).hide();
-        var list = $('>ul',this);
-        function make_delete_button()
-        {
-            return $('<button class="nf_listfield_delete" type="button"></button>').click(function()
-            {
-                $($(this).parent()).slideUp(400,function()
-                {
-                    $(this).remove();
-                });
-                //                ,function(){
-                //                    $(this).remove();
-                //                });
-            });
-        }
-        function make_drag_button()
-        {
-            return $('<div class="nf_listfield_drag" type="button"></div>');
-        }
-        var length = $('>li',list).prepend(make_drag_button()).prepend(make_delete_button()).length;
-        function add_new()
-        {
-            var new_elm = $('<li></li>');
-            new_elm.append(template.html()).addClass('new_li').prepend($('<button class="nf_listfield_append" type="button"></button>').click(function()
-            {
+var ListField = function(el) {
+    var self = this;
+    self.el = $(el);
 
-                var li = $($(this).parent('li')).prepend(make_drag_button()).prepend(make_delete_button()).removeClass('new_li');
-                $('[name]',li).each(function()
-                {
-                    var input = $(this);
-                    input.attr('name',input.attr('name').replace(name + '_tmpl_',name + '_li' + length + '_'));
-                });
-                length++;
-                $(this).remove();
-                add_new();
-                update_fieldset_behavior();
-            }));
-            list.prepend(new_elm);
-            if($().datetimepicker)
-                $('.nf_datepicker',new_elm).attr("id", "")
-                    .removeClass('hasDatepicker')
-                    .removeData('datepicker')
-                    .unbind()
-                    .datetimepicker();
-            init_listfield();
-            if(window.loadAutocomplete){
-                destroyAutocomplete(new_elm);
-                loadAutocomplete(new_elm);
-            }
-        }
-        add_new();
-        list.sortable({
-            update:function()
-            {
-                //                var new_li = $('li.new_li',list).remove();
-                //                new_li.appendTo(list);
+    self.init = function() {
+        if (self.el.data('processed') == 'true')
+            return;
+        self.el.data('processed','true');
+
+        var container = self.el.closest('.field').addClass('nf_listfield_container');
+//        $('<i class="icon-chevron-right" />').appendTo(container);
+
+        self.name = self.el.attr('name');
+        self.template = $('> .nf_hidden_template', el).hide();
+        self.list = $('> ul', el);
+        self.length = $('> li', self.list)
+            .prepend(btn.drag())
+            .prepend(btn.delete())
+            .length;
+
+        self.add();
+
+        self.list.sortable({
+            items: 'li:not(.new_li)',
+            handle: '.nf_listfield_drag',
+            update: function() {
                 var i = 0;
-                $('>li',this).each(function(){
+
+                $('>li', this).each(function(){
                     var li = this;
-                    //                   if($(this).is('.new_li'))
+                    //                   if ($(this).is('.new_li'))
                     //                       return;
-                    $('[name]',li).each(function() {
+                    $('[name]', li).each(function() {
                         var input = $(this);
-                        input.attr('name',input.attr('name').replace(RegExp(name + '_li[0-9]+_'),name + '_li' + i + '_'));
+                        input.attr('name', input.attr('name').replace(new RegExp(self.name + '_li[0-9]+_'), self.name + '_li' + i + '_'));
                     });
                     i++;
                 });
-            },
-            items:'li:not(.new_li)',
-            handle:'.nf_listfield_drag'
+            }
         });
+
+        if ($().datetimepicker)
+            $('.nf_datepicker', this).datetimepicker();
+    };
+
+    self.add = function() {
+        var el = $('<li class="new_li" />').hide()
+            .prepend(btn.add().click(self.addClick))
+            .append(self.template.html())
+            .prependTo(self.list)
+            .slideDown();
+
         if($().datetimepicker)
-            $('.nf_datepicker',this).datetimepicker();
+            $('.nf_datepicker', el)
+                .attr('id', '')
+                .removeClass('hasDatepicker')
+                .removeData('datepicker')
+                .off()
+                .datetimepicker();
 
-    });
+//        self.init();
+
+        if (window.loadAutocomplete) {
+            destroyAutocomplete(el);
+            loadAutocomplete(el);
+        }
+    };
+
+    self.addClick = function() {
+        var li = $($(this).closest('li'))
+            .prepend(btn.delete())
+            .prepend(btn.drag())
+            .removeClass('new_li');
+
+        $('[name]', li).each(function() {
+            var input = $(this);
+            input.attr(
+                'name',
+                input.attr('name')
+                    .replace(self.name + '_tmpl_',self.name + '_li' + self.length + '_')
+            );
+        });
+
+        self.length++;
+        $(this).remove();
+
+        self.add();
+        updateFieldset();
+    };
+
+    self.init();
 };
 
-var go_back = function () {
-    location.href = location.href.split('/document/')[0];
-};
 
 $(function(){
-    $('.nf_fieldset > div').hide();
     $('.nf_fieldset').addClass('closed');
     $('.error').parents('.nf_fieldset > div').show();
     $('p.error').hide().slideDown();
@@ -118,9 +140,14 @@ $(function(){
     $('.optional_label').each(function() {
         $('label[for="' + this.id  + '"]').addClass('optional_label');
     });
+    $('#cancelButton').click(function() {
+        location.href = location.href.split('/document/')[0];
+    });
 
-    init_listfield();
-    update_fieldset_behavior();
+    $('.nf_listfield').each(function() {
+        $(this).data('listfield', new ListField(this));
+    });
+    updateFieldset();
 
     if ($().datetimepicker)
         $('.nf_datepicker').datetimepicker();

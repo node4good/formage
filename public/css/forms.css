@@ -4,6 +4,10 @@ input[type="file"] {
     width: 95px;
     margin-right: 15px;
 }
+textarea {
+    width: 400px;
+    height: 200px;
+}
 input[type="file"] + input[type=checkbox] {
     margin: 0 10px;
 }
@@ -29,7 +33,7 @@ p.error {
     field
 */
 .field {
-    clear: both;
+    /*clear: both;*/
     /*float: left;*/
     /*display: block !important;*/
 }
@@ -55,20 +59,24 @@ p.error {
     clear: both;
     margin: 0 0 15px 180px;
     padding: 20px 15px 5px 0;
+    box-sizing: border-box;
     border: 1px solid #ddd;
     background: white;
-    border-radius: 2px;
+    border-radius: 3px;
     position: relative;
     box-shadow: #eee 0 0 5px 0;
     -webkit-transition: box-shadow 200ms, border 200ms;
+}
+.nf_fieldset > div {
+    display: none;
 }
 .nf_fieldset.closed {
     border-color: white;
     box-shadow: none;
 }
 .nf_fieldset.closed,
-.nf_fieldset i,
-.nf_fieldset h2 {
+.nf_fieldset > i,
+.nf_fieldset > h2 {
     cursor: pointer;
 }
 .nf_fieldset:hover {
@@ -89,13 +97,21 @@ p.error {
 .nf_fieldset > i {
     position: absolute; top: 5px; left: 5px;
 }
+.nf_fieldset .nf_fieldset .nf_fieldset input,
+.nf_fieldset .nf_fieldset .nf_fieldset textarea,
+.nf_fieldset .nf_fieldset .nf_fieldset select {
+    width: 150px;
+}
 
 
 
 /*
     list field
 */
-
+.nf_listfield_container > .field_label {
+    font-size: 20px;
+    font-weight: bold;
+}
 .nf_hidden_template {
     display: none;
 }
@@ -103,94 +119,31 @@ p.error {
     margin: 0;
 }
 .nf_listfield li {
-    clear: both;
+    /*clear: both;*/
     display: block;
     list-style: none;
 
     margin: 0 0 10px 180px;
-    padding: 20px 10px 5px 0;
+    padding: 15px 5px 0 5px;
     border: 1px solid #ddd;
     background: #F7F7F9;
     border-radius: 2px;
+    -webkit-transition: background 1s;
+
+    position: relative;
 }
-
-/*
-
-li label.field {
-    clear: none;
-    display: inline;
-}
-
-li label.field span.field_label {
-    clear: none;
-    width: 110px;
-}
-
-li input, li select {
-    float: left;
-    width: 280px !important;
-    margin-right: 15px;
-}
-
-li li input, li li select {
-    width: 270px !important;
-}
-
-li .nf_fieldset .nf_fieldset .nf_fieldset label.field {
-    width: 100px;
-}
-
-li .nf_fieldset .nf_fieldset .nf_fieldset input,
-li .nf_fieldset .nf_fieldset .nf_fieldset select {
-    width: 230px !important;
-}
-*/
-
-.nf_listfield_delete {
-    background: url('/images/cross.png');
-    width: 16px;
-    height: 16px;
-    border: none;
-}
-
-.nf_listfield_drag {
-    background: url('/images/arrow_up.png');
-    width: 16px;
-    height: 16px;
-    border: none;
-    margin-right: 5px;
-}
-
-.nf_listfield_append {
-    background: url('/images/add.png');
-    width: 16px;
-    height: 16px;
-    border: none;
-}
-
-.nf_listfield_delete, .nf_listfield_drag, .nf_listfield_append {
-    float: right;
-    cursor: pointer
-}
-
-li.new_li {
+.nf_listfield li.new_li {
     background-color: #f6f7d0;
 }
-
-/* clearfix */
-li:after, .nf_fieldset:after {
-    content: ".";
-    display: block;
-    clear: both;
-    visibility: hidden;
-    line-height: 0;
-    height: 0;
+.nf_listfield_delete {
+    cursor: pointer;
 }
-
-html[xmlns] li, html[xmlns] .nf_fieldset {
-    display: block;
+.nf_listfield_delete, .nf_listfield_drag, .nf_listfield_append {
+    position: absolute; right: 5px; top: 5px;
+    padding: 5px;
+    border: 0;
+    background: transparent;
 }
-
-* html li, * html .nf_fieldset {
-    height: 1%;
+.nf_listfield_drag {
+    right: 25px;
 }
