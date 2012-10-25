@@ -7,7 +7,7 @@
     "email": "ishai@empeeric.com"
   },
   "dependencies": {
-    "j-forms": ">= 0.0.72",
+    "j-forms": "https://github.com/Empeeric/nodejs-forms/tarball/master",
     "mongoose": "",
     "underscore": "",
     "async": "",
