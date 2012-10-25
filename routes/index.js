@@ -333,7 +333,8 @@ exports.document = function(req, res) {
                                 res.redirect('/error');
                             } else {
                                 var form_type = MongooseAdmin.singleton.models[req.params.modelName].options.form || AdminForm;
-                                var form = new form_type(req,{instance:document},model);
+                                var new_form_options = _.extend({instance:document}, MongooseAdmin.singleton.models[req.params.modelName].options);
+                                var form = new form_type(req,new_form_options,model);
                                 render_document_from_form(form,req,res,model.modelName,req.params.modelName,true,req.query['clone']);
 //                                            var html = form.render_str();
 //                                            var head = form.render_head();
