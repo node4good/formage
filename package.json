@@ -35,7 +35,7 @@
   },
   "_id": "admin-with-forms@0.0.59",
   "dist": {
-    "shasum": "9589be7b79fd0adc55467281e4969c751e9636d9"
+    "shasum": "2786d85850d9fedd25700b06154dcae1b75545bd"
   },
-  "_from": "admin-with-forms@git://github.com/Empeeric/admin-forms.git"
+  "_from": "admin-with-forms@git://github.com/etaypere/admin-forms.git"
 }

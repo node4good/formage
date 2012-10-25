@@ -2,22 +2,24 @@ extends layout
 
 block breadcrumb
     span.divider /
-    a(href="#{rootPath}/model/#{collectionName}") #{modelName}
+    a(href="#{rootPath}/model/#{collectionName}") #{modelName.replace(/_/g,' ')}
     span.divider /
-    | document
+    | editor
 
 block body
+    .page-header
+        h2 #{modelName.replace(/_/g,' ')} Editor
+
     - if (errors)
         p.alert.alert-error Saving failed, fix the following errors and try again
     form#document(enctype="multipart/form-data",method="post").clearfix
         != renderedDocument
-        p.submit
+        p.submit.btn-group
             button#saveButton.btn.btn-large.btn-primary(type='submit') Save
-            | &nbsp;
-            button#cancelButton.btn.btn-large(onclick='go_back()') Cancel
+            button#cancelButton.btn.btn-large Cancel
             - if (allowDelete)
-                span(style='margin-left:20px;')
-                    button#deleteButton.btn.btn-large.btn-danger Delete
+                button#deleteButton.btn.btn-large.btn-danger Delete
 
 block scripts
     script(src="/js/document.js")
+    script(src="/js/forms.js")

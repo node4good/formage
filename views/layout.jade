@@ -5,16 +5,22 @@ html(lang='en')
         title!= pageTitle
         link(rel='stylesheet', href='/css/bootstrap.css', charset='utf-8')
         link(rel='stylesheet', href='/css/emp.css', charset='utf-8')
+        link(rel='stylesheet', href='/css/forms.css', charset='utf-8')
         script(src='/js/jquery-1.8.2.min.js')
+        script(src="/js/jquery-ui-1.9.0.custom.min.js")
         script(src='/js/bootstrap.min.js')
-        != renderedHead
+        != typeof(renderedHead) != 'undefined' ? renderedHead : ''
     body
         .container
             header.page-header.well
                 block nav
                     .btn-group.pull-right
-                        a.btn.btn-info(href='#{rootPath}/') Home
-                        a.btn(href='#{rootPath}/logout') Logout
+                        a.btn.btn-info(href='#{rootPath}/')
+                            i.icon-home.icon-white
+                            |  Home
+                        a.btn(href='#{rootPath}/logout')
+                            .icon-off
+                            |  Logout
                 h1
                     block title
                         a(href='#{rootPath}/') #{adminTitle}

@@ -1,3 +1,6 @@
+/*
+    header
+*/
 header.page-header {
     padding: 20px 30px;
     background: #EEE;
@@ -10,27 +13,99 @@ header h1 {
 header .btn-group {
     margin-top: 5px;
 }
-
+.divider {
+    padding: 0 5px;
+    color: #CCC;
+}
 h2 {
     text-align: center;
 }
 
+/*
+    bootstrap misc
+*/
+h3 [class^='icon-'],
+h2 [class^='icon-'] {
+    vertical-align: baseline;
+    margin-right: 3px;
+}
+
+
+/*
+    model list
+*/
 ul.models {
-    width: 400px;
+    width: 500px;
     margin: 0 auto;
     list-style: none;
 }
-
 .table-striped td {
     text-align: center;
 }
 .counter, .pagination {
     text-align: center;
 }
-.divider {
-    padding: 0 5px;
-    color: #CCC;
+a h3 { color: black; }
+
+
+/*
+    document list
+*/
+#actions_forms button {
+    margin-left: 5px;
 }
+.center {
+    text-align: center !important;
+}
+#filters {
+    box-sizing: border-box;
+}
+#filters h3 {
+    margin-top: 0;
+}
+#filters ul {
+    list-style: none;
+}
+
+
+/*
+    sortable
+*/
+.list-drag {
+    display: inline-block;
+    padding: 5px;
+}
+.ui-sortable-helper {
+    border: 1px solid #DDD;
+    border-width: 0 1px 1px 0;
+    background: whiteSmoke;
+}
+tr.sortable-placeholder {
+    height: 47px;
+    overflow: hidden;
+}
+tr.sortable-placeholder:before {
+    position: absolute;
+    content: '';
+    width: 940px; height: 1px;
+    border-top: 1px solid #DDD;
+}
+.span9 tr.sortable-placeholder:before {
+    width: 700px;
+}
+#reorder {
+    margin-right: 20px;
+}
+
+
+/*
+    form
+*/
 p.submit {
     clear: both;
+    padding-top: 30px;
+    text-align: center;
+}
+p.submit button[type=submit] {
+    width: 160px;
 }
