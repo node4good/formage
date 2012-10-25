@@ -147,3 +147,20 @@ p.error {
 .nf_listfield_drag {
     right: 25px;
 }
+
+/*
+    Auto Complete
+*/
+.ui-combobox {
+}
+
+.ui-combobox input {
+    float: left;
+    padding: 5px;
+}
+
+.ui-combobox a {
+    float: left;
+    height: 30px;
+    margin-left: -1px;
+}
