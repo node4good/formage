@@ -8,15 +8,15 @@ block breadcrumb
 
 block body
     .page-header
-        h2 #{modelName.replace(/_/g,' ')} Editor
+        h2 #{modelName.replace(/_/g,' ')} editor
 
     - if (errors)
         p.alert.alert-error Saving failed, fix the following errors and try again
     form#document(enctype="multipart/form-data",method="post").clearfix
         != renderedDocument
         p.submit.btn-group
-            button#saveButton.btn.btn-large.btn-primary(type='submit') Save
-            button#cancelButton.btn.btn-large Cancel
+            button#saveButton.btn.btn-large.btn-primary(type='submit',data-saving-text="Saving...") Save
+            a#cancelButton.btn.btn-large(href="#{rootPath}/model/#{collectionName}") Cancel
             - if (allowDelete)
                 button#deleteButton.btn.btn-large.btn-danger Delete
 

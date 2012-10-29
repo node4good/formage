@@ -21,7 +21,7 @@ block body
                         i.icon-ok.icon-white
                         |  Save Order
 
-                - if (actions.length)
+                - if (actions.length && documents.length)
                     form.form-inline#actions_forms
                         label.input-prepend
                             span.add-on &nbsp;With selected:
@@ -34,55 +34,59 @@ block body
                             i.icon-play.icon-white
                             |  GO
 
-            p.counter Viewing #{start+1}–#{start + documents.length} of #{totalCount} documents
+            - if (!documents.length)
+                p.center No documents yet
 
-            table.table.table-bordered.table-hover
-                thead
-                    tr
-                        th.center
-                            input.select-all-rows(type='checkbox')
-                        - each field in listFields
-                            th.table-header-repeat.line-left.minwidth-1
-                                a(href='#{orderLink(field)}') #{field}
+            - else
+                p.counter Viewing #{start+1}–#{start + documents.length} of #{totalCount} documents
 
-                        - if (cloneable)
-                            th &nbsp;
-                tbody(class='#{sortable?'sortable':''}')
-                    - each doc in documents
-                        - var url = rootPath + '/model/' + modelName + '/document/' + doc._id
-                        tr(id=doc._id)
-                            td.span1.center
-                                input.select-row(type='checkbox')
-                                - if (sortable)
-                                    .list-drag
-                                        i.icon-resize-vertical
-
+                table.table.table-bordered.table-hover
+                    thead
+                        tr
+                            th.center
+                                input.select-all-rows(type='checkbox')
                             - each field in listFields
-                                td.span3
-                                    - if (field == 'picture' && doc[field].url)
-                                        a(href=url)
-                                            img(src=doc[field].url,width=80,height=80)
-                                    - else if (editable)
-                                        a(href=url) #{doc[field]} &nbsp;
-                                    - else
-                                        p #{doc[field]}&nbsp;
+                                th.table-header-repeat.line-left.minwidth-1
+                                    a(href='#{orderLink(field)}') #{field}
 
-                            td.span2.btn-group
-                                a.btn.btn-primary(href=url) Edit
-                                - if (cloneable)
-                                    a.btn(href=url+'?clone=true') Duplicate
+                            - if (cloneable)
+                                th &nbsp;
+                    tbody(class='#{sortable?'sortable':''}')
+                        - each doc in documents
+                            - var url = rootPath + '/model/' + modelName + '/document/' + doc._id
+                            tr(id=doc._id)
+                                td.span1.center
+                                    input.select-row(type='checkbox')
+                                    - if (sortable)
+                                        .list-drag
+                                            i.icon-resize-vertical
 
-            p.counter Viewing #{start+1}–#{start + documents.length} of #{totalCount} documents
-            - if (totalCount > count)
-                .pagination
-                    ul
-                        - for (var i = 0, page = 1; i < totalCount; i += count, page++)
-                            - if (start == i)
-                                li.active
-                                    a #{page}
-                            - else
-                                li
-                                    a(href='#{rootPath}/model/#{modelName}?start=#{i}') #{page}
+                                - each field in listFields
+                                    td.span3
+                                        - if (field == 'picture' && doc[field].url)
+                                            a(href=url)
+                                                img(src=doc[field].url,width=80,height=80)
+                                        - else if (editable)
+                                            a(href=url) #{doc[field]} &nbsp;
+                                        - else
+                                            p #{doc[field]}&nbsp;
+
+                                td.span2.btn-group
+                                    a.btn.btn-primary(href=url) Edit
+                                    - if (cloneable)
+                                        a.btn(href=url+'?clone=true') Duplicate
+
+                p.counter Viewing #{start+1}–#{start + documents.length} of #{totalCount} documents
+                - if (totalCount > count)
+                    .pagination
+                        ul
+                            - for (var i = 0, page = 1; i < totalCount; i += count, page++)
+                                - if (start == i)
+                                    li.active
+                                        a #{page}
+                                - else
+                                    li
+                                        a(href='#{rootPath}/model/#{modelName}?start=#{i}') #{page}
 
         - if (filters.length)
             #filters.span3.well

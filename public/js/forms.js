@@ -18,6 +18,10 @@ var btn = {
 
 var updateFieldset = function () {
     $('.nf_fieldset').each(function() {
+        if ($(this).data('nf_fieldset'))
+            return;
+        $(this).data('nf_fieldset', true);
+
         var t = $(this),
             h2 = $('> h2', t),
             div = $('> div', t),
@@ -58,7 +62,7 @@ var ListField = function(el) {
             .prepend(btn.delete())
             .length;
 
-        self.add();
+        self.add(true);
 
         self.list.sortable({
             items: 'li:not(.new_li)',
@@ -83,12 +87,12 @@ var ListField = function(el) {
             $('.nf_datepicker', this).datetimepicker();
     };
 
-    self.add = function() {
+    self.add = function(init) {
         var el = $('<li class="new_li" />').hide()
             .prepend(btn.add().click(self.addClick))
             .append(self.template.html())
             .prependTo(self.list)
-            .slideDown();
+            .slideDown(init ? 0 : 'normal');
 
         if($().datetimepicker)
             $('.nf_datepicker', el)
@@ -140,8 +144,11 @@ $(function(){
     $('.optional_label').each(function() {
         $('label[for="' + this.id  + '"]').addClass('optional_label');
     });
-    $('#cancelButton').click(function() {
-        location.href = location.href.split('/document/')[0];
+
+    $('form#document').submit(function(e) {
+        $('p.submit button').prop('disabled', true);
+        var btn = $('#saveButton');
+//        btn.text(btn.data('saving-text'));
     });
 
     $('.nf_listfield').each(function() {
