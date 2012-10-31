@@ -1,13 +1,13 @@
 {
-  "name": "admin-with-forms",
-  "description": "admin for mongoose and not mongoose projects which uses forms",
-  "version": "0.0.59",
+  "name": "formage-admin",
+  "description": "admin for mongoose and not mongoose projects which uses formage",
+  "version": "0.0.60",
   "author": {
     "name": "Ishai Jaffe",
     "email": "ishai@empeeric.com"
   },
   "dependencies": {
-    "j-forms": "https://github.com/Empeeric/nodejs-forms/tarball/master",
+    "formage": "git@github.com:etaypere/formage.git",
     "mongoose": "",
     "underscore": "",
     "async": "",
