@@ -7,7 +7,7 @@
     "email": "ishai@empeeric.com"
   },
   "dependencies": {
-    "formage": "git@github.com:etaypere/formage.git",
+    "formage": "https://github.com/etaypere/formage/tarball/master",
     "mongoose": "",
     "underscore": "",
     "async": "",
