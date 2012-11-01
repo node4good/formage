@@ -1,7 +1,7 @@
 {
   "name": "formage-admin",
   "description": "admin for mongoose and not mongoose projects which uses formage",
-  "version": "0.0.60",
+  "version": "0.0.70",
   "author": {
     "name": "Ishai Jaffe",
     "email": "ishai@empeeric.com"
@@ -11,8 +11,8 @@
     "mongoose": "",
     "underscore": "",
     "async": "",
-    "jade": "",
-    "jest": ">= 0.1.30"
+    "jest": ">= 0.1.30",
+    "jade": ""
   },
   "devDependencies": {
     "express": "",

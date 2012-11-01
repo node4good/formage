@@ -1,7 +1,7 @@
 
-var j_forms =  require('j-forms')
-    ,fields = j_forms.fields
-    ,widgets = j_forms.widgets
+var forms =  require('formage')
+    ,fields = forms.fields
+    ,widgets = forms.widgets
     ,mongoose = require('mongoose')
     ,_ = require('underscore')
     ,jest = require('jest');
@@ -9,7 +9,7 @@ var j_forms =  require('j-forms')
 var api_loaded = false;
 var api_path;
 
-var AdminForm = exports.AdminForm = j_forms.forms.MongooseForm.extend({
+var AdminForm = exports.AdminForm = forms.forms.MongooseForm.extend({
     init: function(request,options,model)
     {
         this._super(request,options,model);

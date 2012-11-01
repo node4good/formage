@@ -1,7 +1,7 @@
 
 
 var Class = require('sji')
-    ,forms = require('j-forms')
+    ,forms = require('formage')
     ,jest = require('jest')
     ,MongooseAdminAudit = require('./mongoose_admin_audit.js').MongooseAdminAudit
     ,async = require('async')

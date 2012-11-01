@@ -1,7 +1,7 @@
 var querystring = require('querystring'),
     Url = require('url'),
     _ = require('underscore'),
-    forms = require('j-forms').forms;
+    forms = require('formage').forms;
 
 var MongooseAdmin;
 

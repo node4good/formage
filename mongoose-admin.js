@@ -16,7 +16,7 @@ var MongooseAdminUser = require('./mongoose_admin_user.js').MongooseAdminUser,
     mongoose = require('mongoose'),
 	paths = require('./http/register_paths'),
     AdminForm = require('./form').AdminForm,
-    forms = require('j-forms').forms;
+    forms = require('formage').forms;
 	
 
 exports = module.exports = MongooseAdmin;
@@ -98,6 +98,7 @@ MongooseAdmin.prototype.setAdminTitle = function(title)
  */
 MongooseAdmin.prototype.pushExpressConfig = function() {
     var currentViewsPath = MongooseAdmin.singleton.app.set('views');
+    this.app.engine('jade', require('jade').__express);
     this.app.set('views', __dirname + '/views');
     return {'views': currentViewsPath};
 };

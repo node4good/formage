@@ -46,7 +46,7 @@ var session = {
 app.configure(function(){
     app.set('view engine', 'jade');
     app.use(express.bodyParser());
-    app.use(express.static(require('path').join(__dirname,'..','node_modules','j-forms','static')));
+    app.use(express.static(require('path').join(__dirname,'..','node_modules','formage','public')));
     app.use(express.methodOverride());
     app.use(express.cookieParser());
     app.use(function(req,res,next)

@@ -3,7 +3,7 @@ var querystring = require('querystring'),
     permissions = require('../permissions'),
     _ = require('underscore'),
     AdminForm = require('../form').AdminForm,
-    forms = require('j-forms').forms;
+    forms = require('formage').forms;
 //   Renderer = require('../renderer.js').Renderer;
 
 var MongooseAdmin;
