@@ -50,6 +50,11 @@ p.error {
 }
 
 
+.nf_widget {
+    margin: 0 0 10px 180px;
+}
+
+
 
 /*
     fieldset

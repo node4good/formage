@@ -32,5 +32,10 @@
   },
   "engines": {
     "node": ">= 0.4.1"
-  }
+  },
+  "_id": "formage-admin@0.0.70",
+  "dist": {
+    "shasum": "5873de29387628d281e29a39317535959593e279"
+  },
+  "_from": "formage-admin@git://github.com/etaypere/formage-admin.git"
 }
