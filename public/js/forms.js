@@ -9,15 +9,20 @@ var btn = {
             });
     },
     drag: function () {
-        return $('<div class="nf_listfield_drag"><i class="icon-resize-vertical"></i></div>');
+        return $('<div class="nf_listfield_drag"><i title="Drag to reorder" class="icon-resize-vertical"></i></div>');
     },
-    add: function () {
-        return $('<button class="nf_listfield_append"><i class="icon-plus"></i></button>');
+    add: function() {
+        return $('<button class="nf_add btn btn-warning"><i class="icon-plus icon-white"></i> Add Item</button>');
     }
 };
 
-var updateFieldset = function () {
-    $('.nf_fieldset').each(function() {
+var fieldset = function (ctx) {
+    if (ctx == document.body) {
+        $('.nf_fieldset').addClass('closed');
+        $('.error').parents('.nf_fieldset > div').show();
+    }
+
+    $('.nf_fieldset', ctx).each(function() {
         if ($(this).data('nf_fieldset'))
             return;
         $(this).data('nf_fieldset', true);
@@ -52,17 +57,20 @@ var ListField = function(el) {
         self.el.data('processed','true');
 
         var container = self.el.closest('.field').addClass('nf_listfield_container');
-//        $('<i class="icon-chevron-right" />').appendTo(container);
 
         self.name = self.el.attr('name');
-        self.template = $('> .nf_hidden_template', el).hide();
-        self.list = $('> ul', el);
+
+        var tpl = $('> .nf_hidden_template', el);
+        self.template = tpl.html();
+        tpl.remove();
+
+        self.list = $('> ul', el)
+            .prepend(btn.add().click(self.add));
+
         self.length = $('> li', self.list)
             .prepend(btn.drag())
             .prepend(btn.delete())
             .length;
-
-        self.add(true);
 
         self.list.sortable({
             items: 'li:not(.new_li)',
@@ -72,8 +80,6 @@ var ListField = function(el) {
 
                 $('>li', this).each(function(){
                     var li = this;
-                    //                   if ($(this).is('.new_li'))
-                    //                       return;
                     $('[name]', li).each(function() {
                         var input = $(this);
                         input.attr('name', input.attr('name').replace(new RegExp(self.name + '_li[0-9]+_'), self.name + '_li' + i + '_'));
@@ -83,38 +89,20 @@ var ListField = function(el) {
             }
         });
 
-        if ($().datetimepicker)
-            $('.nf_datepicker', this).datetimepicker();
+        widgets(this);
     };
 
-    self.add = function(init) {
-        var el = $('<li class="new_li" />').hide()
-            .prepend(btn.add().click(self.addClick))
-            .append(self.template.html())
-            .prependTo(self.list)
-            .slideDown(init ? 0 : 'normal');
+    self.add = function(e) {
+        e.preventDefault();
 
-        if($().datetimepicker)
-            $('.nf_datepicker', el)
-                .attr('id', '')
-                .removeClass('hasDatepicker')
-                .removeData('datepicker')
-                .off()
-                .datetimepicker();
-
-//        self.init();
-
-        if (window.loadAutocomplete) {
-            destroyAutocomplete(el);
-            loadAutocomplete(el);
-        }
-    };
-
-    self.addClick = function() {
-        var li = $($(this).closest('li'))
+        var li = $('<li />').hide()
+            .append(self.template)
             .prepend(btn.delete())
             .prepend(btn.drag())
-            .removeClass('new_li');
+            .insertAfter(this)
+            .slideDown(function() {
+                $('input:first', li).focus();
+            });
 
         $('[name]', li).each(function() {
             var input = $(this);
@@ -126,39 +114,52 @@ var ListField = function(el) {
         });
 
         self.length++;
-        $(this).remove();
 
-        self.add();
-        updateFieldset();
+        // load nested widgets
+        widgets(li);
     };
 
     self.init();
 };
 
+var widgets = function(ctx) {
+    ctx = ctx || document.body;
+
+    $('.nf_listfield', ctx).each(function() {
+        $(this).data('listfield', new ListField(this));
+    });
+
+    fieldset(ctx);
+
+    if ($.fn.datetimepicker)
+        $('.nf_datepicker', ctx).datetimepicker();
+
+    if ($.fn.select2)
+        $('select', ctx).select2();
+
+    if ($.fn.datepicker)
+        $('.nf_datepicker').datepicker({
+            format: 'dd/mm/yyyy'
+        })
+            .closest('label').css('display', 'inline-block');
+
+    if (window.loadAutocomplete)
+        loadAutocomplete();
+};
+
 
 $(function(){
-    $('.nf_fieldset').addClass('closed');
-    $('.error').parents('.nf_fieldset > div').show();
     $('p.error').hide().slideDown();
 
     $('.optional_label').each(function() {
         $('label[for="' + this.id  + '"]').addClass('optional_label');
     });
 
+    widgets();
+
     $('form#document').submit(function(e) {
         $('p.submit button').prop('disabled', true);
         var btn = $('#saveButton');
 //        btn.text(btn.data('saving-text'));
     });
-
-    $('.nf_listfield').each(function() {
-        $(this).data('listfield', new ListField(this));
-    });
-    updateFieldset();
-
-    if ($().datetimepicker)
-        $('.nf_datepicker').datetimepicker();
-
-    if (window.loadAutocomplete)
-        loadAutocomplete();
 });

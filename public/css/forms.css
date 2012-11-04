@@ -1,5 +1,5 @@
 input { width: 300px; }
-select { width: 313px;}
+select { min-width: 314px; }
 input[type="file"] {
     width: 200px;
     margin-right: 15px;
@@ -50,8 +50,20 @@ p.error {
 }
 
 
+/*
+    widgets
+*/
 .nf_widget {
     margin: 0 0 10px 180px;
+}
+.nf_add {
+    margin-bottom: 10px;
+}
+.select2-container {
+    min-width: 314px;
+}
+.nf_datepicker {
+    width: 273px;
 }
 
 

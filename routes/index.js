@@ -256,7 +256,7 @@ function render_document_from_form(form, req, res, modelName, collectionName, al
 exports.document = function (req, res) {
     var adminUser = req.session._mongooseAdminUser ? MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser) : null;
     if (!adminUser) {
-        res.redirect('/login')
+        res.redirect(MongooseAdmin.singleton.buildPath('/login'));
     } else {
         if (permissions.hasPermissions(adminUser, req.params.modelName, 'update')) {
             MongooseAdmin.singleton.getModel(req.params.modelName, function (err, model, fields, options) {

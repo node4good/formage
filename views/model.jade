@@ -12,7 +12,7 @@ block body
         div(class='span#{filters.length ? 9 : 12}')
             .btn-toolbar
                 - if (createable)
-                    a.btn.pull-right.btn-primary(href="#{rootPath}/model/#{modelName}/document/new")
+                    a.btn.pull-right.btn-warning(href="#{rootPath}/model/#{modelName}/document/new")
                         i.icon-plus.icon-white
                         |  New <em>#{modelName}</em> item
 
@@ -30,7 +30,7 @@ block body
                                 - each action in actions
                                     option(value='#{action.value}') #{action.label}
                         | &nbsp;&nbsp;
-                        button.btn.btn-warning(type='submit')
+                        button.btn.btn-inverse(type='submit')
                             i.icon-play.icon-white
                             |  GO
 
