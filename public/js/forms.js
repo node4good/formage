@@ -131,20 +131,22 @@ var widgets = function(ctx) {
 
     fieldset(ctx);
 
-    if ($.fn.datetimepicker)
-        $('.nf_datepicker', ctx).datetimepicker();
+//    if ($.fn.datetimepicker)
+//        $('.nf_datepicker', ctx).datetimepicker();
 
     if ($.fn.select2)
         $('select', ctx).select2();
 
     if ($.fn.datepicker)
-        $('.nf_datepicker').datepicker({
+        $('.nf_datepicker', ctx).datepicker({
             format: 'dd/mm/yyyy'
-        })
-            .closest('label').css('display', 'inline-block');
+        });
 
-    if (window.loadAutocomplete)
-        loadAutocomplete();
+    if ($.fn.timepicker)
+        $('.nf_timepicker', ctx).timepicker();
+
+    $('.nf_timepicker, .nf_datepicker, input[type=checkbox]')
+        .closest('label').css('display', 'inline-block');
 };
 
 
