@@ -1,6 +1,6 @@
 var btn = {
     delete: function () {
-        return $('<button class="nf_listfield_delete"><i class="icon-remove"></i></button>')
+        return $('<button type="button" class="nf_listfield_delete"><i class="icon-remove"></i></button>')
             .click(function (e) {
                 e.preventDefault();
                 $($(this).parent()).slideUp(400, function () {
@@ -12,7 +12,7 @@ var btn = {
         return $('<div class="nf_listfield_drag"><i title="Drag to reorder" class="icon-resize-vertical"></i></div>');
     },
     add: function() {
-        return $('<button class="nf_add btn btn-warning"><i class="icon-plus icon-white"></i> Add Item</button>');
+        return $('<button type="button" class="nf_add btn btn-warning"><i class="icon-plus icon-white"></i> Add Item</button>');
     }
 };
 
@@ -131,9 +131,6 @@ var widgets = function(ctx) {
 
     fieldset(ctx);
 
-//    if ($.fn.datetimepicker)
-//        $('.nf_datepicker', ctx).datetimepicker();
-
     if ($.fn.select2)
         $('select', ctx).select2();
 
@@ -144,9 +141,6 @@ var widgets = function(ctx) {
 
     if ($.fn.timepicker)
         $('.nf_timepicker', ctx).timepicker();
-
-    $('.nf_timepicker, .nf_datepicker, input[type=checkbox]')
-        .closest('label').css('display', 'inline-block');
 };
 
 
