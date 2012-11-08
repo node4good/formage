@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(function() {
     $('#username').focus();
 
     $('form').submit(function(e) {
