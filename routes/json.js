@@ -10,22 +10,18 @@ exports.setAdmin = function(admin){
 };
 
 
-exports.login = function(req, res) {
+exports.login = function(req, res, next) {
     MongooseAdmin.singleton.login(req.body.username, req.body.password, function(err, adminUser) {
-        if (err) {
-            res.writeHead(500);
-            res.end();
-        } else {
-            if (!adminUser) {
-                res.writeHead(401);
-                res.end();
-            } else {
-                req.session._mongooseAdminUser = adminUser.toSessionStore();
-                res.writeHead(200, {"Content-Type": "application/json"});
-                res.write("{}");
-                res.end();
-            }
-        }
+        if (err)
+            return next(err);
+
+        if (!adminUser)
+            return res.send(401, 'Not authorized');
+
+        req.session._mongooseAdminUser = adminUser.toSessionStore();
+        res.writeHead(200, {"Content-Type": "application/json"});
+        res.write("{}");
+        return res.end();
     });
 };
 

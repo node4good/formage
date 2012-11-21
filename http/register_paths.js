@@ -2,8 +2,7 @@ var routesJson = require('../routes/json.js')
 	, routes = require('../routes/index.js');
 
 
-var path_join = function()
-{
+var path_join = function() {
     var str = '';
     for(var i=0; i<arguments.length; i++)
     {
