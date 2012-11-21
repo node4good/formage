@@ -1,14 +1,12 @@
-
-
-var Class = require('sji')
-    ,forms = require('formage')
-    ,jest = require('jest')
-    ,MongooseAdminAudit = require('./mongoose_admin_audit.js').MongooseAdminAudit
-    ,async = require('async')
-    ,_ = require('underscore');
+var Class = require('sji'),
+    forms = require('formage'),
+    jest = require('jest'),
+    MongooseAdminAudit = require('./mongoose_admin_audit.js').MongooseAdminAudit,
+    async = require('async'),
+    _ = require('underscore');
 
 var AdminModel = module.exports = Class.extend({
-    init: function(options){
+    init: function (options) {
         options = options || {};
         this.name = options.name || null;
         this.model = options.model || null;
@@ -19,43 +17,40 @@ var AdminModel = module.exports = Class.extend({
         this.actions = [];
         this.is_single = false;
     },
-    update:function(req,user,document_id,params,callback){
+
+    update: function (req, user, document_id, params, callback) {
         var self = this;
         var model = self.model;
         var form_type = self.form_type;
         var form = null;
         async.waterfall([
-            function(cbk)
-            {
-                model.findById(document_id, function(err, document) {
-                    cbk(err,document);
+            function (cbk) {
+                model.findById(document_id, function (err, document) {
+                    cbk(err, document);
                 });
             },
-            function(document,cbk)
-            {
-                form = new form_type(req,{instance:document,data:params},model);
-                form.is_valid(function(err,valid){
-                        cbk(err || valid);
+            function (document, cbk) {
+                form = new form_type(req, {instance: document, data: params}, model);
+                form.is_valid(function (err, valid) {
+                    cbk(err || valid);
                 });
             },
-            function(cbk)
-            {
+            function (cbk) {
                 form.save(cbk);
             },
-            function(document,cbk){
+            function (document, cbk) {
 
-                MongooseAdminAudit.logActivity(user, self.name, document._id, 'edit', null, function(err, auditLog) {
+                MongooseAdminAudit.logActivity(user, self.name, document._id, 'edit', null, function (err, auditLog) {
                     cbk(null, document);
                 });
             }],
             callback);
     },
-    count:function(callback)
-    {
-        if(this.is_single)
-            this.model.count({},callback);
-        else
-            callback(null,1);
-    }
 
+    count: function (callback) {
+        if (this.is_single)
+            this.model.count({}, callback);
+        else
+            callback(null, 1);
+    }
 });

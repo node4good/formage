@@ -3,18 +3,20 @@ $(function() {
 
     $('form').submit(function(e) {
         e.preventDefault();
+        $('#loginButton').button('loading');
 
-        var postData = 'username=' + encodeURIComponent($('#username').val()) +
-            '&password=' + encodeURIComponent($('#password').val());
         $.ajax({
-            type:'POST',
+            type: 'POST',
             url: root + '/json/login',
-            data: postData,
+            data: $(this).serialize(),
+//            timeout: 5000,
             success: function(result) {
                 location.href = root + '/';
             },
             error: function(xhr, textStatus) {
-                alert(textStatus);
+                $('#loginButton').button('reset');
+                console.error('Login error', arguments);
+                alert('Login Error');
             }
         });
     });
