@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
 
 var s = new Schema({
     list: [{
-        name: String,
+        name: { type: String, required: true },
         list: [{
             name: String
         }]

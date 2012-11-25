@@ -11,7 +11,7 @@ block body
         h2 #{modelName.replace(/_/g,' ')} editor
 
     - if (errors)
-        p.alert.alert-error Saving failed, fix the following errors and try again
+        p.alert.alert-error Saving failed, fix the following errors and try again.
     form#document(enctype="multipart/form-data",method="post").clearfix
         != renderedDocument
         p.submit.btn-group

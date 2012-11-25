@@ -33,9 +33,7 @@ p.error {
     field
 */
 .field {
-    /*clear: both;*/
-    /*float: left;*/
-    /*display: block !important;*/
+    position: relative;
 }
 .field .field_label {
     float: left;
@@ -45,8 +43,14 @@ p.error {
     overflow: hidden;
 }
 .field span.error {
-    float: right;
+    /*float: right;*/
+    position: relative; top: -4px;
     margin-left: 10px;
+    padding: 3px 5px;
+    color: #B94A48; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    background-color: #F2DEDE;
+    border: 1px solid #FBEED5;
+    border-radius: 4px;
 }
 
 
@@ -64,6 +68,17 @@ p.error {
 }
 .nf_datepicker {
     width: 273px;
+}
+.input-append {
+    float: left;
+}
+.input-append + span.error {
+    top: 6px;
+}
+.nf_widget + span.error,
+.field textarea + span.error {
+    position: absolute;
+    top: 35px; left: 20px;
 }
 
 
@@ -128,6 +143,9 @@ p.error {
 .nf_listfield_container > .field_label {
     font-size: 20px;
     font-weight: bold;
+}
+.nf_listfield_container > span.error {
+    display: none;
 }
 .nf_hidden_template {
     display: none;

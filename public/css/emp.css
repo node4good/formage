@@ -76,8 +76,7 @@ a h3 { color: black; }
     padding: 5px;
 }
 .ui-sortable-helper {
-    border: 1px solid #DDD;
-    border-width: 0 1px 1px 0;
+    border: 0 1px 1px 0 solid #DDD;
     background: whiteSmoke;
 }
 tr.sortable-placeholder {
@@ -108,4 +107,7 @@ p.submit {
 }
 p.submit button[type=submit] {
     width: 160px;
+}
+p.alert-error {
+    margin: -20px 0 30px 0;
 }
