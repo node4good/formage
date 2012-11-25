@@ -19,7 +19,9 @@ var btn = {
 var fieldset = function (ctx) {
     if (ctx == document.body) {
         $('.nf_fieldset').addClass('closed');
-        $('.error').parents('.nf_fieldset > div').show();
+        $('.error')
+            .parents('.nf_fieldset > div').show()
+            .parents('.nf_fieldset').removeClass('closed');
     }
 
     $('.nf_fieldset', ctx).each(function() {
@@ -145,8 +147,6 @@ var widgets = function(ctx) {
 
 
 $(function(){
-    $('p.error').hide().slideDown();
-
     $('.optional_label').each(function() {
         $('label[for="' + this.id  + '"]').addClass('optional_label');
     });

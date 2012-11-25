@@ -19,7 +19,7 @@ var s = new Schema({
     map: { type: Schema.Types.GeoPoint, required: true },
     num: { type: Schema.Types.Integer, required: true },
     order: { type: Number, editable: false, required: true },
-    bool: { type: Boolean, 'default': true, required: true },
+    bool: { type: Boolean, 'default': true },
     object: {
         object: {
             object: {
