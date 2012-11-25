@@ -1,22 +1,24 @@
 {
   "name": "formage-admin",
-  "description": "admin for mongoose and not mongoose projects which uses formage",
+  "description": "Admin for mongoose and non-mongoose projects which uses formage",
   "version": "0.0.70",
   "author": {
     "name": "Ishai Jaffe",
     "email": "ishai@empeeric.com"
   },
   "dependencies": {
-    "formage": "https://github.com/etaypere/formage/tarball/master",
-    "mongoose": "*",
-    "underscore": "*",
-    "async": "*",
+    "formage": "",
+    "mongoose": "",
+    "underscore": "",
+    "async": "",
     "jest": ">= 0.1.30",
-    "jade": "*"
+    "jade": ""
   },
   "devDependencies": {
-    "express": "*"
-},
+    "express": "",
+    "connect-mongo": "",
+    "ejs": ""
+  },
   "main": "index",
   "keywords": [
     "admin",
@@ -30,10 +32,5 @@
   },
   "engines": {
     "node": ">= 0.4.1"
-  },
-  "_id": "formage-admin@0.0.70",
-  "dist": {
-    "shasum": "5873de29387628d281e29a39317535959593e279"
-  },
-  "_from": "formage-admin@git://github.com/etaypere/formage-admin.git"
+  }
 }
