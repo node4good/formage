@@ -8,17 +8,15 @@
   },
   "dependencies": {
     "formage": "https://github.com/etaypere/formage/tarball/master",
-    "mongoose": "",
-    "underscore": "",
-    "async": "",
+    "mongoose": "*",
+    "underscore": "*",
+    "async": "*",
     "jest": ">= 0.1.30",
-    "jade": ""
+    "jade": "*"
   },
   "devDependencies": {
-    "express": "",
-    "connect-mongo": "",
-    "ejs": ""
-  },
+    "express": "*"
+},
   "main": "index",
   "keywords": [
     "admin",

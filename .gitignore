@@ -4,3 +4,4 @@ node_modules/*
 MongoFiles/*
 /RunMongoD.bat
 /npm-debug.log
+/.idea
