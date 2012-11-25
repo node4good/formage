@@ -18,8 +18,10 @@ block body
             button#saveButton.btn.btn-large.btn-primary(type='submit',data-saving-text="Saving...") Save
             a#cancelButton.btn.btn-large(href="#{rootPath}/model/#{collectionName}") Cancel
             - if (allowDelete)
-                button#deleteButton.btn.btn-large.btn-danger Delete
+                button#deleteButton.btn.btn-large.btn-danger(type='button',data-loading-text='Deleting...') Delete
 
 block scripts
+    script
+        var model = '#{collectionName}';
     script(src="/js/document.js")
     script(src="/js/forms.js")
