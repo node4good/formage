@@ -5,7 +5,9 @@ var mongoose = require('mongoose'),
 var s = new Schema({
     title: { type: String, required: true },
 
-    map: { type: Schema.Types.GeoPoint, required: true }
+    list: [{
+        name: String
+    }]
 });
 
 s.methods.toString = function() {

@@ -40,8 +40,7 @@ var fieldset = function (ctx) {
             if (!(t.is('.closed') || $(e.target).is(h2) || $(e.target).is(i)))
                 return;
 
-            i.toggleClass('icon-chevron-right')
-                .toggleClass('icon-chevron-down');
+            i.toggleClass('icon-chevron-right icon-chevron-down');
 
             t.toggleClass('closed');
             div.stop(1,1).slideToggle('fast');
@@ -67,11 +66,11 @@ var ListField = function(el) {
         tpl.remove();
 
         self.list = $('> ul', el)
-            .prepend(btn.add().click(self.add));
+            .append(btn.add().click(self.add));
 
         self.length = $('> li', self.list)
-            .prepend(btn.drag())
-            .prepend(btn.delete())
+            .append(btn.drag())
+            .append(btn.delete())
             .length;
 
         self.list.sortable({
@@ -80,7 +79,7 @@ var ListField = function(el) {
             update: function() {
                 var i = 0;
 
-                $('>li', this).each(function(){
+                $('> li', this).each(function(){
                     var li = this;
                     $('[name]', li).each(function() {
                         var input = $(this);
@@ -99,20 +98,19 @@ var ListField = function(el) {
 
         var li = $('<li />').hide()
             .append(self.template)
-            .prepend(btn.delete())
-            .prepend(btn.drag())
-            .insertAfter(this)
+            .append(btn.delete())
+            .append(btn.drag())
+            .insertBefore(this)
             .slideDown(function() {
                 $('input:first', li).focus();
             });
 
         $('[name]', li).each(function() {
-            var input = $(this);
-            input.attr(
-                'name',
-                input.attr('name')
-                    .replace(self.name + '_tmpl_',self.name + '_li' + self.length + '_')
-            );
+            var input = $(this),
+                name = input.attr('name').replace(self.name + '_tmpl_', self.name + '_li' + self.length + '_');
+
+            console.log('name', input.attr('name'), name);
+            input.attr('name', name);
         });
 
         self.length++;

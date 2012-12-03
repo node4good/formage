@@ -8,7 +8,7 @@ var express = require('express'),
 
 var app = express();
 
-app.configure(function(){
+app.configure('all', function(){
     app.set('port', process.env.PORT || 80);
     app.set('mongo', 'mongodb://localhost/formage-admin-example');
 
