@@ -6,7 +6,7 @@ var s = new Schema({
     title: { type: String, required: true },
 
     list: [{
-        name: String
+        name: { type: String, required: true }
     }]
 });
 
@@ -15,4 +15,3 @@ s.methods.toString = function() {
 };
 
 module.exports = mongoose.model('pages', s);
-

@@ -1,7 +1,7 @@
 {
   "name": "formage-admin",
   "description": "Admin for mongoose and non-mongoose projects which uses formage",
-  "version": "0.0.70",
+  "version": "0.1.0",
   "author": {
     "name": "Ishai Jaffe",
     "email": "ishai@empeeric.com"

@@ -61,7 +61,7 @@ p.error {
     margin: 0 0 10px 180px;
 }
 .nf_add {
-    margin: 0 0 10px 180px;
+    margin-bottom: 10px;
 }
 .select2-container {
     min-width: 314px;
@@ -150,6 +150,9 @@ p.error {
 .nf_hidden_template {
     display: none;
 }
+.nf_listfield {
+    padding-left: 180px;
+}
 .nf_listfield ul {
     margin: 0;
 }
@@ -158,7 +161,7 @@ p.error {
     display: block;
     list-style: none;
 
-    margin: 0 0 10px 180px;
+    margin-bottom: 10px;
     padding: 15px 5px 0 5px;
     border: 1px solid #ddd;
     background: #F7F7F9;

@@ -66,7 +66,7 @@ var ListField = function(el) {
         tpl.remove();
 
         self.list = $('> ul', el)
-            .append(btn.add().click(self.add));
+            .after(btn.add().click(self.add));
 
         self.length = $('> li', self.list)
             .append(btn.drag())

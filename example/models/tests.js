@@ -18,7 +18,7 @@ var s = new Schema({
     image: { type: Schema.Types.File, required: true },
     map: { type: Schema.Types.GeoPoint, required: true },
     num: { type: Schema.Types.Integer, required: true },
-    order: { type: Number, editable: false, required: true },
+    order: { type: Number, editable: false },
     bool: { type: Boolean, 'default': true },
     object: {
         object: {
