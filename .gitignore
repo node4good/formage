@@ -1,7 +1,2 @@
-node_modules/*
-*/node_modules/*
-.idea/*
-MongoFiles/*
-/RunMongoD.bat
-/npm-debug.log
-/.idea
+node_modules/
+.idea/

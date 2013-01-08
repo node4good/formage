@@ -1,22 +1,27 @@
 {
   "name": "formage-admin",
-  "description": "Admin for mongoose and non-mongoose projects which uses formage",
-  "version": "0.1.0",
+  "description": "admin for mongoose and non mongoose projects which uses formage",
+  "version": "1.0.0",
+  "readme": "Interim",
   "author": {
     "name": "Ishai Jaffe",
     "email": "ishai@empeeric.com"
   },
+  "contributors" : [
+    "Itai Perets <itai@empeeric.com> (http://www.empeeric.com/)",
+    "Refael Ackermann <refael@empeeric.com> (http://www.empeeric.com/)",
+    "Alon Valadji <alon@empeeric.com> (http://www.empeeric.com/)"
+  ],
   "dependencies": {
-    "formage": "",
-    "mongoose": "",
     "underscore": "",
     "async": "",
-    "jest": ">= 0.1.30",
-    "jade": ""
+    "jade": "",
+    "mongoose": "",
+    "formage": "",
+    "jest": ""
   },
   "devDependencies": {
     "express": "",
-    "connect-mongo": "",
     "ejs": ""
   },
   "main": "index",
@@ -28,9 +33,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git@github.com:etaypere/formage-admin.git"
+    "url": "https://github.com/Empeeric/admin-forms.git"
   },
   "engines": {
-    "node": ">= 0.4.1"
+    "node": "0.8.x",
+    "npm": "1.1.x"
   }
 }
