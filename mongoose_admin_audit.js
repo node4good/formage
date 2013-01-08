@@ -1,21 +1,19 @@
-/** 
- * Module dependencies
- */
+'use strict';
 var mongoose = require('mongoose');
 
 var AuditData = new mongoose.Schema({
-    created: {type:Date, required:true, 'default':new Date},
-    user: {type:mongoose.Schema.ObjectId, required:true},
+    created: {type: Date, required: true, 'default': new Date},
+    user: {type: mongoose.Schema.ObjectId, required: true},
     model: String,
     collectionName: String,
     documentId: mongoose.Schema.ObjectId,
-    action: {type:String, required:true},
+    action: {type: String, required: true},
     note: String
 });
-mongoose.model('_MongooseAdminAudit', AuditData);
+'_MongooseAdminAudit' in Object.keys(mongoose['models']) || mongoose.model('_MongooseAdminAudit', AuditData);
 
-function MongooseAdminAudit() {
-    this.fields = {};
+exports.MongooseAdminAudit = function (fields) {
+    this.fields = fields || {};
 };
 
 /**
@@ -30,11 +28,8 @@ function MongooseAdminAudit() {
  *
  * @api private
  */
-MongooseAdminAudit.logActivity = function(user, modelName, collectionName, documentId, action, note, onReady) {
-    var auditLog = new MongooseAdminAudit();
-    var auditLogModel = mongoose.model('_MongooseAdminAudit');
-
-    auditLogData = new auditLogModel();
+exports.MongooseAdminAudit.logActivity = function (user, modelName, collectionName, documentId, action, note, onReady) {
+    var auditLogData = new mongoose.model('_MongooseAdminAudit')();
     auditLogData.user = user.fields._id;
     auditLogData.model = modelName;
     auditLogData.collectionName = collectionName;
@@ -42,15 +37,13 @@ MongooseAdminAudit.logActivity = function(user, modelName, collectionName, docum
     auditLogData.action = action;
     auditLogData.note = note;
 
-    auditLogData.save(function(err) {
+    auditLogData.save(function (err) {
         if (err) {
-            console.log('Unable to store item in audit log because: ' + err);
+            console.log('Unable to store item in audit log because: ', err);
             onReady('Unable to store item in log', null);
         } else {
-            auditLog.fields = auditLogData;
+            var auditLog = new exports.MongooseAdminAudit(auditLogData);
             onReady(null, auditLog);
         }
     });
 };
-
-exports.MongooseAdminAudit = MongooseAdminAudit;
