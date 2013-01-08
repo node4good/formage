@@ -3,19 +3,19 @@
  */
 var mongoose = require('mongoose');
 
+var AuditData = new mongoose.Schema({
+    created: {type:Date, required:true, 'default':new Date},
+    user: {type:mongoose.Schema.ObjectId, required:true},
+    model: String,
+    collectionName: String,
+    documentId: mongoose.Schema.ObjectId,
+    action: {type:String, required:true},
+    note: String
+});
+mongoose.model('_MongooseAdminAudit', AuditData);
+
 function MongooseAdminAudit() {
     this.fields = {};
-
-    var AuditData = new mongoose.Schema({
-        created:{type:Date, required:true, 'default':new Date},
-        user:{type:mongoose.Schema.ObjectId, required:true},
-        model:{type:String},
-        collectionName:{type:String},
-        documentId:{type:mongoose.Schema.ObjectId},
-        action:{type:String, required:true},
-        note:{type:String}
-    });
-    mongoose.model('_MongooseAdminAudit', AuditData);
 };
 
 /**
