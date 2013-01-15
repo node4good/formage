@@ -1,13 +1,4 @@
-/*!
- * Mongoose Admin
- * Copyright (c) 2011 Marc Campbell (marc.e.campbell@gmail.com)
- * MIT Licensed
- */
-
-
- /**
-  * Module dependencies
-  */
+'use strict';
 var MongooseAdminUser = require('./mongoose_admin_user.js').MongooseAdminUser,
     MongooseAdminAudit = require('./mongoose_admin_audit.js').MongooseAdminAudit,
     _ = require('underscore'),
@@ -24,7 +15,7 @@ exports.version = '0.0.1';
 
 var app;
 
-/** 
+/**
  * Create the admin singleton object
  *
  * @param {String} dbUri
