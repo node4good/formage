@@ -307,3 +307,7 @@ ensureUserExists : function(username, password) {
     }
 
 });
+
+FormageAdmin.createAdmin = function(app,options){
+    return new FormageAdmin(app,options);
+};
