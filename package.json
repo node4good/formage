@@ -1,16 +1,27 @@
 {
   "name": "formage-admin",
   "description": "admin for mongoose and non mongoose projects which uses formage",
-  "version": "1.0.0",
-  "readme": "Interim",
+  "version": "1.0.1",
   "author": {
     "name": "Ishai Jaffe",
     "email": "ishai@empeeric.com"
   },
-  "contributors" : [
-    "Itai Perets <itai@empeeric.com> (http://www.empeeric.com/)",
-    "Refael Ackermann <refael@empeeric.com> (http://www.empeeric.com/)",
-    "Alon Valadji <alon@empeeric.com> (http://www.empeeric.com/)"
+  "contributors": [
+    {
+      "name": "Itai Perets",
+      "email": "itai@empeeric.com",
+      "url": "http://www.empeeric.com/"
+    },
+    {
+      "name": "Refael Ackermann",
+      "email": "refael@empeeric.com",
+      "url": "http://www.empeeric.com/"
+    },
+    {
+      "name": "Alon Valadji",
+      "email": "alon@empeeric.com",
+      "url": "http://www.empeeric.com/"
+    }
   ],
   "dependencies": {
     "underscore": "",

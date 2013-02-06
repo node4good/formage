@@ -76,7 +76,7 @@ exports.model = function (req, res) {
 
     var filters = {};
     Object.keys(query)
-        .remove(function (key) { return key in ['start', 'count', 'order_by', 'saved']; })
+        .filter(function (key) { return !key in ['start', 'count', 'order_by', 'saved']; })
         .forEach(function (key) { filters[key] = query[key]; });
 
     var sort = query.order_by;
