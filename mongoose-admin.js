@@ -8,7 +8,7 @@ var MongooseAdminUser = require('./mongoose_admin_user.js').MongooseAdminUser,
 	paths = require('./http/register_paths'),
     AdminForm = require('./form').AdminForm,
     forms = require('formage').forms;
-	
+
 
 exports = module.exports = MongooseAdmin;
 exports.version = '0.0.1';
@@ -43,11 +43,11 @@ exports.createAdmin = function(app,options) {
 
 
     paths.registerPaths(MongooseAdmin, app, '/' + root);
-	
+
     app.use(require('express').static(__dirname + '/public'));
 
     MongooseAdmin.singleton = new MongooseAdmin(app, '/' + root);
-	
+
     return MongooseAdmin.singleton;
 //    }
 };
@@ -212,7 +212,7 @@ MongooseAdmin.prototype.registerModel = function(model, name, options) {
 
 };
 
-/** 
+/**
  * Retrieve a list of all registered models
  *
  * @param {Function} onReady
@@ -244,9 +244,9 @@ MongooseAdmin.prototype.getModel = function(collectionName, onReady) {
     onReady(null, this.models[collectionName].model, this.models[collectionName].fields, this.models[collectionName].options);
 };
 
-/** 
+/**
  * Get the counts of a model
- * 
+ *
  * @param {String} collectionName
  *
  * @api public
@@ -370,9 +370,9 @@ MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, cou
     }
 };
 
-/** 
+/**
  * Retrieve a single document
- * 
+ *
  * @param {String} collectionName
  * @param {String} documentId
  * @param {Function} onReady
@@ -390,7 +390,7 @@ MongooseAdmin.prototype.getDocument = function(collectionName, documentId, onRea
     });
 };
 
-/** 
+/**
  * Create a new document
  *
  * @param {String} collectionName
@@ -489,9 +489,9 @@ MongooseAdmin.prototype.updateDocument = function(req,user, collectionName, docu
                             if (self.models[collectionName].options && self.models[collectionName].options.post) {
                                 document = self.models[collectionName].options.post(document);
                             }
-                            MongooseAdminAudit.logActivity(user, self.models[collectionName].modelName, collectionName, document._id, 'edit', null, function(err, auditLog) {
+//                            MongooseAdminAudit.logActivity(user, self.models[collectionName].modelName, collectionName, document._id, 'edit', null, function(err, auditLog) {
                                 onReady(null, document);
-                            });
+//                            });
                         }
 
                     });
@@ -599,16 +599,16 @@ MongooseAdmin.prototype.actionDocuments =function(user,collectionName,actionId,d
  * Deserialize a user from a session store object
  *
  * @param {Object} sessionStore
- * 
+ *
  * @api private
  */
 MongooseAdmin.userFromSessionStore = function(sessionStore) {
     return MongooseAdminUser.fromSessionStore(sessionStore);
 };
 
-/** 
+/**
  * Create an admin user account
- * 
+ *
  * @param {String} username
  * @param {Stirng} password
  *
@@ -622,7 +622,7 @@ MongooseAdmin.prototype.ensureUserExists = function(username, password) {
     });
 };
 
-/** 
+/**
  * Log in as a user
  *
  * @param {String} username
