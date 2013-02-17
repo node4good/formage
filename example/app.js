@@ -21,7 +21,7 @@ app.configure('all', function(){
 });
 
 app.configure('development', function(){
-    app.use(express.logger('dev'));
+//    app.use(express.logger('dev'));
     app.use(express.errorHandler());
 });
 

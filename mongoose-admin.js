@@ -63,7 +63,7 @@ function MongooseAdmin(app, root) {
     this.root = root;
     this.models = {};
     this.title = "Backoffice";
-};
+}
 
 /**
  * Build a full path that can be used in a URL
@@ -74,12 +74,11 @@ MongooseAdmin.prototype.buildPath = function(path) {
     return this.root + path;
 };
 
-MongooseAdmin.prototype.getAdminTitle = function(){
+MongooseAdmin.prototype.getAdminTitle = function() {
     return this.title;
 };
 
-MongooseAdmin.prototype.setAdminTitle = function(title)
-{
+MongooseAdmin.prototype.setAdminTitle = function(title) {
     this.title = title;
 };
 
