@@ -21,7 +21,7 @@ exports.index = function (req, res) {
     } else {
         MongooseAdmin.singleton.getRegisteredModels(adminUser, function (err, models) {
             if (err) {
-                res.redirect('/error');
+                res.redirect(MongooseAdmin.singleton.buildPath('/error'));
             } else {
                 var config = MongooseAdmin.singleton.pushExpressConfig();
                 res.locals = {

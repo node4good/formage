@@ -37,7 +37,7 @@ exports.createAdmin = function(app,options) {
 //        return MongooseAdmin.singleton;
 //    } else if (options.app && options.root) {
     options = options || {};
-    var root = options.root || '';
+    var root = options.root || 'admin';
     console.log('\x1b[36mMongooseAdmin is listening at path: \x1b[0m %s', root);
 //        console.log('\x1b[36mMongooseAdmin is connected using db: \x1b[0m %s', dbUri);
 
