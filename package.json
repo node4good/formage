@@ -8,8 +8,8 @@
   },
   "contributors": [
     {
-      "name": "Itai Perets",
-      "email": "itai@empeeric.com",
+      "name": "Etai Peretz",
+      "email": "etai@empeeric.com",
       "url": "http://www.empeeric.com/"
     },
     {
@@ -28,6 +28,7 @@
     "async": "",
     "jade": "",
     "formage": "",
+    "sji": "",
     "jest": ""
   },
   "devDependencies": {
