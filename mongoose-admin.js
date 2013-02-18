@@ -1,6 +1,6 @@
 'use strict';
 var MongooseAdminUser = require('./mongoose_admin_user.js').MongooseAdminUser,
-    MongooseAdminAudit = require('./mongoose_admin_audit.js').MongooseAdminAudit,
+    // MongooseAdminAudit = require('./mongoose_admin_audit.js').MongooseAdminAudit,
     _ = require('underscore'),
     async = require('async'),
     permissions = require('./permissions'),
@@ -425,9 +425,9 @@ MongooseAdmin.prototype.createDocument = function(req,user, collectionName, para
                         if (self.models[collectionName].options && self.models[collectionName].options.post) {
                             document = self.models[collectionName].options.post(document);
                         }
-                        MongooseAdminAudit.logActivity(user, self.models[collectionName].modelName, collectionName, document._id, 'add', null, function(err, auditLog) {
+//                        MongooseAdminAudit.logActivity(user, self.models[collectionName].modelName, collectionName, document._id, 'add', null, function(err, auditLog) {
                             onReady(null, document);
-                        });
+//                        });
                     }
                 });
             }
@@ -536,9 +536,9 @@ MongooseAdmin.prototype.deleteDocument = function(user, collectionName, document
                         onReady('unlink dependencies failed');
                     else {
                         document.remove();
-                        MongooseAdminAudit.logActivity(user, self.models[collectionName].modelName, collectionName, documentId, 'del', null, function(err, auditLog) {
+//                        MongooseAdminAudit.logActivity(user, self.models[collectionName].modelName, collectionName, documentId, 'del', null, function(err, auditLog) {
                             onReady(null);
-                        });
+//                        });
                     }
                 });
             }

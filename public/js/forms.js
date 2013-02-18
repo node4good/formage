@@ -136,7 +136,7 @@ var widgets = function(ctx) {
 
     if ($.fn.datepicker)
         $('.nf_datepicker', ctx).datepicker({
-            format: 'dd/mm/yyyy'
+            format: 'yyyy/mm/dd'
         });
 
     if ($.fn.timepicker)
