@@ -6,7 +6,7 @@ var path = require('path');
 
 module.exports.crypt = require('./crypt');
 module.exports.forms = require('formage');
-var paths = require('./http/register_paths');
+var paths = require('./register_paths');
 exports.loadApi = require('./form').loadApi;
 exports.AdminForm = require('./form').AdminForm;
 
