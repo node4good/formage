@@ -5,52 +5,11 @@ var MongooseAdminUser = require('./mongoose_admin_user.js').MongooseAdminUser,
     async = require('async'),
     permissions = require('./permissions'),
     mongoose = require('mongoose'),
-	paths = require('./http/register_paths'),
     AdminForm = require('./form').AdminForm,
     forms = require('formage').forms;
 
 
-exports = module.exports = MongooseAdmin;
-exports.version = '0.0.1';
-
 var app;
-
-/**
- * Create the admin singleton object
- *
- * @param {String} dbUri
- * @param {Number} port
- *
- * @api public
- */
-exports.createAdmin = function(app,options) {
-//    if (options.port) {
-//        var app = app || (app = require('http'));
-//
-//        app.listen(options.port);
-//        require('http/paths').registerPaths(app, '/');
-//
-//        console.log('\x1b[36mMongooseAdmin is listening on port: \x1b[0m %d', options.port);
-//        console.log('\x1b[36mMongooseAdmin is connected using db: \x1b[0m %s', dbUri);
-//
-//        MongooseAdmin.singleton = new MongooseAdmin(app, '');
-//        return MongooseAdmin.singleton;
-//    } else if (options.app && options.root) {
-    options = options || {};
-    var root = options.root || '';
-    console.log('\x1b[36mMongooseAdmin is listening at path: \x1b[0m %s', root);
-//        console.log('\x1b[36mMongooseAdmin is connected using db: \x1b[0m %s', dbUri);
-
-
-    paths.registerPaths(MongooseAdmin, app, '/' + root);
-
-    app.use(require('express').static(__dirname + '/public'));
-
-    MongooseAdmin.singleton = new MongooseAdmin(app, '/' + root);
-
-    return MongooseAdmin.singleton;
-//    }
-};
 
 /**
  * MongooseAdmin Constructor
@@ -638,6 +597,4 @@ MongooseAdmin.prototype.login = function(username, password, onReady) {
 };
 
 
-exports.loadApi = require('./form').loadApi;
-
-exports.AdminForm = AdminForm;
+module.exports = MongooseAdmin;
