@@ -9,33 +9,10 @@ var MongooseAdminUser = require('./mongoose_admin_user.js').MongooseAdminUser,
     AdminForm = require('./form').AdminForm,
     forms = require('formage').forms;
 
-
 exports = module.exports = MongooseAdmin;
 exports.version = '0.0.1';
 
 var app;
-
-/**
- * Create the admin singleton object
- *
- * @param {String} dbUri
- * @param {Number} port
- *
- * @api public
- */
-exports.createAdmin = function(app, options) {
-    options = options || {};
-    var root = '/' + (options.root || 'admin');
-    console.log('\x1b[36mMongooseAdmin is listening at path: \x1b[0m %s', root);
-//        console.log('\x1b[36mMongooseAdmin is connected using db: \x1b[0m %s', dbUri);
-
-    paths.registerPaths(MongooseAdmin, app, root);
-
-    app.use(root, require('express').static(__dirname + '/public'));
-
-    MongooseAdmin.singleton = new MongooseAdmin(app, root);
-    return MongooseAdmin.singleton;
-};
 
 /**
  * MongooseAdmin Constructor
