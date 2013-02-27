@@ -1,12 +1,11 @@
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema,
-    ObjectId = Schema.Types.ObjectId;
+    Types = mongoose.Schema.Types;
 
-var s = new Schema({
+var s = new mongoose.Schema({
     title: { type: String, required: true },
 
-    list: [{
-        name: { type: String, required: true }
+    gallery: [{
+        picture: { type: Types.Picture }
     }]
 });
 
