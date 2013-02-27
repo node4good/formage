@@ -1,7 +1,9 @@
-var MongooseAdmin = require('./mongoose-admin.js');
+var fa = require('./index.js');
 
-module.exports = function(app, models, opt) {
-    var admin = MongooseAdmin.createAdmin(app, opt);
+module.exports = function(app, express, models, opt) {
+    fa.serve_static(app, express, opt);
+
+    var admin = fa.createAdmin(app, opt);
 
     admin.setAdminTitle(opt.title || 'Admin');
 

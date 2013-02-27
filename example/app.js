@@ -27,7 +27,7 @@ app.configure('development', function(){
 
 require('mongoose').connect(app.get('mongo'));
 //require('./admin')(app);
-var admin = require('../index').init(app, require('./models'), {
+var admin = require('../index').init(app, express, require('./models'), {
     title: 'Formage-Admin Example'
 });
 
