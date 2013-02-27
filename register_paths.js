@@ -1,5 +1,5 @@
-var routesJson = require('../routes/json.js')
-	, routes = require('../routes/index.js');
+var routesJson = require('./routes/json.js')
+	, routes = require('./routes/index.js');
 
 
 var path_join = function() {
@@ -16,7 +16,7 @@ var path_join = function() {
 
 exports.registerPaths = function(admin,app, root) {
 
-	
+
 	routes.setAdmin(admin);
 	routesJson.setAdmin(admin);
 
