@@ -8,13 +8,13 @@ block body
             - var url = rootPath + '/model/' + model.modelName
             li
                 .btn-group.pull-right
-                    - if(model.is_single)
+                    - if (model.is_single)
                         a.btn(href='#{url}/document/new') Edit
                     - else
                         a.btn(href='#{url}/document/new') New
                         a.btn.btn-info(href=url)
                             span(id='viewAll_#{model.modelName}') View All
-                a(href=url)
+                a(href=url + (model.is_single ? '/document/new' : ''))
                     h3 #{model.modelName.replace(/_/g,' ')}
 
 
