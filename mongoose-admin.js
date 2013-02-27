@@ -5,11 +5,37 @@ var MongooseAdminUser = require('./mongoose_admin_user.js').MongooseAdminUser,
     async = require('async'),
     permissions = require('./permissions'),
     mongoose = require('mongoose'),
+	paths = require('./register_paths'),
     AdminForm = require('./form').AdminForm,
     forms = require('formage').forms;
 
 
+exports = module.exports = MongooseAdmin;
+exports.version = '0.0.1';
+
 var app;
+
+/**
+ * Create the admin singleton object
+ *
+ * @param {String} dbUri
+ * @param {Number} port
+ *
+ * @api public
+ */
+exports.createAdmin = function(app, options) {
+    options = options || {};
+    var root = '/' + (options.root || 'admin');
+    console.log('\x1b[36mMongooseAdmin is listening at path: \x1b[0m %s', root);
+//        console.log('\x1b[36mMongooseAdmin is connected using db: \x1b[0m %s', dbUri);
+
+    paths.registerPaths(MongooseAdmin, app, root);
+
+    app.use(root, require('express').static(__dirname + '/public'));
+
+    MongooseAdmin.singleton = new MongooseAdmin(app, root);
+    return MongooseAdmin.singleton;
+};
 
 /**
  * MongooseAdmin Constructor
@@ -22,7 +48,7 @@ function MongooseAdmin(app, root) {
     this.root = root;
     this.models = {};
     this.title = "Backoffice";
-};
+}
 
 /**
  * Build a full path that can be used in a URL
@@ -33,12 +59,11 @@ MongooseAdmin.prototype.buildPath = function(path) {
     return this.root + path;
 };
 
-MongooseAdmin.prototype.getAdminTitle = function(){
+MongooseAdmin.prototype.getAdminTitle = function() {
     return this.title;
 };
 
-MongooseAdmin.prototype.setAdminTitle = function(title)
-{
+MongooseAdmin.prototype.setAdminTitle = function(title) {
     this.title = title;
 };
 
@@ -597,4 +622,6 @@ MongooseAdmin.prototype.login = function(username, password, onReady) {
 };
 
 
-module.exports = MongooseAdmin;
+exports.loadApi = require('./form').loadApi;
+
+exports.AdminForm = AdminForm;
