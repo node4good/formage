@@ -5,8 +5,7 @@ var s = new mongoose.Schema({
     title: { type: String, required: true },
 
     gallery: [{
-        value: String,
-        picture: { type: Types.Picture }
+        picture: { type: Types.Picture },
     }]
 });
 
