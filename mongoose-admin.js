@@ -415,60 +415,42 @@ MongooseAdmin.prototype.createDocument = function(req,user, collectionName, para
  *
  * @api public
  */
-MongooseAdmin.prototype.updateDocument = function(req,user, collectionName, documentId, params, onReady) {
+MongooseAdmin.prototype.updateDocument = function(req, user, collectionName, documentId, params, onReady) {
     onReady = _.once(onReady);
-    var self = this;
-    var fields = this.models[collectionName].fields;
-    var model = this.models[collectionName].model;
-    if(permissions.hasPermissions(user,collectionName,'update'))
-    {
 
-        var form_type = this.models[collectionName].options.form || AdminForm;
-    model.findById(documentId, function(err, document) {
+    var self = this,
+        fields = this.models[collectionName].fields,
+        model = this.models[collectionName].model;
+
+    if (!permissions.hasPermissions(user,collectionName,'update')) {
+        return onReady('unauthorized');
+    }
+
+    var form_type = this.models[collectionName].options.form || AdminForm;
+    return model.findById(documentId, function (err, document) {
         if (err) {
             console.log('Error retrieving document to update: ' + err);
-            onReady('Unable to update', null);
-        } else {
-
-            var form = new form_type(req,{instance:document,data:params},model);
-            form.is_valid(function(err,valid)
-            {
-                if(err)
-                {
-                    onReady(err, null);
-                    return;
-                }
-                if(valid)
-                {
-                    form.save(function(err,document)
-                    {
-                        if (err) {
-//                            console.log('Unable to update document: ' + err);
-                            onReady(form, null);
-                        } else {
-
-                            if (self.models[collectionName].options && self.models[collectionName].options.post) {
-                                document = self.models[collectionName].options.post(document);
-                            }
-//                            MongooseAdminAudit.logActivity(user, self.models[collectionName].modelName, collectionName, document._id, 'edit', null, function(err, auditLog) {
-                                onReady(null, document);
-//                            });
-                        }
-
-                    });
-                }
-                else
-                {
-                    onReady(form,null);
-                }
-            });
+            return onReady('Unable to update', null);
         }
+
+        var form = new form_type(req, { instance: document, data: params }, model);
+        form.is_valid(function (err, valid) {
+            if (err || !valid)
+                return onReady(err || form, null);
+
+            return form.save(function (err, document) {
+                if (err)
+                    return onReady(form, null);
+
+                if (self.models[collectionName].options && self.models[collectionName].options.post) {
+                    document = self.models[collectionName].options.post(document);
+                }
+                // MongooseAdminAudit.logActivity(user, self.models[collectionName].modelName, collectionName, document._id, 'edit', null, function(err, auditLog) {
+                return onReady(null, document);
+                // });
+            });
+        });
     });
-    }
-    else
-    {
-        onReady('unauthorized');
-    }
 };
 
 /**

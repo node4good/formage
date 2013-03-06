@@ -12,11 +12,9 @@ var path_join = function() {
         str += '/' + comp;
     }
     return str;
-}
+};
 
 exports.registerPaths = function(admin,app, root) {
-
-
 	routes.setAdmin(admin);
 	routesJson.setAdmin(admin);
 
@@ -40,4 +38,4 @@ exports.registerPaths = function(admin,app, root) {
     app.put(path_join(root, '/json/model/:collectionName/document'), routesJson.updateDocument);
     app.delete(path_join(root,  '/json/model/:collectionName/document'), routesJson.deleteDocument);
     app.get(path_join(root, '/json/model/:collectionName/linkedDocumentsList'), routesJson.linkedDocumentsList);
-}
+};

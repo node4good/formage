@@ -75,19 +75,7 @@ var ListField = function(el) {
 
         self.list.sortable({
             items: 'li:not(.new_li)',
-            handle: '.nf_listfield_drag',
-            update: function() {
-                var i = 0;
-
-                $('> li', this).each(function(){
-                    var li = this;
-                    $('[name]', li).each(function() {
-                        var input = $(this);
-                        input.attr('name', input.attr('name').replace(new RegExp(self.name + '_li[0-9]+_'), self.name + '_li' + i + '_'));
-                    });
-                    i++;
-                });
-            }
+            handle: '.nf_listfield_drag'
         });
 
         widgets(this);
@@ -107,9 +95,8 @@ var ListField = function(el) {
 
         $('[name]', li).each(function() {
             var input = $(this),
-                name = input.attr('name').replace(self.name + '_tmpl_', self.name + '_li' + self.length + '_');
+                name = input.attr('name').replace(self.name + '_tmpl_', self.name + '_new' + self.length + '_');
 
-            console.log('name', input.attr('name'), name);
             input.attr('name', name);
         });
 
@@ -136,7 +123,7 @@ var widgets = function(ctx) {
 
     if ($.fn.datepicker)
         $('.nf_datepicker', ctx).datepicker({
-            format: 'yyyy/mm/dd'
+            format: 'yyyy-mm-dd'
         });
 
     if ($.fn.timepicker)
@@ -153,7 +140,7 @@ $(function(){
 
     $('form#document').submit(function(e) {
         $('p.submit button').prop('disabled', true);
-        var btn = $('#saveButton');
+//        var btn = $('#saveButton');
 //        btn.text(btn.data('saving-text'));
     });
 });

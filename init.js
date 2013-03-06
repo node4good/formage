@@ -6,6 +6,7 @@ module.exports = function(app, express, models, opt) {
     var admin = fa.createAdmin(app, opt);
 
     admin.setAdminTitle(opt.title || 'Admin');
+    admin.ensureUserExists(opt.username || 'admin', opt.password || 'admin');
 
     for (var name in models) {
         var model = models[name];
