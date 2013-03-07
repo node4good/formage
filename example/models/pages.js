@@ -4,8 +4,10 @@ var mongoose = require('mongoose'),
 var schema = new mongoose.Schema({
     title: { type: String, required: true },
 
+    picture: { type: Types.Picture },
+
     gallery: [{
-        picture: { type: Types.Picture },
+        picture: { type: Types.Picture }
     }]
 });
 
