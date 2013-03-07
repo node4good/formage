@@ -1,7 +1,7 @@
 var mongoose = require('mongoose'),
     Types = mongoose.Schema.Types;
 
-var s = new mongoose.Schema({
+var schema = new mongoose.Schema({
     title: { type: String, required: true },
 
     gallery: [{
@@ -9,8 +9,8 @@ var s = new mongoose.Schema({
     }]
 });
 
-s.methods.toString = function() {
+schema.methods.toString = function() {
     return this.title;
 };
 
-module.exports = mongoose.model('pages', s);
+module.exports = mongoose.model('pages', schema);
