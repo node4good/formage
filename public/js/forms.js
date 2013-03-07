@@ -95,7 +95,7 @@ var ListField = function(el) {
 
         $('[name]', li).each(function() {
             var input = $(this),
-                name = input.attr('name').replace(self.name + '_tmpl_', self.name + '_new' + self.length + '_');
+                name = input.attr('name').replace(self.name + '_tmpl_', self.name + '_li' + self.length + '_');
 
             input.attr('name', name);
         });
