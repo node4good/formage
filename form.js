@@ -2,7 +2,7 @@
 var forms =  require('formage')
     ,fields = forms.fields
     ,widgets = forms.widgets
-    ,mongoose = require('mongoose')
+    ,mongoose = require.main.require('mongoose')
     ,_ = require('underscore')
     ,jest = require('jest');
 

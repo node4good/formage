@@ -1,6 +1,6 @@
-var mongoose = require('mongoose');
+var mongoose = require.main.require('mongoose');
 
-bcrypt = require('./crypt');
+var bcrypt = require('./crypt');
 
 exports.bcrypt = bcrypt;
 

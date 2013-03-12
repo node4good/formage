@@ -1,6 +1,6 @@
 
 
-var mongoose = require('mongoose')
+var mongoose = require.main.require('mongoose')
     ,async = require('async')
     ,_ = require('underscore');
 
