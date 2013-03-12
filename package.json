@@ -1,7 +1,7 @@
 {
   "name": "formage-admin",
   "description": "Admin for Mongoose, using formage",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": {
     "name": "Ishai Jaffe",
     "email": "ishai@empeeric.com"
@@ -27,7 +27,7 @@
     "underscore": "",
     "async": "",
     "jade": "",
-    "formage": "0.1.0",
+    "formage": "",
     "sji": "",
     "jest": ""
   },
@@ -47,7 +47,7 @@
     "url": "https://github.com/Empeeric/formage-admin.git"
   },
   "engines": {
-    "node": ">= 0.8.14",
-    "npm": ">= 1.1.65"
+    "node": ">= 0.8.0",
+    "npm": ">= 1.0.0"
   }
 }
