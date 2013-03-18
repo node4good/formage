@@ -20,8 +20,8 @@ exports.createAdmin = function(app, options) {
     var root = '/' + (options.root || 'admin');
 
     console.log('\x1b[36mMongooseAdmin is listening at path: \x1b[0m %s', root);
-    paths.registerPaths(MongooseAdmin, app, root);
     MongooseAdmin.singleton = new MongooseAdmin(app, root);
+    paths.registerPaths(MongooseAdmin, app, root);
     return MongooseAdmin.singleton;
 };
 
