@@ -11,13 +11,9 @@ var json_routes = {
     login: function (req, res, next) {
         MongooseAdmin.singleton.login(req.body.username, req.body.password, function (err, adminUser) {
             if (err) return next(err);
-
             if (!adminUser) return res.send(401, 'Not authorized');
-
             req.session._mongooseAdminUser = adminUser.toSessionStore();
-            res.writeHead(200, {"Content-Type": "application/json"});
-            res.write("{}");
-            return res.end();
+            return res.json({});
         });
     },
 
