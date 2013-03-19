@@ -8,22 +8,17 @@ var MongooseAdminUser = require('./mongoose_admin_user.js').MongooseAdminUser,
     AdminForm = require('./form').AdminForm,
     forms = require('./forms').forms;
 
-exports = module.exports = MongooseAdmin;
-exports.version = '0.0.1';
-
-var app;
-
 /**
  * MongooseAdmin Constructor
  *
  * @api private
  */
-function MongooseAdmin(app, root) {
+var MongooseAdmin = module.exports = function (app, root) {
     this.app = app;
     this.root = root;
     this.models = {};
     this.title = "Backoffice";
-}
+};
 
 /**
  * Build a full path that can be used in a URL
@@ -90,16 +85,20 @@ function buildModelFilters(model,filters,dict) {
 MongooseAdmin.prototype.registerMongooseModel = function (modelName, model, fields, options) {
     options = options || {};
     options.actions = options.actions || [];
-    options.actions.push({value: 'delete', label: 'Delete', func: function (user, ids, callback) {
-        async.parallel(
-            _.map(ids, function (id) {return function (cbk) {forms.checkDependecies(modelName, id, cbk);};}),
-            function (err, results) {
-                if (err) callback(err);
-                var no_dependencies = _.filter(ids, function (result, index) {return !results[index].length;});
-                model.remove({_id: {$in: no_dependencies}}, callback);
-            }
-        );
-    }});
+    options.actions.push({
+        value: 'delete',
+        label: 'Delete',
+        func: function (user, ids, callback) {
+            async.each(ids,
+                function (id, cbk) {forms.checkDependecies(modelName, id, cbk);},
+                function (err, results) {
+                    if (err) callback(err);
+                    var no_dependencies = ids.filter(function (result, index) {return !results[index].length;});
+                    model.remove({_id: {$in: no_dependencies}}, callback);
+                }
+            );
+        }
+    });
     var filters = [];
     buildModelFilters(model, options.filters, filters);
     this.models[modelName] = {
@@ -116,8 +115,7 @@ MongooseAdmin.prototype.registerMongooseModel = function (modelName, model, fiel
 };
 
 
-MongooseAdmin.prototype.registerSingleRowModel = function(model,name,options)
-{
+MongooseAdmin.prototype.registerSingleRowModel = function(model,name,options) {
     model.is_single = true;
     this.models[name] = {model:model,options:options||{},fields:{},is_single:true,modelName:name};
     permissions.registerModel(name);
