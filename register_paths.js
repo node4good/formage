@@ -324,8 +324,8 @@ var routes = {
                             actions: model2.options.actions || [],
                             editable: permissions.hasPermissions(adminUser, model_name, 'update'),
                             sortable: typeof(model2.options.sortable) == 'string' && permissions.hasPermissions(adminUser, model_name, 'order'),
-                            cloneable: model2.options.cloneable && permissions.hasPermissions(adminUser, model_name, 'create'),
-                            createable: model2.options.createable && permissions.hasPermissions(adminUser, model_name, 'create'),
+                            cloneable: model2.options.cloneable !== false && permissions.hasPermissions(adminUser, model_name, 'create'),
+                            createable: model2.options.createable !== false && permissions.hasPermissions(adminUser, model_name, 'create'),
                             rootPath: MongooseAdmin.singleton.root
                         };
                         res.render('model.jade',
