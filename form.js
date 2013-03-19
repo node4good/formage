@@ -1,3 +1,5 @@
+'use strict';
+if (!module.parent) console.error('Please don\'t call me directly.I am just the main app\'s minion.') || process.process.exit(1);
 
 var forms =  require('./forms')
     ,fields = forms.fields
@@ -76,7 +78,7 @@ exports.loadApi = function(app,path) {
             var self = this;
             var data = JSON.parse(filters.data);
             var model = mongoose.model(data.model);
-            var query = data.query.replace(/__value__/g,escapeRegex(filters.query));
+            var query = data.query.replace(/__value__/g,filters.query.replace(/[-[\]{}()*+?.,\\^$|#\s]/g,"\\$&"));
             model.find({$where:query},function(err,results) {
                 if(results) {
                     if(results.objects)
@@ -95,7 +97,3 @@ exports.loadApi = function(app,path) {
 
     api_loaded = true;
 };
-
-function escapeRegex (a){
-    return a.replace(/[-[\]{}()*+?.,\\^$|#\s]/g,"\\$&");
-}
