@@ -10,13 +10,13 @@ var app = express();
 
 app.configure('all', function(){
     app.set('port', process.env.PORT || 80);
-    app.set('mongo', 'mongodb://localhost/formage-admin-example');
+    app.set('mongo', process.env.MONGO_URL || 'mongodb://localhost/formage-admin-example');
 
     app.use(express.favicon());
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(express.cookieParser('magical secret admin'));
-    app.use(express.cookieSession({cookie: { maxAge: 60 * 1000 * 20 }}));
+    app.use(express.cookieSession({cookie: { maxAge: 1000 * 60 * 60 *  24 }}));
     app.use(app.router);
 });
 

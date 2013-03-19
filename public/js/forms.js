@@ -1,3 +1,4 @@
+'use strict';
 var btn = {
     delete: function () {
         return $('<button type="button" class="nf_listfield_delete"><i class="icon-remove"></i></button>')
@@ -57,7 +58,7 @@ var ListField = function(el) {
             return;
         self.el.data('processed','true');
 
-        var container = self.el.closest('.field').addClass('nf_listfield_container');
+        self.el.closest('.field').addClass('nf_listfield_container');
 
         self.name = self.el.attr('name');
 
@@ -109,7 +110,8 @@ var ListField = function(el) {
     self.init();
 };
 
-var widgets = function(ctx) {
+//noinspection JSHint
+function widgets(ctx) {
     ctx = ctx || document.body;
 
     $('.nf_listfield', ctx).each(function() {
@@ -128,7 +130,7 @@ var widgets = function(ctx) {
 
     if ($.fn.timepicker)
         $('.nf_timepicker', ctx).timepicker();
-};
+}
 
 
 $(function(){
@@ -138,9 +140,7 @@ $(function(){
 
     widgets();
 
-    $('form#document').submit(function(e) {
+    $('form#document').submit(function() {
         $('p.submit button').prop('disabled', true);
-//        var btn = $('#saveButton');
-//        btn.text(btn.data('saving-text'));
     });
 });

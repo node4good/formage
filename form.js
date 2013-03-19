@@ -12,15 +12,17 @@ var api_loaded = false;
 var api_path;
 
 var AdminForm = exports.AdminForm = forms.forms.MongooseForm.extend({
-    init: function(request,options,model)
-    {
+    init: function (request,options,model) {
         this._super(request,options,model);
-        this.static['js'].push('/node-forms/js/forms.js');
         this.static['js'].push('/node-forms/js/jquery-ui-1.8.22.custom.min.js');
-        this.static['js'].push('/node-forms/js/autocomplete.js');
-        this.static['css'].push('/node-forms/css/ui-lightness/jquery-ui-1.8.22.custom.css');
-        this.static['css'].push('/node-forms/css/forms.css');
+        this.static.js.push('/js/forms.js');
+        this.static.js.push('/js/document.js');
+        this.static.js.push('/node-forms/js/autocomplete.js');
+
+        this.static.css.push('/node-forms/css/ui-lightness/jquery-ui-1.8.22.custom.css');
+        this.static.css.push('/node-forms/css/forms.css');
     },
+
 
     scanFields : function(form_fields){
         var self = this;
@@ -42,16 +44,16 @@ var AdminForm = exports.AdminForm = forms.forms.MongooseForm.extend({
                 self.scanFields(value.fields);
         });
     },
+
+
     get_fields: function() {
         this._super();
         this.scanFields(this.fields);
     }
 });
 
-exports.loadApi = function(app,path) {
-
-    var api = new jest.Api(path || 'admin_api',app);
-
+exports.loadApi = function (app, path) {
+    var api = new jest.Api(path || 'admin_api', app);
 
     var Resource = jest.Resource.extend({
         init:function(){

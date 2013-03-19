@@ -110,7 +110,7 @@ var BaseForm = exports.BaseForm = Class.extend({
         this.static['css'] = this.static['css'] || [];
         this.static['inline-style'] = this.static['inline-style'] || [];
         this.static['inline-script'] = this.static['inline-script'] || [];
-        this.static['js'].push('/node-forms/js/forms.js');
+        this.static['js'].push('/js/forms.js');
         this.handle_empty = options.empty;
         this.handle_success = options.success;
         this.handle_error = options.error;
@@ -344,13 +344,8 @@ var BaseForm = exports.BaseForm = Class.extend({
             self.render(res);
         }, 36000);
     },
-    render_str: function () {
-        return this.to_html();
-    },
     render_error: function (res, field_name) {
         this.fields[field_name].render_error(res);
-        //    if(this.errors[field_name])
-        //        res.write(this.errors[field_name] + '');
     }
 });
 

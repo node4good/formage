@@ -6,6 +6,8 @@ var querystring = require('querystring'),
     Url = require('url'),
     forms = require('./forms').forms;
 
+var MongooseAdmin;
+
 
 var json_routes = {
     login: function (req, res, next) {
@@ -124,6 +126,7 @@ var json_routes = {
             res.end();
             return;
         }
+        //noinspection JSUnresolvedVariable
         MongooseAdmin.singleton.actionDocuments(adminUser, req.params.collectionName, req.params.actionId, req.body, function (err) {
             if (err) {
                 res.writeHead(500);
@@ -143,8 +146,8 @@ var json_routes = {
             res.end();
             return;
         }
-        var query = querystring.parse(Url.parse(req.url).query);
-        MongooseAdmin.singleton.deleteDocument(adminUser, req.params.collectionName, query.document_id, function (err) {
+        //noinspection JSUnresolvedVariable
+        MongooseAdmin.singleton.deleteDocument(adminUser, req.params.collectionName, req.query.document_id, function (err) {
             if (err) {
                 res.writeHead(500);
                 res.end();
@@ -191,6 +194,33 @@ var json_routes = {
         });
     }
 };
+
+
+
+function render_document_from_form(form, res, modelName, collectionName, allowDelete, cloneable) {
+    if (cloneable) {
+        form.exclude.push('id');
+    }
+    form.render_ready(function (err) {
+        if (err) return res.redirect('/error');
+        var html = form.to_html();
+        var head = form.render_head();
+        var locals = {
+            'pageTitle': 'Admin - ' + modelName,
+            'modelName': modelName,
+            'collectionName': collectionName,
+            'renderedDocument': html,
+            'renderedHead': head,
+            'adminTitle': MongooseAdmin.singleton.getAdminTitle(),
+            'document': {},
+            'errors': form.errors ? Object.keys(form.errors).length > 0 : false,
+            'allowDelete': allowDelete,
+            'rootPath': MongooseAdmin.singleton.root,
+            layout: 'layout.jade'
+        };
+        return res.render('document.jade', locals);
+    });
+}
 
 
 
@@ -265,6 +295,7 @@ var routes = {
         delete query.count;
         var sort = query.order_by;
         delete query.order_by;
+        //noinspection JSUnusedLocalSymbols
         var saved = query.saved;
         delete query.saved;
 
@@ -340,12 +371,12 @@ var routes = {
             res.end();
             return;
         }
-        if (req.body._id && req.body._id != '') {
+        if (req.body._id) {
             if (permissions.hasPermissions(adminUser, req.params.modelName, 'update')) {
                 MongooseAdmin.singleton.updateDocument(req, adminUser, req.params.modelName, req.body._id, req.body, function (err, document) {
                     if (err) {
-                        if (err.render_str) {
-                            render_document_from_form(err, req, res, req.params.modelName, req.params.modelName, true);
+                        if (err.to_html) {
+                            render_document_from_form(err, res, req.params.modelName, req.params.modelName, true);
                             return;
                         }
                         res.writeHead(500);
@@ -363,32 +394,17 @@ var routes = {
             }
         }
         else {
-            if (permissions.hasPermissions(adminUser, req.params.modelName, 'create')) {
+            if (!permissions.hasPermissions(adminUser, req.params.modelName, 'create')) {
+                return res.send('no permissions');
+            }
 
-                MongooseAdmin.singleton.createDocument(req, adminUser, req.params.modelName, req.body, function (err, document) {
-                    if (err) {
-                        if (err.render_str) {
-                            render_document_from_form(err, req, res, req.params.modelName, req.params.modelName, false);
-                            return;
-                        }
-                        if (typeof(err) == 'object') {
-                            res.json(err, 400);
-                        }
-                        else {
-                            res.writeHead(500);
-                            res.end();
-                        }
-                    } else {
-                        res.redirect(req.path.split('/document/')[0] + '?saved=true');
-                        //                res.writeHead(201, {"Content-Type": "application/json"});
-                        //                res.write(JSON.stringify({"collection": req.params.collectionName}));
-                        //                res.end();
-                    }
-                });
-            }
-            else {
-                res.send('no permissions');
-            }
+            MongooseAdmin.singleton.createDocument(req, adminUser, req.params.modelName, req.body, function (form) {
+                if (form) {
+                    return render_document_from_form(form, res, req.params.modelName, req.params.modelName, false);
+                } else {
+                    return res.redirect(req.path.split('/document/')[0] + '?saved=true');
+                }
+            });
         }
 
     },
@@ -396,88 +412,50 @@ var routes = {
     document: function (req, res) {
         var adminUser = req.session._mongooseAdminUser ? MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser) : null;
         if (!adminUser) {
-            res.redirect(MongooseAdmin.singleton.buildPath('/login'));
-        } else {
-            if (permissions.hasPermissions(adminUser, req.params.modelName, 'update')) {
-                MongooseAdmin.singleton.getModel(req.params.modelName, function (err, model) {
+            return res.redirect(MongooseAdmin.singleton.buildPath('/login'));
+        }
+        if (!permissions.hasPermissions(adminUser, req.params.modelName, 'update')) {
+            return res.send('no permissions');
+        }
+        MongooseAdmin.singleton.getModel(req.params.modelName, function (err, model) {
+            if (err) {
+                return res.redirect('/error');
+            }
+            if (model.is_single) {
+                model.findOne({}, function (err, document) {
                     if (err) {
                         res.redirect('/error');
                     } else {
-                        if (model.is_single) {
-                            model.findOne({}, function (err, document) {
-                                if (err) {
-                                    res.redirect('/error');
-                                }
-                                else {
-                                    var form_type = MongooseAdmin.singleton.models[req.params.modelName].options.form || AdminForm;
-                                    var new_form_options = _.extend({instance: document}, MongooseAdmin.singleton.models[req.params.modelName].options);
-                                    var form = new form_type(req, new_form_options, model);
-                                    render_document_from_form(form, req, res, model.modelName, req.params.modelName, false);
-                                }
-                            });
-                        }
-                        else {
-                            if (req.params.documentId === 'new') {
-                                var FormType1 = MongooseAdmin.singleton.models[req.params.modelName].options.form || AdminForm;
-                                var new_form_options = _.extend({}, MongooseAdmin.singleton.models[req.params.modelName].options);
-                                var form = new FormType1(req, new_form_options, model);
-                                render_document_from_form(form, req, res, model.modelName, req.params.modelName, false);
-                            } else {
-                                MongooseAdmin.singleton.getDocument(req.params.modelName, req.params.documentId, function (err, document) {
-                                    if (err) {
-                                        res.redirect('/error');
-                                    } else {
-                                        var FormType2 = MongooseAdmin.singleton.models[req.params.modelName].options.form || AdminForm;
-                                        var new_form_options = _.extend({instance: document}, MongooseAdmin.singleton.models[req.params.modelName].options);
-                                        var form = new FormType2(req, new_form_options, model);
-                                        render_document_from_form(form, req, res, model.modelName, req.params.modelName, true, req.query['clone']);
-                                    }
-                                });
-                            }
-                        }
+                        var FormType0 = MongooseAdmin.singleton.models[req.params.modelName].options.form || AdminForm;
+                        var new_form_options = _.extend({instance: document}, MongooseAdmin.singleton.models[req.params.modelName].options);
+                        var form = new FormType0(req, new_form_options, model);
+                        render_document_from_form(form, res, model.modelName, req.params.modelName, false);
                     }
                 });
             }
             else {
-                res.send('no permissions');
+                if (req.params.documentId === 'new') {
+                    var FormType1 = MongooseAdmin.singleton.models[req.params.modelName].options.form || AdminForm;
+                    var new_form_options = _.extend({}, MongooseAdmin.singleton.models[req.params.modelName].options);
+                    var form = new FormType1(req, new_form_options, model);
+                    render_document_from_form(form, res, model.modelName, req.params.modelName, false);
+                } else {
+                    MongooseAdmin.singleton.getDocument(req.params.modelName, req.params.documentId, function (err, document) {
+                        if (err) {
+                            res.redirect('/error');
+                        } else {
+                            var FormType2 = MongooseAdmin.singleton.models[req.params.modelName].options.form || AdminForm;
+                            var new_form_options = _.extend({instance: document}, MongooseAdmin.singleton.models[req.params.modelName].options);
+                            var form = new FormType2(req, new_form_options, model);
+                            render_document_from_form(form, res, model.modelName, req.params.modelName, true, req.query['clone']);
+                        }
+                    });
+                }
             }
-        }
+        });
     }
 };
 
-function render_document_from_form(form, req, res, modelName, collectionName, allowDelete, cloneable) {
-    if (cloneable) {
-        form.exclude.push('id');
-    }
-    form.render_ready(function (err) {
-        if (err) {
-            res.redirect('/error');
-        }
-        else {
-            var html = form.render_str();
-            var head = form.render_head();
-            res.locals = {
-                'pageTitle': 'Admin - ' + modelName,
-                'modelName': modelName,
-                'collectionName': collectionName,
-                'renderedDocument': html,
-                'renderedHead': head,
-                'adminTitle': MongooseAdmin.singleton.getAdminTitle(),
-                'document': {},
-                'errors': form.errors ? Object.keys(form.errors).length > 0 : false,
-                'allowDelete': allowDelete,
-                'rootPath': MongooseAdmin.singleton.root
-            };
-            res.render('document.jade',
-                {layout: 'layout.jade',
-                    locals: res.locals
-                });
-        }
-    });
-}
-
-
-var MongooseAdmin;
 exports.registerPaths = function (admin, app, root) {
     MongooseAdmin = admin;
     var inner_express = require.main.require('express')();
