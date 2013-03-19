@@ -382,10 +382,7 @@ var routes = {
                         res.writeHead(500);
                         res.end();
                     } else {
-                        res.redirect(req.path.split('/document/')[0] + '?saved=true');
-                        //                    res.writeHead(200, {"Content-Type": "application/json"});
-                        //                    res.write(JSON.stringify({"collection": req.params.collectionName}));
-                        //                    res.end();
+                        res.redirect(req.path.split('/document/')[0].slice(1) + '?saved=true');
                     }
                 });
             }
@@ -402,7 +399,7 @@ var routes = {
                 if (form) {
                     return render_document_from_form(form, res, req.params.modelName, req.params.modelName, false);
                 } else {
-                    return res.redirect(req.path.split('/document/')[0] + '?saved=true');
+                    return res.redirect(req.path.split('/document/')[0].slice(1) + '?saved=true');
                 }
             });
         }
