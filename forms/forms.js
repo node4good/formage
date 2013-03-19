@@ -304,7 +304,7 @@ var BaseForm = exports.BaseForm = Class.extend({
                 return;
             }
             if (fieldset['title'] && fieldset['title'] !== '' && !options['hide_fieldsets']) {
-                res.write('<div class="nf_fieldset">');
+                res.write('<div class="nf_fieldset closed">');
             }
             var title = fieldset['title'] || '';
             if (title !== '' && !options['hide_titles']) {
