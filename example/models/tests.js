@@ -1,5 +1,5 @@
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema,
+    Schema = mongoose['Schema'],
     ObjectId = Schema.Types.ObjectId;
 
 var s = new Schema({
@@ -44,7 +44,7 @@ var s = new Schema({
             },
             loot: {
                 items: [
-                    {item_id: {type: Schema.ObjectId, ref: 'Item', query: common.ITEM_QUERY, required: true},
+                    {item_id: {type: Schema.ObjectId, ref: 'pages', query: '/__value__/i.test(this.title)', required: true},
                         amount: {type: Schema.Types.Integer, min: 0, 'default': 0},
                         percent: {type: Schema.Types.Integer, min: 0, max: 100, 'default': 0},
                         is_mandatory: {type: Boolean, 'default': false}}

@@ -9,8 +9,7 @@ var Class = require('sji'),
     async = require('async'),
     fields = require('./fields'),
     widgets = require('./widgets'),
-    common = require('./common'),
-    mongoose_types = require('./mongoose-types');
+    common = require('./common');
 
 
 var Models = {};
@@ -19,7 +18,7 @@ exports.set_models = function (models) {
 };
 
 exports.registerModel = function (modelName, model) {
-    Models[modelName] = models;
+    Models[modelName] = model;
 };
 
 exports.checkDependecies = function (model, id, callback) {
@@ -99,6 +98,7 @@ var BaseForm = exports.BaseForm = Class.extend({
         options = options || {};
         this.data = options.data || request.body || {};
         this.files = options.files || request.files || {};
+        this.admin_root = request.app.admin_root;
         this.exclude = options.exclude || [];
         this.instance = options.instance;
         this.request = request;
@@ -110,7 +110,6 @@ var BaseForm = exports.BaseForm = Class.extend({
         this.static['css'] = this.static['css'] || [];
         this.static['inline-style'] = this.static['inline-style'] || [];
         this.static['inline-script'] = this.static['inline-script'] || [];
-        this.static['js'].push('/node-forms/js/jquery-1.8.2.min.js');
         this.static['js'].push('/node-forms/js/forms.js');
         this.handle_empty = options.empty;
         this.handle_success = options.success;
@@ -167,10 +166,10 @@ var BaseForm = exports.BaseForm = Class.extend({
         self.get_static();
         return common.writer_to_string(function (res) {
             self.static['js'].forEach(function (obj) {
-                res.write('<script src="' + obj + '"></script>');
+                res.write('<script src="' + self.admin_root + obj + '"></script>');
             });
             self.static['css'].forEach(function (obj) {
-                res.write('<link type="text/css" href="' + obj + '" rel="stylesheet">');
+                res.write('<link type="text/css" href="' + self.admin_root + obj + '" rel="stylesheet">');
             });
             self.static['inline-style'].forEach(function (obj) {
                 res.write('<style>' + obj + '</style>');

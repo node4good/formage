@@ -1,5 +1,5 @@
 
-var forms =  require('formage')
+var forms =  require('./forms')
     ,fields = forms.fields
     ,widgets = forms.widgets
     ,mongoose = require.main.require('mongoose')
@@ -13,14 +13,11 @@ var AdminForm = exports.AdminForm = forms.forms.MongooseForm.extend({
     init: function(request,options,model)
     {
         this._super(request,options,model);
-        this.static['js'].push('/node-forms/js/jquery-1.8.2.min.js');
-        if(!options.disable_forms_js)
-            this.static['js'].push('/node-forms/js/forms.js');
+        this.static['js'].push('/node-forms/js/forms.js');
         this.static['js'].push('/node-forms/js/jquery-ui-1.8.22.custom.min.js');
         this.static['js'].push('/node-forms/js/autocomplete.js');
         this.static['css'].push('/node-forms/css/ui-lightness/jquery-ui-1.8.22.custom.css');
-        if(!options.disable_forms_css)
-            this.static['css'].push('/node-forms/css/forms.css');
+        this.static['css'].push('/node-forms/css/forms.css');
     },
 
     scanFields : function(form_fields){

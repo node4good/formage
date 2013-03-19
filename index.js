@@ -4,7 +4,7 @@ if (!module.parent)
 
 var MongooseAdmin = require('./mongoose-admin.js'),
     path = require('path'),
-    formage = require('formage'),
+    formage = require('./forms'),
     paths = require('./register_paths');
 
 exports.forms = formage;

@@ -6,7 +6,7 @@ var MongooseAdminUser = require('./mongoose_admin_user.js').MongooseAdminUser,
     mongoose = require.main.require('mongoose'),
 	paths = require('./register_paths'),
     AdminForm = require('./form').AdminForm,
-    forms = require('formage').forms;
+    forms = require('./forms').forms;
 
 exports = module.exports = MongooseAdmin;
 exports.version = '0.0.1';
@@ -19,7 +19,6 @@ var app;
  * @api private
  */
 function MongooseAdmin(app, root) {
-    //mongoose.connect(dbUri);
     this.app = app;
     this.root = root;
     this.models = {};
@@ -44,24 +43,6 @@ MongooseAdmin.prototype.setAdminTitle = function(title) {
 };
 
 /**
- * Push the mongoose-admin express config to the current config
- *
- */
-MongooseAdmin.prototype.pushExpressConfig = function() {
-    var currentViewsPath = MongooseAdmin.singleton.app.set('views');
-    this.app.engine('jade', require('jade').__express);
-    this.app.set('views', __dirname + '/views');
-    return {'views': currentViewsPath};
-};
-
-/**
- * Replace the mongoose-admin express config with the original
- */
-MongooseAdmin.prototype.popExpressConfig = function(config) {
-    this.app.set('views', config.views);
-};
-
-/**
  * Stop listening and end the admin process
  *
  * @api public
@@ -71,8 +52,7 @@ MongooseAdmin.prototype.close = function() {
 };
 
 function buildModelFilters(model,filters,dict) {
-    if(!filters)
-        return;
+    if(!filters) return;
     setTimeout(function() {
         async.forEach(filters,function(filter,cbk) {
             model.collection.distinct(filter, function(err,results) {
@@ -161,25 +141,26 @@ MongooseAdmin.prototype.registerModel = function(model, name, options) {
     console.log('\x1b[36mMongooseAdmin registered model: \x1b[0m %s', name);
 };
 
+
 /**
  * Retrieve a list of all registered models
  *
- * @param {Function} onReady
+ * @param {Function} callback
  *
  * @api public
  */
-MongooseAdmin.prototype.getRegisteredModels = function(user,onReady) {
-    var models = [];
-    for (var collectionName in this.models) {
-        this.models[collectionName].model.is_single = this.models[collectionName].is_single;
-        models.push(this.models[collectionName]);
-    };
-    models = _.filter(models,function(model)
-    {
+MongooseAdmin.prototype.getRegisteredModels = function (user, callback) {
+    var raw_models = this.models;
+    var out_models = Object.keys(raw_models).map(function(collectionName) {
+        var out_model = raw_models[collectionName];
+        out_model.model.is_single = out_model.is_single;
+        return out_model;
+    }).filter(function (model) {
         return permissions.hasPermissions(user,model.modelName,'view');
     });
-    onReady(null, models);
+    callback(null, out_models);
 };
+
 
 /**
  * Get a single model from the registered list with admin

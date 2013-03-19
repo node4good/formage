@@ -4,7 +4,7 @@ var querystring = require('querystring'),
     _ = require('underscore'),
     AdminForm = require('./form').AdminForm,
     Url = require('url'),
-    forms = require('formage').forms;
+    forms = require('./forms').forms;
 
 
 var json_routes = {
@@ -205,7 +205,6 @@ var routes = {
                 if (err) {
                     res.redirect(MongooseAdmin.singleton.buildPath('/error'));
                 } else {
-                    var config = MongooseAdmin.singleton.pushExpressConfig();
                     res.locals = {
                         'pageTitle': 'Admin Site',
                         'models': models,
@@ -221,7 +220,6 @@ var routes = {
                             'adminTitle': MongooseAdmin.singleton.getAdminTitle(),
                             'rootPath': MongooseAdmin.singleton.root
                         }});
-                    MongooseAdmin.singleton.popExpressConfig(config);
                 }
             });
         }
@@ -229,7 +227,6 @@ var routes = {
 
 
     login: function (req, res) {
-        var config = MongooseAdmin.singleton.pushExpressConfig();
         res.locals = {
             pageTitle: 'Admin Login',
             adminTitle: MongooseAdmin.singleton.getAdminTitle(),
@@ -243,7 +240,6 @@ var routes = {
                 rootPath: MongooseAdmin.singleton.root
             }
         });
-        MongooseAdmin.singleton.popExpressConfig(config);
     },
 
 
@@ -304,7 +300,6 @@ var routes = {
                             }
                             return makeLink('order_by', key);
                         };
-                        var config = MongooseAdmin.singleton.pushExpressConfig();
                         var model_name = req.params.modelName;
                         var model2 = MongooseAdmin.singleton.models[model_name];
                         res.locals = {
@@ -332,7 +327,6 @@ var routes = {
                             {layout: 'layout.jade',
                                 locals: res.locals
                             });
-                        MongooseAdmin.singleton.popExpressConfig(config);
                     }
                 });
             });
@@ -462,7 +456,6 @@ function render_document_from_form(form, req, res, modelName, collectionName, al
         else {
             var html = form.render_str();
             var head = form.render_head();
-            var config = MongooseAdmin.singleton.pushExpressConfig();
             res.locals = {
                 'pageTitle': 'Admin - ' + modelName,
                 'modelName': modelName,
@@ -479,7 +472,6 @@ function render_document_from_form(form, req, res, modelName, collectionName, al
                 {layout: 'layout.jade',
                     locals: res.locals
                 });
-            MongooseAdmin.singleton.popExpressConfig(config);
         }
     });
 }
@@ -511,6 +503,7 @@ exports.registerPaths = function (admin, app, root) {
     inner_express.get('/json/model/:collectionName/linkedDocumentsList', json_routes.linkedDocumentsList);
     if (root) {
         app.use(root, inner_express);
+        inner_express.admin_root = root;
     }
     return inner_express;
 };

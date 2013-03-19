@@ -20,5 +20,5 @@ var schema = new mongoose.Schema({
     }
 });
 
-var config = module.exports = mongoose.model('config', schema);
+var config = module.exports = mongoose.model('config2', schema);
 config.single = true;
