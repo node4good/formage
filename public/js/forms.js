@@ -38,7 +38,8 @@ var fieldset = function (ctx) {
         t.css('min-height', h2.height());
 
         t.off('click').click(function(e) {
-            if (!(t.is('.closed') || $(e.target).is(h2) || $(e.target).is(i)))
+            var is_closed = t.is('.closed');
+            if (!(is_closed || $(e.target).is(h2) || $(e.target).is(i)))
                 return;
 
             i.toggleClass('icon-chevron-right icon-chevron-down');
@@ -63,6 +64,7 @@ var ListField = function(el) {
         self.name = self.el.attr('name');
 
         var tpl = $('> .nf_hidden_template', el);
+        tpl.find(".nf_listfield").addClass('closed');
         self.template = tpl.html();
         tpl.remove();
 
