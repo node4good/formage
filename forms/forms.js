@@ -40,13 +40,13 @@ exports.checkDependecies = function (model, id, callback) {
             }
         }
     }
-    var funcs = Object.keys(models_to_query).map(function(modelName) {
+    var funcs = Object.keys(models_to_query).map(function (modelName) {
         return function (cbk) {Models[modelName].find({$or: models_to_query[modelName]}, cbk);};
     });
     async.parallel(
         funcs,
         function (err, results) {
-            var all_results = results.reduce(function(acc, res_batch) {return acc.concat(res_batch);}, []);
+            var all_results = results.reduce(function (acc, res_batch) {return acc.concat(res_batch);}, []);
             callback(err, all_results);
         }
     );
@@ -265,30 +265,23 @@ var BaseForm = exports.BaseForm = Class.extend({
             }
         });
     },
+
+
     render_ready: function (callback) {
+        var self = this;
         if (!this._fields_ready) {
             this.init_fields();
         }
-        var funcs = [];
-
-        function render_func(field) {
-            return function (cb) {
-                field.pre_render(cb);
-            };
-        }
-
-        for (var field_name in this.fields) {
-            funcs.push(render_func(this.fields[field_name]));
-        }
-        async.parallel(funcs, function (err) {
-            if (err) {
+        async.each(
+            Object.keys(this.fields),
+            function (field_name, cb) { self.fields[field_name].pre_render(cb); },
+            function (err) {
                 callback(err);
             }
-            else {
-                callback(null);
-            }
-        });
+        );
     },
+
+
     render: function (res, options) {
         var self = this;
         options = options || {};
@@ -330,8 +323,7 @@ var BaseForm = exports.BaseForm = Class.extend({
 
         if (self.fieldsets) {
             render_fields(self.fieldsets[0].fields);
-        }
-        else {
+        } else {
             render_fields(Object.keys(self.fields));
         }
         if (_.indexOf(self.exclude, 'id') === -1 && self.instance) {
@@ -348,6 +340,7 @@ var BaseForm = exports.BaseForm = Class.extend({
         this.fields[field_name].render_error(res);
     }
 });
+
 
 var MongooseForm = exports.MongooseForm = BaseForm.extend({
     init: function (request, options, model) {
