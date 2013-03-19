@@ -165,17 +165,19 @@ var BaseForm = exports.BaseForm = Class.extend({
         var self = this;
         self.get_static();
         return common.writer_to_string(function (res) {
-            self.static['js'].forEach(function (obj) {
-                res.write('<script src="' + self.admin_root + obj + '"></script>');
+            self.static['js'].forEach(function (script_url) {
+                if (!~script_url.indexOf('//')) script_url = self.admin_root + script_url;
+                res.write('<script src="' + script_url + '"></script>');
             });
-            self.static['css'].forEach(function (obj) {
-                res.write('<link type="text/css" href="' + self.admin_root + obj + '" rel="stylesheet">');
+            self.static['css'].forEach(function (style_url) {
+                if (!~style_url.indexOf('://')) style_url = self.admin_root + style_url;
+                res.write('<link type="text/css" href="' + style_url + '" rel="stylesheet">');
             });
-            self.static['inline-style'].forEach(function (obj) {
-                res.write('<style>' + obj + '</style>');
+            self.static['inline-style'].forEach(function (inline_style) {
+                res.write('<style>' + inline_style + '</style>');
             });
-            self.static['inline-script'].forEach(function (obj) {
-                res.write('<script>' + obj + '</script>');
+            self.static['inline-script'].forEach(function (inline_script) {
+                res.write('<script>' + inline_script + '</script>');
             });
         }, 1000);
     },
