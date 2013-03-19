@@ -98,7 +98,7 @@ var BaseForm = exports.BaseForm = Class.extend({
         options = options || {};
         this.data = options.data || request.body || {};
         this.files = options.files || request.files || {};
-        this.admin_root = request.app.admin_root;
+        this.admin_root = request.app.path();
         this.exclude = options.exclude || [];
         this.instance = options.instance;
         this.request = request;
