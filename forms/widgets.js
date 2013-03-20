@@ -1,3 +1,6 @@
+'use strict';
+if (!module.parent) console.error('Please don\'t call me directly.I am just the main app\'s minion.') || process.process.exit(1);
+
 /*
     TODO:
     2. DateTime Widget
@@ -66,9 +69,9 @@ exports.InputWidget = Widget.extend({
         this._super(options);
     },
     render: function (res) {
-        res.write('<input' + (this.value != null ? ' value="' + escape(this.value) + '"' : '' ));
+        res.write('\n<input' + (this.value != null ? ' value="' + escape(this.value) + '"' : '' ));
         this.render_attributes(res);
-        res.write(' />');
+        res.write(' />\n');
         return this;
     }
 });
@@ -97,11 +100,11 @@ exports.PasswordWidget = exports.InputWidget.extend({
 
 exports.TextAreaWidget = Widget.extend({
     render: function (res) {
-        res.write('<textarea ');
+        res.write('\n<textarea ');
         this.render_attributes(res);
         res.write(' >');
         res.write(escape(this.value != null ? this.value : ''));
-        res.write('</textarea>');
+        res.write('</textarea>\n');
         return this;
     }
 });
@@ -114,9 +117,9 @@ exports.RichTextAreaWidget = exports.TextAreaWidget.extend({
         this.static.js.push('/node-forms/ckeditor/ckeditor.js');
     },
     render: function (res) {
-        res.write('<div class="nf_widget">');
+        res.write('\n<div class="nf_widget">\n');
         this._super(res);
-        res.write('</div>');
+        res.write('\n</div>\n');
     }
 });
 
@@ -129,10 +132,10 @@ exports.DateWidget = exports.InputWidget.extend({
         this.static.css.push('/node-forms/datepicker/datepicker.css');
     },
     render: function (res) {
-        res.write('<div class="input-append date">');
+        res.write('\n<div class="input-append date">\n');
         this._super(res);
-        res.write('<span class="add-on"><i class="icon-calendar"></i></span>');
-        res.write('</div>');
+        res.write('\n<span class="add-on"><i class="icon-calendar"></i></span>\n');
+        res.write('\n</div>\n');
     }
 });
 
@@ -145,10 +148,10 @@ exports.TimeWidget = exports.InputWidget.extend({
         this.static.css.push('/node-forms/timepicker/datepicker.css');
     },
     render: function (res) {
-        res.write('<div class="input-append bootstrap-timepicker-component">');
+        res.write('\n<div class="input-append bootstrap-timepicker-component">\n');
         this._super(res);
-        res.write('<span class="add-on"><i class="icon-time"></i></span>');
-        res.write('</div>');
+        res.write('\n<span class="add-on"><i class="icon-time"></i></span>\n');
+        res.write('\n</div>\n');
     }
 });
 
@@ -210,26 +213,26 @@ exports.ChoicesWidget = Widget.extend({
     },
     render: function (res) {
         this.prepareValues();
-        res.write('<select ');
+        res.write('\n<select ');
         this.render_attributes(res);
-        res.write(' >');
+        res.write(' >\n');
         var found_selected = false;
         if (!this.required) {
             var selected = this.value ? '' : 'selected="selected" ';
             if (selected)
                 found_selected = true;
-            res.write('<option ' + selected + 'value=""> ... </option>');
+            res.write('\n<option ' + selected + 'value=""> ... </option>\n');
         }
         for (var i = 0; i < this.choices.length; i++) {
             var selected = this.isSelected(this.choices[i]) ? 'selected="selected" ' : '';
             if (selected)
                 found_selected = true;
-            res.write('<option ' + selected + 'value="' + this.choices[i] + '">' + this.names[i] + '</option>');
+            res.write('\n<option ' + selected + 'value="' + this.choices[i] + '">' + this.names[i] + '</option>\n');
         }
         if (!found_selected && this.value) {
-            res.write('<option selected="selected" value="' + this.value + '">Current</option>');
+            res.write('\n<option selected="selected" value="' + this.value + '">Current</option>\n');
         }
-        res.write('</select>');
+        res.write('\n</select>\n');
         return this;
     }
 });
@@ -271,16 +274,16 @@ exports.ListWidget = Widget.extend({
         this._super(options);
     },
     render: function (res, render_template, render_item) {
-        res.write('<div class="nf_listfield" name="' + this.name + '"><div class="nf_hidden_template">');
+        res.write('\n<div class="nf_listfield" name="' + this.name + '">\n<div class="nf_hidden_template">\n');
         render_template(res);
-        res.write('</div><ul>');
+        res.write('\n</div>\n<ul>\n');
         this.value = this.value || [];
         for (var i = 0; i < this.value.length; i++) {
-            res.write('<li>');
+            res.write('\n<li>\n');
             render_item(res, i);
-            res.write('</li>');
+            res.write('\n</li>\n');
         }
-        res.write('</ul></div>');
+        res.write('\n</ul>\n</div>\n');
     }
 });
 
@@ -292,7 +295,7 @@ exports.FileWidget = exports.InputWidget.extend({
     render: function (res) {
         this._super(res);
         if (this.value && this.value.path)
-            res.write('<a href="' + this.value.url + '">' + this.value.path + '</a> <input type="checkbox" name="' + this.name + '_clear" value="Clear" /> Clear');
+            res.write('\n<a href="' + this.value.url + '">\n' + this.value.path + '</a>\n<input type="checkbox" name="' + this.name + '_clear" value="Clear" />\n Clear\n');
     }
 });
 
@@ -304,7 +307,7 @@ exports.PictureWidget = exports.InputWidget.extend({
     render: function (res) {
         if (this.value && this.value.url)
             res.write(util.format(
-                '<a href="%s" target="_blank">%s</a> <input type="checkbox" name="%s_clear" value="Clear" /> Clear ',
+                '\n<a href="%s" target="_blank">%s</a>\n<input type="checkbox" name="%s_clear" value="Clear" />\nClear\n',
                 this.value.url,
                 cloudinary.image(
                     this.value.public_id, {
@@ -337,7 +340,7 @@ exports.MapWidget = exports.InputWidget.extend({
         if (!this.options.hide_address) {
             var address = this.value ? this.value.address : '';
             this.attrs['address_field'] = 'id_' + this.name + '_address';
-            res.write('<input type="text" name="' + this.name + '_address" id="id_' + this.name + '_address" value="' + address + '" />');
+            res.write('\n<input type="text" name="' + this.name + '_address" id="id_' + this.name + '_address" value="' + address + '" />\n');
         }
         var old_value = this.value;
         var lat = this.value && this.value.geometry ? this.value.geometry.lat : '';
@@ -345,7 +348,7 @@ exports.MapWidget = exports.InputWidget.extend({
         this.value = lat + ',' + lng;
         this._super(res);
         this.value = old_value;
-        res.write('</div>');
+        res.write('\n</div>\n');
     }
 });
 

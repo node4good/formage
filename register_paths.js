@@ -216,7 +216,8 @@ function render_document_from_form(form, res, modelName, collectionName, allowDe
             'errors': form.errors ? Object.keys(form.errors).length > 0 : false,
             'allowDelete': allowDelete,
             'rootPath': MongooseAdmin.singleton.root,
-            layout: 'layout.jade'
+            layout: 'layout.jade',
+            pretty: true
         };
         return res.render('document.jade', locals);
     });
@@ -458,7 +459,7 @@ exports.registerPaths = function (admin, app, root) {
     var inner_express = require.main.require('express')();
     inner_express.set('views', __dirname + '/views');
     inner_express.set('view engine', 'jade');
-    inner_express.set("view options", { layout: false });
+    inner_express.set("view options", { layout: false, pretty: true });
 
     inner_express.get('/', routes.index);
     inner_express.get('/login', routes.login);

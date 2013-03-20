@@ -167,17 +167,17 @@ var BaseForm = exports.BaseForm = Class.extend({
         return common.writer_to_string(function (res) {
             self.static['js'].forEach(function (script_url) {
                 if (!~script_url.indexOf('//')) script_url = self.admin_root + script_url;
-                res.write('<script src="' + script_url + '"></script>');
+                res.write('\n<script src="' + script_url + '"></script>\n');
             });
             self.static['css'].forEach(function (style_url) {
                 if (!~style_url.indexOf('://')) style_url = self.admin_root + style_url;
-                res.write('<link type="text/css" href="' + style_url + '" rel="stylesheet">');
+                res.write('\n<link type="text/css" href="' + style_url + '" rel="stylesheet">\n');
             });
             self.static['inline-style'].forEach(function (inline_style) {
-                res.write('<style>' + inline_style + '</style>');
+                res.write('\n<style>\n' + inline_style + '\n</style>\n');
             });
             self.static['inline-script'].forEach(function (inline_script) {
-                res.write('<script>' + inline_script + '</script>');
+                res.write('\n<script>\n' + inline_script + '\n</script>\n');
             });
         }, 1000);
     },
@@ -304,20 +304,20 @@ var BaseForm = exports.BaseForm = Class.extend({
                 return;
             }
             if (fieldset['title'] && fieldset['title'] !== '' && !options['hide_fieldsets']) {
-                res.write('<div class="nf_fieldset closed">');
+                res.write('\n<div class="nf_fieldset closed">\n');
             }
             var title = fieldset['title'] || '';
             if (title !== '' && !options['hide_titles']) {
-                res.write('<h2>' + title + '</h2>');
+                res.write('\n<h2>' + title + '</h2>\n');
             }
-            res.write('<div>');
+            res.write('\n<div>\n');
             var fields = fieldset.fields;
             if (fields) {
                 render_fields(fields);
             }
-            res.write('</div>');
+            res.write('\n</div>\n');
             if (fieldset['title'] && fieldset['title'] !== '' && !options['hide_fieldsets']) {
-                res.write("</div>");
+                res.write("\n</div>\n");
             }
         }
 
@@ -327,7 +327,7 @@ var BaseForm = exports.BaseForm = Class.extend({
             render_fields(Object.keys(self.fields));
         }
         if (_.indexOf(self.exclude, 'id') === -1 && self.instance) {
-            res.write('<input type="hidden" id="document_id" name="_id" value="' + (self.instance.isNew ? '' : self.instance.id) + '" />');
+            res.write('\n<input type="hidden" id="document_id" name="_id" value="' + (self.instance.isNew ? '' : self.instance.id) + '" />\n');
         }
     },
     to_html: function () {
