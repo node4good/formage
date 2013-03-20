@@ -8,7 +8,7 @@ module.exports = function(app, express, models, opt) {
     admin.setAdminTitle(opt.title || 'Admin');
     admin.ensureUserExists(opt.username || 'admin', opt.password || 'admin');
 
-    for (var name in models) {
+    Object.keys(models).sort().forEach(function(name) {
         var model = models[name];
 
         var paths = model.schema.paths,
@@ -47,7 +47,7 @@ module.exports = function(app, express, models, opt) {
             admin.registerSingleRowModel(model, name, options);
         else
             admin.registerMongooseModel(name, model, null, options);
-    }
+    });
 
     return admin;
 };
