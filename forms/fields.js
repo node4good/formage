@@ -73,7 +73,7 @@ var BaseField = exports.BaseField = Class.extend({
         return arr.join(' ');
     },
     render_label: function (res) {
-        res.write('<label class="field_label" for="id_' + this.name + '">' + this.get_label() + '</label>');
+        res.write('\n<label class="field_label" for="id_' + this.name + '">' + this.get_label() + '</label>\n');
     },
     render_label_str: function () {
         return common.writer_to_string(this.render_label, 80);
@@ -88,11 +88,11 @@ var BaseField = exports.BaseField = Class.extend({
         return common.writer_to_string(this.render, 1024);
     },
     render_with_label: function (res) {
-        res.write('<div class="field">');
-        res.write('<label for="id_' + this.name + '" class="field_label">' + this.get_label() + '</label>');
+        res.write('<div class="field">\n');
+        res.write('<label for="id_' + this.name + '" class="field_label">' + this.get_label() + '</label>\n');
         this.render(res);
         this.render_error(res);
-        res.write('</div>');
+        res.write('</div>\n');
     },
     render_with_label_str: function () {
         return common.writer_to_string(this.render_with_label, 1024);
@@ -100,9 +100,9 @@ var BaseField = exports.BaseField = Class.extend({
     render_error: function (res) {
         if (this.errors && this.errors.length) {
             for (var i = 0; i < this.errors.length; i++) {
-                res.write('<span class="error">');
+                res.write('\n<span class="error">');
                 res.write(this.errors[i] + '');
-                res.write('</span>');
+                res.write('</span>\n');
             }
         }
     },
@@ -336,7 +336,7 @@ var ListField_ = exports.ListField = BaseField.extend({
                     request_copy[key] = req[key];
                 request_copy.body = post_data;
                 request_copy.files = file_data;
-                var old_field_value = (typeof(post_data[field_name]) == 'undefined' || post_data[field_name] == null) ? (old_value.get ? old_value.get(field_name) : old_value[field_name] ) : post_data[field_name];
+                var old_field_value = post_data[field_name] || old_value.get ? old_value.get(field_name) : old_value[field_name];
                 field.set(old_field_value, request_copy);
                 field.clean_value(request_copy, function (err) {
                     if (err) console.trace(err);
@@ -376,20 +376,26 @@ var ListField_ = exports.ListField = BaseField.extend({
                 //clean_funcs.push(create_clean_func(num,name,req.body[field_name]));
             }
         }
-        var field_names = _.chain(Object.keys(inner_body))
+        _.chain(Object.keys(inner_body))
             .union(Object.keys(inner_files))
             .unique()
-            .value();
-
-        field_names.forEach(function (key) {
-            var output_data = {};
-            var output_errors = {};
-            self.value.push(output_data);
-            self.children_errors.push(output_errors);
-            for (var field_name in self.fields) {
-                clean_funcs.push(create_clean_func(field_name, inner_body[key] || {}, inner_files[key] || {}, output_data, old_list_value[key] || {},output_errors));
+            .forEach(function (key) {
+                var output_data = {};
+                var output_errors = {};
+                self.value.push(output_data);
+                self.children_errors.push(output_errors);
+                Object.keys(self.fields).forEach(function (field_name) {
+                    clean_funcs.push(create_clean_func(
+                        field_name,
+                        inner_body[key] || {},
+                        inner_files[key] || {},
+                        output_data,
+                        old_list_value[key] || {},
+                        output_errors
+                    ));
+                });
             }
-        });
+        );
         async.parallel(clean_funcs, function (err) {
             for (var i = 0; i < self.value.length; i++) {
                 var new_dict = {};
