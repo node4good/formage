@@ -1,3 +1,4 @@
+(function () {
 'use strict';
 var btn = {
     delete: function () {
@@ -17,8 +18,8 @@ var btn = {
     }
 };
 
-var fieldset = function (ctx) {
-    if (ctx == document.body) {
+function initFieldSet(ctx) {
+    if (!ctx) {
         $('.nf_fieldset').addClass('closed');
         $('.error')
             .parents('.nf_fieldset > div').show()
@@ -48,9 +49,9 @@ var fieldset = function (ctx) {
             div.stop(1,1).slideToggle('fast');
         });
     });
-};
+}
 
-var ListField = function(el) {
+function ListField(el) {
     var self = this;
     self.el = $(el);
 
@@ -81,7 +82,7 @@ var ListField = function(el) {
             handle: '.nf_listfield_drag'
         });
 
-        widgets(this);
+        initWidgets(this);
     };
 
     self.add = function(e) {
@@ -106,32 +107,21 @@ var ListField = function(el) {
         self.length++;
 
         // load nested widgets
-        widgets(li);
+        initWidgets(li);
     };
 
     self.init();
-};
+}
 
-//noinspection JSHint
-function widgets(ctx) {
-    ctx = ctx || document.body;
 
+function initWidgets(ctx) {
     $('.nf_listfield', ctx).each(function() {
         $(this).data('listfield', new ListField(this));
     });
-
-    fieldset(ctx);
-
-    if ($.fn.select2)
-        $('select', ctx).select2();
-
-    if ($.fn.datepicker)
-        $('.nf_datepicker', ctx).datepicker({
-            format: 'yyyy-mm-dd'
-        });
-
-    if ($.fn.timepicker)
-        $('.nf_timepicker', ctx).timepicker();
+    initFieldSet(ctx);
+    $('select', ctx).select2();
+    $('.nf_datepicker', ctx).datepicker({format: 'yyyy-mm-dd'});
+    $('.nf_timepicker', ctx).timepicker();
 }
 
 
@@ -140,9 +130,10 @@ $(function(){
         $('label[for="' + this.id  + '"]').addClass('optional_label');
     });
 
-    widgets();
+    initWidgets();
 
     $('form#document').submit(function() {
         $('p.submit button').prop('disabled', true);
     });
 });
+})();
