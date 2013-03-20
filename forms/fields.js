@@ -72,9 +72,6 @@ var BaseField = exports.BaseField = Class.extend({
         }
         return arr.join(' ');
     },
-    render_label: function (res) {
-        res.write('\n<label class="field_label" for="id_' + this.name + '">' + this.get_label() + '</label>\n');
-    },
     render_label_str: function () {
         return common.writer_to_string(this.render_label, 80);
     },
@@ -87,9 +84,13 @@ var BaseField = exports.BaseField = Class.extend({
     render_str: function () {
         return common.writer_to_string(this.render, 1024);
     },
+    render_label: function (res) {
+        var class_str = 'field_label' + ('optional_label' in this.widget.attrs.class ? ' optional_label' : '');
+        res.write('<label for="id_' + this.name + '" class="' + class_str + '">' + this.get_label() + '</label>\n');
+    },
     render_with_label: function (res) {
         res.write('<div class="field">\n');
-        res.write('<label for="id_' + this.name + '" class="field_label">' + this.get_label() + '</label>\n');
+        this.render_label(res);
         this.render(res);
         this.render_error(res);
         res.write('</div>\n');
@@ -107,7 +108,7 @@ var BaseField = exports.BaseField = Class.extend({
         }
     },
     set: function (value) {
-        this.value = (typeof(value) === 'undefined' || value == null) ? this['default'] : value;
+        this.value = arguments.length === 0 ? this['default'] : value;
         return this;
     },
     clean_value: function (req, callback) {

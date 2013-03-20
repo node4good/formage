@@ -51,39 +51,20 @@ function initFieldSet(ctx) {
     });
 }
 
+function initWidgets(ctx) {
+    $('.nf_listfield', ctx).each(function() {
+        $(this).data('listfield', new ListField(this));
+    });
+    initFieldSet(ctx);
+    if ($.fn.select2) $('select', ctx).select2();
+    if ($.fn.datepicker) $('.nf_datepicker', ctx).datepicker({format: 'yyyy-mm-dd'});
+    if ($.fn.timepicker) $('.nf_timepicker', ctx).timepicker();
+}
+
+
 function ListField(el) {
     var self = this;
     self.el = $(el);
-
-    self.init = function() {
-        if (self.el.data('processed') == 'true')
-            return;
-        self.el.data('processed','true');
-
-        self.el.closest('.field').addClass('nf_listfield_container');
-
-        self.name = self.el.attr('name');
-
-        var tpl = $('> .nf_hidden_template', el);
-        tpl.find(".nf_listfield").addClass('closed');
-        self.template = tpl.html();
-        tpl.remove();
-
-        self.list = $('> ul', el)
-            .after(btn.add().click(self.add));
-
-        self.length = $('> li', self.list)
-            .append(btn.drag())
-            .append(btn.delete())
-            .length;
-
-        self.list.sortable({
-            items: 'li:not(.new_li)',
-            handle: '.nf_listfield_drag'
-        });
-
-        initWidgets(this);
-    };
 
     self.add = function(e) {
         e.preventDefault();
@@ -92,7 +73,7 @@ function ListField(el) {
             .append(self.template)
             .append(btn.delete())
             .append(btn.drag())
-            .insertBefore(this)
+            .appendTo($(this).prev())
             .slideDown(function() {
                 $('input:first', li).focus();
             });
@@ -108,28 +89,47 @@ function ListField(el) {
 
         // load nested widgets
         initWidgets(li);
+
+        li.find('.nf_fieldset').toggleClass('closed');
+        li.find('> .nf_fieldset').click();
+
+        li.find('> ul').sortable({
+            items: 'li:not(.new_li)',
+            handle: '.nf_listfield_drag'
+        });
     };
 
-    self.init();
-}
+    if (self.el.data('processed') == 'true')
+        return;
+    self.el.data('processed','true');
 
+    self.el.closest('.field').addClass('nf_listfield_container');
 
-function initWidgets(ctx) {
-    $('.nf_listfield', ctx).each(function() {
-        $(this).data('listfield', new ListField(this));
+    self.name = self.el.attr('name');
+
+    var tpl = $('> .nf_hidden_template', el);
+    tpl.find(".nf_listfield").addClass('closed');
+    self.template = tpl.html();
+    tpl.remove();
+
+    self.list = $('> ul', el)
+        .after(btn.add().click(self.add));
+
+    self.length = $('> li', self.list)
+        .append(btn.drag())
+        .append(btn.delete())
+        .length;
+
+    self.list.sortable({
+        items: 'li:not(.new_li)',
+        handle: '.nf_listfield_drag'
     });
-    initFieldSet(ctx);
-    $('select', ctx).select2();
-    $('.nf_datepicker', ctx).datepicker({format: 'yyyy-mm-dd'});
-    $('.nf_timepicker', ctx).timepicker();
+
+    initWidgets(this);
 }
 
 
 $(function(){
-    $('.optional_label').each(function() {
-        $('label[for="' + this.id  + '"]').addClass('optional_label');
-    });
-
     initWidgets();
 
     $('form#document').submit(function() {
