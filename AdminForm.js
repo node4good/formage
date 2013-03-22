@@ -2,9 +2,10 @@
 if (!module.parent) console.error('Please don\'t call me directly.I am just the main app\'s minion.') || process.process.exit(1);
 
 var forms =  require('./forms')
+    ,mongoose = require.main.require('mongoose')
     ,fields = forms.fields
     ,widgets = forms.widgets
-    ,mongoose = require.main.require('mongoose')
+    ,MongooseForm = forms.forms.MongooseForm
     ,jest = require('jest');
 
 var api_loaded = false;
@@ -14,10 +15,10 @@ var api_path;
 var _escaper = /[-[\]{}()*+?.,\\^$|#\s]/g;
 
 
-var AdminForm = exports.AdminForm = forms.forms.MongooseForm.extend({
+exports.AdminForm = MongooseForm.extend({
     init: function (request,options,model) {
         this._super(request,options,model);
-        this.static['js'].push('/node-forms/js/jquery-ui-1.8.22.custom.min.js');
+        this.static.js.push('/node-forms/js/jquery-ui-1.8.22.custom.min.js');
         this.static.js.push('/js/forms.js');
         this.static.js.push('/js/document.js');
         this.static.js.push('/node-forms/js/autocomplete.js');
@@ -56,51 +57,45 @@ var AdminForm = exports.AdminForm = forms.forms.MongooseForm.extend({
     }
 });
 
+
+var _JestAdminResource = jest.Resource.extend({
+    init:function(){
+        this._super();
+
+        this.fields = {
+            value:null,
+            label:null
+        };
+
+        this.allowed_methods = ['get'];
+
+        this.filtering = {
+            data:null,
+            query:null
+        };
+    },
+
+    get_objects: function (req, filters, sorts, limit, offset, callback) {
+        var self = this;
+        var data = JSON.parse(filters.data);
+        var model = mongoose.model(data.model);
+        var escaped_filters = filters.query.replace(_escaper, "\\$&");
+        var query = data.query.replace(/__value__/g, escaped_filters);
+        model.find({$where: query}, function (err, results) {
+            if (results) {
+                if (results.objects)
+                    results = results.objects;
+                results = results.map(function(object) { return { value: object.id, label:object.toString() }; });
+            }
+            callback(err, results);
+        });
+    }
+});
+
+
 exports.loadApi = function (app, path) {
     var api = new jest.Api(path || 'admin_api', app);
-
-    var Resource = jest.Resource.extend({
-        init:function(){
-            this._super();
-
-            this.fields = {
-                value:null,
-                label:null
-            };
-
-            this.allowed_methods = ['get'];
-
-            this.filtering = {
-                data:null,
-                query:null
-            };
-        },
-        mapObjects: function(objects) {
-            return objects.map(function(object) {
-                return { value: object.id, label:object.toString() };
-            });
-        },
-        get_objects:function(req,filters,sorts,limit,offset,callback) {
-            var self = this;
-            var data = JSON.parse(filters.data);
-            var model = mongoose.model(data.model);
-            var escaped_filters = filters.query.replace(_escaper, "\\$&");
-            var query = data.query.replace(/__value__/g, escaped_filters);
-            model.find({$where:query},function(err,results) {
-                if(results) {
-                    if(results.objects)
-                        results.objects = self.mapObjects(results.objects);
-                    else
-                        results = self.mapObjects(results);
-                }
-                callback(err,results);
-            });
-        }
-    });
-
-    api.register('ref',new Resource());
-
+    api.register('ref', new _JestAdminResource());
     api_path = '/' + api.path + 'ref';
-
     api_loaded = true;
 };

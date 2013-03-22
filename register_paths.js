@@ -227,33 +227,22 @@ function render_document_from_form(form, res, modelName, collectionName, allowDe
 
 var routes = {
     index: function (req, res) {
-        var adminUser = req.session._mongooseAdminUser ? MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser) : null;
-        if (!adminUser) {
+        var admin_user = req.session._mongooseAdminUser ? MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser) : null;
+        if (!admin_user) {
             console.log('redirecting to', MongooseAdmin.singleton.buildPath('/login'));
-            res.redirect(MongooseAdmin.singleton.buildPath('/login'));
-        } else {
-            MongooseAdmin.singleton.getRegisteredModels(adminUser, function (err, models) {
-                if (err) {
-                    res.redirect(MongooseAdmin.singleton.buildPath('/error'));
-                } else {
-                    res.locals = {
-                        'pageTitle': 'Admin Site',
-                        'models': models,
-                        'renderedHead': '',
-                        'adminTitle': MongooseAdmin.singleton.getAdminTitle(),
-                        'rootPath': MongooseAdmin.singleton.root
-                    };
-                    res.render('models.jade',
-                        {layout: 'layout.jade', locals: {
-                            'pageTitle': 'Admin Site',
-                            'models': models,
-                            'renderedHead': '',
-                            'adminTitle': MongooseAdmin.singleton.getAdminTitle(),
-                            'rootPath': MongooseAdmin.singleton.root
-                        }});
-                }
-            });
+            return res.redirect(MongooseAdmin.singleton.buildPath('/login'));
         }
+        return MongooseAdmin.singleton.getRegisteredModels(admin_user, function (err, models) {
+            if (err) return res.redirect(MongooseAdmin.singleton.buildPath('/error'));
+            return res.render('models.jade', {
+                layout: 'layout.jade',
+                pageTitle: 'Admin Site',
+                models: models,
+                renderedHead: '',
+                adminTitle: MongooseAdmin.singleton.getAdminTitle(),
+                rootPath: MongooseAdmin.singleton.root
+            });
+        });
     },
 
 

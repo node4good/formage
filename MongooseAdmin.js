@@ -149,12 +149,12 @@ MongooseAdmin.prototype.registerModel = function(model, name, options) {
  */
 MongooseAdmin.prototype.getRegisteredModels = function (user, callback) {
     var raw_models = this.models;
-    var out_models = Object.keys(raw_models).map(function(collectionName) {
+    var out_models = Object.keys(raw_models).map(function (collectionName) {
         var out_model = raw_models[collectionName];
         out_model.model.is_single = out_model.is_single;
         return out_model;
     }).filter(function (model) {
-        return permissions.hasPermissions(user,model.modelName,'view');
+        return permissions.hasPermissions(user, model.modelName, 'view');
     });
     callback(null, out_models);
 };
