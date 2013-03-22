@@ -1,12 +1,10 @@
 'use strict';
-if (!module.parent) {
-    console.error('Please don\'t call me directly.I am just the main app\'s minion.');
-    process.process.exit(1);
-}
+if (!module.parent) console.error('Please don\'t call me directly.I am just the main app\'s minion.') || process.process.exit(1);
 
 var util = require('util');
+var mongoose = require.main.require('mongoose');
 
-var mongoose_module = require.main.require('mongoose');
+
 var CDN_PREFIX = '';
 
 
@@ -14,7 +12,7 @@ var init = function () {
     var File = function File (path, options) {
         File.super_.call(this, path, options);
     };
-    util.inherits(File, mongoose_module.Schema.Types.Mixed);
+    util.inherits(File, mongoose.Schema.Types.Mixed);
     File.prototype.cast = function (value, doc, init) {
         var ret = File.super_.prototype.cast.call(this, value, doc, init);
         if (ret && ret.path && CDN_PREFIX) {
@@ -25,21 +23,21 @@ var init = function () {
         return ret;
     };
 
-    mongoose_module.Types.File = Object;
-    mongoose_module.Schema.Types.File = File;
+    mongoose.Types.File = Object;
+    mongoose.Schema.Types.File = File;
 
     exports.File = File;
 
     var Picture = function Picture (path, options) {
         Picture.super_.call(this, path, options);
     };
-    util.inherits(Picture, mongoose_module.Schema.Types.Mixed);
+    util.inherits(Picture, mongoose.Schema.Types.Mixed);
     Picture.prototype.cast = function (value, doc, init) {
         return Picture.super_.prototype.cast.call(this, value, doc, init);
     };
 
-    mongoose_module.Types.Picture = Object;
-    mongoose_module.Schema.Types.Picture = Picture;
+    mongoose.Types.Picture = Object;
+    mongoose.Schema.Types.Picture = Picture;
 
     exports.Picture = Picture;
 
@@ -47,36 +45,36 @@ var init = function () {
     var Integer = function Integer (path, options) {
         Integer.super_.call(this, path, options);
     };
-    util.inherits(Integer, mongoose_module.Schema.Types.Number);
+    util.inherits(Integer, mongoose.Schema.Types.Number);
     Integer.prototype.cast = function (value, doc, init) {
         var num = Integer.super_.prototype.cast.call(this, value, doc, init);
         return Math.floor(num);
     };
 
-    mongoose_module.Types.Integer = Number;
-    mongoose_module.Schema.Types.Integer = Integer;
+    mongoose.Types.Integer = Number;
+    mongoose.Schema.Types.Integer = Integer;
 
     exports.Integer = Integer;
 
     var GeoPoint = function GeoPoint (path, options) {
         GeoPoint.super_.call(this, path, options);
     };
-    util.inherits(GeoPoint, mongoose_module.Schema.Types.Mixed);
+    util.inherits(GeoPoint, mongoose.Schema.Types.Mixed);
 
     exports.GeoPoint = GeoPoint;
 
-    mongoose_module.Types.GeoPoint = Object;
-    mongoose_module.Schema.Types.GeoPoint = GeoPoint;
+    mongoose.Types.GeoPoint = Object;
+    mongoose.Schema.Types.GeoPoint = GeoPoint;
 
     var Text = function Text (path, options) {
         Text.super_.call(this, path, options);
     };
-    util.inherits(Text, mongoose_module.Schema.Types.String);
+    util.inherits(Text, mongoose.Schema.Types.String);
 
     exports.Text = Text;
 
-    mongoose_module.Types.Text = String;
-    mongoose_module.Schema.Types.Text = Text;
+    mongoose.Types.Text = String;
+    mongoose.Schema.Types.Text = Text;
 
     var Html = function Html (path, options) {
         Html.super_.call(this, path, options);
@@ -85,19 +83,12 @@ var init = function () {
 
     exports.Html = Html;
 
-    mongoose_module.Types.Html = String;
-    mongoose_module.Schema.Types.Html = Html;
+    mongoose.Types.Html = String;
+    mongoose.Schema.Types.Html = Html;
 };
 
 exports.setCdnPrefix = function (prefix) {
     CDN_PREFIX = prefix;
 };
 
-exports.loadTypes = function (mongoose) {
-    mongoose_module = mongoose;
-    init();
-};
-
-if (module.parent.mongoose_module) {
-    init();
-}
+exports.loadTypes = init;

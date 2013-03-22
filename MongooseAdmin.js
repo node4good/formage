@@ -1,8 +1,8 @@
 'use strict';
-var MongooseAdminUser = require('./mongoose_admin_user.js').MongooseAdminUser,
+var MongooseAdminUser = require('./models/mongoose_admin_user.js').MongooseAdminUser,
     _ = require('underscore'),
     async = require('async'),
-    permissions = require('./permissions'),
+    permissions = require('./models/permissions'),
     mongoose = require.main.require('mongoose'),
 	paths = require('./register_paths'),
     AdminForm = require('./AdminForm').AdminForm,

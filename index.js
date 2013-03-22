@@ -1,14 +1,15 @@
 'use strict';
 if (!module.parent) console.error('Please don\'t call me directly.I am just the main app\'s minion.') || process.process.exit(1);
 
-var MongooseAdmin = require('./mongoose-admin.js'),
+var MongooseAdmin = require('./MongooseAdmin.js'),
     path = require('path'),
-    formage = require('./forms'),
-    paths = require('./register_paths');
+    paths = require('./register_paths'),
+    express = require.main.require('express');
 
-exports.forms = formage;
+
+
+exports.forms = require('./forms');
 exports.init = require('./init');
-exports.crypt = require('./crypt');
 exports.loadApi = require('./AdminForm').loadApi;
 exports.AdminForm = require('./AdminForm').AdminForm;
 
@@ -37,27 +38,22 @@ exports.serve_static = function (app, express, options) {
 };
 
 
-module.exports.load_types = function (mongoose) {
+module.exports.load_types = function () {
     if (this._types_loeaded) return;
     this._types_loeaded = true;
 
-    module.exports.mongoose_module = module.exports.mongoose_module || mongoose;
-    module.mongoose_module = module.exports.mongoose_module;
-    module.exports.formage.load_types(mongoose);
+    module.exports.forms.load_types();
 };
 
 
-module.exports.register_models = function (models) {
+module.exports.register_models = function (models, opt) {
     if (this._models_registered) return;
     this._models_registered = true;
 
+    exports.init(app, express, models, opt);
     module.exports.models = models;
-    module.exports.formage.register_models(models);
+    module.exports.forms.register_models(models);
 };
 
 
-module.exports.set_amazon_credentials = module.exports.formage.set_amazon_credentials;
-
-
-// Deprecated
-module.exports.forms = module.exports.formage;
+module.exports.set_amazon_credentials = module.exports.forms.set_amazon_credentials;

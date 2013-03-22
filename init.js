@@ -1,4 +1,8 @@
+'use strict';
+if (!module.parent) console.error('Please don\'t call me directly.I am just the main app\'s minion.') || process.process.exit(1);
+
 var fa = require('./index.js');
+var EXCLUDED_FIELDS = ['order', '_id', 'show', '_v'];
 
 module.exports = function(app, express, models, opt) {
     fa.serve_static(app, express, opt);
@@ -15,18 +19,19 @@ module.exports = function(app, express, models, opt) {
             list = [],
             list_populate = [];
 
-        for (var path in paths){
-            if(!paths[path].options.type.name) continue;
+        Object.keys(paths).forEach(function(path) {
+            var options = paths[path].options;
+            if(!options.type.name) return;
+            if (~EXCLUDED_FIELDS.indexOf(path)) return;
+            if (options.type.name == 'File') return;
 
-            if (~['order', '_id', 'show'].indexOf(path)) continue;
-
-            if(paths[path].options.ref)
+            if(options.ref) {
                 list_populate.push(path);
 
-            if(paths[path].options.type.name == 'File') continue;
+            }
 
             list.push(path);
-        }
+        });
 
         list.length = list.length > 3 ? 3 : list.length;
 

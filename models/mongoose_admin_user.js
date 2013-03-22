@@ -1,97 +1,82 @@
+'use strict';
+if (!module.parent) console.error('Please don\'t call me directly.I am just the main app\'s minion.') || process.process.exit(1);
+
 var mongoose = require.main.require('mongoose');
+var crypto = require('crypto');
 
-var bcrypt = require('./../crypt');
+//noinspection SpellCheckingInspection
+var salt = 'wherestheninja';
 
-exports.bcrypt = bcrypt;
+var crypt = {
+    encryptSync: function (password) {
+        if (!password) return password;
+        return crypto.createHmac('sha1', salt).update(password).digest('hex');
+    },
+    compareSync: function (raw, hashed) {
+        var hashed_pass = crypt.encryptSync(raw);
+        return (!hashed && !raw) || hashed == hashed_pass;
+    }
+};
+
 
 var AdminUserData = new mongoose.Schema({
-    username:{type:String, required:true, unique:true},
-    passwordHash:{type:String, editable:false},
-    is_superuser :{type:Boolean,'default':false},
-    permissions:[{type:mongoose.Schema.ObjectId, ref:'_MongooseAdminPermission'}]
-},{strict:true});
+    username: {type: String, required: true, unique: true},
+    passwordHash: {type: String, editable: false},
+    permissions: [
+        {
+            type: mongoose.Schema.ObjectId,
+            ref: '_MongooseAdminPermission'
+        }
+    ]
+}, {strict: true});
 mongoose.model('_MongooseAdminUser', AdminUserData);
 
-function MongooseAdminUser() {
-    this.fields = {};
 
+function MongooseAdminUser(data) {
+    this.fields = data;
+}
+
+
+MongooseAdminUser.prototype.toSessionStore = function () {
+    return this.fields;
 };
 
-MongooseAdminUser.prototype.toSessionStore = function() {
-    var serialized = {};
-    for (var i in this) {
-        if (typeof i !== 'function' || typeof i !== 'object') {
-            serialized[i] = this[i];
+MongooseAdminUser.fromSessionStore = function (sessionStore) {
+    var admin_user = new MongooseAdminUser(sessionStore);
+    return admin_user;
+};
+
+MongooseAdminUser.ensureExists = function (username, password, callback) {
+    var AdminUserModel = mongoose.model('_MongooseAdminUser');
+
+    AdminUserModel.findOne({'username': username}, function (err, adminUserData) {
+        if (err) return callback(err);
+        if (!adminUserData) {
+            adminUserData = new AdminUserModel();
+            adminUserData.username = username;
         }
-    }
-
-    return JSON.stringify(serialized);
-};
-
-MongooseAdminUser.fromSessionStore = function(sessionStore) {
-    var sessionObject = JSON.parse(sessionStore);
-    var adminUser = new MongooseAdminUser();
-    for (var i in sessionObject) {
-        if (sessionObject.hasOwnProperty(i)) {
-            adminUser[i] = sessionObject[i];
-        }
-    }
-
-    return adminUser;
-};
-
-MongooseAdminUser.ensureExists = function(username, password, onReady) {
-    var adminUser = new MongooseAdminUser();
-    var adminUserModel = mongoose.model('_MongooseAdminUser');
-
-    adminUserModel.findOne({'username': username}, function(err, adminUserData) {
-        if (err) {
-            console.log('Unable to check if admin user exists because: ' + err);
-            oReady('Unable to check if user exist', null);
-        } else {
-            if (adminUserData) {
-                var salt = bcrypt.gen_salt_sync(10);
-                adminUserData.passwordHash = bcrypt.encrypt_sync(password, salt);
+        adminUserData.passwordHash = crypt.encryptSync(password);
+        adminUserData.save(function (err) {
+            if (err) {
+                console.log('Unable to create or update admin user because: ' + err);
+                callback('Unable to create or update admin user', null);
             } else {
-                adminUserData = new adminUserModel();
-                adminUserData.username = username;
-                var salt = bcrypt.gen_salt_sync(10);
-                adminUserData.passwordHash = bcrypt.encrypt_sync(password, salt);
+                var admin_user = new MongooseAdminUser(adminUserData._doc);
+                callback(null, admin_user);
             }
-            adminUserData.is_superuser = true;
-            adminUserData.save(function(err) {
-                if (err) {
-                    console.log('Unable to create or update admin user because: ' + err);
-                    onReady('Unable to create or update admin user', null);
-                } else {
-                    adminUser.fields = adminUserData;
-                    onReady(null, adminUser);
-                }
-            });
-        }
+        });
     });
 };
 
-MongooseAdminUser.getByUsernamePassword = function(username, password, onReady) {
-    var adminUser = new MongooseAdminUser();
-    var adminUserModel = mongoose.model('_MongooseAdminUser');
-
-    adminUserModel.findOne({'username': username}, function(err, adminUserData) {
-        if (err) {
-            console.log('Unable to get admin user because: ' + err);
-            onReady('Unable to get admin user', null);
-        } else {
-            if (adminUserData) {
-                if (bcrypt.compare_sync(password, adminUserData.passwordHash)) {
-                    adminUser.fields = adminUserData;
-                    onReady(null, adminUser);
-                } else {
-                    onReady(null, null);
-                }
-            } else {
-                onReady(null, null);
-            }
+MongooseAdminUser.getByUsernamePassword = function (username, password, callback) {
+    mongoose.model('_MongooseAdminUser').findOne({'username': username}, function (err, adminUserData) {
+        if (err) return callback('Unable to get admin user');
+        if (!adminUserData) return callback();
+        if (!crypt.compareSync(password, adminUserData.passwordHash)) {
+            return callback(null, null);
         }
+        var admin_user = new MongooseAdminUser(adminUserData._doc);
+        return callback(null, admin_user);
     });
 };
 

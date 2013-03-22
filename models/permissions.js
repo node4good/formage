@@ -1,10 +1,11 @@
 'use strict';
 if (!module.parent) console.error('Please don\'t call me directly.I am just the main app\'s minion.') || process.process.exit(1);
 
-var async = require('async')
-    ,_ = require('underscore');
+var async = require('async'),
+    mongoose = require.main.require('mongoose'),
+    _ = require('underscore');
 
-var Schema = new module.parent.mongoose_module.Schema({
+var Schema = new mongoose.Schema({
     name : {type:String, required:true}
 });
 
@@ -12,7 +13,7 @@ Schema.methods.toString = function(){
     return this.name;
 };
 
-exports.model = module.parent.mongoose_module.model('_MongooseAdminPermission', Schema);
+exports.model = mongoose.model('_MongooseAdminPermission', Schema);
 
 var permodel_permission = ['view','delete','create','update','order'];
 

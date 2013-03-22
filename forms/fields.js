@@ -500,13 +500,12 @@ var ListField_ = exports.ListField = BaseField.extend({
                 return;
             fields[field_name].name = prefix + field_name;
             fields[field_name].errors = errors[field_name] || [];
-            if (field_name !== '__self__') {
-                fields[field_name].set(value ? self.deep_read(value, field_name) : null);
-                fields[field_name].render_with_label(res);
-            }
-            else {
+            if (field_name === '__self__') {
                 fields[field_name].set(value);
                 fields[field_name].render(res);
+            } else {
+                fields[field_name].set(value ? self.deep_read(value, field_name) : null);
+                fields[field_name].render_with_label(res);
             }
         }
 

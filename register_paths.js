@@ -1,6 +1,6 @@
 'use strict';
 var querystring = require('querystring'),
-    permissions = require('./permissions'),
+    permissions = require('./models/permissions'),
     _ = require('underscore'),
     AdminForm = require('./AdminForm').AdminForm,
     Url = require('url'),

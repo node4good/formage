@@ -1,5 +1,5 @@
 var Class = require('sji'),
-    forms = require('./forms'),
+    forms = require('../forms'),
     jest = require('jest'),
     MongooseAdminAudit = require('./mongoose_admin_audit.js').MongooseAdminAudit,
     async = require('async'),
