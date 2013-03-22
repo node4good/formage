@@ -56,7 +56,10 @@ function initWidgets(ctx) {
         $(this).data('listfield', new ListField(this));
     });
     initFieldSet(ctx);
-    if ($.fn.select2) $('select', ctx).select2();
+    if ($.fn.select2) {
+        $('.nf_ref', ctx).each(getQueryFunctionForSelect2);
+        $('select', ctx).select2();
+    }
     if ($.fn.datepicker) $('.nf_datepicker', ctx).datepicker({format: 'yyyy-mm-dd'});
     if ($.fn.timepicker) $('.nf_timepicker', ctx).timepicker();
 }
@@ -127,6 +130,31 @@ function ListField(el) {
 
     initWidgets(this);
 }
+
+
+var getQueryFunctionForSelect2 = function() {
+    var jElem = $(this);
+    var query_url = jElem.data('url');
+    var query_data = decodeURIComponent(jElem.data('data'));
+
+    jElem.select2({query: function(options) {
+        var term = options.term;
+        var page = options.page;
+        var context = options.context;
+        var callback = options.callback;
+        $.get(query_url,{
+            data: query_data,
+            query: term
+        }).success(function(rsp) {
+                var result = {
+                    results:rsp.objects || rsp,
+                    more: false,
+                    context: context
+                };
+                callback(result);
+            });
+    }});
+};
 
 
 $(function(){

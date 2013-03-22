@@ -366,25 +366,21 @@ exports.ComboBoxWidget = exports.ChoicesWidget.extend({
 
 exports.AutocompleteWidget = exports.TextWidget.extend({
     init: function (options) {
-        options = options || {};
-        this._super(options);
-        this.static = this.static || {};
-        this.static.js = this.static.js || [];
-        this.static.js.push('/node-forms/js/autocomplete.js');
-
-        this.attrs.class.push('nf_ref');
-
         if (!options.url)
             throw new Error('must specify url');
+        if (!options.ref)
+            throw new TypeError('model was not provided');
+
+        this._super(options);
+        this.attrs.class.push('nf_ref');
 
         this.data = this.data || {};
         this.data.url = this.data.url || options.url;
         this.data.data = this.data.data || options.data;
 
         this.ref = options.ref;
-        if (!this.ref)
-            throw new TypeError('model was not provided');
     },
+
 
     pre_render: function (callback) {
         var self = this;
