@@ -1,6 +1,6 @@
 {
   "name": "formage-admin",
-  "description": "Admin for Mongoose, using formage",
+  "description": "Admin gui app for mongoose and non mongoose projects",
   "version": "1.2.1",
   "author": {
     "name": "Ishai Jaffe",
@@ -33,10 +33,15 @@
   },
   "devDependencies": {
     "express": "",
-    "ejs": "",
+    "request": "",
+    "chai": "",
+    "chai-spies": "",
+    "supertest": "",
+    "nconf": "",
+    "nodeunit": "",
     "mongoose": ""
   },
-  "main": "index",
+  "main": "index.js",
   "keywords": [
     "admin",
     "forms",
@@ -48,7 +53,7 @@
     "url": "https://github.com/Empeeric/formage-admin.git"
   },
   "engines": {
-    "node": ">= 0.8.0",
-    "npm": ">= 1.1.0"
+    "node": ">= 0.10.1",
+    "npm": ">= 1.2.15"
   }
 }
