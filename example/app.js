@@ -32,7 +32,7 @@ var formage = require('../index');
 var admin = formage.init(app, express, require('./models'), {
     title: 'Formage-Admin Example'
 });
-require('../form').loadApi(app, '/admin-api');
+require('../AdminForm').loadApi(app, '/admin-api');
 
 app.get('/', function(req, res){
     res.redirect('/admin');

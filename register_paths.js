@@ -2,7 +2,7 @@
 var querystring = require('querystring'),
     permissions = require('./permissions'),
     _ = require('underscore'),
-    AdminForm = require('./form').AdminForm,
+    AdminForm = require('./AdminForm').AdminForm,
     Url = require('url'),
     forms = require('./forms').forms;
 

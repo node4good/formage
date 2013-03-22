@@ -9,8 +9,8 @@ var MongooseAdmin = require('./mongoose-admin.js'),
 exports.forms = formage;
 exports.init = require('./init');
 exports.crypt = require('./crypt');
-exports.loadApi = require('./form').loadApi;
-exports.AdminForm = require('./form').AdminForm;
+exports.loadApi = require('./AdminForm').loadApi;
+exports.AdminForm = require('./AdminForm').AdminForm;
 
 
 // Create the admin singleton object

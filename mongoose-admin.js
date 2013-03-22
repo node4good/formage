@@ -5,7 +5,7 @@ var MongooseAdminUser = require('./mongoose_admin_user.js').MongooseAdminUser,
     permissions = require('./permissions'),
     mongoose = require.main.require('mongoose'),
 	paths = require('./register_paths'),
-    AdminForm = require('./form').AdminForm,
+    AdminForm = require('./AdminForm').AdminForm,
     forms = require('./forms').forms;
 
 /**
@@ -528,6 +528,6 @@ MongooseAdmin.prototype.login = function(username, password, onReady) {
 };
 
 
-exports.loadApi = require('./form').loadApi;
+exports.loadApi = require('./AdminForm').loadApi;
 
 exports.AdminForm = AdminForm;
