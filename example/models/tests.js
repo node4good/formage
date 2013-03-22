@@ -13,7 +13,7 @@ var s = new Schema({
             ]
         }
     ],
-    ref: { type: ObjectId, ref: 'pages', required: true },
+    ref: { type: ObjectId, ref: 'pages', required: true, query: '/__value__/i.test(this.title)' },
     string: { type: String, required: true },
     date: { type: Date, required: true },
     enum: { type: String, enum: ['1', '2', '3'], required: true },
@@ -44,7 +44,7 @@ var s = new Schema({
             },
             loot: {
                 items: [
-                    {item_id: {type: Schema.ObjectId, ref: 'pages', query: '/__value__/i.test(this.title)', required: true},
+                    {item_id: {type: Schema.ObjectId, ref: 'pages', required: true},
                         amount: {type: Schema.Types.Integer, min: 0, 'default': 0},
                         percent: {type: Schema.Types.Integer, min: 0, max: 100, 'default': 0},
                         is_mandatory: {type: Boolean, 'default': false}}
