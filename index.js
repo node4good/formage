@@ -1,6 +1,5 @@
 'use strict';
-if (!module.parent)
-    console.error("Please do not call formage-admin directly.") || process.process.exit(1);
+if (!module.parent) console.error('Please don\'t call me directly.I am just the main app\'s minion.') || process.process.exit(1);
 
 var MongooseAdmin = require('./mongoose-admin.js'),
     path = require('path'),
@@ -34,6 +33,31 @@ exports.serve_static = function (app, express, options) {
     if (module._is_serving_static) return;
     module._is_serving_static = true;
 
-    formage.serve_static(app, express);
     app.use('/' + options.root, express.static(path.join(__dirname, '/public')));
 };
+
+
+module.exports.load_types = function (mongoose) {
+    if (this._types_loeaded) return;
+    this._types_loeaded = true;
+
+    module.exports.mongoose_module = module.exports.mongoose_module || mongoose;
+    module.mongoose_module = module.exports.mongoose_module;
+    module.exports.formage.load_types(mongoose);
+};
+
+
+module.exports.register_models = function (models) {
+    if (this._models_registered) return;
+    this._models_registered = true;
+
+    module.exports.models = models;
+    module.exports.formage.register_models(models);
+};
+
+
+module.exports.set_amazon_credentials = module.exports.formage.set_amazon_credentials;
+
+
+// Deprecated
+module.exports.forms = module.exports.formage;

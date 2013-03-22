@@ -10,6 +10,11 @@ var forms =  require('./forms')
 var api_loaded = false;
 var api_path;
 
+//noinspection JSHint
+var _escaper = /[-[\]{}()*+?.,\\^$|#\s]/g;
+function escapeRegex(a) {
+    return a.replace(_escaper, "\\$&");
+}
 var AdminForm = exports.AdminForm = forms.forms.MongooseForm.extend({
     init: function (request,options,model) {
         this._super(request,options,model);
@@ -80,7 +85,7 @@ exports.loadApi = function (app, path) {
             var self = this;
             var data = JSON.parse(filters.data);
             var model = mongoose.model(data.model);
-            var query = data.query.replace(/__value__/g,filters.query.replace(/[-[\]{}()*+?.,\\^$|#\s]/g,"\\$&"));
+            var query = data.query.replace(/__value__/g, escapeRegex(filters.query));
             model.find({$where:query},function(err,results) {
                 if(results) {
                     if(results.objects)

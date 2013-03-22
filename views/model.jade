@@ -16,6 +16,12 @@ block body
                         i.icon-plus.icon-white
                         |  New <em>#{modelName}</em> item
 
+                - if(search)
+                    p
+                        form
+                            input(type="text",name="_search",value="#{search_value}",style="width:300px")
+                            button(type="submit") Search
+
                 - if (sortable)
                     button#reorder.btn.btn-success.pull-left.hide(data-loading-text='Saving...')
                         i.icon-ok.icon-white
@@ -86,7 +92,7 @@ block body
                                         a #{page}
                                 - else
                                     li
-                                        a(href='#{rootPath}/model/#{modelName}?start=#{i}') #{page}
+                                        a(href='#{makeLink("start",i)}') #{page}
 
         - if (filters.length)
             #filters.span3.well

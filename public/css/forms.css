@@ -203,3 +203,6 @@ p.error {
     height: 30px;
     margin-left: -1px;
 }
+.select2-result-label {
+    min-height: 1em;
+}
