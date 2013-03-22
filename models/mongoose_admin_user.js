@@ -22,6 +22,7 @@ var crypt = {
 var AdminUserData = new mongoose.Schema({
     username: {type: String, required: true, unique: true},
     passwordHash: {type: String, editable: false},
+    is_superuser: {type: Boolean, 'default': false},
     permissions: [
         {
             type: mongoose.Schema.ObjectId,
@@ -56,6 +57,7 @@ MongooseAdminUser.ensureExists = function (username, password, callback) {
             adminUserData.username = username;
         }
         adminUserData.passwordHash = crypt.encryptSync(password);
+        adminUserData.is_superuser = true;
         adminUserData.save(function (err) {
             if (err) {
                 console.log('Unable to create or update admin user because: ' + err);

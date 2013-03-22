@@ -318,11 +318,12 @@ MongooseAdmin.prototype.getDocument = function(collectionName, documentId, onRea
 MongooseAdmin.prototype.createDocument = function(req,user, collectionName, params, onReady) {
     var self = this;
     var model = this.models[collectionName].model;
-    var form_type = this.models[collectionName].options.form || AdminForm;
+    //noinspection LocalVariableNamingConventionJS
+    var FormType = this.models[collectionName].options.form || AdminForm;
     if(permissions.hasPermissions(user,collectionName,'create'))
     {
 
-        var form = new form_type(req,{data:params},model);
+        var form = new FormType(req,{data:params},model);
         form.is_valid(function(err,valid)
         {
             if(err)
@@ -373,14 +374,14 @@ MongooseAdmin.prototype.updateDocument = function(req, user, collectionName, doc
         return onReady('unauthorized');
     }
 
-    var FormType = this.models[collectionName].options.form || AdminForm;
+    var FormType2 = this.models[collectionName].options.form || AdminForm;
     return model.findById(documentId, function (err, document) {
         if (err) {
             console.log('Error retrieving document to update: ' + err);
             return onReady('Unable to update', null);
         }
 
-        var form = new FormType(req, { instance: document, data: params }, model);
+        var form = new FormType2(req, { instance: document, data: params }, model);
         form.is_valid(function (err, valid) {
             if (err || !valid)
                 return onReady(err || form, null);
@@ -442,29 +443,21 @@ MongooseAdmin.prototype.deleteDocument = function(user, collectionName, document
     }
 };
 
-MongooseAdmin.prototype.orderDocuments =function(user,collectionName,data,onReady)
-{
-    //console.log(data);
-    if(permissions.hasPermissions(user,collectionName,'order'))
-    {
-            var sorting_attr = this.models[collectionName].options.sortable;
-        if(sorting_attr)
-        {
-            for(var id in data)
-            {
-                var set_dict = {};
-                set_dict[sorting_attr] = data[id];
-                    this.models[collectionName].model.update({_id:id},{$set:set_dict},function(err,r)
-                    {
-                    });
-            }
-        }
 
-        onReady(null);
-    }
-    else
-        onReady('unauthorized');
+MongooseAdmin.prototype.orderDocuments = function (user, collectionName, data, callback) {
+    if (!permissions.hasPermissions(user, collectionName, 'order')) return callback('unauthorized');
+    var self = this;
+    var model = this.models[collectionName];
+    var sorting_attr = model.options.sortable;
+    if (!sorting_attr) return callback();
+    Object.keys(data).forEach(function (id) {
+        var set_dict = {};
+        set_dict[sorting_attr] = data[id];
+        model.model.update({_id: id}, {$set: set_dict}, function (err, r) {});
+    });
+    return callback();
 };
+
 
 MongooseAdmin.prototype.actionDocuments =function(user,collectionName,actionId,data,onReady)
 {
