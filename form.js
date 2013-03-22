@@ -5,7 +5,6 @@ var forms =  require('./forms')
     ,fields = forms.fields
     ,widgets = forms.widgets
     ,mongoose = require.main.require('mongoose')
-    ,_ = require('underscore')
     ,jest = require('jest');
 
 var api_loaded = false;
@@ -26,7 +25,8 @@ var AdminForm = exports.AdminForm = forms.forms.MongooseForm.extend({
 
     scanFields : function(form_fields){
         var self = this;
-        _.each(form_fields,function(value,key) {
+        Object.keys(form_fields).forEach(function(key) {
+            var value = form_fields[key];
             if(value instanceof fields.RefField) {
                 if( (value.options.url || api_loaded)  && value.options.query) {
                     value.options.widget_options.url = value.options.url || api_path;

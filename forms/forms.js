@@ -23,28 +23,23 @@ exports.registerModel = function (modelName, model) {
 
 exports.checkDependecies = function (model, id, callback) {
     var models_to_query = {};
-    for (var modelName in Models) {
+    Object.keys(Models).forEach(function (modelName) {
         var model_ref = Models[modelName];
-        if (!model_ref) {
-            continue;
-        }
-        if (!model_ref.schema) {
-            continue;
-        }
+        if (!model_ref) return;
+        if (!model_ref.schema) return;
         for (var fieldName in model_ref.schema.paths) {
-            if (model_ref.schema.paths[fieldName].options.ref && model_ref.schema.paths[fieldName].options.ref === model) {
-                models_to_query[modelName] = models_to_query[modelName] || [];
-                var query_dict = {};
-                query_dict[fieldName] = id;
-                models_to_query[modelName].push(query_dict);
-            }
+            if (model_ref.schema.paths[fieldName].options.ref !== model) continue;
+            models_to_query[modelName] = models_to_query[modelName] || [];
+            var query_dict = {};
+            query_dict[fieldName] = id;
+            models_to_query[modelName].push(query_dict);
         }
-    }
-    var funcs = Object.keys(models_to_query).map(function (modelName) {
-        return function (cbk) {Models[modelName].find({$or: models_to_query[modelName]}, cbk);};
     });
-    async.parallel(
-        funcs,
+    async.each(
+        models_to_query,
+        function (modelName, cbk) {
+            Models[modelName].find({$or: models_to_query[modelName]}, cbk);
+        },
         function (err, results) {
             var all_results = results.reduce(function (acc, res_batch) {return acc.concat(res_batch);}, []);
             callback(err, all_results);
@@ -183,16 +178,9 @@ var BaseForm = exports.BaseForm = Class.extend({
     },
     get_fields: function () {
         var self = this;
-        for (var attr in self) {
-            if (self[attr] instanceof fields.BaseField) {
-                self.fields[attr] = self[attr];
-            }
-        }
-        var all_fields = self.fields;
-        self.fields = {};
-        _.each(all_fields, function (field, name) {
-            if (_.indexOf(self.exclude, name) === -1) {
-                self.fields[name] = field;
+        Object.keys(self.fields).forEach(function (name) {
+             if (~self.exclude.indexOf(name)) {
+                delete self.fields[name]
             }
         });
     },
@@ -234,36 +222,21 @@ var BaseForm = exports.BaseForm = Class.extend({
         self.clean_values = {};
         var clean_funcs = [];
 
-        function create_clean_func(field_name) {
-            return function (cbk) {
-                self.fields[field_name].clean_value(self.request, function (err) {
-                    if (err) {
-                        cbk(err);
+        async.each(Object.keys(self.fields), function (field_name, cbk) {
+                var field = self.fields[field_name];
+                field.clean_value(self.request, function (err) {
+                    if (err) return cbk(err);
+                    if (field.errors && field.errors.length) {
+                        self.errors[field_name] = field.errors;
+                    } else {
+                        self.clean_values[field_name] = field.value;
                     }
-                    else {
-                        if (self.fields[field_name].errors && self.fields[field_name].errors.length) {
-                            self.errors[field_name] = self.fields[field_name].errors;
-                        }
-                        else {
-                            self.clean_values[field_name] = self.fields[field_name].value;
-                        }
-                        cbk(null);
-                    }
+                    return cbk(null);
                 });
-            };
-        }
-
-        for (var field_name in self.fields) {
-            clean_funcs.push(create_clean_func(field_name));
-        }
-        async.parallel(clean_funcs, function (err) {
-            if (err) {
-                callback(err);
-            }
-            else {
+            }, function (err) {
                 callback(null, Object.keys(self.errors).length === 0);
             }
-        });
+        );
     },
 
 
