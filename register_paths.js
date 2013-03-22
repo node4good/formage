@@ -288,6 +288,8 @@ var routes = {
         //noinspection JSUnusedLocalSymbols
         var saved = query.saved;
         delete query.saved;
+        var search_value = query._search || '';
+        delete query._search;
 
         var filters = {};
         Object.keys(query).forEach(function (key) { filters[key] = query[key]; });
@@ -314,7 +316,6 @@ var routes = {
                                 return encodeURIComponent(key) + '=' + encodeURIComponent(value);
                             }).join('&');
                         };
-
                         var orderLink = function (key) {
                             if (req.query.order_by == key) {
                                 key = '-' + key;
@@ -337,6 +338,8 @@ var routes = {
                             adminTitle: MongooseAdmin.singleton.getAdminTitle(),
                             listFields: options.list,
                             documents: documents,
+                            search: model2.options.search,
+                            search_value: search_value,
                             actions: model2.options.actions || [],
                             editable: permissions.hasPermissions(adminUser, model_name, 'update'),
                             sortable: typeof(model2.options.sortable) == 'string' && permissions.hasPermissions(adminUser, model_name, 'order'),

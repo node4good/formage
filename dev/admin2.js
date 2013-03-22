@@ -28,9 +28,9 @@ var Admin = module.exports = Class.extend({
         module.mongoose_module = exports.mongoose_module =
             exports.mongoose_module || module.mongoose_module || mongoose || module.parent.mongoose || module.parent.mongoose_module;
 
-        AdminModel = require('./AdminModel');
+        AdminModel = require('./../models/AdminModel');
         AdminUser = require('models/mongoose_admin_user').MongooseAdminUser;
-        permissions = require('./permissions');
+        permissions = require('./../models/permissions');
 
         this.app = app;
         this.root = options.root || '/admin';
