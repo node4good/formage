@@ -4,7 +4,8 @@ if (!module.parent) console.error('Please don\'t call me directly.I am just the 
 var Class = require('sji'),
     async = require('async'),
     formage = require('formage'),
-    paths = require('./paths');
+    paths = require('./register_paths');
+var mongoose = require.main.require('mongoose');
 
 var AdminModel, AdminUser, permissions;
 
@@ -23,10 +24,6 @@ var Admin = module.exports = Class.extend({
      */
     init: function (app, mongoose, options) {
         options = options || {};
-
-        //noinspection OverlyComplexBooleanExpressionJS
-        module.mongoose_module = exports.mongoose_module =
-            exports.mongoose_module || module.mongoose_module || mongoose || module.parent.mongoose || module.parent.mongoose_module;
 
         AdminModel = require('./../models/AdminModel');
         AdminUser = require('models/mongoose_admin_user').MongooseAdminUser;

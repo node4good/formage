@@ -2,19 +2,18 @@
 if (!module.parent) console.error('Please don\'t call me directly.I am just the main app\'s minion.') || process.process.exit(1);
 
 /*
-    TODO:
-    2. DateTime Widget
-    3. check Autocomplete
-    4. fix Map
+ TODO:
+ 2. DateTime Widget
+ 3. check Autocomplete
+ 4. fix Map
  */
 
 var Class = require('sji'),
-    _ = require('underscore'),
     util = require('util'),
     cloudinary = require('cloudinary');
 
 
-function escape (str) {
+function escape(str) {
     return (str + '').replace(/&/g, '&amp;')
         .replace(/</g, '&lt;').replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
@@ -42,20 +41,22 @@ var Widget = exports.Widget = Class.extend({
     pre_render: function (callback) {
         callback(null);
     },
-    render: function (res) {
+    render: function () {
         return this;
     },
     render_attributes: function (res) {
         this.attrs['name'] = this.name;
         this.attrs['id'] = 'id_' + this.name;
 
+        //noinspection JSHint
         for (var attr in this.attrs) {
             var value = Array.isArray(this.attrs[attr]) ? this.attrs[attr].join(' ') : this.attrs[attr];
             res.write(' ' + attr + '="' + escape(value) + '"');
         }
-        for (var attr in this.data) {
-            var value = Array.isArray(this.data[attr]) ? this.data[attr].join(' ') : this.data[attr];
-            res.write(' data-' + attr + '="' + escape(value) + '"');
+        //noinspection JSHint
+        for (var attr1 in this.data) {
+            var value1 = Array.isArray(this.data[attr1]) ? this.data[attr1].join(' ') : this.data[attr1];
+            res.write(' data-' + attr1 + '="' + escape(value1) + '"');
         }
 
         return this;
@@ -69,7 +70,7 @@ exports.InputWidget = Widget.extend({
         this._super(options);
     },
     render: function (res) {
-        res.write('\n<input' + (this.value != null ? ' value="' + escape(this.value) + '"' : '' ));
+        res.write('\n<input' + ('value' in this ? ' value="' + escape(this.value) + '"' : '' ));
         this.render_attributes(res);
         res.write(' />\n');
         return this;
@@ -103,7 +104,7 @@ exports.TextAreaWidget = Widget.extend({
         res.write('\n<textarea ');
         this.render_attributes(res);
         res.write(' >');
-        res.write(escape(this.value != null ? this.value : ''));
+        res.write(escape('value' in this ? this.value : ''));
         res.write('</textarea>\n');
         return this;
     }
@@ -114,7 +115,7 @@ exports.RichTextAreaWidget = exports.TextAreaWidget.extend({
     init: function (options) {
         this._super(options);
         this.attrs.class.push('ckeditor');
-        this.static.js.push('/node-forms/ckeditor/ckeditor.js');
+        this.static.js.push('/ckeditor/ckeditor.js');
     },
     render: function (res) {
         res.write('\n<div class="nf_widget">\n');
@@ -128,8 +129,8 @@ exports.DateWidget = exports.InputWidget.extend({
     init: function (options) {
         this._super('text', options);
         this.attrs.class.push('nf_datepicker');
-        this.static.js.push('/node-forms/datepicker/bootstrap-datepicker.js');
-        this.static.css.push('/node-forms/datepicker/datepicker.css');
+        this.static.js.push('/datepicker/bootstrap-datepicker.js');
+        this.static.css.push('/datepicker/datepicker.css');
     },
     render: function (res) {
         res.write('\n<div class="input-append date">\n');
@@ -144,8 +145,8 @@ exports.TimeWidget = exports.InputWidget.extend({
     init: function (options) {
         this._super('time', options);
         this.attrs.class.push('nf_timepicker');
-        this.static.js.push('/node-forms/timepicker/bootstrap-timepicker.js');
-        this.static.css.push('/node-forms/timepicker/timepicker.css');
+        this.static.js.push('/timepicker/bootstrap-timepicker.js');
+        this.static.css.push('/timepicker/timepicker.css');
     },
     render: function (res) {
         res.write('\n<div class="input-append bootstrap-timepicker-component">\n');
@@ -160,10 +161,12 @@ exports.NumberWidget = exports.InputWidget.extend({
     init: function (options) {
         options = options || {};
         options.attrs = options.attrs || {};
-        if (options.min != null)
+        if ('min' in options) {
             options.attrs.min = options.min;
-        if (options.max != null)
+        }
+        if ('max' in options) {
             options.attrs.max = options.max;
+        }
         options.attrs.step = options.attrs.step || options.step || 'any';
         this._super('number', options);
     }
@@ -176,8 +179,9 @@ exports.CheckboxWidget = exports.InputWidget.extend({
     },
     render: function (res) {
         var old_value = this.value;
-        if (this.value)
+        if (this.value) {
             this.attrs['checked'] = 'checked';
+        }
         this.value = 'on';
         var ret = this._super(res);
         this.value = old_value;
@@ -192,12 +196,17 @@ exports.ChoicesWidget = Widget.extend({
         this.choices = options.choices || [];
         this._super(options);
     },
+
+
     isSelected: function (choice) {
-        if (Array.isArray(this.value))
-            return _.include(this.value, choice);
-        else
+        if (Array.isArray(this.value)) {
+            return Boolean(~this.value.indexOf(choice));
+        } else {
             return choice == this.value;
+        }
     },
+
+
     prepareValues: function () {
         if (!this.names) {
             this.names = new Array(this.choices.length);
@@ -205,12 +214,14 @@ exports.ChoicesWidget = Widget.extend({
                 if (typeof(this.choices[i]) == 'object') {
                     this.names[i] = this.choices[i][1];
                     this.choices[i] = this.choices[i][0];
-                }
-                else
+                } else {
                     this.names[i] = this.choices[i];
+                }
             }
         }
     },
+
+
     render: function (res) {
         this.prepareValues();
         res.write('\n<select ');
@@ -219,15 +230,17 @@ exports.ChoicesWidget = Widget.extend({
         var found_selected = false;
         if (!this.required) {
             var selected = this.value ? '' : 'selected="selected" ';
-            if (selected)
+            if (selected) {
                 found_selected = true;
+            }
             res.write('\n<option ' + selected + 'value=""> ... </option>\n');
         }
         for (var i = 0; i < this.choices.length; i++) {
-            var selected = this.isSelected(this.choices[i]) ? 'selected="selected" ' : '';
-            if (selected)
+            var selected2 = this.isSelected(this.choices[i]) ? 'selected="selected" ' : '';
+            if (selected2) {
                 found_selected = true;
-            res.write('\n<option ' + selected + 'value="' + this.choices[i] + '">' + this.names[i] + '</option>\n');
+            }
+            res.write('\n<option ' + selected2 + 'value="' + this.choices[i] + '">' + this.names[i] + '</option>\n');
         }
         if (!found_selected && this.value) {
             res.write('\n<option selected="selected" value="' + this.value + '">Current</option>\n');
@@ -241,22 +254,24 @@ exports.ChoicesWidget = Widget.extend({
 exports.RefWidget = exports.ChoicesWidget.extend({
     init: function (options) {
         this.ref = options.ref;
-        if (!this.ref)
+        if (!this.ref) {
             throw new TypeError('model was not provided');
+        }
         this._super(options);
     },
     pre_render: function (callback) {
         var self = this;
         var base = self._super;
         this.ref.find({}).limit(self.limit).exec(function (err, objects) {
-            if (err)
+            if (err) {
                 callback(err);
-            else {
+            } else {
                 self.choices = [];
                 for (var i = 0; i < objects.length; i++) {
                     var label = objects[i].name || objects[i].title || objects[i].toString;
-                    if (typeof(label) == 'function')
+                    if (typeof(label) == 'function') {
                         label = label.call(objects[i]);
+                    }
                     self.choices.push([objects[i].id, label]);
                 }
                 return base(callback);
@@ -264,9 +279,6 @@ exports.RefWidget = exports.ChoicesWidget.extend({
         });
     }
 });
-
-
-//var UnknownRefWidget = exports.UnknownRefWidget = _extends(ChoicesWidget)
 
 
 exports.ListWidget = Widget.extend({
@@ -294,8 +306,9 @@ exports.FileWidget = exports.InputWidget.extend({
     },
     render: function (res) {
         this._super(res);
-        if (this.value && this.value.path)
+        if (this.value && this.value.path) {
             res.write('\n<a href="' + this.value.url + '">\n' + this.value.path + '</a>\n<input type="checkbox" name="' + this.name + '_clear" value="Clear" />\n Clear\n');
+        }
     }
 });
 
@@ -305,7 +318,7 @@ exports.PictureWidget = exports.InputWidget.extend({
         this._super('file', options);
     },
     render: function (res) {
-        if (this.value && this.value.url)
+        if (this.value && this.value.url) {
             res.write(util.format(
                 '\n<a href="%s" target="_blank">%s</a>\n<input type="checkbox" name="%s_clear" value="Clear" />\nClear\n',
                 this.value.url,
@@ -321,6 +334,7 @@ exports.PictureWidget = exports.InputWidget.extend({
                 ),
                 this.name
             ));
+        }
         this._super(res);
     }
 });
@@ -331,12 +345,13 @@ exports.MapWidget = exports.InputWidget.extend({
         this._super('hidden', options);
         this.attrs.class.push('nf_mapview');
         this.static.js.push('//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&language=he&libraries=places&key=AIzaSyCmNLGdcM_OYwPwmedDsECk9O6ashE-rjg');
-        this.static.js.push('/node-forms/js/maps.js');
-        this.static.css.push('/node-forms/css/maps.css');
+        this.static.js.push('/js/maps.js');
+        this.static.css.push('/css/maps.css');
     },
 
     render: function (res) {
         res.write('<div class="nf_widget">');
+        //noinspection JSUnresolvedVariable
         if (!this.options.hide_address) {
             var address = this.value ? this.value.address : '';
             this.attrs['address_field'] = 'id_' + this.name + '_address';
@@ -356,8 +371,8 @@ exports.MapWidget = exports.InputWidget.extend({
 exports.ComboBoxWidget = exports.ChoicesWidget.extend({
     init: function (options) {
         this._super(options);
-        this.static.js.push('/node-forms/select2/select2.js');
-        this.static.css.push('/node-forms/select2/select2.css');
+        this.static.js.push('/select2/select2.js');
+        this.static.css.push('/select2/select2.css');
 
         this.attrs.class.push('nf_comb');
     }
@@ -366,10 +381,8 @@ exports.ComboBoxWidget = exports.ChoicesWidget.extend({
 
 exports.AutocompleteWidget = exports.TextWidget.extend({
     init: function (options) {
-        if (!options.url)
-            throw new Error('must specify url');
-        if (!options.ref)
-            throw new TypeError('model was not provided');
+        if (!options.url) throw new Error('must specify url');
+        if (!options.ref) throw new TypeError('model was not provided');
 
         this._super(options);
         this.attrs.class.push('nf_ref');
@@ -384,47 +397,33 @@ exports.AutocompleteWidget = exports.TextWidget.extend({
 
     pre_render: function (callback) {
         var self = this;
-        var base = this._super;
+        var _super = this._super.bind(self);
         var id = this.value;
         self.data['name'] = id || '';
-        if (id) {
-            var query;
-            if (Array.isArray(id)) {
-                id = id.filter(function (x) {
-                    return x;
-                });
-                query = this.ref.find().where('_id').in(id);
-            } else
-                query = this.ref.findById(id);
-            query.exec(function (err, doc) {
-                if (err)
-                    callback(err);
-                else {
-                    if (doc)
-                        self.doc = doc;
-                    base.call(self, callback);
-                }
-            });
-        }
-        else
-            base.call(self, callback);
+        if (!id) return _super(callback);
+        var query = Array.isArray(id) ? this.ref.find().where('_id').in(id) : this.ref.findById(id);
+        return query.exec(function (err, doc) {
+            if (err) return callback(err);
+            if (doc) {
+                self.doc = doc;
+            }
+            return _super(callback);
+        });
     },
+
 
     render: function (res) {
         var self = this;
         var name = self.value;
         if (self.doc) {
-            if (Array.isArray(this.doc)) {
-                name = (_.find(this.doc, function (doc) {
-                    return doc.id == self.value;
-                }) || '').toString()
-            }
-            else
+            if (Array.isArray(self.doc)) {
+                var elem = self.doc.filter(function (d) {return d.id == self.value;})[0];
+                name = (elem || '').toString()
+            } else {
                 name = self.doc.toString();
+            }
         }
         self.data.name = name || '';
         self._super(res);
     }
-
-
 });

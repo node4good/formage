@@ -446,7 +446,6 @@ MongooseAdmin.prototype.deleteDocument = function(user, collectionName, document
 
 MongooseAdmin.prototype.orderDocuments = function (user, collectionName, data, callback) {
     if (!permissions.hasPermissions(user, collectionName, 'order')) return callback('unauthorized');
-    var self = this;
     var model = this.models[collectionName];
     var sorting_attr = model.options.sortable;
     if (!sorting_attr) return callback();

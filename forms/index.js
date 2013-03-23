@@ -12,24 +12,15 @@ module.exports.forms = require('./forms');
 module.exports.fields = require('./fields');
 module.exports.widgets = require('./widgets');
 
-module.exports.statics_path = path.join(__dirname, 'public');
-module.mongoose_module = require.main.require('mongoose');
-
 module.exports.setAmazonCredentials = module.exports.fields.setAmazonCredentials;
 
 
-module.exports.serve_static = function(app, express) {
-    app.use('/', express.static(module.exports.statics_path));
+module.exports.serve_static = function() {
+    console.log("forms.serve_static is deprecated");
 };
 
 module.exports.loadTypes = function (mongoose) {
-    module.mongoose_module = module.exports.mongoose_module = module.exports.mongoose_module || mongoose;
     exports.types.loadTypes(mongoose);
-};
-
-module.exports.register_models = function (models) {
-    module.models = module.exports.models = models;
-    module.exports.forms.set_models(models);
 };
 
 module.exports.registerModel = function (name, model) {

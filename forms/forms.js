@@ -10,6 +10,7 @@ var Class = require('sji'),
     fields = require('./fields'),
     widgets = require('./widgets'),
     common = require('./common');
+var mongoose = require.main.require('mongoose');
 
 
 var Models = {};
@@ -449,14 +450,14 @@ var MongooseForm = exports.MongooseForm = BaseForm.extend({
                     single_field[attr] = mongoose_field.options[attr];
                 }
                 single_field['type'] = mongoose_field.options.type[0];
-                schema = new module.parent.mongoose_module.Schema({__self__: single_field});
+                schema = new mongoose.Schema({__self__: single_field});
             }
             else {
                 if (mongoose_field.options.type[0].paths && mongoose_field.options.type[0].tree) {
                     schema = mongoose_field.options.type[0];
                 }
                 else {
-                    schema = new module.parent.mongoose_module.Schema(mongoose_field.options.type[0]);
+                    schema = new mongoose.Schema(mongoose_field.options.type[0]);
                 }
             }
             var list_fields = {};
@@ -482,10 +483,6 @@ var MongooseForm = exports.MongooseForm = BaseForm.extend({
 
         if (mongoose_field.options.ref) {
             var model = Models[mongoose_field.options.ref];
-            if (!model) {
-                model = module.parent.mongoose_module.model(mongoose_field.options.ref);
-                //                return new TypeError('Unknown model '+ mongoose.options.ref + ' have you used set_models with your mongoose models')
-            }
             return new fields.RefField(options, model);
         }
         if (mongoose_field.options.enum) {
@@ -495,7 +492,7 @@ var MongooseForm = exports.MongooseForm = BaseForm.extend({
             return new fields.BooleanField(options);
         }
         if (mongoose_field.options.type.name === 'Integer') {
-            options.step = options.step != null ? options.step : 1.0;
+            options.step = 'step' in options ? options.step : 1.0;
             return new fields.NumberField(options);
         }
         if (mongoose_field.options.type === Number) {

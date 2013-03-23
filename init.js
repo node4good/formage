@@ -12,6 +12,8 @@ module.exports = function(app, express, models, opt) {
     admin.setAdminTitle(opt.title || 'Admin');
     admin.ensureUserExists(opt.username || 'admin', opt.password || 'admin');
 
+    fa.register_models(models);
+
     Object.keys(models).sort().forEach(function(name) {
         var model = models[name];
 

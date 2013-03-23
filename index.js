@@ -20,9 +20,9 @@ exports.createAdmin = function(app, options) {
     var root = '/' + (options.root || 'admin');
 
     console.log('\x1b[36mMongooseAdmin is listening at path: \x1b[0m %s', root);
-    MongooseAdmin.singleton = new MongooseAdmin(app, root);
+    var admin = MongooseAdmin.singleton = new MongooseAdmin(app, root);
     paths.registerPaths(MongooseAdmin, app, root);
-    return MongooseAdmin.singleton;
+    return admin;
 };
 
 
@@ -46,13 +46,11 @@ module.exports.load_types = function () {
 };
 
 
-module.exports.register_models = function (models, opt) {
+module.exports.register_models = function (models) {
     if (this._models_registered) return;
     this._models_registered = true;
 
-    exports.init(app, express, models, opt);
-    module.exports.models = models;
-    module.exports.forms.register_models(models);
+    module.exports.forms.forms.set_models(models);
 };
 
 

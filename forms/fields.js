@@ -1,8 +1,5 @@
 'use strict';
-if (!module.parent) {
-    console.log("Do not call formage directly. require()-ing is required.");
-    process.exit(1);
-}
+if (!module.parent) console.error('Please don\'t call me directly.I am just the main app\'s minion.') || process.process.exit(1);
 
 var widgets = require('./widgets'),
     async = require('async'),
@@ -13,6 +10,7 @@ var widgets = require('./widgets'),
 	fs = require('fs'),
 	util = require('util'),
     cloudinary = require('cloudinary');
+var mongoose = require.main.require('mongoose');
 
 try {
     var knox = require('knox');
@@ -242,7 +240,7 @@ var RefField = exports.RefField = EnumField.extend({
     },
     to_schema: function () {
         var schema = RefField.super_.prototype.to_schema.call(this);
-        schema['type'] = module.parent.mongoose_module.Schema.ObjectId;
+        schema['type'] = mongoose.Schema.ObjectId;
         schema['ref'] = this.ref + '';
         return schema;
     }
