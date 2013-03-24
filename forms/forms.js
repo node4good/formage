@@ -12,22 +12,23 @@ var Class = require('sji'),
     common = require('./common');
 var mongoose = require.main.require('mongoose');
 
+
 var FORM_EXCLUDE_FIELDS = ['__v'];
 
 
-var Models = {};
-exports.set_models = function (models) {
-    Models = models;
+var models = {};
+exports.set_models = function (mo) {
+    models = mo;
 };
 
-exports.registerModel = function (modelName, model) {
-    Models[modelName] = model;
+exports.registerModel = function (name, model) {
+    models[name] = model;
 };
 
 exports.checkDependecies = function (model, id, callback) {
     var models_to_query = {};
-    Object.keys(Models).forEach(function (modelName) {
-        var model_ref = Models[modelName];
+    Object.keys(models).forEach(function (modelName) {
+        var model_ref = models[modelName];
         if (!model_ref) return;
         if (!model_ref.schema) return;
         for (var fieldName in model_ref.schema.paths) {
@@ -40,8 +41,8 @@ exports.checkDependecies = function (model, id, callback) {
     });
     async.each(
         models_to_query,
-        function (modelName, cbk) {
-            Models[modelName].find({$or: models_to_query[modelName]}, cbk);
+        function (name, cbk) {
+            models[name].find({ $or: models_to_query[name] }, cbk);
         },
         function (err, results) {
             var all_results = results.reduce(function (acc, res_batch) {return acc.concat(res_batch);}, []);
@@ -486,7 +487,7 @@ var MongooseForm = exports.MongooseForm = BaseForm.extend({
         }
 
         if (mongoose_field.options.ref) {
-            var model = Models[mongoose_field.options.ref];
+            var model = models[mongoose_field.options.ref];
             return new fields.RefField(options, model);
         }
         if (mongoose_field.options.enum) {
