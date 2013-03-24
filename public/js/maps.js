@@ -24,7 +24,7 @@ $.fn.geopicker = function(params) {
         address_input = defaults['address_field'] || elm.attr('address_field'),
         map_id = defaults['map_id'] || (elm.is('[map_id]') ? elm.attr('map_id') : null);
 
-    console.log('geopicker', elm);
+//    console.log('geopicker', elm);
 
     var map;
     var marker;
