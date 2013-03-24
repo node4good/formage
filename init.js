@@ -1,8 +1,8 @@
 'use strict';
 if (!module.parent) console.error('Please don\'t call me directly.I am just the main app\'s minion.') || process.process.exit(1);
 
-var fa = require('./index.js');
-var EXCLUDED_FIELDS = ['order', '_id', 'show', '_v'];
+var fa = require('./index.js'),
+    LIST_EXCLUDED_FIELDS = ['order', '_id', 'show', '__v'];
 
 module.exports = function(app, express, models, opt) {
     fa.serve_static(app, express, opt);
@@ -23,14 +23,13 @@ module.exports = function(app, express, models, opt) {
 
         Object.keys(paths).forEach(function(path) {
             var options = paths[path].options;
-            if(!options.type.name) return;
-            if (~EXCLUDED_FIELDS.indexOf(path)) return;
+
+            if (!options.type.name) return;
+            if (~LIST_EXCLUDED_FIELDS.indexOf(path)) return;
             if (options.type.name == 'File') return;
 
-            if(options.ref) {
+            if (options.ref)
                 list_populate.push(path);
-
-            }
 
             list.push(path);
         });

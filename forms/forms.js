@@ -12,6 +12,8 @@ var Class = require('sji'),
     common = require('./common');
 var mongoose = require.main.require('mongoose');
 
+var FORM_EXCLUDE_FIELDS = ['__v'];
+
 
 var Models = {};
 exports.set_models = function (models) {
@@ -95,7 +97,7 @@ var BaseForm = exports.BaseForm = Class.extend({
         this.data = options.data || request.body || {};
         this.files = options.files || request.files || {};
         this.admin_root = request.app.path();
-        this.exclude = options.exclude || [];
+        this.exclude = _.extend(FORM_EXCLUDE_FIELDS, options.exclude);
         this.instance = options.instance;
         this.request = request;
         this._fields_ready = false;
@@ -248,7 +250,9 @@ var BaseForm = exports.BaseForm = Class.extend({
         }
         async.each(
             Object.keys(this.fields),
-            function (field_name, cb) { self.fields[field_name].pre_render(cb); },
+            function (name, cb) {
+                self.fields[name].pre_render(cb);
+            },
             function (err) {
                 callback(err);
             }

@@ -150,7 +150,15 @@ module.exports = testCase({
                 }, 0);
             });
         });
-    },
+    }
+
+//    'check admin form save': function (test) {
+//        var mock_data = {};
+//        var form = new Form(mock_data);
+//        form.save(function() {
+//            test.done();
+//        });
+//    },
 
 
 //    "Mock test first page": function (test) {
