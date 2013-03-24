@@ -18,10 +18,11 @@ var _escaper = /[-[\]{}()*+?.,\\^$|#\s]/g;
 exports.AdminForm = MongooseForm.extend({
     init: function (request, options, model) {
         this._super(request, options, model);
-        this.static.js.push('/js/forms.js');
-        this.static.js.push('/js/document.js');
 
-        this.static.css.push('/node-forms/css/forms.css');
+        // no need for these, as they are already in formage-admin layout.jade
+//        this.static.js.push('/js/forms.js');
+//        this.static.js.push('/js/document.js');
+//        this.static.css.push('/css/forms.css');
     },
 
 
