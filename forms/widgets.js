@@ -31,7 +31,7 @@ var Widget = exports.Widget = Class.extend({
         this.attrs.class.push(this.required ? 'required_label' : 'optional_label');
         this.data = options.data || {};
         this.name = '';
-        this.value = null;
+        this.value = undefined;
         options.static = options.static || {};
         this.static = {
             css: options.static.css || [],
@@ -70,7 +70,7 @@ exports.InputWidget = Widget.extend({
         this._super(options);
     },
     render: function (res) {
-        res.write('\n<input' + ('value' in this ? ' value="' + escape(this.value) + '"' : '' ));
+        res.write('\n<input' + ('value' in this && this.value != undefined ? ' value="' + escape(this.value) + '"' : '' ));
         this.render_attributes(res);
         res.write(' />\n');
         return this;
