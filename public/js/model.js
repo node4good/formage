@@ -22,10 +22,18 @@ $(function() {
             .trigger('change');
     });
 
-    $('#actions_forms').submit(function(e) {
+    var $actions = $('#actions');
+    $('.select-row').on('change', function() {
+        if ($('.select-row:checked').length)
+            $actions.fadeIn('fast');
+        else
+            $actions.fadeOut('fast');
+    });
+
+    $actions.find('button').click(function(e) {
         e.preventDefault();
 
-        var action_id = $('.actions').val();
+        var action_id = $(this).val();
         if (!action_id) return;
 
         var ids = [];
@@ -34,15 +42,23 @@ $(function() {
         });
         if (!ids.length) return;
 
-        console.log(action_id, ids);
+        var msg = 'Are you sure you want to ' + $(this).text().toLowerCase()
+            + ' ' + ids.length + ' documents?';
 
-        $.post(
-            url + '/action/' + action_id,
-            { ids: ids },
-            function() {
-                location.reload();
-            }
-        );
+        bootbox.confirm(msg, function(result) {
+            if (!result)
+                return;
+
+            console.log(action_id, ids);
+
+            $.post(
+                url + '/action/' + action_id,
+                { ids: ids },
+                function() {
+                    location.reload();
+                }
+            );
+        });
     });
 
     var btn = $('button#reorder');
@@ -65,9 +81,13 @@ $(function() {
                     url + '/order',
                     data,
                     function() {
-                        alert('saved');
-                        btn.button('reset');
-                        btn.hide();
+                        btn.button('saved')
+                            .delay(1000)
+                            .fadeOut('slow')
+                            .queue(function(next) {
+                                btn.button('reset');
+                                next();
+                            });
                     }
                 );
             })

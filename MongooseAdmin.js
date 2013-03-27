@@ -89,11 +89,17 @@ MongooseAdmin.prototype.registerMongooseModel = function (modelName, model, fiel
         value: 'delete',
         label: 'Delete',
         func: function (user, ids, callback) {
-            async.each(ids,
-                function (id, cbk) {forms.checkDependecies(modelName, id, cbk);},
+            async.each(
+                ids,
+                function (id, cbk) {
+                    forms.checkDependecies(modelName, id, cbk);
+                },
                 function (err, results) {
-                    if (err) callback(err);
-                    var no_dependencies = ids.filter(function (result, index) {return !results[index].length;});
+                    if (err) return callback(err);
+
+                    var no_dependencies = ids.filter(function (result, index) {
+                        return !results[index].length;
+                    });
                     model.remove({_id: {$in: no_dependencies}}, callback);
                 }
             );

@@ -31,13 +31,14 @@ exports.checkDependecies = function (model, id, callback) {
         var model_ref = models[modelName];
         if (!model_ref) return;
         if (!model_ref.schema) return;
-        for (var fieldName in model_ref.schema.paths) {
-            if (model_ref.schema.paths[fieldName].options.ref !== model) continue;
+        Object.keys(model_ref.schema.paths).forEach(function(fieldName) {
+            if (model_ref.schema.paths[fieldName].options.ref !== model)
+                return;
             models_to_query[modelName] = models_to_query[modelName] || [];
             var query_dict = {};
             query_dict[fieldName] = id;
             models_to_query[modelName].push(query_dict);
-        }
+        });
     });
     async.each(
         models_to_query,
@@ -45,7 +46,9 @@ exports.checkDependecies = function (model, id, callback) {
             models[name].find({ $or: models_to_query[name] }, cbk);
         },
         function (err, results) {
-            var all_results = results.reduce(function (acc, res_batch) {return acc.concat(res_batch);}, []);
+            var all_results = results.reduce(function (acc, res_batch) {
+                return acc.concat(res_batch);
+            }, []);
             callback(err, all_results);
         }
     );

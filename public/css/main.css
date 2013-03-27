@@ -69,8 +69,8 @@ a h3 { color: black; }
 /*
     document list
 */
-#actions_forms button {
-    margin-left: 5px;
+#actions {
+    margin-bottom: 0;
 }
 .center {
     text-align: center !important;
@@ -112,6 +112,7 @@ tr.sortable-placeholder:before {
 }
 #reorder {
     margin-right: 20px;
+    margin-left: 0;
 }
 
 

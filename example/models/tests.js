@@ -14,7 +14,7 @@ var s = new Schema({
         }
     ],
     ref: { type: ObjectId, ref: 'pages', required: true },
-    second_ref: { type: ObjectId, ref: 'users', limit: 500, query: '/__value__/i.test(this.email)', required: true },
+//    second_ref: { type: ObjectId, ref: 'users', limit: 500, query: '/__value__/i.test(this.email)', required: true },
     string: { type: String, required: true },
     date: { type: Date, required: true },
     enum: { type: String, enum: ['1', '2', '3'], required: true },
