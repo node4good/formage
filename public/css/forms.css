@@ -206,3 +206,10 @@ p.error {
 .select2-result-label {
     min-height: 1em;
 }
+
+/*
+    images
+*/
+.field a img {
+    margin-bottom: 9px;
+}

@@ -6,41 +6,40 @@ html(lang='en')
 
         link(rel='stylesheet', href='#{rootPath}/css/ui-lightness/jquery-ui-1.10.2.custom.css', charset='utf-8')
         link(rel='stylesheet', href='#{rootPath}/css/bootstrap.css', charset='utf-8')
-        link(rel='stylesheet', href='#{rootPath}/css/emp.css', charset='utf-8')
+        link(rel='stylesheet', href='#{rootPath}/css/main.css', charset='utf-8')
         link(rel='stylesheet', href='#{rootPath}/css/forms.css', charset='utf-8')
 
         script(src='#{rootPath}/js/lib/jquery-1.9.1.js')
         script(src='#{rootPath}/js/lib/jquery-ui-1.10.2.custom.min.js')
         script(src='#{rootPath}/js/lib/bootstrap.js')
+        script var root = '#{rootPath}';
 
         != typeof(renderedHead) != 'undefined' ? renderedHead : ''
     body
-        .container
-            header.page-header.well
-                block nav
-                    .btn-group.pull-right
-                        a.btn.btn-info(href='#{rootPath}/')
-                            i.icon-home.icon-white
-                            |  Home
-                        a.btn(href='#{rootPath}/logout')
-                            .icon-off
-                            |  Logout
-                h1
-                    block title
-                        a(href='#{rootPath}/') #{adminTitle}
-                    block breadcrumb
+        header.navbar.navbar-static-top
+            .navbar-inner
+                .container
+                    block nav
+                        .btn-group.pull-right
+                            a.btn.btn-info(href='#{rootPath}/')
+                                i.icon-home.icon-white
+                                | Home
+                            a.btn(href='#{rootPath}/logout')
+                                .icon-off
+                                | Logout
+                    h1
+                        block title
+                            a(href='#{rootPath}/') #{adminTitle}
+                        block breadcrumb
 
-            div#content
+        .container
+            #content
                 block body
-            hr
-            footer
+
+            footer.footer
                 a(href='http://github.com/Empeeric/formage-admin') Formage-Admin
                 | , &nbsp;
                 a(href='http://empeeric.com') Empeeric
-
-
-        script
-            var root = '#{rootPath}';
 
         block scripts
 
