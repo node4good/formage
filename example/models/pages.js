@@ -15,4 +15,5 @@ schema.methods.toString = function() {
     return this.title;
 };
 
-module.exports = mongoose.model('pages', schema);
+var pages = module.exports = mongoose.model('pages', schema);
+pages.singular = 'page';

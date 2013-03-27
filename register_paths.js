@@ -324,6 +324,7 @@ var routes = {
                         };
                         var model_name = req.params.modelName;
                         var model2 = MongooseAdmin.singleton.models[model_name];
+
                         res.locals = {
                             pageTitle: 'Admin - ' + model.modelName,
                             totalCount: totalCount,

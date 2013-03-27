@@ -132,8 +132,9 @@ MongooseAdmin.prototype.registerSingleRowModel = function(model,name,options) {
 * @api public
 */
 MongooseAdmin.prototype.registerModel = function(model, name, options) {
-    this.models[name] = {model: model,
-        modelName:name,
+    this.models[name] = {
+        model: model,
+        modelName: name,
         options: options
     };
     console.log('\x1b[36mMongooseAdmin registered model: \x1b[0m %s', name);
@@ -169,7 +170,8 @@ MongooseAdmin.prototype.getRegisteredModels = function (user, callback) {
  * @api public
  */
 MongooseAdmin.prototype.getModel = function(collectionName, onReady) {
-    onReady(null, this.models[collectionName].model, this.models[collectionName].fields, this.models[collectionName].options);
+    var model = this.models[collectionName];
+    onReady(null, model.model, model.fields, model.options);
 };
 
 /**

@@ -14,7 +14,12 @@ block body
                 - if (createable)
                     a.btn.pull-right.btn-warning(href="#{rootPath}/model/#{modelName}/document/new")
                         i.icon-plus.icon-white
-                        |  New <em>#{modelName}</em> item
+                        |  New
+                        - if (model.singular)
+                            strong  #{model.singular}
+                        - else
+                            strong  #{modelName}
+                            |  item
 
                 - if(search)
                     p

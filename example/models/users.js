@@ -8,4 +8,5 @@ schema.methods.toString = function() {
     return this.email;
 };
 
-module.exports = mongoose.model('users', schema);
+var users = module.exports = mongoose.model('users', schema);
+users.singular = 'user';

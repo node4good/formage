@@ -325,9 +325,9 @@ exports.PictureWidget = exports.InputWidget.extend({
                 cloudinary.image(
                     this.value.public_id, {
                         format: 'png',
-                        width: 250,
-                        height: 100,
-                        crop: 'limit',
+                        width: 150,
+                        height: 110,
+                        crop: 'fill',
                         alt: this.value.original_name,
                         title: this.value.original_name
                     }
