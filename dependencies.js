@@ -1,14 +1,6 @@
 var async = require('async');
 
 exports.check = function (models, model, id, callback) {
-
-    // normalize MongooseAdmin models object
-//    if (models[model].model)
-//        models = Object.keys(models).reduce(function(seed, name) {
-//            seed[name] = models[name].model;
-//            return seed;
-//        }, {});
-
     var ref_models = Object.keys(models)
         .filter(function(name) {
             return models[name].model && models[name].model.schema;
