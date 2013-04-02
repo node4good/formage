@@ -82,48 +82,58 @@ function buildModelFilters(model,filters,dict) {
 }
 
 
-MongooseAdmin.prototype.registerMongooseModel = function (modelName, model, fields, options) {
+MongooseAdmin.prototype.registerMongooseModel = function (name, model, fields, options) {
+    var models = this.models;
+
     options = options || {};
     options.actions = options.actions || [];
     options.actions.push({
         value: 'delete',
         label: 'Delete',
         func: function (user, ids, callback) {
-            async.each(
+            async.map(
                 ids,
-                function (id, cbk) {
-                    forms.checkDependecies(modelName, id, cbk);
+                function (id, cb) {
+                    require('./dependencies').check(models, name, id, cb);
                 },
                 function (err, results) {
                     if (err) return callback(err);
 
                     var no_dependencies = ids.filter(function (result, index) {
-                        return !results[index].length;
+                        return !results[index] || !results[index].length;
                     });
                     model.remove({_id: {$in: no_dependencies}}, callback);
                 }
             );
         }
     });
+
     var filters = [];
     buildModelFilters(model, options.filters, filters);
-    this.models[modelName] = {
+
+    this.models[name] = {
         model: model,
         filters: filters,
-        modelName: modelName,
+        modelName: name,
         options: options,
         fields: fields
     };
 
-    console.log('\x1b[36mMongooseAdmin registered model: \x1b[0m %s', modelName);
+    console.log('\x1b[36mMongooseAdmin registered model: \x1b[0m %s', name);
 
-    permissions.registerModel(modelName);
+    permissions.registerModel(name);
 };
 
 
-MongooseAdmin.prototype.registerSingleRowModel = function(model,name,options) {
+MongooseAdmin.prototype.registerSingleRowModel = function(model, name, options) {
     model.is_single = true;
-    this.models[name] = {model:model,options:options||{},fields:{},is_single:true,modelName:name};
+    this.models[name] = {
+        model: model,
+        options: options || {},
+        fields: {},
+        is_single: true,
+        modelName: name
+    };
     permissions.registerModel(name);
 };
 
@@ -431,7 +441,7 @@ MongooseAdmin.prototype.deleteDocument = function(user, collectionName, document
             if (!document) {
                 onReady('Document not found');
             } else {
-                forms.unlinkDependencies(self.models[collectionName].modelName,documentId,function(err) {
+                require('./dependencies').unlink(self.models, collectionName, documentId, function(err) {
                     if(err)
                         onReady('unlink dependencies failed');
                     else {

@@ -125,33 +125,6 @@ module.exports = testCase({
             });
     },
 
-
-    "Test first page": function (test) {
-        var admin_module = require('..');
-
-        var mock_mongoose = {
-            model: function () {},
-            Schema: function () {
-                this.methods = {}
-            }
-        };
-
-        var app = express();
-        var admin = admin_module.createAdmin(app, null, mock_mongoose);
-        var server = app.listen(3456, function () {
-            request('http://localhost:3456/', function (err, res) {
-                console.log(err);
-                console.log(res.statusCode);
-                console.log(res.statusText);
-                console.log(res.body);
-                setTimeout(function () {
-                    server.close();
-                    test.done();
-                }, 0);
-            });
-        });
-    }
-
 //    'check admin form save': function (test) {
 //        var mock_data = {};
 //        var form = new Form(mock_data);

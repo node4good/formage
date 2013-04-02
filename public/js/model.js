@@ -45,9 +45,9 @@ $(function() {
         var msg = 'Are you sure you want to ' + $(this).text().toLowerCase()
             + ' ' + ids.length + ' documents?';
 
-        bootbox.confirm(msg, function(result) {
-            if (!result)
-                return;
+//        bootbox.confirm(msg, function(result) {
+//            if (!result)
+//                return;
 
             console.log(action_id, ids);
 
@@ -58,7 +58,7 @@ $(function() {
                     location.reload();
                 }
             );
-        });
+//        });
     });
 
     var btn = $('button#reorder');

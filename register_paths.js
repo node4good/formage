@@ -44,9 +44,10 @@ var json_routes = {
 
 
     checkDependencies: function (req, res) {
-        var modelName = req.body.model;
-        var id = req.body.id;
-        forms.checkDependecies(modelName, id, function (err, results) {
+        var modelName = req.body.model,
+            id = req.body.id;
+
+        require('../dependencies').check(MongooseAdmin.singleton.models, modelName, id, function (err, results) {
             var json = _.map(results, function (result) {
                 return result.name || result.title || result.toString();
             });

@@ -274,9 +274,13 @@ var Admin = module.exports = Class.extend({
         this.models[model_name].order(req, res);
     },
     checkDependencies: function (req, res) {
-        var modelName = req.body.model;
-        var id = req.body.id;
-        formage.forms.checkDependecies(modelName, id, function (err, results) {
+        var model = req.body.model,
+            id = req.body.id;
+
+        require('../dependencies').check(this.models, model, id, function (err, results) {
+            if (err)
+                return res.end(500);
+
             var json = results.map(function (result) {
                 return result.name || result.title || result.toString();
             });
