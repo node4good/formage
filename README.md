@@ -1,11 +1,22 @@
 Formage Admin
 =============
 
-Mongoose Admin using [bootstraped](http://twitter.github.com/bootstrap/) [formage](https://github.com/Empeeric/formage).
+![](http://i.imgur.com/9vVHCPY.png)
 
-installation
+[Bootstraped](http://twitter.github.com/bootstrap/) admin forms for [Mongoose](http://mongoosejs.com/),
+originally forked from [mongoose-admin](https://github.com/marccampbell/mongoose-admin).
+
+Usage
 ------------
 `npm install formage-admin`
+
+```js
+var admin = require('formage-admin').init(app, express, require('./models'), {
+    title: 'Formage-Admin Example'
+});
+```
+
+Look at `\example`.
 
 
 Sponsors
