@@ -335,7 +335,7 @@ var ListField_ = exports.ListField = BaseField.extend({
                     request_copy[key] = req[key];
                 request_copy.body = post_data;
                 request_copy.files = file_data;
-                var old_field_value = post_data[field_name] || old_value.get ? old_value.get(field_name) : old_value[field_name];
+                var old_field_value = post_data[field_name] || (old_value.get ? old_value.get(field_name) : old_value[field_name]);
                 field.set(old_field_value, request_copy);
                 field.clean_value(request_copy, function (err) {
                     if (err) console.trace(err);
