@@ -1,7 +1,7 @@
+![](http://i.imgur.com/9vVHCPY.png)
+
 Formage Admin
 =============
-
-![](http://i.imgur.com/9vVHCPY.png)
 
 [Bootstraped](http://twitter.github.com/bootstrap/) admin forms for [Mongoose](http://mongoosejs.com/),
 originally forked from [mongoose-admin](https://github.com/marccampbell/mongoose-admin).
@@ -10,13 +10,13 @@ Usage
 ------------
 `npm install formage-admin`
 
-```js
+```javascript
 var admin = require('formage-admin').init(app, express, require('./models'), {
-    title: 'Formage-Admin Example'
+    title: 'Backoffice'
 });
 ```
 
-Look at `\example`.
+Also, look at `\example` directory.
 
 
 Sponsors
