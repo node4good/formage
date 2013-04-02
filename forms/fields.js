@@ -389,7 +389,7 @@ var ListField_ = exports.ListField = BaseField.extend({
                         inner_body[key] || {},
                         inner_files[key] || {},
                         output_data,
-                        old_list_value[key] || {},
+                        (old_list_value && old_list_value[key]) ? old_list_value[key] : {},
                         output_errors
                     ));
                 });
