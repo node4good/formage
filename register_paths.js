@@ -1,10 +1,10 @@
 'use strict';
-var querystring = require('querystring'),
-    permissions = require('./models/permissions'),
+var Url = require('url'),
+    querystring = require('querystring'),
     _ = require('underscore'),
-    AdminForm = require('./AdminForm').AdminForm,
-    Url = require('url'),
-    forms = require('./forms').forms;
+    forms = require('./forms').forms,
+    permissions = require('./models/permissions'),
+    AdminForm = require('./AdminForm').AdminForm;
 
 var MongooseAdmin;
 
@@ -14,6 +14,7 @@ var json_routes = {
         MongooseAdmin.singleton.login(req.body.username, req.body.password, function (err, adminUser) {
             if (err) return next(err);
             if (!adminUser) return res.send(401, 'Not authorized');
+
             req.session._mongooseAdminUser = adminUser.toSessionStore();
             return res.json({});
         });
@@ -22,22 +23,22 @@ var json_routes = {
 
     documents: function (req, res) {
         var adminUser = req.session._mongooseAdminUser ? MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser) : null;
-        if (!adminUser) {
-            res.json(401);
-            return;
-        }
+        if (!adminUser)
+            return res.json(401);
+
         var query = querystring.parse(Url.parse(req.url).query);
         MongooseAdmin.singleton.modelCounts(query.collection, function (err, totalCount) {
-            if (err) {
-                res.json(500);
-                return;
-            }
+            if (err)
+                return res.json(500);
+
             MongooseAdmin.singleton.listModelDocuments(query.collection, query.start, query.count, function (err, documents) {
-                if (err) {
-                    res.json(500);
-                    return;
-                }
-                res.json({'totalCount': totalCount, 'documents': documents});
+                if (err)
+                    return res.json(500);
+
+                res.json({
+                    totalCount: totalCount,
+                    documents: documents
+                });
             });
         });
     },
@@ -296,65 +297,72 @@ var routes = {
         Object.keys(query).forEach(function (key) { filters[key] = query[key]; });
 
         MongooseAdmin.singleton.getModel(req.params.modelName, function (err, model, fields, options) {
-            if (err) {
+            if (err)
                 return res.redirect('/error');
-            }
-            if (model.is_single) {
-                return res.redirect(req.path.split('/model/')[0]);
-            }
-            MongooseAdmin.singleton.modelCounts(req.params.modelName, filters, function (err, totalCount) {
-                if (err) {
-                    return res.redirect('/');
-                }
-                MongooseAdmin.singleton.listModelDocuments(req.params.modelName, start, count, filters, sort, function (err, documents) {
-                    if (err) {
-                        res.redirect('/');
-                    } else {
-                        var makeLink = function (key, value) {
-                            var query = _.clone(req.query);
-                            query[key] = value;
-                            return '?' + _.map(query,function (value, key) {
-                                return encodeURIComponent(key) + '=' + encodeURIComponent(value);
-                            }).join('&');
-                        };
-                        var orderLink = function (key) {
-                            if (req.query.order_by == key) {
-                                key = '-' + key;
-                            }
-                            return makeLink('order_by', key);
-                        };
-                        var model_name = req.params.modelName;
-                        var model2 = MongooseAdmin.singleton.models[model_name];
 
-                        res.locals = {
-                            pageTitle: 'Admin - ' + model.modelName,
-                            totalCount: totalCount,
-                            modelName: model_name,
-                            model: model,
-                            start: start,
-                            count: count,
-                            current_filters: req.query,
-                            makeLink: makeLink,
-                            orderLink: orderLink,
-                            filters: model2.filters || [],
-                            adminTitle: MongooseAdmin.singleton.getAdminTitle(),
-                            listFields: options.list,
-                            documents: documents,
-                            search: model2.options.search,
-                            search_value: search_value,
-                            cloudinary: require('cloudinary'),
-                            actions: model2.options.actions || [],
-                            editable: permissions.hasPermissions(adminUser, model_name, 'update'),
-                            sortable: typeof(model2.options.sortable) == 'string' && permissions.hasPermissions(adminUser, model_name, 'order'),
-                            cloneable: model2.options.cloneable !== false && permissions.hasPermissions(adminUser, model_name, 'create'),
-                            createable: model2.options.createable !== false && permissions.hasPermissions(adminUser, model_name, 'create'),
-                            rootPath: MongooseAdmin.singleton.root
-                        };
-                        res.render('model.jade',
-                            {layout: 'layout.jade',
-                                locals: res.locals
-                            });
-                    }
+            if (model.is_single)
+                return res.redirect(req.path.split('/model/')[0]);
+
+            MongooseAdmin.singleton.modelCounts(req.params.modelName, filters, function (err, totalCount) {
+                if (err)
+                    return res.redirect('/');
+
+                MongooseAdmin.singleton.listModelDocuments(req.params.modelName, start, count, filters, sort, function (err, documents) {
+                    if (err)
+                        return res.redirect('/');
+
+                    var model_name = req.params.modelName,
+                        model2 = MongooseAdmin.singleton.models[model_name],
+                        schema = model2.model.schema.tree;
+
+                    var makeLink = function (key, value) {
+                        var query = _.clone(req.query);
+                        query[key] = value;
+                        return '?' + _.map(query,function (value, key) {
+                            return encodeURIComponent(key) + '=' + encodeURIComponent(value);
+                        }).join('&');
+                    };
+                    var orderLink = function (key) {
+                        if (req.query.order_by == key) {
+                            key = '-' + key;
+                        }
+                        return makeLink('order_by', key);
+                    };
+                    var fieldLabel = function(field) {
+                        return schema[field] && schema[field].label
+                            ? schema[field].label
+                            : field[0].toUpperCase() + field.slice(1).replace(/_/g,' ');
+                    };
+
+                    res.locals = {
+                        pageTitle: 'Admin - ' + model.modelName,
+                        totalCount: totalCount,
+                        modelName: model_name,
+                        model: model,
+                        start: start,
+                        count: count,
+                        current_filters: req.query,
+                        makeLink: makeLink,
+                        orderLink: orderLink,
+                        filters: model2.filters || [],
+                        adminTitle: MongooseAdmin.singleton.getAdminTitle(),
+                        list_fields: options.list,
+                        fieldLabel: fieldLabel,
+                        documents: documents,
+                        search: model2.options.search,
+                        search_value: search_value,
+                        cloudinary: require('cloudinary'),
+                        actions: model2.options.actions || [],
+                        editable: permissions.hasPermissions(adminUser, model_name, 'update'),
+                        sortable: typeof(model2.options.sortable) == 'string' && permissions.hasPermissions(adminUser, model_name, 'order'),
+                        cloneable: model2.options.cloneable !== false && permissions.hasPermissions(adminUser, model_name, 'create'),
+                        creatable: model2.options.creatable !== false && permissions.hasPermissions(adminUser, model_name, 'create'),
+                        rootPath: MongooseAdmin.singleton.root
+                    };
+                    res.render('model.jade', {
+                        layout: 'layout.jade',
+                        locals: res.locals
+                    });
                 });
             });
         });

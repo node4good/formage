@@ -11,7 +11,7 @@ block body
     #content.row
         div(class='span#{filters.length ? 9 : 12}')
             .btn-toolbar.clearfix
-                - if (createable)
+                - if (creatable)
                     a.btn.pull-right.btn-warning(href="#{rootPath}/model/#{modelName}/document/new")
                         i.icon-plus.icon-white
                         |  New
@@ -55,9 +55,9 @@ block body
                         tr
                             th.center
                                 input.select-all-rows(type='checkbox')
-                            - each field in listFields
+                            - each field in list_fields
                                 th.table-header-repeat.line-left.minwidth-1
-                                    a(href='#{orderLink(field)}') #{field}
+                                    a(href='#{orderLink(field)}') #{fieldLabel(field)}
 
                             - if (cloneable)
                                 th &nbsp;
@@ -71,7 +71,7 @@ block body
                                         .list-drag
                                             i.icon-resize-vertical
 
-                                - each field in listFields
+                                - each field in list_fields
                                     td.span3(class='#{field == 'picture'?'picture':''}')
                                         - if (field == 'picture')
                                             - if (doc[field] && doc[field].public_id)
