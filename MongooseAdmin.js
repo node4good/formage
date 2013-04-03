@@ -84,7 +84,7 @@ function buildModelFilters(model,filters,dict) {
 MongooseAdmin.prototype.registerMongooseModel = function (name, model, fields, options) {
     var models = this.models;
 
-    model.label = model.label || name.replace(/_/g,' ');
+    model.label = model.label || name[0].toUpperCase() + name.slice(1).replace(/_/g,' ');
 
     options = options || {};
     options.actions = options.actions || [];
@@ -127,6 +127,8 @@ MongooseAdmin.prototype.registerMongooseModel = function (name, model, fields, o
 
 
 MongooseAdmin.prototype.registerSingleRowModel = function(model, name, options) {
+    model.label = model.label || name[0].toUpperCase() + name.slice(1).replace(/_/g,' ');
+
     model.is_single = true;
     this.models[name] = {
         model: model,
