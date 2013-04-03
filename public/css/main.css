@@ -84,6 +84,9 @@ a h3 { color: black; }
 #filters ul {
     list-style: none;
 }
+td.picture {
+    text-align: center;
+}
 
 
 /*

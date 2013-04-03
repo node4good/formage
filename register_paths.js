@@ -342,6 +342,7 @@ var routes = {
                             documents: documents,
                             search: model2.options.search,
                             search_value: search_value,
+                            cloudinary: require('cloudinary'),
                             actions: model2.options.actions || [],
                             editable: permissions.hasPermissions(adminUser, model_name, 'update'),
                             sortable: typeof(model2.options.sortable) == 'string' && permissions.hasPermissions(adminUser, model_name, 'order'),

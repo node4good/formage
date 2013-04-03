@@ -72,10 +72,11 @@ block body
                                             i.icon-resize-vertical
 
                                 - each field in listFields
-                                    td.span3
-                                        - if (field == 'picture' && doc[field] && doc[field].url)
-                                            a(href=url)
-                                                img(src=doc[field].url,width=80,height=80)
+                                    td.span3(class='#{field == 'picture'?'picture':''}')
+                                        - if (field == 'picture')
+                                            - if (doc[field] && doc[field].public_id)
+                                                a(href=url)
+                                                    img(src=cloudinary.url(doc[field].public_id + '.png', { width: 80, height: 80, crop: 'fill' }))
                                         - else if (editable)
                                             a(href=url) #{doc[field]} &nbsp;
                                         - else
