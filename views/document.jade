@@ -17,7 +17,7 @@ block body
         p.submit.btn-group
             button#saveButton.btn.btn-large.btn-primary(type='submit',data-saving-text="Saving...") Save
             a#cancelButton.btn.btn-large(href="#{rootPath}/model/#{model_name}") Cancel
-            - if (allowDelete)
+            - if (allow_delete)
                 button#deleteButton.btn.btn-large.btn-danger(type='button',data-loading-text='Deleting...') Delete
 
 block scripts

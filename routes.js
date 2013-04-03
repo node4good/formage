@@ -223,7 +223,7 @@ function renderForm(res, form, model, allow_delete, cloneable) {
             renderedHead: head,
             document: {},
             errors: form.errors ? Object.keys(form.errors).length > 0 : false,
-            allowDelete: allow_delete,
+            allow_delete: allow_delete,
             layout: 'layout.jade',
             pretty: true
         });
@@ -375,7 +375,7 @@ var routes = {
             if (err)
                 return res.redirect('/error');
 
-            var editing = model.is_single || id === 'new',
+            var editing = !model.is_single && id !== 'new',
                 clone = editing ? req.query.clone : false;
             renderForm(res, form, model, editing, clone);
         });

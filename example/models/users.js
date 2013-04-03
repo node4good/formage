@@ -13,5 +13,4 @@ schema.methods.toString = function() {
 
 var users = module.exports = mongoose.model('users', schema);
 users.singular = 'user';
-users.label = 'משתמשים';
 users.list_fields = { title: '', email: 100 };
