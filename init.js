@@ -55,7 +55,7 @@ module.exports = function(app, express, models, opt) {
             admin.registerMongooseModel(name, model, null, options);
     });
 
-    require('AdminForm').loadApi(app, '/admin-api');
+    require('./AdminForm').loadApi(app, '/admin-api');
 
     return admin;
 };
