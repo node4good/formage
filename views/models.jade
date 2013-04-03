@@ -15,7 +15,7 @@ block body
                         a.btn.btn-info(href=url)
                             span(id='viewAll_#{model.modelName}') View All
                 a(href=url + (model.is_single ? '/document/new' : ''))
-                    h3 #{model.modelName.replace(/_/g,' ')}
+                    h3 #{model.model.label}
 
 
 block scripts

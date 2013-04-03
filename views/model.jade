@@ -2,23 +2,23 @@ extends layout
 
 block breadcrumb
     span.divider /
-    | #{modelName.replace(/_/g,' ')}
+    | #{model.label}
 
 block body
     .page-header
-        h2 #{modelName.replace(/_/g,' ')}
+        h2 #{model.label}
 
     #content.row
         div(class='span#{filters.length ? 9 : 12}')
             .btn-toolbar.clearfix
                 - if (creatable)
-                    a.btn.pull-right.btn-warning(href="#{rootPath}/model/#{modelName}/document/new")
+                    a.btn.pull-right.btn-warning(href="#{rootPath}/model/#{model_name}/document/new")
                         i.icon-plus.icon-white
                         |  New
                         - if (model.singular)
                             strong  #{model.singular}
                         - else
-                            strong  #{modelName}
+                            strong  #{model_name}
                             |  item
 
                 - if (search)
@@ -48,7 +48,7 @@ block body
                 p.center No documents yet
 
             - else
-                p.counter Viewing #{start+1}–#{start + documents.length} of #{totalCount} documents
+                p.counter Viewing #{start+1}–#{start + documents.length} of #{total_count} documents
 
                 table.table.table-bordered.table-hover
                     thead
@@ -63,7 +63,7 @@ block body
                                 th &nbsp;
                     tbody(class='#{sortable?'sortable':''}')
                         - each doc in documents
-                            - var url = rootPath + '/model/' + modelName + '/document/' + doc._id
+                            - var url = rootPath + '/model/' + model_name + '/document/' + doc._id
                             tr(id=doc._id)
                                 td.span1.center
                                     input.select-row(type='checkbox')
@@ -87,11 +87,11 @@ block body
                                     - if (cloneable)
                                         a.btn(href=url+'?clone=true') Duplicate
 
-                p.counter Viewing #{start+1}–#{start + documents.length} of #{totalCount} documents
-                - if (totalCount > count)
+                p.counter Viewing #{start+1}–#{start + documents.length} of #{total_count} documents
+                - if (total_count > count)
                     .pagination
                         ul
-                            - for (var i = 0, page = 1; i < totalCount; i += count, page++)
+                            - for (var i = 0, page = 1; i < total_count; i += count, page++)
                                 - if (start == i)
                                     li.active
                                         a #{page}
@@ -105,7 +105,7 @@ block body
                     i.icon-filter
                     | Filters
                     small.pull-right
-                        a(href='#{rootPath}/model/#{modelName}') Clear
+                        a(href='#{rootPath}/model/#{model_name}') Clear
 
                 ul.nav.nav-list
                     - each filter in filters
@@ -133,7 +133,7 @@ block body
 block scripts
     script
         var startIndex = #{start},
-            model = '#{modelName}';
+            model = '#{model_name}';
 
     script(src="#{rootPath}/js/lib/bootbox.min.js")
     script(src="#{rootPath}/js/model.js")

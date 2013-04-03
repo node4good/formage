@@ -85,6 +85,8 @@ function buildModelFilters(model,filters,dict) {
 MongooseAdmin.prototype.registerMongooseModel = function (name, model, fields, options) {
     var models = this.models;
 
+    model.label = model.label || name.replace(/_/g,' ');
+
     options = options || {};
     options.actions = options.actions || [];
     options.actions.push({
@@ -503,7 +505,7 @@ MongooseAdmin.prototype.actionDocuments =function(user,collectionName,actionId,d
  * @api private
  */
 MongooseAdmin.userFromSessionStore = function(sessionStore) {
-    return MongooseAdminUser.fromSessionStore(sessionStore);
+    return !sessionStore ? false : MongooseAdminUser.fromSessionStore(sessionStore);
 };
 
 /**
