@@ -5,7 +5,6 @@ if (!module.parent) console.error('Please don\'t call me directly.I am just the 
  TODO:
  2. DateTime Widget
  3. check Autocomplete
- 4. fix Map
  */
 
 var Class = require('sji'),
@@ -14,6 +13,9 @@ var Class = require('sji'),
 
 
 function escape(str) {
+    if (str === undefined)
+        return '';
+
     return (str + '').replace(/&/g, '&amp;')
         .replace(/</g, '&lt;').replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
@@ -48,16 +50,15 @@ var Widget = exports.Widget = Class.extend({
         this.attrs['name'] = this.name;
         this.attrs['id'] = 'id_' + this.name;
 
-        //noinspection JSHint
-        for (var attr in this.attrs) {
-            var value = Array.isArray(this.attrs[attr]) ? this.attrs[attr].join(' ') : this.attrs[attr];
+        Object.keys(this.attrs).forEach(function(attr) {
+            var value = Array.isArray(this[attr]) ? this[attr].join(' ') : this[attr];
             res.write(' ' + attr + '="' + escape(value) + '"');
-        }
-        //noinspection JSHint
-        for (var attr1 in this.data) {
-            var value1 = Array.isArray(this.data[attr1]) ? this.data[attr1].join(' ') : this.data[attr1];
-            res.write(' data-' + attr1 + '="' + escape(value1) + '"');
-        }
+        }, this.attrs);
+
+        Object.keys(this.data).forEach(function(attr) {
+            var value = Array.isArray(this[attr]) ? this[attr].join(' ') : this[attr];
+            res.write(' data-' + attr + '="' + escape(value) + '"');
+        }, this.data);
 
         return this;
     }
@@ -70,7 +71,7 @@ exports.InputWidget = Widget.extend({
         this._super(options);
     },
     render: function (res) {
-        res.write('\n<input' + ('value' in this && this.value != undefined ? ' value="' + escape(this.value) + '"' : '' ));
+        res.write('\n<input' + (this.value ? ' value="' + escape(this.value) + '"' : '') );
         this.render_attributes(res);
         res.write(' />\n');
         return this;
@@ -104,7 +105,7 @@ exports.TextAreaWidget = Widget.extend({
         res.write('\n<textarea ');
         this.render_attributes(res);
         res.write(' >');
-        res.write(escape('value' in this ? this.value : ''));
+        res.write(escape(this.value));
         res.write('</textarea>\n');
         return this;
     }
