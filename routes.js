@@ -362,14 +362,14 @@ var routes = {
                 else if (id !== 'new')
                     MongooseAdmin.singleton.getDocument(name, id, cb);
                 else
-                    cb();
+                    cb(null, null);
             },
             function(document, cb) {
                 var FormType = model.options.form || AdminForm,
                     options = _.extend({ instance: document }, model.options),
                     form = new FormType(req, options, model.model);
 
-                cb(null, form)
+                cb(null, form);
             }
         ], function(err, form) {
             if (err)
