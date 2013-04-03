@@ -4,7 +4,6 @@ var MongooseAdminUser = require('./models/mongoose_admin_user.js').MongooseAdmin
     async = require('async'),
     permissions = require('./models/permissions'),
     mongoose = require.main.require('mongoose'),
-	paths = require('./register_paths'),
     AdminForm = require('./AdminForm').AdminForm,
     forms = require('./forms').forms;
 

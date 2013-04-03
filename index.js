@@ -3,9 +3,8 @@ if (!module.parent) console.error('Please don\'t call me directly.I am just the 
 
 var MongooseAdmin = require('./MongooseAdmin.js'),
     path = require('path'),
-    paths = require('./register_paths'),
+    routes = require('./routes'),
     express = require.main.require('express');
-
 
 
 exports.forms = require('./forms');
@@ -21,7 +20,7 @@ exports.createAdmin = function(app, options) {
 
     console.log('\x1b[36mMongooseAdmin is listening at path: \x1b[0m %s', root);
     var admin = MongooseAdmin.singleton = new MongooseAdmin(app, root);
-    paths.registerPaths(MongooseAdmin, app, root);
+    routes(MongooseAdmin, app, root);
     return admin;
 };
 

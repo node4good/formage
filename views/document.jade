@@ -2,13 +2,13 @@ extends layout
 
 block breadcrumb
     span.divider /
-    a(href="#{rootPath}/model/#{collectionName}") #{modelName.replace(/_/g,' ')}
+    a(href="#{rootPath}/model/#{model_name}") #{model_label}
     span.divider /
     | editor
 
 block body
     .page-header
-        h2 #{modelName.replace(/_/g,' ')} editor
+        h2 #{model_label} editor
 
     - if (errors)
         p.alert.alert-error Saving failed, fix the following errors and try again.
@@ -16,10 +16,10 @@ block body
         != renderedDocument
         p.submit.btn-group
             button#saveButton.btn.btn-large.btn-primary(type='submit',data-saving-text="Saving...") Save
-            a#cancelButton.btn.btn-large(href="#{rootPath}/model/#{collectionName}") Cancel
+            a#cancelButton.btn.btn-large(href="#{rootPath}/model/#{model_name}") Cancel
             - if (allowDelete)
                 button#deleteButton.btn.btn-large.btn-danger(type='button',data-loading-text='Deleting...') Delete
 
 block scripts
     script
-        var model = '#{collectionName}';
+        var model = '#{model_name}';

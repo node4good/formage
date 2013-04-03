@@ -3,8 +3,7 @@ if (!module.parent) console.error('Please don\'t call me directly.I am just the 
 
 var Class = require('sji'),
     async = require('async'),
-    formage = require('formage'),
-    paths = require('./register_paths');
+    formage = require('formage');
 var mongoose = require.main.require('mongoose');
 
 var AdminModel, AdminUser, permissions;
