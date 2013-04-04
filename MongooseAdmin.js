@@ -45,39 +45,47 @@ MongooseAdmin.prototype.close = function() {
     this.app.close();
 };
 
-function buildModelFilters(model,filters,dict) {
-    if(!filters) return;
-    setTimeout(function() {
-        async.forEach(filters,function(filter,cbk) {
-            model.collection.distinct(filter, function(err,results) {
-                if(results) {
-                    if(results[0] && Array.isArray(results[0])) {
-                        results = _.flatten(results);
-                    }
-		    if(results.length > 30)
-                        results.splice(5);
-                    if(model.schema.paths[filter] && model.schema.paths[filter].options.ref) {
-                        mongoose.model(model.schema.paths[filter].options.ref).find()
-                            .where('_id').in(results).exec(function(err,refs) {
-                                if(refs)
-                                    dict.push( {key:filter, isString:false, values: _.map(refs,function(ref) { return { value:ref.id, text:ref.toString()};  }) });
-                                cbk(err);
-                            })
-                    }
-                    else {
-                        dict.push({key:filter, values: _.map(results, function(result) {
-                            return { value: result, text:result, isString:model.schema.paths[filter] && model.schema.paths[filter].options && model.schema.paths[filter].options.type == String };
-                        })});
-                        cbk();
-                    }
-                }
-                else
-                    cbk(err);
-            })
+function buildModelFilters (model, filters, dict) {
+    if (!filters)
+        return;
 
-        },function(){
-        })
-    },1000);
+    setTimeout(function () {
+        async.forEach(
+            filters,
+            function (filter, cbk) {
+                model.collection.distinct(filter, function (err, results) {
+                    if (results) {
+                        if (results[0] && Array.isArray(results[0])) {
+                            results = _.flatten(results);
+                        }
+                        if (results.length > 30)
+                            results.splice(5);
+                        if (model.schema.paths[filter] && model.schema.paths[filter].options.ref) {
+                            mongoose.model(model.schema.paths[filter].options.ref).find()
+                                .where('_id').in(results)
+                                .exec(function (err, refs) {
+                                    if (refs)
+                                        dict.push({ key: filter, isString: false, values: _.map(refs, function (ref) {
+                                            return { value: ref.id, text: ref.toString()};
+                                        }) });
+                                    cbk(err);
+                                });
+                        }
+                        else {
+                            dict.push({key: filter, values: _.map(results, function (result) {
+                                return { value: result, text: result, isString: model.schema.paths[filter] && model.schema.paths[filter].options && model.schema.paths[filter].options.type == String };
+                            })});
+                            cbk();
+                        }
+                    }
+                    else
+                        cbk(err);
+                });
+
+            }, function () {
+
+            })
+    }, 1000);
 }
 
 
@@ -120,7 +128,7 @@ MongooseAdmin.prototype.registerMongooseModel = function (name, model, fields, o
         fields: fields
     };
 
-    console.log('\x1b[36mMongooseAdmin registered model: \x1b[0m %s', name);
+    console.log('\x1b[36mformage-admin:\x1b[0m %s', name);
 
     permissions.registerModel(name);
 };
@@ -156,7 +164,7 @@ MongooseAdmin.prototype.registerModel = function(model, name, options) {
         modelName: name,
         options: options
     };
-    console.log('\x1b[36mMongooseAdmin registered model: \x1b[0m %s', name);
+    console.log('\x1b[36mformage-admin:\x1b[0m %s', name);
 };
 
 
@@ -519,9 +527,8 @@ MongooseAdmin.userFromSessionStore = function(sessionStore) {
  */
 MongooseAdmin.prototype.ensureUserExists = function(username, password) {
     MongooseAdminUser.ensureExists(username, password, function(err, adminUser) {
-        if (!err) {
-            console.log('Created admin user: ' + adminUser.fields.username);
-        }
+        if (!err)
+            console.log('\x1b[36mformage-admin\x1b[0m user: %s', adminUser.fields.username);
     });
 };
 

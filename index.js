@@ -18,7 +18,7 @@ exports.createAdmin = function(app, options) {
     options = options || {};
     var root = '/' + (options.root || 'admin');
 
-    console.log('\x1b[36mMongooseAdmin is listening at path: \x1b[0m %s', root);
+    console.log('\x1b[36mformage-admin\x1b[0m at path', root);
     var admin = MongooseAdmin.singleton = new MongooseAdmin(app, root);
     routes(MongooseAdmin, app, root);
     return admin;
