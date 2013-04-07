@@ -7,7 +7,7 @@ Formage Admin
 originally forked from [mongoose-admin](https://github.com/marccampbell/mongoose-admin).
 
 Usage
-------------
+-----
 `npm install formage-admin`
 
 ```javascript
@@ -18,6 +18,20 @@ var admin = require('formage-admin').init(app, express, require('./models'), {
 
 Also, look at `\example` directory.
 
+Some Options
+------------
+```javascript
+\\ model options
+model.label = 'My Songs';
+model.singular = 'Song';
+model.static = {
+   js: [ '/js/songs.js' ],
+   css: ['/css/songs.css' ]
+};
+
+\\ field options
+field.label = 'Song Title';
+```
 
 Sponsors
 ========
