@@ -3,8 +3,7 @@ $(function() {
 
     $('.free_search').click(function() {
         var value = $(this).siblings('input').val();
-        var href = $(this).data('href').replace('__replace__', encodeURIComponent(value));
-        location.href = href;
+        location.href = $(this).data('href').replace('__replace__', encodeURIComponent(value));;
     });
 
 

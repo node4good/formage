@@ -18,6 +18,7 @@ app.configure('all', function(){
     app.use(express.methodOverride());
     app.use(express.cookieParser('magical secret admin'));
     app.use(express.cookieSession({cookie: { maxAge: 1000 * 60 * 60 *  24 }}));
+    app.use(express.static(path.join(__dirname, 'public')));
     app.use(app.router);
 });
 

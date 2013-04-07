@@ -3,7 +3,7 @@ var deleteDocument = function() {
     $.post(
         root + '/json/dependencies',
         {
-            model: "#{modelName}",
+            model: model,
             id: $('#document_id').val()
         },
         function(result){

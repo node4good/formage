@@ -217,8 +217,11 @@ function renderForm(res, form, model, allow_delete, cloneable) {
             rootPath: MongooseAdmin.singleton.root,
             adminTitle: MongooseAdmin.singleton.getAdminTitle(),
             pageTitle: 'Admin - ' + model.model.label,
+
+            model: model.model,
             model_name: model.modelName,
             model_label: model.model.label,
+
             renderedDocument: html,
             renderedHead: head,
             document: {},
