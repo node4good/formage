@@ -94,8 +94,8 @@ block body
                             - for (var i = 0, page = 1; i < total_count; i += count, page++)
                                 - if (start == i)
                                     li.active
-                                        a #{page}
-                                - else
+                                        span #{page}
+                                - else if (start/count <= page+5 && start/count >= page-5 || i == 0 || i+count >= total_count)
                                     li
                                         a(href='#{makeLink("start",i)}') #{page}
 
