@@ -25,9 +25,12 @@ html(lang='en')
                         .btn-group.pull-right
                             a.btn.btn-inverse(href='#{rootPath}/')
                                 i.icon-home.icon-white
-                                |  Home
+                                |  Admin
+                            a.btn(href="/")
+                                i.icon-share
+                                |  Site
                             a.btn(href='#{rootPath}/logout')
-                                .icon-off
+                                .icon-lock
                                 |  Logout
                     h1
                         block title
