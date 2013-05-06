@@ -21,6 +21,5 @@ var schema = new mongoose.Schema({
 var m = module.exports = mongoose.model('rate_filings', schema);
 m.singular = 'Rate Filing';
 m.static = {
-    js: [ '/rate_filings.js' ],
-    css: ['/rate_filings.css' ]
+    js: [ '/rate_filings.js' ]
 };

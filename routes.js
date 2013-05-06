@@ -202,8 +202,8 @@ var json_routes = {
 };
 
 
-function renderForm(res, form, model, allow_delete, cloneable) {
-    if (cloneable)
+function renderForm(res, form, model, allow_delete, clone) {
+    if (clone)
         form.exclude.push('id');
 
     form.render_ready(function (err) {
