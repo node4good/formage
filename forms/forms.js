@@ -382,13 +382,14 @@ var MongooseForm = exports.MongooseForm = BaseForm.extend({
             var schema;
             if (inner_schema && (typeof(inner_schema) !== 'object' || inner_schema.type)) {
                 var single_field = {};
-                for (var attr in inner_schema) {
+                var schemaType = inner_schema['type'];
+                for (var attr in inner_schema){
                     single_field[attr] = inner_schema[attr];
                 }
                 for (var attr in  mongoose_field.options) {
                     single_field[attr] = mongoose_field.options[attr];
                 }
-                single_field['type'] = mongoose_field.options.type[0];
+                single_field['type'] = schemaType || mongoose_field.options.type[0];
                 schema = new mongoose.Schema({__self__: single_field});
             }
             else {
