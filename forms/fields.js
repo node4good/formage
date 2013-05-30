@@ -135,9 +135,6 @@ var StringField = exports.StringField = BaseField.extend({
         this._super(options);
         this.type = 'string';
     },
-    set: function (value, req) {
-        return this._super(value, req);
-    },
     to_schema: function () {
         var schema = StringField.super_.prototype.to_schema.call(this);
         schema['type'] = String;
