@@ -53,7 +53,7 @@
     "url": "https://github.com/Empeeric/formage-admin.git"
   },
   "engines": {
-    "node": ">= 0.10.1",
-    "npm": ">= 1.2.15"
+    "node": ">= 0.10.x",
+    "npm": ">= 1.2.x"
   }
 }
