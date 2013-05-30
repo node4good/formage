@@ -12,17 +12,14 @@ var widgets = require('./widgets'),
     cloudinary = require('cloudinary');
 var mongoose = require.main.require('mongoose');
 
-try {
-    var knox = require('knox');
-}
-catch (e) {
-    util.puts('no knox');
-}
-
-
 exports.setAmazonCredentials = function (credentials) {
-    if (knox)
+    try {
+        var knox = require('knox');
         module.knox_client = knox.createClient(credentials);
+    }
+    catch (e) {
+        util.puts('no knox');
+    }
 };
 
 exports.getKnoxClient = function () {
