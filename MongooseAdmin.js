@@ -411,6 +411,7 @@ MongooseAdmin.prototype.updateDocument = function(req, user, collectionName, doc
         }
 
         var form = new FormType2(req, { instance: document, data: params }, model);
+        form.init_fields();
         form.is_valid(function (err, valid) {
             if (err || !valid)
                 return onReady(err || form, null);
