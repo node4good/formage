@@ -29,18 +29,20 @@ exports.getKnoxClient = function () {
 var global_counter = 0;
 
 
+var simpleReq = function (req) { return _.pick(req, ['files', 'body']); };
+
 
 var BaseField = exports.BaseField = Class.extend({
     init: function (options) {
         options = options || {};
         this.options = options;
         this['default'] = options['default'];
-        this.required = options.required != null ? options.required : false;
+        this.required = options.required == null ? false : options.required;
         this.validators = options.validators || [];
         var widget_options = _.extend({}, options, options.widget_options);
         options.widget_options = widget_options;
         widget_options.attrs = options.attrs || {};
-        widget_options.required = widget_options.required != null ? widget_options.required : this.required;
+        widget_options.required = widget_options.required == null ? this.required : widget_options.required;
         this.widget = new options.widget(widget_options);
         this.value = null;
         this.errors = [];
@@ -169,7 +171,7 @@ var BooleanField = exports.BooleanField = BaseField.extend({
     },
     clean_value: function (req, callback) {
         this.value = req.body[this.name] && req.body[this.name] !== '';
-        this._super(req, callback);
+        this._super(simpleReq(req), callback);
         return this;
     }
 });
@@ -193,7 +195,7 @@ var EnumField = exports.EnumField = BaseField.extend({
     clean_value: function (req, callback) {
         if (this.value === '')
             this.value = null;
-        this._super(req, callback);
+        this._super(simpleReq(req), callback);
         return this;
     }
 });
@@ -203,7 +205,7 @@ var EnumMultiField = exports.EnumMultiField = EnumField.extend({
     init: function (options, choices) {
         options = options || {};
         options.attrs = options.attrs || {};
-        options.attrs.multiple = typeof(options.attrs.multiple) !== 'undefined' ? options.attrs.multiple : 'multiple';
+        options.attrs.multiple = typeof(options.attrs.multiple) === 'undefined' ? 'multiple' : options.attrs.multiple;
         this._super(options, choices);
     },
     clean_value: function (req, callback) {
@@ -211,7 +213,7 @@ var EnumMultiField = exports.EnumMultiField = EnumField.extend({
             this.value = [];
         if (!Array.isArray(this.value))
             this.value = [this.value];
-        this._super(req, callback);
+        this._super(simpleReq(req), callback);
         return this;
     }
 });
@@ -223,7 +225,7 @@ var RefField = exports.RefField = EnumField.extend({
         if (!this.ref)
             throw new TypeError('Model was not provided');
         options = options || {};
-        var required = options ? (options.required != null ? options.required : false) : false;
+        var required = options ? (options.required == null ? false : options.required) : false;
         options.widget = options.widget || widgets.RefWidget;
         options.widget_options = options.widget_options || {};
         options.widget_options.ref = options.widget_options.ref || ref;
@@ -246,9 +248,9 @@ var NumberField = exports.NumberField = StringField.extend({
         options = options || {};
         options.widget = options.widget || widgets.NumberWidget;
         options.widget_options = options.widget_options || {};
-        options.widget_options.min = options.widget_options.min != null ? options.widget_options.min : options.min;
-        options.widget_options.max = options.widget_options.max != null ? options.widget_options.max : options.max;
-        options.widget_options.step = options.widget_options.step != null ? options.widget_options.step : options.step;
+        options.widget_options.min = options.widget_options.min == null ? options.min : options.widget_options.min;
+        options.widget_options.max = options.widget_options.max == null ? options.max : options.widget_options.max;
+        options.widget_options.step = options.widget_options.step == null ? options.step : options.widget_options.step;
 
         this._super(options);
     },
@@ -269,7 +271,7 @@ var NumberField = exports.NumberField = StringField.extend({
                 this.value = null;
             }
         }
-        this._super(req, callback);
+        this._super(simpleReq(req), callback);
         return this;
     }
 });
@@ -290,6 +292,13 @@ var DateField = exports.DateField = BaseField.extend({
 });
 
 
+function extractSubFieldKeyAndName(field_name, prefix) {
+    var pre_len = prefix.length;
+    var next_ = field_name.indexOf('_', pre_len);
+    var key = field_name.substring(pre_len, next_);
+    var name = field_name.substring(next_ + 1);
+    return {key: key, name: name};
+}
 var ListField_ = exports.ListField = BaseField.extend({
     init: function (options, fields, fieldsets) {
         options = options || {};
@@ -314,7 +323,7 @@ var ListField_ = exports.ListField = BaseField.extend({
         var clean_funcs = [];
         self.children_errors = [];
 
-        function create_clean_func (field_name, post_data, file_data, output_data, old_value, parent_errors)//num,name,value)
+        function create_clean_func(field_name, post_data, file_data, output_data, old_value, parent_errors)
         {
             return function (cbk) {
                 var inner_field = _.defaults({errors:[], name:field_name}, self.fields[field_name]);
@@ -335,32 +344,36 @@ var ListField_ = exports.ListField = BaseField.extend({
             }
         }
 
+        // First subset req.files according to subfield prefix
+        var inner_files = Object.keys(req.files)
+            .filter(function (field_name) {return ~field_name.indexOf(prefix, 0);})
+            .reduce(function (seed, field_name) {
+                var pair = extractSubFieldKeyAndName(field_name, prefix);
+                var key = pair.key;
+                var name = pair.name;
+                seed[key] = seed[key] || {};
+                seed[key][name] = req.files[field_name];
+                return seed;
+            }, {});
+
+        // Subset req.body according to subfield prefix and extract the submitted list order
         var new_key_order = [];
-        var inner_body = _.object(Object.keys(req.body)
+        var inner_body = Object.keys(req.body)
             .filter(function (field_name) {return ~field_name.indexOf(prefix, 0);})
-            .map(function (field_name) {
-                var suffix = field_name.split(prefix)[1];
-                var next_ = suffix.indexOf('_');
-                var num = suffix.substring(0, next_);
-                var name = suffix.substring(next_ + 1);
-                var data = {};
-                data[name] = req.body[field_name];
-                new_key_order.push(num);
-                return [num, data];
-            }));
+            .reduce(function (seed, field_name) {
+                var pair = extractSubFieldKeyAndName(field_name, prefix);
+                var key = pair.key;
+                var name = pair.name;
 
+                // Order the "old" and new list items according to the submitted order (but only once per old index)
+                !~new_key_order.indexOf(key) && new_key_order.push(key);
 
-        var inner_files = _.object(Object.keys(req.files)
-            .filter(function (field_name) {return ~field_name.indexOf(prefix, 0);})
-            .map(function (field_name) {
-                var suffix = field_name.split(prefix)[1];
-                var next_ = suffix.indexOf('_');
-                var num = suffix.substring(0, next_);
-                var name = suffix.substring(next_ + 1);
-                var data = {};
-                data[name] = req.files[field_name];
-                return [num, data];
-            }));
+                seed[key] = seed[key] || {};
+                seed[key][name] = req.body[field_name];
+                return seed;
+            }, {});
+
+        // Setup the embedded fields according the new order
         new_key_order.forEach(function (key) {
             var output_data = {};
             var output_errors = {};
@@ -377,6 +390,7 @@ var ListField_ = exports.ListField = BaseField.extend({
                 ));
             });
         });
+
         async.parallel(clean_funcs, function (err) {
             for (var i = 0; i < self.value.length; i++) {
                 var new_dict = {};
@@ -386,7 +400,7 @@ var ListField_ = exports.ListField = BaseField.extend({
                 if ('__self__' in self.value[i])
                     self.value[i] = self.value[i].__self__;
             }
-            base.call(self, req, callback);
+            base.call(self, simpleReq(req), callback);
         });
         return self;
     },
@@ -539,7 +553,7 @@ var FileField_ = exports.FileField = BaseField.extend({
         var base = self._super;
         self.value = self.value || {};
         function on_finish() {
-            base.call(self, req, callback);
+            base.call(self, simpleReq(req), callback);
         }
 
         function handle_upload(err) {
@@ -670,7 +684,7 @@ var GeoField = exports.GeoField = BaseField.extend({
                 this.value.address = req.body[this.name + '_address'];
             }
         }
-        this._super(req, callback);
+        this._super(simpleReq(req), callback);
     }
 });
 
@@ -689,13 +703,10 @@ var DictField = exports.DictField = BaseField.extend({
         catch (ex) {
             console.error('not a json', ex);
         }
-        this._super(req, callback);
+        this._super(simpleReq(req), callback);
     },
     render: function (res) {
         this.value = JSON.stringify(this.value);
         this._super(res);
     }
 });
-
-
-

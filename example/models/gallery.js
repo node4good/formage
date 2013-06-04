@@ -4,7 +4,8 @@ var Types = mongoose.Schema.Types;
 var schema = new mongoose.Schema({
     title: { type: String, required: true },
     picture: Types.Picture,
-    pictures: [Types.Picture]
+    pictures: [Types.Picture],
+    tags: [String]
 });
 
 schema.methods.toString = function() {
