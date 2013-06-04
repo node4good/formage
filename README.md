@@ -21,7 +21,7 @@ Also, look at `\example` directory.
 Some Options
 ------------
 ```javascript
-\\ model options
+// model options
 model.label = 'My Songs';
 model.singular = 'Song';
 model.static = {
@@ -29,7 +29,7 @@ model.static = {
    css: ['/css/songs.css' ]
 };
 
-\\ field options
+// field options
 field.label = 'Song Title';
 ```
 
