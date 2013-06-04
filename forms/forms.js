@@ -129,7 +129,8 @@ var BaseForm = exports.BaseForm = Class.extend({
         this.get_fields();
         for (var field_name in this.fields) {
             var value = this.get_value(field_name);
-            this.fields[field_name].set(value).name = field_name;
+            var field = this.fields[field_name].set(value);
+            field.name = field_name;
         }
         this._fields_ready = true;
     },
