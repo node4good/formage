@@ -16,9 +16,12 @@ function escape(str) {
     if (str === undefined)
         return '';
 
-    return (str + '').replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;').replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
 }
 
 
@@ -320,22 +323,21 @@ exports.PictureWidget = exports.InputWidget.extend({
     },
     render: function (res) {
         if (this.value && this.value.url) {
-            res.write(util.format(
-                '\n<a href="%s" target="_blank">%s</a>\n<input type="checkbox" name="%s_clear" value="Clear" />\nClear\n',
-                this.value.url,
-                cloudinary.image(
-                    this.value.public_id, {
-                        format: 'png',
-                        width: 150,
-                        height: 110,
-                        crop: 'fill',
-                        alt: this.value.original_name,
-                        title: this.value.original_name
-                    }
-                ),
-                this.name
-            ));
+            var thumbnail_url = cloudinary.image(
+                this.value.public_id, {
+                    format: 'png',
+                    width: 150,
+                    height: 110,
+                    crop: 'fill',
+                    alt: this.value.original_name,
+                    title: this.value.original_name
+                }
+            );
+            res.write(util.format('<a href="%s" target="_blank">%s</a>\n', this.value.url, thumbnail_url));
+            res.write(util.format('<input type="checkbox" name="%s_clear" value="false" />\nClear\n', this.name));
         }
+        res.write(util.format('<input type="hidden" name="%s" value="%s" />\n', this.name, escape(JSON.stringify(this.value))));
+        this.name += "_file";
         this._super(res);
     }
 });

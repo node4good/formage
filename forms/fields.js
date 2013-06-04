@@ -309,86 +309,74 @@ var ListField_ = exports.ListField = BaseField.extend({
         var self = this;
         var base = self._super;
         var prefix = self.name + '_li';
-        var old_list_value = self.value;
+        var old_list_value = self.value || {};
         self.value = [];
         var clean_funcs = [];
-        var inner_body = {};
-        var inner_files = {};
         self.children_errors = [];
 
-        function create_clean_func (field_name, post_data, file_data, output_data, old_value,parent_errors)//num,name,value)
+        function create_clean_func (field_name, post_data, file_data, output_data, old_value, parent_errors)//num,name,value)
         {
             return function (cbk) {
-                var field = self.fields[field_name];
-                field = _.clone(field);
-                field.errors = [];
-                field.name = field_name;
-                var old_body = req.body;
-                var request_copy = {};
-                for (var key in req)
-                    request_copy[key] = req[key];
-                request_copy.body = post_data;
-                request_copy.files = file_data;
+                var inner_field = _.defaults({errors:[], name:field_name}, self.fields[field_name]);
+                var request_copy = _.defaults({body:post_data, files:file_data}, req);
                 var old_field_value = post_data[field_name] || (old_value.get ? old_value.get(field_name) : old_value[field_name]);
-                field.set(old_field_value, request_copy);
-                field.clean_value(request_copy, function (err) {
+                inner_field.set(old_field_value);
+                inner_field.clean_value(request_copy, function (err) {
                     if (err) console.trace(err);
-                    if (field.errors && field.errors.length) {
-                        self.errors = _.union(self.errors, field.errors);
-                        parent_errors[field_name] = _.clone(field.errors);
+                    if (inner_field.errors && inner_field.errors.length) {
+                        self.errors = _.union(self.errors, inner_field.errors);
+                        parent_errors[field_name] = _.clone(inner_field.errors);
                     }
                     else {
-                        output_data[field_name] = field.value;
+                        output_data[field_name] = inner_field.value;
                     }
                     cbk(null);
                 });
             }
         }
 
-        for (var field_name in req.body) {
-            if (field_name.indexOf(prefix, 0) > -1) {
+        var new_key_order = [];
+        var inner_body = _.object(Object.keys(req.body)
+            .filter(function (field_name) {return ~field_name.indexOf(prefix, 0);})
+            .map(function (field_name) {
                 var suffix = field_name.split(prefix)[1];
                 var next_ = suffix.indexOf('_');
                 var num = suffix.substring(0, next_);
                 var name = suffix.substring(next_ + 1);
-                var data = inner_body[num] || {};
-                inner_body[num] = data;
+                var data = {};
                 data[name] = req.body[field_name];
-                //clean_funcs.push(create_clean_func(num,name,req.body[field_name]));
-            }
-        }
-        for (var field_name in req.files) {
-            if (field_name.indexOf(prefix, 0) > -1) {
+                new_key_order.push(num);
+                return [num, data];
+            }));
+
+
+        var inner_files = _.object(Object.keys(req.files)
+            .filter(function (field_name) {return ~field_name.indexOf(prefix, 0);})
+            .map(function (field_name) {
                 var suffix = field_name.split(prefix)[1];
                 var next_ = suffix.indexOf('_');
                 var num = suffix.substring(0, next_);
                 var name = suffix.substring(next_ + 1);
-                var data = inner_files[num] || {};
-                inner_files[num] = data;
+                var data = {};
                 data[name] = req.files[field_name];
-                //clean_funcs.push(create_clean_func(num,name,req.body[field_name]));
-            }
-        }
-        _.chain(Object.keys(inner_body))
-            .union(Object.keys(inner_files))
-            .unique()
-            .forEach(function (key) {
-                var output_data = {};
-                var output_errors = {};
-                self.value.push(output_data);
-                self.children_errors.push(output_errors);
-                Object.keys(self.fields).forEach(function (field_name) {
-                    clean_funcs.push(create_clean_func(
-                        field_name,
-                        inner_body[key] || {},
-                        inner_files[key] || {},
-                        output_data,
-                        (old_list_value && old_list_value[key]) ? old_list_value[key] : {},
-                        output_errors
-                    ));
-                });
-            }
-        );
+                return [num, data];
+            }));
+        new_key_order.forEach(function (key) {
+            var output_data = {};
+            var output_errors = {};
+            self.value.push(output_data);
+            self.children_errors.push(output_errors);
+            Object.keys(self.fields).forEach(function (field_name) {
+                clean_funcs.push(create_clean_func(
+                    field_name,
+                    inner_body[key] || {},
+                    inner_files[key] || {},
+                    output_data,
+                    old_list_value[key] || {},
+                    output_errors
+                ));
+            });
+        });
         async.parallel(clean_funcs, function (err) {
             for (var i = 0; i < self.value.length; i++) {
                 var new_dict = {};
@@ -644,21 +632,19 @@ var PictureField = exports.PictureField = BaseField.extend({
         }
 
     },
-    create_filename: function (file) {
-        return file;
-    },
     clean_value: function (req, callback) {
         var self = this;
         self.value = self.value || {};
+        if (_.isString(self.value)) self.value = JSON.parse(self.value);
 
         if (self.value && self.value.url && req.body[self.name + '_clear']) {
             self.value = null;
         }
-
-        if (req.files && req.files[self.name] && req.files[self.name].name) {
-            cloudinary.uploader.upload(req.files[self.name].path, function (result) {
-                result.original_name = req.files[self.name].name;
-                result.original_size = req.files[self.name].size;
+        var upload_input_name = self.name + '_file';
+        if (req.files && req.files[upload_input_name] && req.files[upload_input_name].name) {
+            cloudinary.uploader.upload(req.files[upload_input_name].path, function (result) {
+                result.original_name = req.files[upload_input_name].name;
+                result.original_size = req.files[upload_input_name].size;
                 self.value = result;
                 callback(null);
             });
