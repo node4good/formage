@@ -386,34 +386,24 @@ var routes = {
 
     documentPost: function (req, res) {
         var name = req.params.modelName,
-            model = MongooseAdmin.singleton.models[name];
+            doc_id = req.params.documentId,
+            model = MongooseAdmin.singleton.models[name],
+            target_url = req.path.split('/document/')[0].slice(1) + '?saved=true';
 
-        if (req.body._id) {
-            if (!permissions.hasPermissions(req.admin_user, name, 'update'))
-                res.send('No permissions');
-
-            MongooseAdmin.singleton.updateDocument(req, req.admin_user, name, req.body._id, req.body, function (err, document) {
-                if (err) {
-                    if (err.to_html) {
-                        renderForm(res, err, model, true);
-                        return;
-                    }
-                    res.send(500);
-                }
-                else
-                    res.redirect(req.path.split('/document/')[0].slice(1) + '?saved=true');
-            });
-        }
-        else {
-            if (!permissions.hasPermissions(req.admin_user, name, 'create'))
-                return res.send('no permissions');
-
-            MongooseAdmin.singleton.createDocument(req, req.admin_user, name, req.body, function (form) {
-                if (!form)
-                    return res.redirect(req.path.split('/document/')[0].slice(1) + '?saved=true');
-
-                renderForm(res, form, model, false);
-            });
+        var callback = function (err) {
+            if (err) {
+                if (err.to_html)
+                    return renderForm(res, err, model, true);
+                return res.send(500);
+            }
+            return res.redirect(target_url);
+        };
+        // Update
+        if (doc_id && doc_id !== 'new') {
+            MongooseAdmin.singleton.updateDocument(req, req.admin_user, name, doc_id, req.body, callback);
+        // Create
+        } else {
+            MongooseAdmin.singleton.createDocument(req, req.admin_user, name, req.body, callback);
         }
     }
 };
