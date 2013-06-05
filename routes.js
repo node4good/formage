@@ -390,6 +390,8 @@ var routes = {
             model = MongooseAdmin.singleton.models[name],
             target_url = req.path.split('/document/')[0].slice(1) + '?saved=true';
 
+        if (doc_id === 'new') doc_id = null;
+        if (doc_id === 'single') doc_id = req.body['_id'];
         var callback = function (err) {
             if (err) {
                 if (err.to_html)
@@ -399,7 +401,7 @@ var routes = {
             return res.redirect(target_url);
         };
         // Update
-        if (doc_id && doc_id !== 'new') {
+        if (doc_id) {
             MongooseAdmin.singleton.updateDocument(req, req.admin_user, name, doc_id, req.body, callback);
         // Create
         } else {
