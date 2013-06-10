@@ -34,12 +34,11 @@
   "devDependencies": {
     "express": "",
     "request": "",
-    "chai": "",
-    "chai-spies": "",
     "supertest": "",
-    "nconf": "",
     "nodeunit": "",
-    "mongoose": ""
+    "mongoose": "",
+    "mocha": "~1.10.0",
+    "buster": "~0.6.12"
   },
   "main": "index.js",
   "keywords": [
@@ -53,7 +52,7 @@
     "url": "https://github.com/Empeeric/formage-admin.git"
   },
   "engines": {
-    "node": ">= 0.10.x",
-    "npm": ">= 1.2.x"
+    "node": ">= 0.10.10",
+    "npm": ">= 1.2.28"
   }
 }

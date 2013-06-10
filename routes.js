@@ -133,6 +133,7 @@ var json_routes = {
             return;
         }
 
+        /** @namespace req.params.actionId */
         MongooseAdmin.singleton.actionDocuments(admin_user, req.params.collectionName, req.params.actionId, req.body, function (err) {
             if (err) {
                 res.writeHead(500);
@@ -153,6 +154,7 @@ var json_routes = {
             return;
         }
 
+        /** @namespace req.query.document_id */
         MongooseAdmin.singleton.deleteDocument(admin_user, req.params.collectionName, req.query.document_id, function (err) {
             if (err) {
                 res.writeHead(500);
@@ -279,10 +281,11 @@ var routes = {
         delete query.count;
         var sort = query.order_by;
         delete query.order_by;
-        var saved = query.saved;
-        delete query.saved;
-        var search_value = query._search || '';
+//        var saved = query.saved;
+//        delete query.saved;
+        /** @namespace query._search */
         delete query._search;
+        var search_value = query._search || '';
 
         var filters = _.clone(query);
 
@@ -454,6 +457,7 @@ module.exports = function (admin, outer_app, root) {
 
     if (root) {
         outer_app.use(root, app);
+        outer_app.admin_app = app;
         app.admin_root = root;
     }
     return app;

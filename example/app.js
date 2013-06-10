@@ -1,7 +1,5 @@
-/**
- * Module dependencies.
- */
-
+'use strict';
+Error.stackTraceLimit = Infinity;
 var express = require('express'),
     http = require('http'),
     path = require('path');
@@ -41,3 +39,5 @@ app.get('/', function(req, res){
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+exports.app = app;
