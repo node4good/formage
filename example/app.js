@@ -9,7 +9,7 @@ var express = require('express'),
 var app = express();
 
 app.configure('all', function(){
-    app.set('port', process.env.PORT || 80);
+    app.set('port', process.env.PORT || 8080);
     app.set('mongo', process.env.MONGO_URL || 'mongodb://localhost/formage-admin-example');
     app.set("view options", { layout: false, pretty: true });
 

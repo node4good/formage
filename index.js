@@ -37,20 +37,22 @@ exports.serve_static = function (app, express, options) {
 };
 
 
-module.exports.load_types = function () {
-    if (this._types_loeaded) return;
-    this._types_loeaded = true;
+var types_loaded;
+exports.loadTypes = function () {
+    if (types_loaded) return;
+    types_loaded = true;
 
-    module.exports.forms.load_types();
+    exports.forms.loadTypes();
 };
 
 
-module.exports.register_models = function (models) {
+
+exports.register_models = function (models) {
     if (this._models_registered) return;
     this._models_registered = true;
 
-    module.exports.forms.forms.set_models(models);
+    exports.forms.forms.set_models(models);
 };
 
 
-module.exports.set_amazon_credentials = module.exports.forms.set_amazon_credentials;
+exports.set_amazon_credentials = module.exports.forms.set_amazon_credentials;
