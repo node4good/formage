@@ -78,9 +78,9 @@ block body
                                                 a(href=url)
                                                     img(src=cloudinary.url(doc[field].public_id + '.png', { width: 80, height: 80, crop: 'fill' }))
                                         - else if (editable)
-                                            a(href=url) #{doc[field]} &nbsp;
+                                            a(href=url) #{doc[field]}
                                         - else
-                                            p #{doc[field]}&nbsp;
+                                            p #{doc[field]}
 
                                 td.span2.btn-group
                                     a.btn.btn-primary(href=url) Edit
@@ -120,7 +120,7 @@ block body
                         - each value in filter.values
                             - if (value)
                                 li
-                                    - if (current_filters[filter.key] !== value.value + '' )
+                                    - if (current_filters[filter.key] !== String(value.value) )
                                         a(href='#{makeLink(filter.key, value.value)}') #{value.text}
                                     - else
                                         strong #{value.text}
