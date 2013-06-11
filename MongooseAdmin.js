@@ -214,17 +214,6 @@ MongooseAdmin.prototype.modelCounts = function(collectionName,filters, onReady) 
         return;
     }
     var model = this.models[collectionName].model;
-    _.each(filters,function(value,key) {
-        if(model.schema && typeof(value) == 'string') {
-            var type = model.schema.paths[key].options.type;
-            if(type == String)
-                filters[key] = new RegExp(value,'i');
-            else if(type == Number)
-                filters[key] = Number(value) || undefined;
-            else if(type == Boolean)
-                filters[key] = Boolean(value === 'true');
-        }
-    });
     this.models[collectionName].model.count(filters, function(err, count) {
         if (err) {
             console.error('Unable to get counts for model because: ' + err);
@@ -258,62 +247,47 @@ function mongooseSort(query,sort) {
  *
  * @api public
  */
-MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, count,filters,sort, onReady) {
+MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, count, filters, sort, onReady) {
     var listFields = this.models[collectionName].options.list;
-    if(listFields)
-    {
-	    var model = this.models[collectionName].model;
-        _.each(filters, function(value,key) {
-            if(model.schema && typeof(value) == 'string') {
-                var type = model.schema.paths[key].options.type;
-                if(type == String)
-                    filters[key] = new RegExp(value,'i');
-                else if(type == Number)
-                    filters[key] = Number(value) || undefined;
-                else if(type == Boolean)
-                    filters[key] = Boolean(value === 'true');
-            }
-        });
-        var query = this.models[collectionName].model.find(filters);
-        var sorts = this.models[collectionName].options.order_by || [];
-        var populates = this.models[collectionName].options.list_populate;
-        if(sort)
-            sorts.unshift(sort);
-        if(sorts) {
-                for(var i=0; i<sorts.length; i++)
-                    mongooseSort(query,sorts[i]);
-        }
-        if(populates)
-        {
-            _.each(populates,function(populate)
-            {
-                query.populate(populate);
-            });
-        }
-        query.skip(start).limit(count).execFind(function(err, documents) {
-            if (err) {
-                console.error('Unable to get documents for model because: ' + err);
-                onReady(null,[]);
-            } else {
-                var filteredDocuments = [];
-                documents.forEach(function(document) {
-                    var d = {};
-                    d['_id'] = document['_id'];
-                    listFields.forEach(function(listField) {
-                      d[listField] = typeof(document[listField])=='function'? document[listField]() : document.get(listField);
-                    });
-                    filteredDocuments.push(d);
-                });
+    if (!listFields) {
+        return onReady(null, []);
+    }
 
-                onReady(null, filteredDocuments);
-            }
+    var model = this.models[collectionName].model;
+    var query = this.models[collectionName].model.find(filters);
+    var sorts = this.models[collectionName].options.order_by || [];
+    var populates = this.models[collectionName].options.list_populate;
+    if (sort)
+        sorts.unshift(sort);
+    if (sorts) {
+        for (var i = 0; i < sorts.length; i++)
+            mongooseSort(query, sorts[i]);
+    }
+    if (populates) {
+        _.each(populates, function (populate) {
+            query.populate(populate);
         });
     }
-    else
-    {
-        onReady(null,[]);
-    }
+    query.skip(start).limit(count).execFind(function (err, documents) {
+        if (err) {
+            console.error('Unable to get documents for model because: ' + err);
+            onReady(null, []);
+        } else {
+            var filteredDocuments = [];
+            documents.forEach(function (document) {
+                var d = {};
+                d['_id'] = document['_id'];
+                listFields.forEach(function (listField) {
+                    d[listField] = typeof(document[listField]) == 'function' ? document[listField]() : document.get(listField);
+                });
+                filteredDocuments.push(d);
+            });
+
+            onReady(null, filteredDocuments);
+        }
+    });
 };
+
 
 /**
  * Retrieve a single document

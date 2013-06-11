@@ -236,6 +236,41 @@ function renderForm(res, form, model, allow_delete, clone) {
 }
 
 
+/**
+ * Parse filters from strings to types
+ * @param filters
+ * dictionary of filters
+ * @param search
+ * free text search value
+ * @return {Object}
+ * dict of filters
+ */
+var parseFilters = function (model_settings, filters, search) {
+    var model = model_settings.model;
+    var new_filters = {};
+    _.each(filters, function (value, key) {
+        if (model.schema && model.schema.paths[key]) {
+            var type = model.schema.paths[key].options.type;
+            if (type == String) {
+                new_filters[key] = new RegExp(value, 'i');
+            }
+            else if (type == Number) {
+                filters[key] = Number(value) || undefined;
+            }
+            else if (type == Boolean) {
+                new_filters[key] = value == 'true' ? true : false;
+            }
+        }
+    });
+    if (search && model_settings.options.search) {
+        var search_term = search.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+        var search_templete = model_settings.options.search;
+        new_filters['$where'] = search_templete.replace(/__value__/g, search_term);
+    }
+    return new_filters;
+};
+
+
 var routes = {
     index: function (req, res) {
         MongooseAdmin.singleton.getRegisteredModels(req.admin_user, function (err, models) {
@@ -281,13 +316,13 @@ var routes = {
         delete query.count;
         var sort = query.order_by;
         delete query.order_by;
-//        var saved = query.saved;
-//        delete query.saved;
+        var saved = query.saved;
+        delete query.saved;
         /** @namespace query._search */
-        delete query._search;
         var search_value = query._search || '';
+        delete query._search;
 
-        var filters = _.clone(query);
+        var filters = parseFilters(model, query, search_value);
 
         MongooseAdmin.singleton.modelCounts(name, filters, function (err, total_count) {
             if (err)
