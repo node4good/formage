@@ -1,12 +1,17 @@
 'use strict';
 Error.stackTraceLimit = Infinity;
+var buster = require('buster');
+buster.spec.expose(); // Make some functions global
 var express = require('express');
-var request = require('request');
 var supertest = require('supertest');
-var mongoose = require('mongoose');
-require.main.require = require;
-var app = require('../example/app').app;
 var sinon = require('sinon');
+
+
+describe("A module", function () {
+    it("states the obvious", function () {
+        expect(true).toEqual(true);
+    });
+});
 
 
 module.exports = {
