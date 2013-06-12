@@ -469,10 +469,7 @@ module.exports = function (admin, outer_app, root) {
 
     var app = require.main.require('express')();
     app.engine('jade', require('jade').__express);
-
     app.set('views', __dirname + '/views');
-    app.set('view engine', 'jade');
-    app.set('view options', { layout: false, pretty: true });
 
     app.get('/', auth(), routes.index);
     app.get('/login', routes.login);
