@@ -84,15 +84,15 @@ var BaseForm = exports.BaseForm = Class.extend({
     },
     get_static: function () {
         var self = this;
+        self.static = self.static || {js:[], css:[]};
         _.each(this.fields, function (field) {
-            var _static = field.get_static();
-            if (_static.js.length) {
-                self.static.js = _.union(self.static.js, _static.js);
-            }
-            if (_static.css.length) {
-                self.static.css = _.union(self.static.css, _static.css);
-            }
+            var _static = ('fields' in field) ? self.get_static.call(field) :  field.get_static();
+            self.static.js = self.static.js.concat(_static.js || []);
+            self.static.css = self.static.css.concat(_static.css || []);
         });
+        self.static.js = _(self.static.js).unique();
+        self.static.css = _(self.static.css).unique();
+        return self.static;
     },
     render_head: function () {
         var self = this;
@@ -441,6 +441,9 @@ var MongooseForm = exports.MongooseForm = BaseForm.extend({
         }
         if (mongoose_field.options.type === Date) {
             return new fields.DateField(options);
+        }
+        if (mongoose_field.options.type.name === 'Time') {
+            return new fields.TimeField(options);
         }
         if (mongoose_field.options.type.name === 'Html') {
             options.widget = widgets.RichTextAreaWidget;

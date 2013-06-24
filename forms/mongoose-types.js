@@ -42,6 +42,20 @@ var init = function () {
     exports.Picture = Picture;
 
 
+    var Time = function Time (path, options) {
+        Time.super_.call(this, path, options);
+    };
+    util.inherits(Time, mongoose.Schema.Types.String);
+    Time.prototype.cast = function (value, doc, init) {
+        return Picture.super_.prototype.cast.call(this, value, doc, init);
+    };
+
+    mongoose.Types.Time = Object;
+    mongoose.Schema.Types.Time = Time;
+
+    exports.Time = Time;
+
+
     var Integer = function Integer (path, options) {
         Integer.super_.call(this, path, options);
     };

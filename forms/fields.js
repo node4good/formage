@@ -291,6 +291,20 @@ var DateField = exports.DateField = BaseField.extend({
     }
 });
 
+var TimeField = exports.TimeField = BaseField.extend({
+    init: function (options) {
+        options = options || {};
+        options.widget = options.widget || widgets.TimeWidget;
+        this._super(options);
+    },
+
+    to_schema: function () {
+        var schema = this._super();
+        schema['type'] = String;
+        return schema;
+    }
+});
+
 
 function extractSubFieldKeyAndName(field_name, prefix) {
     var pre_len = prefix.length;

@@ -17,6 +17,7 @@ var s = new Schema({
 //    second_ref: { type: ObjectId, ref: 'users', limit: 500, query: '/__value__/i.test(this.email)', required: true },
     string: { type: String, required: true },
     date: { type: Date, required: true },
+    time: { type: Schema.Types.Time },
     enum: { type: String, enum: ['1', '2', '3'], required: true },
     rich_text: { type: Schema.Types.Html, required: true },
     text: { type: Schema.Types.Text, required: true },
