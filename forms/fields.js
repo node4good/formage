@@ -439,7 +439,8 @@ var ListField_ = exports.ListField = BaseField.extend({
         for (var field in self.fields) {
             funcs.push(pre_render_partial(field));
         }
-        funcs.push(self.widget.pre_render);
+
+        funcs.push(self.widget.pre_render.bind(self.widget));
         async.parallel(funcs, function (err, results) {
             callback(err);
         });

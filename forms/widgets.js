@@ -43,15 +43,18 @@ var Widget = exports.Widget = Class.extend({
             js: options.static.js || []
         };
     },
+
     pre_render: function (callback) {
-        callback(null);
+        this.attrs['name'] = this.name;
+        this.attrs['id'] = 'id_' + this.name;
+        callback();
     },
+
     render: function () {
         return this;
     },
+
     render_attributes: function (res) {
-        this.attrs['name'] = this.name;
-        this.attrs['id'] = 'id_' + this.name;
 
         Object.keys(this.attrs).forEach(function(attr) {
             var value = Array.isArray(this[attr]) ? this[attr].join(' ') : this[attr];
@@ -141,6 +144,23 @@ exports.DateWidget = exports.InputWidget.extend({
         this._super(res);
         res.write('\n<span class="add-on"><i class="icon-calendar"></i></span>\n');
         res.write('\n</div>\n');
+    }
+});
+
+
+exports.DateTimeWidget = exports.InputWidget.extend({
+    init: function (options) {
+        this._super('text', options);
+        this.attrs['data-format'] = "dd/MM/yyyy hh:mm:ss";
+        this.static.js.push('/vendor/bootstrap-datetimepicker.min.js');
+        this.static.css.push('/vendor/bootstrap-datetimepicker.min.css');
+    },
+    render: function (res) {
+        res.write('\n<div class="input-append date" id="' + 'datetimepicker' + this.attrs['id'] + '">\n');
+        this._super(res);
+        res.write('\n<span class="add-on">\n<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>\n</span>\n</div>\n');
+        var script = "$('#" + 'datetimepicker' + this.attrs['id'] + "').datetimepicker();";
+        res.write('<script>' + script + '</script>');
     }
 });
 
@@ -278,7 +298,7 @@ exports.RefWidget = exports.ChoicesWidget.extend({
                     }
                     self.choices.push([objects[i].id, label]);
                 }
-                return base(callback);
+                return base.call(self, callback);
             }
         });
     }
