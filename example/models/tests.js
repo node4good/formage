@@ -1,6 +1,7 @@
 var mongoose = require('mongoose'),
     Schema = mongoose['Schema'],
     ObjectId = Schema.Types.ObjectId;
+    fWidgets = require('../../forms/widgets');
 
 var s = new Schema({
     list: [
@@ -17,6 +18,7 @@ var s = new Schema({
 //    second_ref: { type: ObjectId, ref: 'users', limit: 500, query: '/__value__/i.test(this.email)', required: true },
     string: { type: String, required: true },
     date: { type: Date, required: true },
+    date2: { type: Date, required: true, widget:fWidgets.DateTimeWidget },
     time: { type: Schema.Types.Time },
     enum: { type: String, enum: ['1', '2', '3'], required: true },
     rich_text: { type: Schema.Types.Html, required: true },
