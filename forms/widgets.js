@@ -151,7 +151,7 @@ exports.DateWidget = exports.InputWidget.extend({
 exports.DateTimeWidget = exports.InputWidget.extend({
     init: function (options) {
         this._super('text', options);
-        this.attrs['data-format'] = "dd/MM/yyyy hh:mm:ss";
+        this.attrs['data-format'] = "yyyy-MM-dd hh:mm";
         this.static.js.push('/vendor/bootstrap-datetimepicker.min.js');
         this.static.css.push('/vendor/bootstrap-datetimepicker.min.css');
     },
