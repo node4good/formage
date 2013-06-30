@@ -2,16 +2,17 @@
 if (!module.parent) console.error('Please don\'t call me directly.I am just the main app\'s minion.') || process.process.exit(1);
 
 var fa = require('./index.js'),
+    _ = require('underscore'),
     LIST_EXCLUDED_FIELDS = ['order', '_id', 'show', '__v'];
 
 module.exports = function(app, express, models, opt) {
-    fa.serve_static(app, express, opt);
+    opt || (opt = {});
 
     var admin = fa.createAdmin(app, opt);
-
-    admin.setAdminTitle(opt.title || 'Admin');
+    admin.setAdminTitle(opt.title || app.get('site') + ' Admin');
     admin.ensureUserExists(opt.username || 'admin', opt.password || 'admin');
 
+    fa.serve_static(app, express, opt);
     fa.register_models(models);
 
     Object.keys(models).sort().forEach(function(name) {
@@ -36,13 +37,13 @@ module.exports = function(app, express, models, opt) {
 
         list.length = list.length > 3 ? 3 : list.length;
 
-        var options = {
+        var options = _.extend({
             list: list,
             list_populate: list_populate,
             cloneable: true,
             disable_forms_css: true,
             disable_forms_js: true
-        };
+        }, model.formage);
 
         if (paths.order) {
             options.order_by = ['order'];
