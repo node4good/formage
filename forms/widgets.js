@@ -357,7 +357,9 @@ exports.PictureWidget = exports.InputWidget.extend({
             res.write(util.format('<input type="checkbox" name="%s_clear" value="false" />\nClear\n', this.name));
         }
         res.write(util.format('<input type="hidden" name="%s" value="%s" />\n', this.name, escape(JSON.stringify(this.value))));
-        this.name += "_file";
+        this.attrs['name'] = this.name + "_file";
+        this.attrs['id'] = 'id_' + this.attrs['name'];
+        this.value = null;
         this._super(res);
     }
 });
