@@ -45,8 +45,6 @@ var Widget = exports.Widget = Class.extend({
     },
 
     pre_render: function (callback) {
-        this.attrs['name'] = this.name;
-        this.attrs['id'] = 'id_' + this.name;
         callback();
     },
 
@@ -55,6 +53,8 @@ var Widget = exports.Widget = Class.extend({
     },
 
     render_attributes: function (res) {
+        this.attrs['name'] = this.name;
+        this.attrs['id'] = 'id_' + this.name;
 
         Object.keys(this.attrs).forEach(function(attr) {
             var value = Array.isArray(this[attr]) ? this[attr].join(' ') : this[attr];
@@ -156,10 +156,11 @@ exports.DateTimeWidget = exports.InputWidget.extend({
         this.static.css.push('/vendor/bootstrap-datetimepicker.min.css');
     },
     render: function (res) {
-        res.write('\n<div class="input-append date" id="' + 'datetimepicker' + this.attrs['id'] + '">\n');
+        var widget_id =  'datetimepicker' + this.name;
+        res.write('\n<div class="input-append date" id="' + widget_id + '">\n');
         this._super(res);
         res.write('\n<span class="add-on">\n<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>\n</span>\n</div>\n');
-        var script = "$('#" + 'datetimepicker' + this.attrs['id'] + "').datetimepicker();";
+        var script = "$('#" + widget_id + "').datetimepicker();";
         res.write('<script>' + script + '</script>');
     }
 });
@@ -341,6 +342,7 @@ exports.PictureWidget = exports.InputWidget.extend({
     init: function (options) {
         this._super('file', options);
     },
+
     render: function (res) {
         if (this.value && this.value.url) {
             var thumbnail_url = cloudinary.image(
@@ -357,10 +359,11 @@ exports.PictureWidget = exports.InputWidget.extend({
             res.write(util.format('<input type="checkbox" name="%s_clear" value="false" />\nClear\n', this.name));
         }
         res.write(util.format('<input type="hidden" name="%s" value="%s" />\n', this.name, escape(JSON.stringify(this.value))));
-        this.attrs['name'] = this.name + "_file";
-        this.attrs['id'] = 'id_' + this.attrs['name'];
-        this.value = null;
         this._super(res);
+    },
+    render_attributes: function (res) {
+        this.name += "_file";
+        this._super(res)
     }
 });
 

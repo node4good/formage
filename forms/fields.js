@@ -313,6 +313,8 @@ function extractSubFieldKeyAndName(field_name, prefix) {
     var name = field_name.substring(next_ + 1);
     return {key: key, name: name};
 }
+
+
 var ListField_ = exports.ListField = BaseField.extend({
     init: function (options, fields, fieldsets) {
         options = options || {};
@@ -425,12 +427,13 @@ var ListField_ = exports.ListField = BaseField.extend({
         self.widget.name = self.name;
         self.widget.value = self.value;
 
-        function pre_render_partial(field) {
+        function pre_render_partial(field_key) {
             return function (cbk) {
-                self.fields[field].set(_.map(self.value || [], function (obj) {
-                    return (obj && obj[field]) || '';
+                var field = self.fields[field_key];
+                field.set(_.map(self.value || [], function (obj) {
+                    return (obj && obj[field_key]) || '';
                 }));
-                self.fields[field].pre_render(function (err, results) {
+                field.pre_render(function (err, results) {
                     cbk(err, results);
                 });
             };
@@ -505,16 +508,18 @@ var ListField_ = exports.ListField = BaseField.extend({
         }
 
         function render_field(field_name) {
-            if (!fields[field_name])
+            var field = fields[field_name];
+            if (!field)
                 return;
-            fields[field_name].name = prefix + field_name;
-            fields[field_name].errors = errors[field_name] || [];
+            field.name = prefix + field_name;
+            field.errors = errors[field_name] || [];
             if (field_name === '__self__') {
-                fields[field_name].set(value);
-                fields[field_name].render(res);
+                field.set(value);
+                field.
+                field.render(res);
             } else {
-                fields[field_name].set(value ? self.deep_read(value, field_name) : null);
-                fields[field_name].render_with_label(res);
+                field.set(value ? self.deep_read(value, field_name) : null);
+                field.render_with_label(res);
             }
         }
 
