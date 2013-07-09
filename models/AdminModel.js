@@ -3,7 +3,7 @@ var Class = require('sji'),
     jest = require('jest'),
     MongooseAdminAudit = require('./mongoose_admin_audit.js').MongooseAdminAudit,
     async = require('async'),
-    _ = require('underscore');
+    _ = require('lodash');
 
 var AdminModel = module.exports = Class.extend({
     init: function (options) {

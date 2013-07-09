@@ -1,2 +1,4 @@
-node_modules/
-.idea/
+/.idea/
+/dump/
+/node_modules/jade/node_modules/transformers/test/
+*.tgz

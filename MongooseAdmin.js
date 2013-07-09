@@ -1,6 +1,6 @@
 'use strict';
 var MongooseAdminUser = require('./models/mongoose_admin_user.js').MongooseAdminUser,
-    _ = require('underscore'),
+    _ = require('lodash'),
     async = require('async'),
     permissions = require('./models/permissions'),
     mongoose = require.main.require('mongoose'),
@@ -111,6 +111,7 @@ MongooseAdmin.prototype.registerMongooseModel = function (name, model, fields, o
                     var no_dependencies = ids.filter(function (result, index) {
                         return !results[index] || !results[index].length;
                     });
+                    _.differa
                     model.remove({_id: {$in: no_dependencies}}, callback);
                 }
             );

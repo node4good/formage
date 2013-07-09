@@ -2,7 +2,7 @@
 var Url = require('url'),
     querystring = require('querystring'),
     async = require('async'),
-    _ = require('underscore'),
+    _ = require('lodash'),
     forms = require('./forms').forms,
     permissions = require('./models/permissions'),
     AdminForm = require('./AdminForm').AdminForm;

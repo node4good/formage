@@ -5,7 +5,7 @@ if (!module.parent) {
 }
 
 var Class = require('sji'),
-    _ = require('underscore'),
+    _ = require('lodash'),
     async = require('async'),
     fields = require('./fields'),
     widgets = require('./widgets'),

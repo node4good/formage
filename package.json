@@ -24,7 +24,7 @@
     }
   ],
   "dependencies": {
-    "underscore": "",
+    "lodash": "",
     "async": "",
     "jade": "",
     "sji": "",

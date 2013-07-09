@@ -2,7 +2,7 @@
 if (!module.parent) console.error('Please don\'t call me directly.I am just the main app\'s minion.') || process.process.exit(1);
 
 var fa = require('./index.js'),
-    _ = require('underscore'),
+    _ = require('lodash'),
     LIST_EXCLUDED_FIELDS = ['order', '_id', 'show', '__v'];
 
 module.exports = function(app, express, models, opt) {

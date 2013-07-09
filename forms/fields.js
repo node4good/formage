@@ -4,7 +4,7 @@ if (!module.parent) console.error('Please don\'t call me directly.I am just the 
 var widgets = require('./widgets'),
     async = require('async'),
 	Class = require('sji'),
-	_ = require('underscore'),
+	_ = require('lodash'),
 	common = require('./common'),
 	path = require('path'),
 	fs = require('fs'),

@@ -3,7 +3,7 @@ if (!module.parent) console.error('Please don\'t call me directly.I am just the 
 
 var async = require('async'),
     mongoose = require.main.require('mongoose'),
-    _ = require('underscore');
+    _ = require('lodash');
 
 var Schema = new mongoose.Schema({
     name : {type:String, required:true}
