@@ -258,7 +258,7 @@ var parseFilters = function (model_settings, filters, search) {
                 filters[key] = Number(value) || undefined;
             }
             else if (type == Boolean) {
-                new_filters[key] = value == 'true' ? true : false;
+                new_filters[key] = value == 'true';
             }
         }
     });
@@ -316,7 +316,8 @@ var routes = {
         delete query.count;
         var sort = query.order_by;
         delete query.order_by;
-        var saved = query.saved;
+        /** @namespace query.saved */
+        //var saved = query.saved;
         delete query.saved;
         /** @namespace query._search */
         var search_value = query._search || '';
@@ -345,6 +346,7 @@ var routes = {
                     }
                     return makeLink('order_by', key);
                 };
+                //noinspection JSUnresolvedVariable
                 var schema = model.model.schema.tree;
                 var fieldLabel = function(field) {
                     return schema[field] && schema[field].label
