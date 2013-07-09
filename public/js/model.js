@@ -1,9 +1,10 @@
 $(function() {
+    //noinspection JSUnresolvedVariable
     var url = root + '/json/model/' + model;
 
     $('.free_search').click(function() {
         var value = $(this).siblings('input').val();
-        location.href = $(this).data('href').replace('__replace__', encodeURIComponent(value));;
+        location.href = $(this).data('href').replace('__replace__', encodeURIComponent(value));
     });
 
 
@@ -35,7 +36,10 @@ $(function() {
         var action_id = $(this).val();
         if (!action_id) return;
 
-        var ids = $('.select-row:checked').map(function() {return $(this).closest('tr').attr('id');});
+        var ids = [];
+        $('.select-row:checked').each(function(){
+            ids.push($(this).closest('tr').attr('id'));
+        });
         if (!ids.length) return;
 
         var msg = 'Are you sure you want to ' + $(this).text().toLowerCase() + ' ' + ids.length + ' documents?';
@@ -44,6 +48,7 @@ $(function() {
             if (!result) return;
 
             $.post(url + '/action/' + action_id, { ids: ids }).always(function(data) {
+                if (data.responseText) data = JSON.parse(data.responseText);
                 if (data.error) {
                     bootbox.dialog("Some documents failed: " + data.error, [{
                     "label" : "Error",
@@ -67,8 +72,9 @@ $(function() {
                 btn.button('loading');
 
                 var data = {};
-                $('tr', e.target).each(function(index, ui){
+                $('tr', e.target).each(function(index){
                     var id = $(this).attr('id');
+                    //noinspection JSUnresolvedVariable
                     data[id] = index + startIndex;
                 });
 
