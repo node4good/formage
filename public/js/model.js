@@ -35,28 +35,24 @@ $(function() {
         var action_id = $(this).val();
         if (!action_id) return;
 
-        var ids = [];
-        $('.select-row:checked').each(function(){
-            ids.push($(this).closest('tr').attr('id'));
-        });
+        var ids = $('.select-row:checked').map(function() {return $(this).closest('tr').attr('id');});
         if (!ids.length) return;
 
-        var msg = 'Are you sure you want to ' + $(this).text().toLowerCase()
-            + ' ' + ids.length + ' documents?';
+        var msg = 'Are you sure you want to ' + $(this).text().toLowerCase() + ' ' + ids.length + ' documents?';
 
         bootbox.confirm(msg, function(result) {
-            if (!result)
-                return;
+            if (!result) return;
 
-            console.log(action_id, ids);
-
-            $.post(
-                url + '/action/' + action_id,
-                { ids: ids },
-                function() {
-                    location.reload();
-                }
-            );
+            $.post(url + '/action/' + action_id, { ids: ids }).always(function(data) {
+                if (data.error) {
+                    bootbox.dialog("Some documents failed: " + data.error, [{
+                    "label" : "Error",
+                    "class" : "btn-danger",
+                    "callback": function() {
+                        location.reload();
+                    }}]);
+                } else location.reload();
+            });
         });
     });
 
