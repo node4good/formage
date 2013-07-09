@@ -5,7 +5,8 @@ var MongooseAdminUser = require('./models/mongoose_admin_user.js').MongooseAdmin
     permissions = require('./models/permissions'),
     mongoose = require.main.require('mongoose'),
     AdminForm = require('./AdminForm').AdminForm,
-    forms = require('./forms').forms;
+    forms = require('./forms').forms,
+    dependencies = require('./dependencies');
 
 /**
  * MongooseAdmin Constructor
@@ -100,19 +101,19 @@ MongooseAdmin.prototype.registerMongooseModel = function (name, model, fields, o
         value: 'delete',
         label: 'Delete',
         func: function (user, ids, callback) {
+            //noinspection JSUnresolvedFunction
             async.map(
                 ids,
-                function (id, cb) {
-                    require('./dependencies').check(models, name, id, cb);
-                },
+                _.partial(dependencies.check, models, name),
                 function (err, results) {
                     if (err) return callback(err);
-
-                    var no_dependencies = ids.filter(function (result, index) {
-                        return !results[index] || !results[index].length;
+                    results = _(results).compact().object().valueOf();
+                    var with_deps = ids.filter(function (id) {return id in results;});
+                    var no_dependencies = _.difference(ids, with_deps);
+                    return model.remove({_id: {'$in': no_dependencies}}, function(err, docs) {
+                        err = err || (!with_deps.length)? null : new Error("can't delete " + with_deps.join(',') + " as they have dependencies");
+                        return callback(err, docs)
                     });
-                    _.differa
-                    model.remove({_id: {$in: no_dependencies}}, callback);
                 }
             );
         }
@@ -169,13 +170,6 @@ MongooseAdmin.prototype.registerModel = function(model, name, options) {
 };
 
 
-/**
- * Retrieve a list of all registered models
- *
- * @param {Function} callback
- *
- * @api public
- */
 MongooseAdmin.prototype.getRegisteredModels = function (user, callback) {
     var raw_models = this.models;
     var out_models = Object.keys(raw_models).map(function (collectionName) {
@@ -202,13 +196,7 @@ MongooseAdmin.prototype.getModel = function(collectionName, onReady) {
     onReady(null, model.model, model.fields, model.options);
 };
 
-/**
- * Get the counts of a model
- *
- * @param {String} collectionName
- *
- * @api public
- */
+
 MongooseAdmin.prototype.modelCounts = function(collectionName,filters, onReady) {
     if(this.models[collectionName].is_single) {
         onReady(null,1);
@@ -241,12 +229,13 @@ function mongooseSort(query,sort) {
 /**
  * List a page of documents from a model
  *
+ * @api public
  * @param {String} collectionName
  * @param {Number} start
  * @param {Number} count
+ * @param filters
+ * @param sort
  * @param {Function} onReady
- *
- * @api public
  */
 MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, count, filters, sort, onReady) {
     var listFields = this.models[collectionName].options.list;
@@ -269,7 +258,7 @@ MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, cou
             query.populate(populate);
         });
     }
-    query.skip(start).limit(count).execFind(function (err, documents) {
+    return query.skip(start).limit(count).execFind(function (err, documents) {
         if (err) {
             console.error('Unable to get documents for model because: ' + err);
             onReady(null, []);
@@ -290,15 +279,6 @@ MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, cou
 };
 
 
-/**
- * Retrieve a single document
- *
- * @param {String} collectionName
- * @param {String} documentId
- * @param {Function} onReady
- *
- * @api public
- */
 MongooseAdmin.prototype.getDocument = function(collectionName, documentId, onReady) {
     this.models[collectionName].model.findById(documentId, function(err, document) {
         if (err) {
@@ -310,91 +290,44 @@ MongooseAdmin.prototype.getDocument = function(collectionName, documentId, onRea
     });
 };
 
-/**
- * Create a new document
- *
- * @param {String} collectionName
- * @param {Object} params
- * @param {Function} onReady
- *
- * @api public
- */
-MongooseAdmin.prototype.createDocument = function(req,user, collectionName, params, onReady) {
+
+MongooseAdmin.prototype.createDocument = function (req, user, collectionName, params, onReady) {
     var self = this;
     var model = this.models[collectionName].model;
     //noinspection LocalVariableNamingConventionJS
     var FormType = this.models[collectionName].options.form || AdminForm;
-    if(permissions.hasPermissions(user,collectionName,'create'))
-    {
-
-        var form = new FormType(req,{data:params},model);
-        form.is_valid(function(err,valid)
-        {
-            if(err)
-            {
-                onReady(err);
-                return;
+    if (!permissions.hasPermissions(user, collectionName, 'create')) return onReady('unauthorizaed');
+    var form = new FormType(req, {data: params}, model);
+    return form.is_valid(function (err, valid) {
+        if (err) return onReady(err);
+        if (!valid) return onReady(form, null);
+        return form.save(function (err, document) {
+            if (err) return onReady(form);
+            if (self.models[collectionName].options && self.models[collectionName].options.post) {
+                document = self.models[collectionName].options.post(document);
             }
-            if(valid)
-            {
-                form.save(function(err,document)
-                {
-                    if (err) {
-                        //console.log('Error saving document: ' + err);
-                        onReady(form);
-                    } else {
-
-                        if (self.models[collectionName].options && self.models[collectionName].options.post) {
-                            document = self.models[collectionName].options.post(document);
-                        }
-//                        MongooseAdminAudit.logActivity(user, self.models[collectionName].modelName, collectionName, document._id, 'add', null, function(err, auditLog) {
-                            onReady(null, document);
-//                        });
-                    }
-                });
-            }
-            else
-            {
-                onReady(form,null);
-            }
+//          MongooseAdminAudit.logActivity(user, self.models[collectionName].modelName, collectionName, document._id, 'add', null, function(err, auditLog) {
+            return onReady(null, document);
+//          });
         });
-    }
-    else
-    {
-        onReady('unauthorizaed');
-    }
+    });
 };
 
-/**
- * Update a document
- *
- * @api public
- */
-MongooseAdmin.prototype.updateDocument = function(req, user, collectionName, documentId, params, onReady) {
+
+MongooseAdmin.prototype.updateDocument = function (req, user, collectionName, documentId, params, onReady) {
     var self = this,
         model = this.models[collectionName].model;
 
-    if (!permissions.hasPermissions(user,collectionName,'update')) {
-        return onReady('unauthorized');
-    }
-
+    if (!permissions.hasPermissions(user, collectionName, 'update')) return onReady('unauthorized');
     var FormType2 = this.models[collectionName].options.form || AdminForm;
     return model.findById(documentId, function (err, document) {
-        if (err) {
-            console.log('Error retrieving document to update: ' + err);
-            return onReady('Unable to update', null);
-        }
-
+        if (err) return onReady(err, null);
         var form = new FormType2(req, { instance: document, data: params }, model);
         form.init_fields();
-        form.is_valid(function (err, valid) {
-            if (err || !valid)
-                return onReady(err || form, null);
-
+        return form.is_valid(function (err, valid) {
+            if (err || !valid) return onReady(err || form, null);
             return form.save(function (err, document) {
-                if (err)
-                    return onReady(form, null);
-
+                if (err) return onReady(form, null);
                 if (self.models[collectionName].options && self.models[collectionName].options.post) {
                     document = self.models[collectionName].options.post(document);
                 }
@@ -406,46 +339,24 @@ MongooseAdmin.prototype.updateDocument = function(req, user, collectionName, doc
     });
 };
 
-/**
- * Delete, remove a document
- *
- * @param {String} collectionName
- * @param {String} documentId
- * @param {Function} onReady
- *
- * @api public
- */
+
 MongooseAdmin.prototype.deleteDocument = function(user, collectionName, documentId, onReady) {
     var self = this;
     var model = this.models[collectionName].model;
-    if(permissions.hasPermissions(user,collectionName,'delete'))
-    {
-        model.findById(documentId, function(err, document) {
-        if (err) {
-            console.log('Error retrieving document to delete: ' + err);
-            onReady('Unable to delete');
-        } else {
-            if (!document) {
-                onReady('Document not found');
-            } else {
-                require('./dependencies').unlink(self.models, collectionName, documentId, function(err) {
-                    if(err)
-                        onReady('unlink dependencies failed');
-                    else {
-                        document.remove();
-//                        MongooseAdminAudit.logActivity(user, self.models[collectionName].modelName, collectionName, documentId, 'del', null, function(err, auditLog) {
-                            onReady(null);
-//                        });
-                    }
-                });
-            }
+    if (!permissions.hasPermissions(user, collectionName, 'delete')) return onReady('unauthorized');
+    return model.findById(documentId, function (err, document) {
+        if (err) return onReady(err);
+        if (!document) {
+            return onReady('Document not found');
         }
+        return dependencies.unlink(self.models, collectionName, documentId, function (err) {
+            if (err) return onReady('unlink dependencies failed');
+            document.remove();
+//          MongooseAdminAudit.logActivity(user, self.models[collectionName].modelName, collectionName, documentId, 'del', null, function(err, auditLog) {
+            return onReady(null);
+//          });
+        });
     });
-    }
-    else
-    {
-        onReady('unauthorized')
-    }
 };
 
 
@@ -463,23 +374,12 @@ MongooseAdmin.prototype.orderDocuments = function (user, collectionName, data, c
 };
 
 
-MongooseAdmin.prototype.actionDocuments =function(user,collectionName,actionId,data,onReady)
-{
-    //console.log(data);
-    if(permissions.hasPermissions(user,collectionName,'action'))
-    {
-            var action = _.find(this.models[collectionName].options.actions, function(action){ return action.value == actionId; });
-        if(action)
-        {
-            action.func(user,data.ids,onReady);
-        }
-        else
-            onReady('no action');
-    }
-    else
-        onReady('unauthorized');
+MongooseAdmin.prototype.actionDocuments = function (user, collectionName, actionId, data, onReady) {
+    if (!permissions.hasPermissions(user, collectionName, 'action')) return onReady('unauthorized');
+    var action = _.find(this.models[collectionName].options.actions, {value: actionId});
+    if (!action) return onReady('no action');
+    return action.func(user, data.ids, onReady);
 };
-
 
 
 /**
@@ -490,7 +390,7 @@ MongooseAdmin.prototype.actionDocuments =function(user,collectionName,actionId,d
  * @api private
  */
 MongooseAdmin.userFromSessionStore = function(sessionStore) {
-    return !sessionStore ? false : MongooseAdminUser.fromSessionStore(sessionStore);
+    return sessionStore ? MongooseAdminUser.fromSessionStore(sessionStore) : false;
 };
 
 /**

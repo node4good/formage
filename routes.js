@@ -127,24 +127,15 @@ var json_routes = {
 
     actionDocuments: function (req, res) {
         var admin_user = MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser);
-        if (!admin_user) {
-            res.writeHead(401, {"Content-Type": "application/json"});
-            res.end();
-            return;
-        }
+        if (!admin_user) return res.send(401);
 
         /** @namespace req.params.actionId */
-        MongooseAdmin.singleton.actionDocuments(admin_user, req.params.collectionName, req.params.actionId, req.body, function (err) {
-            if (err) {
-                res.writeHead(500);
-                res.end();
-            } else {
-                res.writeHead(200, {"Content-Type": "application/json"});
-                res.write(JSON.stringify({"collection": req.params.collectionName}));
-                res.end();
-            }
+        return MongooseAdmin.singleton.actionDocuments(admin_user, req.params.collectionName, req.params.actionId, req.body, function (err) {
+            if (err) return res.json(422, {error: err.message});
+            return res.json({"collection": req.params.collectionName});
         });
     },
+
 
     deleteDocument: function (req, res) {
         var admin_user = MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser) ;
