@@ -37,39 +37,30 @@ exports.check = function (modelPrefs, modelName, id, callback) {
 
 
 exports.unlink = function (models, model, id, callback) {
-    exports.check(models, model, id, function (err, deps) {
+    exports.check(models, model, id, function (err, deps_pair) {
         if (err) return callback(err);
+        var deps = deps_pair[1];
 
         return async.forEach(deps, function (dep, cbk) {
             var schema = dep.schema,
-                shouldSave = false,
-                shouldRemove = false;
+                action;
 
-            Object.keys(schema.paths).forEach(function (fieldName) {
-                if ((schema.paths[fieldName].options.ref) && (schema.paths[fieldName].options.ref === model) && (dep[fieldName] + '' === id)) {
-                    //noinspection JSUnresolvedVariable
-                    switch (schema.paths[fieldName].options.onDelete) {
-                        case 'delete':
-                            shouldRemove = true;
-                            break;
-
-                        case 'setNull':
-                            dep[fieldName] = null;
-                            shouldSave = true;
-                            break;
-                    }
-                }
+            Object.keys(schema.paths).filter(function (fieldName) {
+                return schema.paths[fieldName].options.ref === model && dep[fieldName] === id;
+            }).forEach(function (fieldName) {
+                action = schema.paths[fieldName].options.onDelete;
+                if ('setNull' === action)
+                    dep[fieldName] = null;
             });
-            if (shouldRemove) {
-                dep.remove(cbk);
-            }
-            else {
-                if (shouldSave) {
-                    dep.save(cbk);
-                }
-                else {
-                    cbk();
-                }
+            switch (action) {
+                case 'delete':
+                    return dep.remove(cbk);
+
+                case 'setNull':
+                    return dep.save(cbk);
+
+                default:
+                    return cbk();
             }
         }, callback);
     });

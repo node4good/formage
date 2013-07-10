@@ -1,8 +1,6 @@
 extends layout
 
 block head
-    script.
-        var model = '#{model_name}';
     - if (model.static)
         - if (model.static.js)
             - each f in model.static.js
@@ -30,3 +28,10 @@ block body
             a#cancelButton.btn.btn-large(href="#{rootPath}/model/#{model_name}") Cancel
             - if (allow_delete)
                 button#deleteButton.btn.btn-large.btn-danger(type='button',data-loading-text='Deleting...') Delete
+
+block scripts
+    script.
+        var model = '#{model_name}';
+
+    script(src="#{rootPath}/js/lib/bootbox.min.js")
+    script(src="#{rootPath}/js/document.js")
