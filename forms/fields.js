@@ -343,6 +343,8 @@ var ListField_ = exports.ListField = BaseField.extend({
         {
             return function (cbk) {
                 var inner_field = _.defaults({errors:[], name:field_name}, self.fields[field_name]);
+				// lodash doesn't clone the prototype;
+                inner_field.__proto__ = self.fields[field_name].__proto__;
                 var request_copy = _.defaults({body:post_data, files:file_data}, req);
                 var old_field_value = post_data[field_name] || (old_value.get ? old_value.get(field_name) : old_value[field_name]);
                 inner_field.set(old_field_value);
