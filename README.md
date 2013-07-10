@@ -30,23 +30,23 @@ model.formage = {
     // Additional actions on this model
     actions: [
        {
-          value: 'foo',
-          label: 'Foo',
+          value: 'release',
+          label: 'Release',
           func: function (user, ids, callback) {
-             console.log('Foo models ' + ids);
+             console.log('You just released songs ' + ids);
              callback();
           }
        }
     ],
     
     // list of fields to be displayed by formage for this model
-    list: ['foo', 'bar', 'field1', 'field2'],
+    list: ['number', title', 'album', 'artist', 'year'],
     
     // list of order fields
-    order_by: ['bar'],
+    order_by: ['-year', 'album', 'number'],
     
     // list of fields that must be populated (see http://mongoosejs.com/docs/api.html#document_Document-populate)
-    list_populate: ['field1']
+    list_populate: ['album']
 };
 
 // one-document models
