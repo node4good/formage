@@ -40,7 +40,7 @@ model.formage = {
     ],
     
     // list of fields to be displayed by formage for this model
-    list: ['number', title', 'album', 'artist', 'year'],
+    list: ['number', 'title', 'album', 'artist', 'year'],
     
     // list of order fields
     order_by: ['-year', 'album', 'number'],
