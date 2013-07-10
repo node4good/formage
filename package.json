@@ -31,6 +31,14 @@
     "jest": "",
     "cloudinary": ""
   },
+  "bundleDependencies" : [
+    "lodash",
+    "async",
+    "jade",
+    "sji",
+    "jest",
+    "cloudinary"
+  ],
   "devDependencies": {
     "express": "",
     "request": "",
@@ -50,6 +58,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/Empeeric/formage-admin.git"
+  },
+  "directories": {
+    "example": "./example"
   },
   "engines": {
     "node": ">= 0.10.10",
