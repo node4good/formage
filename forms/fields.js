@@ -16,9 +16,8 @@ exports.setAmazonCredentials = function (credentials) {
     try {
         var knox = require('knox');
         module.knox_client = knox.createClient(credentials);
-    }
-    catch (e) {
-        util.puts('no knox');
+    } catch (e) {
+        console.log(e.message);
     }
 };
 
@@ -248,9 +247,9 @@ var NumberField = exports.NumberField = StringField.extend({
         options = options || {};
         options.widget = options.widget || widgets.NumberWidget;
         options.widget_options = options.widget_options || {};
-        options.widget_options.min = options.widget_options.min == null ? options.min : options.widget_options.min;
-        options.widget_options.max = options.widget_options.max == null ? options.max : options.widget_options.max;
-        options.widget_options.step = options.widget_options.step == null ? options.step : options.widget_options.step;
+        options.widget_options.min = options.widget_options.min === null ? options.min : options.widget_options.min;
+        options.widget_options.max = options.widget_options.max === null ? options.max : options.widget_options.max;
+        options.widget_options.step = options.widget_options.step === null ? options.step : options.widget_options.step;
 
         this._super(options);
     },
@@ -265,8 +264,8 @@ var NumberField = exports.NumberField = StringField.extend({
         else {
             try {
                 this.value = Number(this.value);
-            }
-            catch (e) {
+            } catch (e) {
+                console.log(e);
                 this.errors.push('value ' + this.value + ' is not a number');
                 this.value = null;
             }
@@ -409,7 +408,7 @@ var ListField_ = exports.ListField = BaseField.extend({
             });
         });
 
-        async.parallel(clean_funcs, function (err) {
+        async.parallel(clean_funcs, function () {
             for (var i = 0; i < self.value.length; i++) {
                 var new_dict = {};
                 for (var key in self.value[i])
@@ -447,7 +446,7 @@ var ListField_ = exports.ListField = BaseField.extend({
 
         funcs.push(self.widget.pre_render.bind(self.widget));
         async.parallel(funcs, function (err, results) {
-            callback(err);
+            callback(err, results);
         });
         return self;
     },
@@ -515,6 +514,7 @@ var ListField_ = exports.ListField = BaseField.extend({
                 return;
             field.name = prefix + field_name;
             field.errors = errors[field_name] || [];
+            // This is for array in template
             if (field_name === '__self__') {
                 field.set(value);
                 field.render(res);
@@ -525,23 +525,17 @@ var ListField_ = exports.ListField = BaseField.extend({
         }
 
         function render_fieldset(fieldset) {
-            if (fieldset['title'] && fieldset['title'] !== '')
-                res.write('<div class="nf_fieldset">');
-            var title = fieldset['title'] || '';
-            if (title !== '')
-                res.write('<h2>' + title + '</h2>');
-            var fields = fieldset.fields;
-            if (fields)
-                render_fields(fields);
-            if (fieldset['title'] && fieldset['title'] !== '')
-                res.write("</div>");
+            var has_title = fieldset['title'] && fieldset['title'] !== '';
+            if (has_title)
+                res.write('\n<div class="nf_fieldset">\n<h2>' + fieldset['title'] + '</h2>\n');
+            if ( fieldset.fields)
+                render_fields( fieldset.fields);
+            if (has_title)
+                res.write("\n</div>\n");
         }
 
-        if (fieldsets) {
-            render_fields(fieldsets[0].fields);
-        }
-        else
-            render_fields(Object.keys(fields));
+        var fields_to_render = fieldsets ? fieldsets[0].fields : Object.keys(fields);
+        render_fields(fields_to_render);
     }
 
 });

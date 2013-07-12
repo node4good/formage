@@ -157,17 +157,14 @@ p.error {
     margin: 0;
 }
 .nf_listfield li {
-    /*clear: both;*/
     display: block;
     list-style: none;
-
     margin-bottom: 10px;
-    padding: 15px 5px 0 5px;
+    padding: 25px 5px 0 5px;
     border: 1px solid #ddd;
     background: #F7F7F9;
     border-radius: 2px;
     -webkit-transition: background 1s;
-
     position: relative;
 }
 .nf_listfield li.new_li {
@@ -177,13 +174,16 @@ p.error {
     cursor: pointer;
 }
 .nf_listfield_delete, .nf_listfield_drag, .nf_listfield_append {
-    position: absolute; right: 5px; top: 5px;
-    padding: 5px;
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    padding: 2px;
     border: 0;
     background: transparent;
 }
+
 .nf_listfield_drag {
-    right: 25px;
+    right: 20px;
     cursor: move;
 }
 
