@@ -251,6 +251,9 @@ var parseFilters = function (model_settings, filters, search) {
             else if (type == Boolean) {
                 new_filters[key] = value == 'true';
             }
+            else if (_.isArray(type) && value) {
+                new_filters[key] = value;
+            }
         }
     });
     if (search && model_settings.options.search) {
