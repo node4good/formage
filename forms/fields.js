@@ -517,7 +517,6 @@ var ListField_ = exports.ListField = BaseField.extend({
             field.errors = errors[field_name] || [];
             if (field_name === '__self__') {
                 field.set(value);
-                field.
                 field.render(res);
             } else {
                 field.set(value ? self.deep_read(value, field_name) : null);

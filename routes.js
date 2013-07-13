@@ -269,7 +269,7 @@ var routes = {
             return res.render('models.jade', {
                 layout: 'layout.jade',
                 pageTitle: 'Admin Site',
-                models: models,
+                allModels: models,
                 renderedHead: '',
                 adminTitle: MongooseAdmin.singleton.getAdminTitle(),
                 rootPath: MongooseAdmin.singleton.root
