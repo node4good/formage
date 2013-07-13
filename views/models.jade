@@ -11,12 +11,11 @@ block body
                     - if (model.is_single)
                         a.btn(href='#{url}/document/single') Edit
                     - else
-                        a.btn(href='#{url}/document/new') New
                         a.btn.btn-info(href=url)
                             span(id='viewAll_#{model.modelName}') View All
+                        a.btn(href='#{url}/document/new') New
                 a(href=url + (model.is_single ? '/document/single' : ''))
                     h3 #{model.label}
-
 
 block scripts
     script(src="#{rootPath}/js/models.js")

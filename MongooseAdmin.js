@@ -46,11 +46,11 @@ MongooseAdmin.prototype.close = function() {
     this.app.close();
 };
 
-function buildModelFilters (model, filters, dict) {
+function buildModelFilters_fakeSync (model, filters, dict) {
     if (!filters)
         return;
 
-    setTimeout(function () {
+    process.nextTick(function () {
         async.forEach(
             filters,
             function (filter, cbk) {
@@ -86,17 +86,16 @@ function buildModelFilters (model, filters, dict) {
             }, function () {
 
             })
-    }, 1000);
+    });
 }
 
 
 MongooseAdmin.prototype.registerMongooseModel = function (name, model, fields, options) {
     var models = this.models;
 
-    model.label = model.label || name[0].toUpperCase() + name.slice(1).replace(/_/g,' ');
-
     options = options || {};
     options.actions = options.actions || [];
+    options.fields = fields;
     options.actions.push({
         value: 'delete',
         label: 'Delete',
@@ -119,65 +118,36 @@ MongooseAdmin.prototype.registerMongooseModel = function (name, model, fields, o
         }
     });
 
-    var filters = [];
-    buildModelFilters(model, options.filters, filters);
+    this.registerModel(model, name, options);
+};
 
+
+MongooseAdmin.prototype.registerSingleRowModel = function(model, name, options) {
+    model.is_single = true;
+    this.registerModel(model, name, options);
+};
+
+
+MongooseAdmin.prototype.registerModel = function(model, name, options) {
+    var filters = [];
+    buildModelFilters_fakeSync(model, options.filters, filters);
+    model.label = model.label || name[0].toUpperCase() + name.slice(1).replace(/_/g,' ');
     this.models[name] = {
         model: model,
         filters: filters,
         modelName: name,
         options: options,
         label : options.label || model.label,
-        fields: fields
-    };
-
-    console.log('\x1b[36mformage-admin:\x1b[0m %s', name);
-
-    permissions.registerModel(name);
-};
-
-
-MongooseAdmin.prototype.registerSingleRowModel = function(model, name, options) {
-    model.label = model.label || name[0].toUpperCase() + name.slice(1).replace(/_/g,' ');
-
-    model.is_single = true;
-    this.models[name] = {
-        model: model,
-        options: options || {},
-        fields: {},
-        is_single: true,
-        modelName: name
+        fields: options.fields,
+        is_single: model.is_single
     };
     permissions.registerModel(name);
-};
-
-
-/**
-* Register a new mongoose model/schema with admin
-*
-* @param {Object} model
-* @param {String} name
-* @param {Object} options
-*
-* @api public
-*/
-MongooseAdmin.prototype.registerModel = function(model, name, options) {
-    this.models[name] = {
-        model: model,
-        modelName: name,
-        options: options
-    };
     console.log('\x1b[36mformage-admin:\x1b[0m %s', name);
 };
 
 
 MongooseAdmin.prototype.getRegisteredModels = function (user, callback) {
-    var raw_models = this.models;
-    var out_models = Object.keys(raw_models).map(function (collectionName) {
-        var out_model = raw_models[collectionName];
-        out_model.model.is_single = out_model.is_single;
-        return out_model;
-    }).filter(function (model) {
+    var out_models = _.filter(this.models, function (model) {
         return permissions.hasPermissions(user, model.modelName, 'view');
     });
     callback(null, out_models);

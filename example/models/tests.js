@@ -63,3 +63,4 @@ var s = new Schema({
 });
 
 module.exports = mongoose.model('tests', s);
+module.exports.formage = {filters: ['ref']};
