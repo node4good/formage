@@ -15,7 +15,7 @@ var api_path;
 var _escaper = /[-[\]{}()*+?.,\\^$|#\s]/g;
 
 
-exports.AdminForm = MongooseForm.extend({
+var AdminForm = exports.AdminForm = MongooseForm.extend({
     init: function (request, options, model) {
         this._super(request, options, model);
 
@@ -99,3 +99,73 @@ exports.loadApi = function (app, path) {
     api_path = '/' + api.path + 'ref';
     api_loaded = true;
 };
+
+
+var crypt = require('./models/mongoose_admin_user').crypt;
+
+
+exports.AdminUserForm = AdminForm.extend({
+    init:function(request,options)
+    {
+        this._super(request,options,mongoose.model('_MongooseAdminUser'));
+        this.static['js'].push('/node-forms/js/autocomplete.js');
+
+    }
+    ,get_fields:function(){
+        this._super();
+        var fields = this.fields;
+
+        delete fields['passwordHash'];
+
+
+        this.fields['current_password'] = new forms.fields.StringField({widget:forms.widgets.PasswordWidget,label:'Current Password'});
+
+        this.fields['password'] = new forms.fields.StringField({widget:forms.widgets.PasswordWidget,label:'New Password'});
+
+        this.fields['password_again'] = new forms.fields.StringField({widget:forms.widgets.PasswordWidget,label:'Again'});
+
+        this.fieldsets[0].fields = ['username','is_superuser','permissions','current_password','password','password_again'];
+
+        return fields;
+    },
+
+    is_valid:function(callback)
+    {
+        var self = this;
+        this._super(function(err,result)
+        {
+            if(err || !result)
+                callback(err,result);
+            else
+            {
+                if(self.data.password) {
+                    if(!crypt.compareSync(self.data.current_password,self.instance.passwordHash))
+                        self.errors['current_password'] = self.fields['current_password'].errors = ['Password incorrect'];
+                    else
+                    {
+                        if(self.data.password != self.data.password_again)
+                        {
+                            self.errors['password_again'] = self.fields['password_again'].errors = ['typed incorrectly'];
+                        }
+                    }
+
+                }
+                else{
+                    delete self.data.password;
+                    delete self.data.current_password;
+                    delete self.data.password;
+                }
+                callback(null,Object.keys(self.errors).length == 0);
+            }
+        });
+    },
+    actual_save:function(callback)
+    {
+        this.instance.passwordHash = crypt.encryptSync(this.data.password);
+        this._super(callback);
+    }
+});
+
+
+
+
