@@ -32,6 +32,8 @@ var admin = formage.init(app, express, require('./models'), {
     title: 'Formage-Admin Example'
 });
 
+admin.registerAdminUserModel()
+
 app.get('/', function(req, res){
     res.redirect('/admin');
 });
