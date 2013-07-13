@@ -83,3 +83,5 @@ MongooseAdminUser.getByUsernamePassword = function (username, password, callback
 };
 
 exports.MongooseAdminUser = MongooseAdminUser;
+
+exports.crypt = crypt;

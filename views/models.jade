@@ -4,7 +4,7 @@ block body
     .page-header
         h2 Model List
     ul.models
-        - each model in models
+        - each model in allModels
             - var url = rootPath + '/model/' + model.modelName
             li
                 .btn-group.pull-right
@@ -15,7 +15,7 @@ block body
                         a.btn.btn-info(href=url)
                             span(id='viewAll_#{model.modelName}') View All
                 a(href=url + (model.is_single ? '/document/single' : ''))
-                    h3 #{model.model.label}
+                    h3 #{model.label}
 
 
 block scripts

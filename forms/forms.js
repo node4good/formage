@@ -423,7 +423,7 @@ var MongooseForm = exports.MongooseForm = BaseForm.extend({
         }
 
         if (mongoose_field.options.ref) {
-            var model = models[mongoose_field.options.ref];
+            var model = models[mongoose_field.options.ref] || mongoose.model(mongoose_field.options.ref);
             return new fields.RefField(options, model);
         }
         if (mongoose_field.options.enum) {

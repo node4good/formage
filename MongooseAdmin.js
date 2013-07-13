@@ -127,6 +127,7 @@ MongooseAdmin.prototype.registerMongooseModel = function (name, model, fields, o
         filters: filters,
         modelName: name,
         options: options,
+        label : options.label || model.label,
         fields: fields
     };
 
@@ -196,13 +197,43 @@ MongooseAdmin.prototype.getModel = function(collectionName, onReady) {
     onReady(null, model.model, model.fields, model.options);
 };
 
+function escapeRegExp(str) {
+    return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+}
+function getSearchQuery(model,searchValue){
+    var searchRule = model && model.options && model.options.search;
+    if(!searchRule)
+        return null;
+    var valueRegex = '/' + escapeRegExp(searchValue) + '/i';
+    console.log(searchRule);
+    if(Array.isArray(searchRule)){
+        return searchRule.map(function(field){
+            return valueRegex + '.test(this.' + field + ')';
+        }).join('&&');
+    }
+    else{
+        return searchRule.replace('__value__',valueRegex);
+    }
+}
 
-MongooseAdmin.prototype.modelCounts = function(collectionName,filters, onReady) {
+/**
+ * Get the counts of a model
+ *
+ * @param {String} collectionName
+ *
+ * @api public
+ */
+MongooseAdmin.prototype.modelCounts = function(collectionName,filters, search, onReady) {
     if(this.models[collectionName].is_single) {
         onReady(null,1);
         return;
     }
     var model = this.models[collectionName].model;
+    if(search){
+        var query = getSearchQuery(this.models[collectionName],search);
+        if(query)
+            filters = require('util')._extend({'$where':query},filters);
+    }
     this.models[collectionName].model.count(filters, function(err, count) {
         if (err) {
             console.error('Unable to get counts for model because: ' + err);
@@ -237,7 +268,7 @@ function mongooseSort(query,sort) {
  * @param sort
  * @param {Function} onReady
  */
-MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, count, filters, sort, onReady) {
+MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, count,filters, search,sort, onReady) {
     var listFields = this.models[collectionName].options.list;
     if (!listFields) {
         return onReady(null, []);
@@ -245,6 +276,11 @@ MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, cou
 
     var model = this.models[collectionName].model;
     var query = this.models[collectionName].model.find(filters);
+    if(search){
+         var searchQuery = getSearchQuery(this.models[collectionName],search);
+         if(searchQuery)
+             query.$where(searchQuery);
+    }
     var sorts = this.models[collectionName].options.order_by || [];
     var populates = this.models[collectionName].options.list_populate;
     if (sort)
@@ -427,3 +463,13 @@ MongooseAdmin.prototype.login = function(username, password, onReady) {
 exports.loadApi = require('./AdminForm').loadApi;
 
 exports.AdminForm = AdminForm;
+
+exports.AdminUserForm = require('./AdminForm').AdminUserForm;
+
+MongooseAdmin.prototype.registerAdminUserModel = function(name,options){
+    this.registerMongooseModel(name || 'Admin Users',mongoose.model('_MongooseAdminUser'),null, _.extend({
+        form:exports.AdminUserForm,
+        list:['username'],
+        order_by:['username']
+    },options||{}));
+};
