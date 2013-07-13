@@ -169,7 +169,7 @@ var BooleanField = exports.BooleanField = BaseField.extend({
         return schema;
     },
     clean_value: function (req, callback) {
-        this.value = req.body[this.name] && req.body[this.name] !== '';
+        this.value = !!(req.body[this.name] && req.body[this.name] !== '');
         this._super(simpleReq(req), callback);
         return this;
     }
@@ -571,6 +571,18 @@ var FileField_ = exports.FileField = BaseField.extend({
             base.call(self, simpleReq(req), callback);
         }
 
+        function handleDelete(cbk){
+            if(module.knox_client){
+                // Remove file from S3 Bucket
+                self.value = null;
+                if(cbk)
+                    cbk();
+            }
+            else
+                fs.unlink(self.directory + self.value.path, cbk);
+            self.value = null;
+        }
+
         function handle_upload(err) {
             if (err) console.trace(err);
             if (!req.files || !req.files[self.name] || !req.files[self.name].name) {
@@ -581,7 +593,7 @@ var FileField_ = exports.FileField = BaseField.extend({
             // copy file from temp location
             if (module.knox_client) {
                 var stream = fs.createReadStream(uploaded_file.path);
-                var filename_to_upload = '/' + self.create_filename(uploaded_file.path);
+                var filename_to_upload = '/' + self.create_filename(uploaded_file.name);
                 module.knox_client.putStream(stream, filename_to_upload, {'Content-Length': uploaded_file.size}, function (err, res) {
                     if (err) {
                         //noinspection JSUnresolvedVariable
@@ -599,7 +611,7 @@ var FileField_ = exports.FileField = BaseField.extend({
                     var http_message = res.socket._httpMessage;
                     var url = http_message.url.replace(/https:/, 'http:');
                     self.value = {
-                        path: path.basename(uploaded_file.path),
+                        path: uploaded_file.name,
                         url: url,
                         size: uploaded_file.size};
                     on_finish();
@@ -626,8 +638,7 @@ var FileField_ = exports.FileField = BaseField.extend({
 
         // delete old file is needed/requested
         if (self.value && self.value.path && (req.body[self.name + '_clear'] || (req.files[self.name] && req.files[self.name].name))) {
-            fs.unlink(self.directory + self.value.path, handle_upload);
-            self.value = null;
+            handleDelete(handle_upload);
         }
         else {
             handle_upload();

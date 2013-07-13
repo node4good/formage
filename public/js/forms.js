@@ -163,5 +163,26 @@ $(function(){
     $('form#document').submit(function() {
         $('p.submit button').prop('disabled', true);
     });
+    $('#deleteButton').click(function(){
+        var adminPath = window.location.pathname.split('/model/')[0];
+        var docId = $('input[name=_id]').val();
+        $.post(adminPath + '/json/dependencies',{model:model,id:docId},function(rsp){
+            console.log(rsp);
+            var depenedicesCount = rsp.length;
+            if(window.confirm('Are you sure you want to delete?' + (depenedicesCount ? ' This document has ' + depenedicesCount + ' dependencies' : ''))){
+                $.ajax({
+                    type:'DELETE',
+                    url:adminPath + '/json/model/' + model + '/document?document_id=' + docId,
+                    data:{},
+                    success:function(){
+                        window.location.href = $('#cancelButton').attr('href');
+                    },
+                    error:function(rsp){
+                        alert(rsp.responseText);
+                    }
+                });
+            }
+        });
+    })
 });
 })();
