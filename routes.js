@@ -316,11 +316,11 @@ var routes = {
 
         var filters = parseFilters(model, query, search_value);
 
-        MongooseAdmin.singleton.modelCounts(name, filters, search_value, function (err, total_count) {
+        MongooseAdmin.singleton.modelCounts(name, filters, function (err, total_count) {
             if (err)
                 return res.redirect('/');
 
-            MongooseAdmin.singleton.listModelDocuments(name, start, count, filters, search_value, sort, function (err, documents) {
+            MongooseAdmin.singleton.listModelDocuments(name, start, count, filters, sort, function (err, documents) {
                 if (err)
                     return res.redirect('/');
 
