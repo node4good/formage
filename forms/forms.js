@@ -12,9 +12,7 @@ var Class = require('sji'),
     common = require('./common');
 var mongoose = require.main.require('mongoose');
 
-
 var FORM_EXCLUDE_FIELDS = ['__v'];
-
 
 var models = {};
 exports.set_models = function (mo) {
@@ -48,6 +46,7 @@ var BaseForm = exports.BaseForm = Class.extend({
         this.handle_success = options.success;
         this.handle_error = options.error;
     },
+
     handle: function (options) {
         this.handle_empty = options.empty || this.handle_empty;
         this.handle_success = options.success || this.handle_success;
@@ -159,7 +158,6 @@ var BaseForm = exports.BaseForm = Class.extend({
         }
         self.errors = {};
         self.clean_values = {};
-        var clean_funcs = [];
 
         async.each(Object.keys(self.fields), function (field_name, cbk) {
                 var field = self.fields[field_name];
@@ -172,7 +170,7 @@ var BaseForm = exports.BaseForm = Class.extend({
                     }
                     return cbk(null);
                 });
-            }, function (err) {
+            }, function () {
                 callback(null, Object.keys(self.errors).length === 0);
             }
         );
@@ -387,8 +385,8 @@ var MongooseForm = exports.MongooseForm = BaseForm.extend({
                 for (var attr in inner_schema){
                     single_field[attr] = inner_schema[attr];
                 }
-                for (var attr in  mongoose_field.options) {
-                    single_field[attr] = mongoose_field.options[attr];
+                for (var attr2 in  mongoose_field.options) {
+                    single_field[attr2] = mongoose_field.options[attr];
                 }
                 single_field['type'] = schemaType || mongoose_field.options.type[0];
                 schema = new mongoose.Schema({__self__: single_field});
