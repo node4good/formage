@@ -254,13 +254,32 @@ var parseFilters = function (model_settings, filters, search) {
             }
         }
     });
-    if (search && model_settings.options.search) {
-        var search_term = search.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-        var search_templete = model_settings.options.search;
-        new_filters['$where'] = search_templete.replace(/__value__/g, search_term);
+    if (search) {
+        var search_query = getSearchQuery(model_settings,search);
+        if(search_query){
+            new_filters['$where'] = search_query;
+        }
     }
     return new_filters;
 };
+function escapeRegExp(str) {
+    return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+}
+function getSearchQuery(model,searchValue){
+    var searchRule = model && model.options && model.options.search;
+    if(!searchRule)
+        return null;
+    var valueRegex = '/' + escapeRegExp(searchValue) + '/i';
+    console.log(searchRule);
+    if(Array.isArray(searchRule)){
+        return searchRule.map(function(field){
+            return valueRegex + '.test(this.' + field + ')';
+        }).join('||');
+    }
+    else{
+        return searchRule.replace('__value__',valueRegex);
+    }
+}
 
 
 var routes = {
@@ -317,11 +336,11 @@ var routes = {
 
         var filters = parseFilters(model, query, search_value);
 
-        MongooseAdmin.singleton.modelCounts(name, filters, search_value, function (err, total_count) {
+        MongooseAdmin.singleton.modelCounts(name, filters, function (err, total_count) {
             if (err)
                 return res.redirect('/');
 
-            MongooseAdmin.singleton.listModelDocuments(name, start, count, filters, search_value, sort, function (err, documents) {
+            MongooseAdmin.singleton.listModelDocuments(name, start, count, filters, sort, function (err, documents) {
                 if (err)
                     return res.redirect('/');
 
