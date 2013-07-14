@@ -146,7 +146,8 @@ MongooseAdmin.prototype.registerSingleRowModel = function(model, name, options) 
         options: options || {},
         fields: {},
         is_single: true,
-        modelName: name
+        modelName: name,
+        label:options.label || model.label
     };
     permissions.registerModel(name);
 };

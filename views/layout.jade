@@ -18,35 +18,37 @@ html(lang='en')
 
         block head
     body
-        header.navbar.navbar-static-top
-            .navbar-inner
-                .container
-                    block nav
-                        .btn-group.pull-right
-                            a.btn.btn-inverse(href='#{rootPath}/')
-                                i.icon-home.icon-white
-                                |  Admin
-                            a.btn(href="/")
-                                i.icon-share
-                                |  Site
-                            a.btn(href='#{rootPath}/logout')
-                                .icon-lock
-                                |  Logout
-                    h1
-                        block title
-                            a(href='#{rootPath}/') #{adminTitle}
-                        block breadcrumb
+        - if(!dialog)
+            header.navbar.navbar-static-top
+                .navbar-inner
+                    .container
+                        block nav
+                            .btn-group.pull-right
+                                a.btn.btn-inverse(href='#{rootPath}/')
+                                    i.icon-home.icon-white
+                                    |  Admin
+                                a.btn(href="/")
+                                    i.icon-share
+                                    |  Site
+                                a.btn(href='#{rootPath}/logout')
+                                    .icon-lock
+                                    |  Logout
+                        h1
+                            block title
+                                a(href='#{rootPath}/') #{adminTitle}
+                            block breadcrumb
 
         .container
             #content
                 block body
 
-            footer.footer
-                p
-                    a(href='http://github.com/Empeeric/formage-admin') Formage-Admin
-                    | , from&nbsp;
-                    a(href='http://empeeric.com') Empeeric
-                a(href='http://github.com/Empeeric/formage-admin')
-                    img(src='#{rootPath}/images/logo-40.png')
+            - if(!dialog)
+                footer.footer
+                    p
+                        a(href='http://github.com/Empeeric/formage-admin') Formage-Admin
+                        | , from&nbsp;
+                        a(href='http://empeeric.com') Empeeric
+                    a(href='http://github.com/Empeeric/formage-admin')
+                        img(src='#{rootPath}/images/logo-40.png')
 
         block scripts

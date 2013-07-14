@@ -195,7 +195,7 @@ var json_routes = {
 };
 
 
-function renderForm(res, form, model, allow_delete, clone) {
+function renderForm(res, form, model, allow_delete, clone,dialog) {
     if (clone)
         form.exclude.push('id');
 
@@ -221,6 +221,7 @@ function renderForm(res, form, model, allow_delete, clone) {
             errors: form.errors ? Object.keys(form.errors).length > 0 : false,
             allow_delete: allow_delete,
             layout: 'layout.jade',
+            dialog:dialog,
             pretty: true
         });
     });
@@ -351,7 +352,7 @@ var routes = {
                     rootPath: MongooseAdmin.singleton.root,
 
                     model_name: name,
-                    model: model.model,
+                    model: model,
                     list_fields: model.options.list,
                     documents: documents,
 
@@ -411,7 +412,7 @@ var routes = {
 
             var editing = !model.is_single && id !== 'new',
                 clone = editing ? req.query.clone : false;
-            renderForm(res, form, model, editing, clone);
+            renderForm(res, form, model, editing, clone, !!req.query._dialog);
         });
     },
 
@@ -423,13 +424,20 @@ var routes = {
 
         if (doc_id === 'new') doc_id = null;
         if (doc_id === 'single') doc_id = req.body['_id'];
-        var callback = function (err) {
+        var callback = function (err,doc) {
             if (err) {
                 if (err.to_html)
                     return renderForm(res, err, model, true);
                 return res.send(500);
             }
-            return res.redirect(target_url);
+            if(req.query._dialog && doc){
+                var docName = doc.name || doc.title || doc.toString;
+                if(typeof(docName) == 'function')
+                    docName = docName.call(doc);
+                res.render('dialog_callback.jade',{data:{id:doc.id,label:docName}});
+            }
+            else
+                return res.redirect(target_url);
         };
         // Update
         if (doc_id) {

@@ -1,8 +1,8 @@
 extends layout
-
 block head
     script.
         var model = '#{model_name}';
+        var dialog = #{dialog};
     - if (model.static)
         - if (model.static.js)
             - each f in model.static.js

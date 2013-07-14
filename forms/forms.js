@@ -404,6 +404,8 @@ var MongooseForm = exports.MongooseForm = BaseForm.extend({
             var list_fields = {};
             var list_fieldsets = [];
             this.mongoose_fields_to_fieldsets(schema.paths, schema.tree, list_fields, list_fieldsets);
+            if(!Object.keys(list_fields).length)
+                return null;
             return new fields.ListField(options, list_fields, list_fieldsets);
         }
         if (mongoose_field.options.type.name === 'File') {
