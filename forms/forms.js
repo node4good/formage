@@ -100,11 +100,11 @@ var BaseForm = exports.BaseForm = Class.extend({
         self.get_static();
         return common.writer_to_string(function (res) {
             self.static['js'].forEach(function (script_url) {
-                if (typeof(script_url) == 'string' &&!~script_url.indexOf('//')) script_url = path.join(self.admin_root, script_url);
+                if (typeof(script_url) == 'string' &&!~script_url.indexOf('//')) script_url = path.join(self.admin_root, script_url).replace(/\\/g,'/');
                 res.write('\n<script src="' + script_url + '"></script>\n');
             });
             self.static['css'].forEach(function (style_url) {
-                if (typeof(style_url) == 'string' &&!~style_url.indexOf('://')) style_url = path.join(self.admin_root , style_url );
+                if (typeof(style_url) == 'string' &&!~style_url.indexOf('://')) style_url = path.join(self.admin_root , style_url ).replace(/\\/g,'/');
                 res.write('\n<link type="text/css" href="' + style_url + '" rel="stylesheet">\n');
             });
             self.static['inline-style'].forEach(function (inline_style) {

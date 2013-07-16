@@ -91,7 +91,8 @@
                     width:$(window).width() - 100,
                     height:$(window).height() - 100,
                     top:50,
-                    left:50
+                    left:50,
+                    scrollbars:1
                 },function (v, k) {
                     return k + '=' + v;
                 }).join(',');
@@ -285,6 +286,42 @@
         },500);
     }
 
+    function initActions(){
+        $('button.action').click(function(e) {
+            e.preventDefault();
+
+            var action_id = $(this).val();
+            if (!action_id) return;
+
+            var ids = [$('#document_id').val()];
+
+            var msg = 'Are you sure you want to ' + $(this).text().toLowerCase() + ' this document? Changes made will not be saved!';
+
+            bootbox.confirm(msg, function(result) {
+                if (!result) return;
+
+                $.post(root + '/json/model/' + model + '/action/' + action_id, { ids: ids }).always(function(data) {
+                    if (data.responseText) data = JSON.parse(data.responseText);
+                    if (data.error) {
+                        bootbox.dialog("Some documents failed: " + data.error, [{
+                            "label" : "Error",
+                            "class" : "btn-danger",
+                            "callback": function() {
+                                location.reload();
+                            }}]);
+                    } else {
+                        if(dialog){
+                            dialogCallback({});
+                        }
+                        else
+                            location.href = location.href.split('/document/')[0];
+                    };
+                });
+            });
+        });
+
+    }
+
     $(function () {
         initWidgets();
 
@@ -305,12 +342,14 @@
                 width:$(window).width() - 100,
                 height:$(window).height() - 100,
                 top:50,
-                left:50
+                left:50,
+                scrollbars:1
             },function (v, k) {
                 return k + '=' + v;
             }).join(',');
             var win = window.open(href +'&_dialog=yes',$(this).text().split('-')[0],qry);
-        })
+        });
+        initActions();
     });
 
 

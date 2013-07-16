@@ -234,6 +234,7 @@ function renderForm(res, form, model, allow_delete, clone,dialog) {
                 renderedDocument: html,
                 renderedHead: head,
                 document: {},
+                actions: form.instance.isNew ? [] : model.options.actions || [],
                 errors: form.errors ? Object.keys(form.errors).length > 0 : false,
                 allow_delete: allow_delete,
                 layout: 'layout.jade',
