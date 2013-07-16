@@ -37,6 +37,9 @@ html(lang='en')
                             block title
                                 a(href='#{rootPath}/') #{adminTitle}
                             block breadcrumb
+                        - if(userPanel)
+                            .user-panel
+                                !{userPanel}
 
         .container
             #content

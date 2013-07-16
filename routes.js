@@ -259,6 +259,8 @@ var parseFilters = function (model_settings, filters, search) {
     var model = model_settings.model;
     var new_filters = {};
     _.each(filters, function (value, key) {
+        var parts = key.split('__');
+        key = parts[0];
         if (model.schema && model.schema.paths[key]) {
             var type = model.schema.paths[key].options.type;
             if (type == String) {
@@ -275,6 +277,11 @@ var parseFilters = function (model_settings, filters, search) {
         }
         else
             new_filters[key] = value;
+        if(parts[1]){
+            var dict = {};
+            dict['$' + parts[1]] = value;
+            new_filters[key] = dict;
+        }
     });
     if (search) {
         var search_query = getSearchQuery(model_settings,search);
@@ -393,7 +400,7 @@ var routes = {
                         : field[0].toUpperCase() + field.slice(1).replace(/_/g,' ');
                 };
 
-                res.locals = {
+                res.locals({
                     adminTitle: MongooseAdmin.singleton.getAdminTitle(),
                     pageTitle: 'Admin - ' + model.model.label,
                     rootPath: MongooseAdmin.singleton.root,
@@ -423,7 +430,7 @@ var routes = {
                     cloneable: model.options.cloneable !== false && permissions.hasPermissions(req.admin_user, name, 'create'),
                     creatable: model.options.creatable !== false && permissions.hasPermissions(req.admin_user, name, 'create'),
                     dialog:isDialog
-                };
+                });
                 res.render('model.jade', {
                     layout: 'layout.jade',
                     locals: res.locals
@@ -518,6 +525,15 @@ var auth = function(role) {
     };
 };
 
+function userPanel(req,res,next){
+    MongooseAdmin.singleton.renderUserPanel(req,function(err,html){
+        if (err) return res.redirect(MongooseAdmin.singleton.buildPath('/error'));
+
+        res.locals({userPanel:html});
+        next();
+    });
+}
+
 
 module.exports = function (admin, outer_app, root) {
     MongooseAdmin = admin;
@@ -526,10 +542,10 @@ module.exports = function (admin, outer_app, root) {
     app.engine('jade', require('jade').__express);
     app.set('views', __dirname + '/views');
 
-    app.get('/', auth(), routes.index);
+    app.get('/', auth(),userPanel, routes.index);
     app.get('/login', routes.login);
     app.get('/logout', routes.logout);
-    app.get('/model/:modelName', auth('view'), routes.model);
+    app.get('/model/:modelName', auth('view'),userPanel, routes.model);
     app.get('/model/:modelName/document/:documentId', auth('update'), routes.document);
     app.post('/model/:modelName/document/:documentId', auth(), routes.documentPost);
 

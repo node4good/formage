@@ -171,6 +171,13 @@ MongooseAdmin.prototype.registerModel = function(model, name, options) {
     console.log('\x1b[36mformage-admin:\x1b[0m %s', name);
 };
 
+MongooseAdmin.prototype.renderUserPanel = function(req,cbk){
+    var user = req.admin_user.fields;
+    var html = [
+        '<div>Hello '+ user.username  + (user.lastVisit ? ', your last visit was on ' + new Date(user.lastVisit).toLocaleDateString() : '' ) + '</div>'
+    ];
+    cbk(null,html.join(''));
+}
 
 MongooseAdmin.prototype.getRegisteredModels = function (user, callback) {
     var raw_models = this.models;
@@ -178,7 +185,10 @@ MongooseAdmin.prototype.getRegisteredModels = function (user, callback) {
         var out_model = raw_models[collectionName];
         out_model.model.is_single = out_model.is_single;
         return out_model;
-    }).filter(function (model) {
+    }).filter(function(model){
+            return !model.options.hideFromMain;
+        })
+        .filter(function (model) {
         return permissions.hasPermissions(user, model.modelName, 'view');
     });
     callback(null, out_models);

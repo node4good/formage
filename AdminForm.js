@@ -117,8 +117,6 @@ exports.AdminUserForm = AdminForm.extend({
     init:function(request,options)
     {
         this._super(request,options,mongoose.model('_MongooseAdminUser'));
-        this.static['js'].push('/node-forms/js/autocomplete.js');
-
     }
     ,get_fields:function(){
         this._super();
@@ -170,7 +168,8 @@ exports.AdminUserForm = AdminForm.extend({
     },
     actual_save:function(callback)
     {
-        this.instance.passwordHash = crypt.encryptSync(this.data.password);
+        if(this.data.password)
+            this.instance.passwordHash = crypt.encryptSync(this.data.password);
         this._super(callback);
     }
 });
