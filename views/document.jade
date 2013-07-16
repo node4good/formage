@@ -25,6 +25,9 @@ block body
         p.alert.alert-error Saving failed, fix the following errors and try again.
     form#document(enctype="multipart/form-data",method="post").clearfix
         != renderedDocument
+        - if(subCollections && subCollections.length)
+            - each sub in subCollections
+                a.subCollection(href="#{rootPath}/model/#{sub.model}?#{sub.field}=#{sub.value}") #{sub.label} - #{sub.count? sub.count + ' Items' : 'No items'}
         p.submit.btn-group
             button#saveButton.btn.btn-large.btn-primary(type='submit',data-saving-text="Saving...") Save
             a#cancelButton.btn.btn-large(href="#{rootPath}/model/#{model_name}") Cancel

@@ -12,7 +12,7 @@ block body
         div(class='span#{filters.length ? 9 : 12}')
             .btn-toolbar.clearfix
                 - if (creatable)
-                    a.btn.pull-right.btn-warning(href="#{rootPath}/model/#{model_name}/document/new")
+                    a.btn.pull-right.btn-warning(href="#{rootPath}/model/#{model_name}/document/new#{makeLink()}")
                         i.icon-plus.icon-white
                         |  New
                         - if (model.model.singular)
@@ -25,6 +25,11 @@ block body
                     p
                         form
                             input(type="text",name="_search",value="#{search_value}",style="width:300px")
+                            - for(var key in current_filters)
+                                - if(key != "_search")
+                                    input(type="hidden",name="#{key}",value="#{current_filters[key]}")
+                            - if(dialog)
+                                input(type="hidden",name="_dialog",value="yes")
                             button(type="submit") Search
 
                 - if (sortable)

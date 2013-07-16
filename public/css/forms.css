@@ -239,3 +239,10 @@ p.error {
 .field a img {
     margin-bottom: 9px;
 }
+
+.subCollection{
+    font-size: 20px;
+    line-height:30px;
+    float:left;
+    clear:left;
+}

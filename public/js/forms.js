@@ -298,6 +298,19 @@
             });
         }
         $('#deleteButton').click(deleteDocument);
+        $('a.subCollection').click(function(event){
+            event.preventDefault();
+            var href = $(this).attr('href');
+            var qry = $.map({
+                width:$(window).width() - 100,
+                height:$(window).height() - 100,
+                top:50,
+                left:50
+            },function (v, k) {
+                return k + '=' + v;
+            }).join(',');
+            var win = window.open(href +'&_dialog=yes',$(this).text().split('-')[0],qry);
+        })
     });
 
 

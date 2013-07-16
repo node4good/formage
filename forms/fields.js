@@ -324,6 +324,9 @@ var ListField_ = exports.ListField = BaseField.extend({
         this.fields = fields;
         this.fieldsets = fieldsets;
     },
+    set:function(value){
+        return this._super(Array.isArray(value)?value:value&&[value]);
+    },
     to_schema: function () {
         var schema = this._super();
         schema['type'] = Array;

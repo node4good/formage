@@ -203,27 +203,45 @@ function renderForm(res, form, model, allow_delete, clone,dialog) {
         if (err)
             return res.redirect('/error');
 
-        var html = form.to_html(),
-            head = form.render_head();
+        async.map(model.options.subCollections || [],function(sub,cbk){
+            var subDict = _.extend(sub,{count:0,value:form.instance.id});
+            if(form.instance.isNew)
+                return cbk(null,subDict);
+            var relatedModel = MongooseAdmin.singleton.models[sub.model];
+            relatedModel.model.count()
+                .where(sub.field,form.instance.id)
+                .exec(function(err,count){
+                    subDict.count = count;
+                    cbk(err,subDict);
+                });
+        },function(err,subs){
 
-        return res.render('document.jade', {
-            rootPath: MongooseAdmin.singleton.root,
-            adminTitle: MongooseAdmin.singleton.getAdminTitle(),
-            pageTitle: 'Admin - ' + model.model.label,
+            if (err)
+                return res.redirect('/error');
 
-            model: model.model,
-            model_name: model.modelName,
-            model_label: model.model.label,
+            var html = form.to_html(),
+                head = form.render_head();
 
-            renderedDocument: html,
-            renderedHead: head,
-            document: {},
-            errors: form.errors ? Object.keys(form.errors).length > 0 : false,
-            allow_delete: allow_delete,
-            layout: 'layout.jade',
-            dialog:dialog,
-            pretty: true
-        });
+            return res.render('document.jade', {
+                rootPath: MongooseAdmin.singleton.root,
+                adminTitle: MongooseAdmin.singleton.getAdminTitle(),
+                pageTitle: 'Admin - ' + model.model.label,
+
+                model: model.model,
+                model_name: model.modelName,
+                model_label: model.label,
+
+                renderedDocument: html,
+                renderedHead: head,
+                document: {},
+                errors: form.errors ? Object.keys(form.errors).length > 0 : false,
+                allow_delete: allow_delete,
+                layout: 'layout.jade',
+                dialog:dialog,
+                pretty: true,
+                subCollections:subs
+            });
+        })
     });
 }
 
@@ -247,12 +265,16 @@ var parseFilters = function (model_settings, filters, search) {
                 new_filters[key] = new RegExp(value, 'i');
             }
             else if (type == Number) {
-                filters[key] = Number(value) || undefined;
+                new_filters[key] = Number(value) || undefined;
             }
             else if (type == Boolean) {
                 new_filters[key] = value == 'true';
             }
+            else
+                new_filters[key] = value;
         }
+        else
+            new_filters[key] = value;
     });
     if (search) {
         var search_query = getSearchQuery(model_settings,search);
@@ -319,12 +341,15 @@ var routes = {
         if (model.is_single)
             return res.redirect(req.path.split('/model/')[0]);
 
+        var isDialog = !!req.query._dialog;
+        delete req.query._dialog;
         // query
         var query = req.query,
             start = Number(query.start) || 0;
         delete query.start;
         var count = Number(query.count) || 50;
         delete query.count;
+        var currentQuery = _.clone(req.query);
         var sort = query.order_by;
         delete query.order_by;
         /** @namespace query.saved */
@@ -345,8 +370,11 @@ var routes = {
                     return res.redirect('/');
 
                 var makeLink = function (key, value) {
-                    var query = _.clone(req.query);
-                    query[key] = value;
+                    var query = _.clone(currentQuery);
+                    if(key)
+                        query[key] = value;
+                    if(isDialog)
+                        query['_dialog'] = 'yes';
                     return '?' + _.map(query,function (value, key) {
                         return encodeURIComponent(key) + '=' + encodeURIComponent(value);
                     }).join('&');
@@ -384,7 +412,7 @@ var routes = {
                     fieldLabel: fieldLabel,
 
                     filters: model.filters || [],
-                    current_filters: req.query,
+                    current_filters: currentQuery,
 
                     search: model.options.search,
                     search_value: search_value,
@@ -393,8 +421,8 @@ var routes = {
                     editable: permissions.hasPermissions(req.admin_user, name, 'update'),
                     sortable: typeof(model.options.sortable) == 'string' && permissions.hasPermissions(req.admin_user, name, 'order'),
                     cloneable: model.options.cloneable !== false && permissions.hasPermissions(req.admin_user, name, 'create'),
-                    creatable: model.options.creatable !== false && permissions.hasPermissions(req.admin_user, name, 'create')
-
+                    creatable: model.options.creatable !== false && permissions.hasPermissions(req.admin_user, name, 'create'),
+                    dialog:isDialog
                 };
                 res.render('model.jade', {
                     layout: 'layout.jade',
@@ -419,9 +447,16 @@ var routes = {
                     cb(null, null);
             },
             function(document, cb) {
+
                 var FormType = model.options.form || AdminForm,
-                    options = _.extend({ instance: document }, model.options),
-                    form = new FormType(req, options, model.model);
+                    options = _.extend({ instance: document }, model.options);
+                if(id === 'new') {
+                    var filters = _.clone(req.query);
+                    delete filters._dialog;
+                    var defaultValues = parseFilters(model,filters);
+                    options.data = defaultValues;
+                }
+                var form = new FormType(req, options, model.model);
 
                 cb(null, form);
             }
