@@ -4,9 +4,9 @@ if (!module.parent) console.error('Please don\'t call me directly.I am just the 
 var MongooseAdmin = require('./MongooseAdmin.js'),
     path = require('path'),
     routes = require('./routes'),
-    express = require.main.require('express'),
-    jade = require('jade');
+    express = require.main.require('express');
 
+exports.version = require('./package.json').version;
 exports.forms = require('./forms');
 exports.init = require('./init');
 exports.loadApi = require('./AdminForm').loadApi;

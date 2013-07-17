@@ -25,7 +25,7 @@ html(lang='en')
                         .btn-group.pull-right
                             a.btn.btn-inverse(href='#{rootPath}/')
                                 i.icon-home.icon-white
-                                |  Admin
+                                |  Admin #{version}
                             a.btn(href="/")
                                 i.icon-share
                                 |  Site
@@ -48,5 +48,12 @@ html(lang='en')
                     a(href='http://empeeric.com') Empeeric
                 a(href='http://github.com/Empeeric/formage-admin')
                     img(src='#{rootPath}/images/logo-40.png')
+
+            script(type='text/javascript')
+                $.getJSON('http://registry.npmjs.org/formage-admin/latest?jsonp=?').done(function (pack) {
+                    var version = '#{version}';
+                    var latest = pack.version;
+                    if (latest > version) $("header").prepend('<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Warning!</strong>There is a newer version of formage-admin</div>');
+                });
 
         block scripts

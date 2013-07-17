@@ -461,6 +461,7 @@ module.exports = function (admin, outer_app, root) {
     MongooseAdmin = admin;
 
     var app = require.main.require('express')();
+    app.locals.version = module.parent.exports.version;
     app.engine('jade', require('jade').__express);
     app.set('views', __dirname + '/views');
 
