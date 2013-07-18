@@ -20,8 +20,7 @@ app.configure('all', function(){
     app.use(app.router);
 });
 
-app.configure('development', function(){
-    app.use(express.logger('dev'));
+app.configure('development', function() {
     app.use(express.errorHandler());
 });
 
@@ -32,7 +31,7 @@ var admin = formage.init(app, express, require('./models'), {
     title: 'Formage-Admin Example'
 });
 
-admin.registerAdminUserModel()
+admin.registerAdminUserModel();
 
 app.get('/', function(req, res){
     res.redirect('/admin');
