@@ -38,6 +38,7 @@ var s = new Schema({
             }
         }
     },
+    mixed: Schema.Types.Mixed,
     spilon_steps: [
         {
             rewards: {
