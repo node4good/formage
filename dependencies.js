@@ -38,7 +38,7 @@ exports.check = function (modelPrefs, modelName, id, callback) {
 
 exports.unlink = function (models, model, id, callback) {
     exports.check(models, model, id, function (err, deps_pair) {
-        if (err) return callback(err);
+        if (err || !deps_pair) return callback(err);
         var deps = deps_pair[1];
 
         return async.forEach(deps, function (dep, cbk) {
