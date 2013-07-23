@@ -25,7 +25,7 @@ exports.check = function (modelPrefs, modelName, id, callback) {
     return async.map(
         models_with_deps,
         function (tuple, cb) {
-            tuple.model.find({ '$or': tuple.paths }, cb);
+            tuple.model.find({ '$or': tuple.paths}).limit(3).exec(cb);
         },
         function (err, results) {
             var all_dep_docs = _.flatten(results);

@@ -9,6 +9,7 @@ var Class = require('sji'),
     async = require('async'),
     fields = require('./fields'),
     widgets = require('./widgets'),
+    path = require('path'),
     common = require('./common');
 var mongoose = require.main.require('mongoose');
 
@@ -98,11 +99,11 @@ var BaseForm = exports.BaseForm = Class.extend({
         self.get_static();
         return common.writer_to_string(function (res) {
             self.static['js'].forEach(function (script_url) {
-                if (!~script_url.indexOf('//')) script_url = self.admin_root + script_url;
+                if (typeof(script_url) == 'string' &&!~script_url.indexOf('//')) script_url = path.join(self.admin_root, script_url).replace(/\\/g,'/');
                 res.write('\n<script src="' + script_url + '"></script>\n');
             });
             self.static['css'].forEach(function (style_url) {
-                if (!~style_url.indexOf('://')) style_url = self.admin_root + style_url;
+                if (typeof(style_url) == 'string' &&!~style_url.indexOf('://')) style_url = path.join(self.admin_root , style_url ).replace(/\\/g,'/');
                 res.write('\n<link type="text/css" href="' + style_url + '" rel="stylesheet">\n');
             });
             self.static['inline-style'].forEach(function (inline_style) {
@@ -402,6 +403,8 @@ var MongooseForm = exports.MongooseForm = BaseForm.extend({
             var list_fields = {};
             var list_fieldsets = [];
             this.mongoose_fields_to_fieldsets(schema.paths, schema.tree, list_fields, list_fieldsets);
+            if(!Object.keys(list_fields).length)
+                return null;
             return new fields.ListField(options, list_fields, list_fieldsets);
         }
         if (mongoose_field.options.type.name === 'File') {

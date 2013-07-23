@@ -1,0 +1,12 @@
+!!! 5
+html(lang='en')
+    head
+        meta(http-equiv='Content-type', content='text/html; charset=utf-8')
+        script
+            var data = {id:"#{data.id}",label:"#{data.label}"};
+            window.opener.postMessage(data,window.location.protocol + '//' + window.location.hostname);
+            setTimeout(function(){
+                window.close();
+            },500);
+
+    body

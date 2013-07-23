@@ -63,32 +63,41 @@ var _JestAdminResource = jest.Resource.extend({
         this._super();
 
         this.fields = {
-            value: null,
-            label: null
+            id: null,
+            text: null
         };
 
         this.allowed_methods = ['get'];
 
         this.filtering = {
             data: null,
-            query: null
+            query: null,
+            id:null
         };
     },
 
     get_objects: function (req, filters, sorts, limit, offset, callback) {
         var data = JSON.parse(filters.data);
         var model = mongoose.model(data.model);
-        var escaped_filters = filters.query.replace(_escaper, "\\$&");
-        var query = data.query.replace(/__value__/g, escaped_filters);
-        model.find({$where: query}, function (err, results) {
-            if (results) {
-                if (results.objects) {
-                    results = results.objects;
+        if(filters.id){
+            model.findById(filters.id,function(err,doc){
+                var result = doc && {id:doc.id,text:doc.toString()};
+                callback(err,result);
+            });
+        }
+        else {
+            var escaped_filters = filters.query.replace(_escaper, "\\$&");
+            var query = data.query.replace(/__value__/g, escaped_filters);
+            model.find({$where: query}).limit(40).exec(function (err, results) {
+                if (results) {
+                    if (results.objects) {
+                        results = results.objects;
+                    }
+                    results = results.map(function (object) { return { id: object.id, text: object.toString() }; });
                 }
-                results = results.map(function (object) { return { id: object.id, text: object.toString() }; });
-            }
-            callback(err, results);
-        });
+                callback(err, results);
+            });
+        }
     }
 });
 
@@ -108,8 +117,6 @@ exports.AdminUserForm = AdminForm.extend({
     init:function(request,options)
     {
         this._super(request,options,mongoose.model('_MongooseAdminUser'));
-        this.static['js'].push('/node-forms/js/autocomplete.js');
-
     }
     ,get_fields:function(){
         this._super();
@@ -161,7 +168,8 @@ exports.AdminUserForm = AdminForm.extend({
     },
     actual_save:function(callback)
     {
-        this.instance.passwordHash = crypt.encryptSync(this.data.password);
+        if(this.data.password)
+            this.instance.passwordHash = crypt.encryptSync(this.data.password);
         this._super(callback);
     }
 });

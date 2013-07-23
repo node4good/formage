@@ -124,7 +124,19 @@ MongooseAdmin.prototype.registerMongooseModel = function (name, model, fields, o
 
 MongooseAdmin.prototype.registerSingleRowModel = function(model, name, options) {
     model.is_single = true;
+<<<<<<< HEAD
     this.registerModel(model, name, options);
+=======
+    this.models[name] = {
+        model: model,
+        options: options || {},
+        fields: {},
+        is_single: true,
+        modelName: name,
+        label:options.label || model.label
+    };
+    permissions.registerModel(name);
+>>>>>>> remotes/ishai/master
 };
 
 
@@ -145,9 +157,28 @@ MongooseAdmin.prototype.registerModel = function(model, name, options) {
     console.log('\x1b[36mformage-admin:\x1b[0m %s', name);
 };
 
+MongooseAdmin.prototype.renderUserPanel = function(req,cbk){
+    var user = req.admin_user.fields;
+    var html = [
+        '<div>Hello '+ user.username  + (user.lastVisit ? ', your last visit was on ' + new Date(user.lastVisit).toLocaleDateString() : '' ) + '</div>'
+    ];
+    cbk(null,html.join(''));
+}
 
 MongooseAdmin.prototype.getRegisteredModels = function (user, callback) {
+<<<<<<< HEAD
     var out_models = _.filter(this.models, function (model) {
+=======
+    var raw_models = this.models;
+    var out_models = Object.keys(raw_models).map(function (collectionName) {
+        var out_model = raw_models[collectionName];
+        out_model.model.is_single = out_model.is_single;
+        return out_model;
+    }).filter(function(model){
+            return !model.options.hideFromMain;
+        })
+        .filter(function (model) {
+>>>>>>> remotes/ishai/master
         return permissions.hasPermissions(user, model.modelName, 'view');
     });
     callback(null, out_models);
@@ -155,6 +186,7 @@ MongooseAdmin.prototype.getRegisteredModels = function (user, callback) {
 
 
 /**
+<<<<<<< HEAD
  * Get a single model from the registered list with admin
  *
  * @param {String} collectionName
@@ -168,12 +200,24 @@ MongooseAdmin.prototype.getModel = function(collectionName, onReady) {
 };
 
 
+=======
+ * Get the counts of a model
+ *
+ * @param {String} collectionName
+ *
+ * @api public
+ */
+>>>>>>> remotes/ishai/master
 MongooseAdmin.prototype.modelCounts = function(collectionName,filters, onReady) {
     if(this.models[collectionName].is_single) {
         onReady(null,1);
         return;
     }
     var model = this.models[collectionName].model;
+<<<<<<< HEAD
+=======
+
+>>>>>>> remotes/ishai/master
     this.models[collectionName].model.count(filters, function(err, count) {
         if (err) {
             console.error('Unable to get counts for model because: ' + err);
@@ -208,7 +252,11 @@ function mongooseSort(query,sort) {
  * @param sort
  * @param {Function} onReady
  */
+<<<<<<< HEAD
 MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, count, filters, sort, onReady) {
+=======
+MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, count,filters,sort, onReady) {
+>>>>>>> remotes/ishai/master
     var listFields = this.models[collectionName].options.list;
     if (!listFields) {
         return onReady(null, []);
@@ -216,6 +264,10 @@ MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, cou
 
     var model = this.models[collectionName].model;
     var query = this.models[collectionName].model.find(filters);
+<<<<<<< HEAD
+=======
+
+>>>>>>> remotes/ishai/master
     var sorts = this.models[collectionName].options.order_by || [];
     var populates = this.models[collectionName].options.list_populate;
     if (sort)
