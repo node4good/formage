@@ -647,6 +647,7 @@ var FileField_ = exports.FileField = BaseField.extend({
     }
 });
 
+
 var FilepickerField = exports.FilepickerField = BaseField.extend({
     init: function (options) {
         options = options || {};
@@ -661,8 +662,19 @@ var FilepickerField = exports.FilepickerField = BaseField.extend({
             size: Number,
             isWriteable: Boolean
         }
+    },
+    clean_value: function (req, callback) {
+        var self = this;
+        self.value = self.value || {};
+        if (_.isString(self.value)) self.value = JSON.parse(self.value);
+
+        if (self.value && self.value.url && req.body[self.name + '_clear']) {
+            self.value = null;
+        }
+        callback(null);
     }
 });
+
 
 var PictureField = exports.PictureField = BaseField.extend({
     init: function (options) {
@@ -707,6 +719,7 @@ var PictureField = exports.PictureField = BaseField.extend({
             callback(null);
     }
 });
+
 
 var GeoField = exports.GeoField = BaseField.extend({
     init: function (options) {
