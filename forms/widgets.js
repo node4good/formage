@@ -337,6 +337,23 @@ exports.FileWidget = exports.InputWidget.extend({
     }
 });
 
+exports.FilepickerWidget = exports.InputWidget.extend({
+    init: function (options) {
+        this._super('hidden', options);
+        this.static.js.push('//api.filepicker.io/v1/filepicker.js');
+        this.attrs.class.push('_filepicker')
+
+    },
+
+    render: function (res) {
+        res.write('<input type="filepicker" data-fp-apikey="'+ process.env.FILEPICKER_API_KEY +'">');
+        res.write('<label></label>');
+        if (this.value && this.value.url) {
+            res.write(util.format('<a href="%s" target="_blank">%s</a>\n', this.value.url));
+        }
+        this._super(res);
+    }
+});
 
 exports.PictureWidget = exports.InputWidget.extend({
     init: function (options) {

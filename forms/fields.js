@@ -647,7 +647,22 @@ var FileField_ = exports.FileField = BaseField.extend({
     }
 });
 
-
+var FilepickerField = exports.FilepickerField = BaseField.extend({
+    init: function (options) {
+        options = options || {};
+        options.widget = options.widget || widgets.FilepickerWidget;
+        this._super(options);
+    },
+    to_schema: function () {
+        return {
+            url: String,
+            filename: Number,
+            mimetype: String,
+            size: Number,
+            isWriteable: Boolean
+        }
+    }
+});
 
 var PictureField = exports.PictureField = BaseField.extend({
     init: function (options) {

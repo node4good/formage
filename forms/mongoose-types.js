@@ -41,6 +41,19 @@ var init = function () {
 
     exports.Picture = Picture;
 
+    var Filepicker = function Filepicker (path, options) {
+        Filepicker.super_.call(this, path, options);
+    };
+    util.inherits(Filepicker, mongoose.Schema.Types.Mixed);
+    Filepicker.prototype.cast = function (value, doc, init) {
+        return Filepicker.super_.prototype.cast.call(this, value, doc, init);
+    };
+
+    mongoose.Types.Filepicker = Object;
+    mongoose.Schema.Types.Filepicker = Filepicker;
+
+    exports.Filepicker = Filepicker;
+
 
     var Time = function Time (path, options) {
         Time.super_.call(this, path, options);

@@ -62,6 +62,16 @@ function initWidgets(ctx) {
     }
     if ($.fn.datepicker) $('.nf_datepicker', ctx).datepicker({format: 'yyyy-mm-dd'});
     if ($.fn.timepicker) $('.nf_timepicker', ctx).timepicker();
+
+    $('input[type=filepicker]').on('change', function(e){
+        e.preventDefault();
+
+        var f = $(this).parent().find('._filepicker');
+        var l = $(this).parent().find('label');
+        f.val(e.originalEvent.fpfile);
+        l.text(e.originalEvent.fpfile.filename);
+
+    })
 }
 
 

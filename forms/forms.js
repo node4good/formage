@@ -408,6 +408,10 @@ var MongooseForm = exports.MongooseForm = BaseForm.extend({
             return new fields.FileField(options);
         }
 
+        if (mongoose_field.options.type.name === 'Filepicker') {
+            return new fields.FilepickerField(options);
+        }
+
         if (mongoose_field.options.type.name === 'Picture') {
             return new fields.PictureField(options);
         }

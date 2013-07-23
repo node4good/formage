@@ -5,7 +5,8 @@ var schema = new mongoose.Schema({
     title: { type: String, required: true },
     picture: Types.Picture,
     pictures: [Types.Picture],
-    tags: [String]
+    tags: [String],
+    file: Types.Filepicker
 });
 
 schema.methods.toString = function() {
