@@ -92,7 +92,7 @@ block body
                                     - if (cloneable)
                                         a.btn(href=url+'?clone=true') Duplicate
                                     - if (model.options.preview)
-                                        a.btn(href="#{model.options.preview.replace('__id__',doc._id)}") View
+                                        a.btn(href="#{previewLink(doc)}") View
 
                 p.counter Viewing #{start+1}–#{start + documents.length} of #{total_count} documents
                 - if (total_count > count)

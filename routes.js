@@ -402,6 +402,13 @@ var routes = {
                         : field[0].toUpperCase() + field.slice(1).replace(/_/g,' ');
                 };
 
+                var previewLink = model.options.preview && function(doc){
+                    var match,regex = /{([a-zA-Z0-9_!$]+)}/g;
+                    return model.options.preview.replace(regex,function(param){
+                        return doc[param.substr(1,param.length-2)];
+                    });
+                };
+
                 var actions = model.options.actions || [];
 
                 res.locals({
@@ -413,6 +420,7 @@ var routes = {
                     model: model,
                     list_fields: model.options.list,
                     documents: documents,
+                    previewLink:previewLink,
 
                     total_count: total_count,
                     start: start,
