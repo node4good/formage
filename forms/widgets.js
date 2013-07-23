@@ -341,18 +341,18 @@ exports.FilepickerWidget = exports.InputWidget.extend({
     init: function (options) {
         this._super('filepicker', options);
         this.static.js.push('//api.filepicker.io/v1/filepicker.js');
-        this.attrs.class.push('_filepicker')
+        this.attrs.class.push('_filepicker');
+        this.attrs['data-fp-apikey'] = process.env.FILEPICKER_API_KEY;
     },
 
     render: function (res) {
-        this.attrs['data-fp-apikey'] = process.env.FILEPICKER_API_KEY;
-        res.write('<span class="filename"></span>');
-        if (this.value && this.value.url) {
-            res.write(util.format('<a href="%s" target="_blank">%s</a>\n', this.value.url, this.value.filename));
-            res.write(util.format('<input type="checkbox" name="%s_clear" value="false" />\nClear\n', this.name));
-        }
-        this.value = escape(JSON.stringify(this.value));
+        var raw_value = this.value;
+        this.value = JSON.stringify(raw_value).replace(/"|\\/g, '\\$&');
         this._super(res);
+        if (raw_value && raw_value.url) {
+            res.write(util.format('<a href="%s" target="_blank">%s</a>\n', raw_value.url, raw_value.filename));
+            res.write(util.format('<input type="checkbox" name="%s_clear" value="false" /> Clear\n', this.name));
+        }
     }
 });
 

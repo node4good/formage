@@ -66,8 +66,9 @@ function initWidgets(ctx) {
     // Wire FilePicker widget. FieldBinding is done automagicly by type="filepicker"
     $('input[type=filepicker]').on('change', function (e) {
         e.preventDefault();
-        $(this).val(JSON.stringify(e.originalEvent.fpfile));
-        $(this).parent().find('span.filename').text(e.originalEvent.fpfile.filename);
+        var file = e.originalEvent.fpfile;
+        $(this).val(JSON.stringify(file));
+        var a = $(this).parent().find('a').text(file.filename).attr('href', file.url);
     })
 }
 

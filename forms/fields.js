@@ -664,12 +664,10 @@ var FilepickerField = exports.FilepickerField = BaseField.extend({
         }
     },
     clean_value: function (req, callback) {
-        var self = this;
-        self.value = self.value || {};
-        if (_.isString(self.value)) self.value = JSON.parse(self.value);
-
-        if (self.value && self.value.url && req.body[self.name + '_clear']) {
-            self.value = null;
+        this.value = this.value || {};
+        if (_.isString(this.value)) this.value = JSON.parse(this.value);
+        if (req.body[this.name + '_clear']) {
+            this.value = null;
         }
         callback(null);
     }
