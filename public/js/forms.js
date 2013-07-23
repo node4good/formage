@@ -290,12 +290,22 @@
         $('button.action').click(function(e) {
             e.preventDefault();
 
+            var isPreview = $(this).hasClass('preview');
+            if(isPreview){
+                var $action = $('<input type="hidden" name="_preview" value="true">').appendTo('form');
+                $('form').attr('target','_blank').submit();
+                setTimeout(function(){
+                    $('p.submit button').prop('disabled', false);
+                    $action.remove();
+                },1000);
+                return;
+            }
             var action_id = $(this).val();
             if (!action_id) return;
 
             var ids = [$('#document_id').val()];
 
-            var msg = 'Are you sure you want to ' + $(this).text().toLowerCase() + ' this document? Changes made will not be saved!';
+            var msg = 'Are you sure you want to ' + $(this).text().toLowerCase() + ' this document?';
 
             bootbox.confirm(msg, function(result) {
                 if (!result) return;

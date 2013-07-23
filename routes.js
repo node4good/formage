@@ -235,6 +235,7 @@ function renderForm(res, form, model, allow_delete, clone,dialog) {
                 renderedHead: head,
                 document: {},
                 actions: form.instance.isNew ? [] : model.options.actions || [],
+                preview:model.options.preview,
                 errors: form.errors ? Object.keys(form.errors).length > 0 : false,
                 allow_delete: allow_delete,
                 layout: 'layout.jade',
@@ -401,6 +402,8 @@ var routes = {
                         : field[0].toUpperCase() + field.slice(1).replace(/_/g,' ');
                 };
 
+                var actions = model.options.actions || [];
+
                 res.locals({
                     adminTitle: MongooseAdmin.singleton.getAdminTitle(),
                     pageTitle: 'Admin - ' + model.model.label,
@@ -425,7 +428,7 @@ var routes = {
                     search: model.options.search,
                     search_value: search_value,
                     cloudinary: require('cloudinary'),
-                    actions: model.options.actions || [],
+                    actions: actions,
                     editable: permissions.hasPermissions(req.admin_user, name, 'update'),
                     sortable: typeof(model.options.sortable) == 'string' && permissions.hasPermissions(req.admin_user, name, 'order'),
                     cloneable: model.options.cloneable !== false && permissions.hasPermissions(req.admin_user, name, 'create'),
@@ -486,11 +489,19 @@ var routes = {
 
         if (doc_id === 'new') doc_id = null;
         if (doc_id === 'single') doc_id = req.body['_id'];
+        var preview = req.body['_preview'];
         var callback = function (err,doc) {
             if (err) {
                 if (err.to_html)
                     return renderForm(res, err, model, true);
                 return res.send(500);
+            }
+            if(preview){
+                var match,regex = /{([a-zA-Z0-9_!$]+)}/g;
+                var url = model.options.preview.replace(regex,function(param){
+                    return doc[param.substr(1,param.length-2)];
+                });
+                return res.redirect(url);
             }
             if(req.query._dialog && doc){
                 var docName = doc.name || doc.title || doc.toString;

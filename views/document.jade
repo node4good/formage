@@ -37,3 +37,5 @@ block body
             - each action in actions
                 - if (action.value != 'delete')
                     button.action.btn.btn-large(value='#{action.value}') #{action.label}
+            - if(preview)
+                button.action.btn.btn-large.preview Preview

@@ -118,6 +118,10 @@ MongooseAdmin.prototype.registerMongooseModel = function (name, model, fields, o
             );
         }
     });
+    if(model.schema.paths._preview){
+        options.preview = model.schema.paths._preview.options.link;
+        initPreviewModel(model);
+    }
 
     var filters = [];
     buildModelFilters(model, options.filters, filters);
@@ -265,6 +269,7 @@ MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, cou
             query.populate(populate);
         });
     }
+    query._admin = true;
     return query.skip(start).limit(count).execFind(function (err, documents) {
         if (err) {
             console.error('Unable to get documents for model because: ' + err);
@@ -287,7 +292,10 @@ MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, cou
 
 
 MongooseAdmin.prototype.getDocument = function(collectionName, documentId, onReady) {
-    this.models[collectionName].model.findById(documentId, function(err, document) {
+    var self = this;
+    var query = this.models[collectionName].model.findById(documentId);
+    query._admin = true;
+    query.exec(function(err, document) {
         if (err) {
             console.log('Unable to get document because: ' + err);
             onReady('Unable to get document', null);
@@ -321,6 +329,56 @@ MongooseAdmin.prototype.createDocument = function (req, user, collectionName, pa
 };
 
 
+/**
+ * Sets the preview model so it will init the
+ * @param model
+ */
+function initPreviewModel(model){
+    var _init = model.prototype.init;
+    model.prototype.init = function(doc,query,cbk){
+        var self = this;
+        if(query._admin)
+            return _init.call(this,doc,query,cbk);
+
+        _init.call(this,doc,query,function(err){
+            if(err) return cbk(err);
+            if(self._preview){
+                var previewDict;
+                try {
+                    previewDict = JSON.parse(self._preview);
+                }
+                catch(e) { }
+                if(previewDict && previewDict._previewDate && new Date() - new Date(previewDict._previewDate) < 1000 * 60) {
+                    delete previewDict._previewDate;
+                    for(var key in previewDict)
+                        self[key] = previewDict[key];
+                }
+                else
+                    self._preview = null;
+            }
+            cbk();
+        });
+    };
+}
+
+
+MongooseAdmin.prototype.saveForPreview = function(form,cbk){
+
+    var previewDict = {};
+    for (var field_name in form.clean_values) {
+        if(field_name != '_preview')
+            previewDict[field_name] = form.clean_values[field_name];
+    }
+
+    if(Object.keys(previewDict).length){
+        previewDict._previewDate = new Date();
+        form.instance._preview = JSON.stringify(previewDict);
+        form.instance.markModified('_preview');
+    }
+    form.instance.save(cbk);
+}
+
+
 MongooseAdmin.prototype.updateDocument = function (req, user, collectionName, documentId, params, onReady) {
     var self = this,
         model = this.models[collectionName].model;
@@ -329,10 +387,16 @@ MongooseAdmin.prototype.updateDocument = function (req, user, collectionName, do
     var FormType2 = this.models[collectionName].options.form || AdminForm;
     return model.findById(documentId, function (err, document) {
         if (err) return onReady(err, null);
+        var preview = params['_preview'];
+        delete params['_preview'];
         var form = new FormType2(req, { instance: document, data: params }, model);
         form.init_fields();
         return form.is_valid(function (err, valid) {
             if (err || !valid) return onReady(err || form, null);
+            if(preview){
+                self.saveForPreview(form,onReady);
+                return;
+            }
             return form.save(function (err, document) {
                 if (err) return onReady(form, null);
                 if (self.models[collectionName].options && self.models[collectionName].options.post) {
