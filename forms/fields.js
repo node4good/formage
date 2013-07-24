@@ -9,8 +9,9 @@ var widgets = require('./widgets'),
 	path = require('path'),
 	fs = require('fs'),
 	util = require('util'),
-    cloudinary = require('cloudinary');
-var mongoose = require.main.require('mongoose');
+    cloudinary = require('cloudinary'),
+    mongoose = require.main.require('mongoose');
+
 
 exports.setAmazonCredentials = function (credentials) {
     try {
@@ -27,8 +28,9 @@ exports.getKnoxClient = function () {
 
 var global_counter = 0;
 
-
 var simpleReq = function (req) { return _.pick(req, ['files', 'body']); };
+
+
 
 
 var BaseField = exports.BaseField = Class.extend({
@@ -36,26 +38,24 @@ var BaseField = exports.BaseField = Class.extend({
         options = options || {};
         this.options = options;
         this['default'] = options['default'];
-        this.required = options.required == null ? false : options.required;
+        this.required = 'required' in options ? options.required : false;
         this.validators = options.validators || [];
         var widget_options = _.extend({}, options, options.widget_options);
         options.widget_options = widget_options;
         widget_options.attrs = options.attrs || {};
-        widget_options.required = widget_options.required == null ? this.required : widget_options.required;
+        widget_options.required = 'required' in widget_options ? widget_options.required : this.required;
         this.widget = new options.widget(widget_options);
         this.value = null;
         this.errors = [];
         this.name = '';
         this.label = options.label;
-    },
-    get_static: function () {
-        return this.widget.static;
+        this.head = this.widget.head;
     },
     to_schema: function () {
         var schema = {};
         if (this.required)
             schema['required'] = true;
-        if (this['default'] != null)
+        if ('default' in this)
             schema['default'] = this['default'];
         return schema;
     },
@@ -224,14 +224,13 @@ var RefField = exports.RefField = EnumField.extend({
         if (!this.ref)
             throw new TypeError('Model was not provided');
         options = options || {};
-        var required = options ? (options.required == null ? false : options.required) : false;
+        this.required = 'required' in options ? options.required : false;
         options.widget = options.widget || widgets.RefWidget;
         options.widget_options = options.widget_options || {};
         options.widget_options.ref = options.widget_options.ref || ref;
         options.widget_options.required = options.required;
         options.widget_options.limit = options.limit;
         this._super(options, []);
-        this.required = required;
     },
     to_schema: function () {
         var schema = RefField.super_.prototype.to_schema.call(this);
@@ -322,6 +321,7 @@ var ListField_ = exports.ListField = BaseField.extend({
         this._super(options);
         this.fields = fields;
         this.fieldsets = fieldsets;
+        this.head = _(fields).pluck('widget').compact().pluck('head').flatten().concat(this.widget.head).compact().valueOf();
     },
     set:function(value){
         return this._super(Array.isArray(value)?value:value&&[value]);
@@ -531,8 +531,8 @@ var ListField_ = exports.ListField = BaseField.extend({
             var has_title = fieldset['title'] && fieldset['title'] !== '';
             if (has_title)
                 res.write('\n<div class="nf_fieldset">\n<h2>' + fieldset['title'] + '</h2>\n');
-            if ( fieldset.fields)
-                render_fields( fieldset.fields);
+            if (fieldset.fields)
+                render_fields(fieldset.fields);
             if (has_title)
                 res.write("\n</div>\n");
         }

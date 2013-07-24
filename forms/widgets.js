@@ -1,28 +1,10 @@
 'use strict';
 if (!module.parent) console.error('Please don\'t call me directly.I am just the main app\'s minion.') || process.process.exit(1);
-
-/*
- TODO:
- 2. DateTime Widget
- 3. check Autocomplete
- */
-
+o0require('nodestrum');
 var Class = require('sji'),
     util = require('util'),
-    cloudinary = require('cloudinary');
-
-
-function escape(str) {
-    if (str === undefined)
-        return '';
-
-    return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-}
+    cloudinary = require('cloudinary'),
+    _ = require('lodash');
 
 
 var Widget = exports.Widget = Class.extend({
@@ -36,12 +18,8 @@ var Widget = exports.Widget = Class.extend({
         this.attrs.class.push(this.required ? 'required_label' : 'optional_label');
         this.data = options.data || {};
         this.name = '';
-        this.value = undefined;
-        options.static = options.static || {};
-        this.static = {
-            css: options.static.css || [],
-            js: options.static.js || []
-        };
+        this.value = null;
+        this.head = [];
     },
 
     pre_render: function (callback) {
@@ -53,19 +31,17 @@ var Widget = exports.Widget = Class.extend({
     },
 
     render_attributes: function (res) {
-        this.attrs['name'] = this.name;
-        this.attrs['id'] = 'id_' + this.name;
+        var self = this;
+        var longString = _(this.data).pairs()
+            .forEach(function(pair) {pair[0] = 'data-' + pair[0];})
+            .concat(_.pairs(this.attrs), [['name', self.name], ['id','id_' + self.name]])
+            .map(function (pair) {
+                pair[1] = Array.isArray(pair[1]) ? pair[1].join(' ') : pair[1];
+                return util.format('%s="%s"', escapeHTMLComponent(pair[0]), escapeHTMLComponent(pair[1]));
+            })
+            .join(' ');
 
-        Object.keys(this.attrs).forEach(function(attr) {
-            var value = Array.isArray(this[attr]) ? this[attr].join(' ') : this[attr];
-            res.write(' ' + attr + '="' + escape(value) + '"');
-        }, this.attrs);
-
-        Object.keys(this.data).forEach(function(attr) {
-            var value = Array.isArray(this[attr]) ? this[attr].join(' ') : this[attr];
-            res.write(' data-' + attr + '="' + escape(value) + '"');
-        }, this.data);
-
+        res.write(longString);
         return this;
     }
 });
@@ -77,7 +53,7 @@ exports.InputWidget = Widget.extend({
         this._super(options);
     },
     render: function (res) {
-        res.write('\n<input' + (this.value ? ' value="' + escape(this.value) + '"' : '') );
+        res.write('\n<input' + (this.value ? ' value="' + escapeHTMLComponent(this.value) + '"' : '') );
         this.render_attributes(res);
         res.write(' />\n');
         return this;
@@ -110,9 +86,9 @@ exports.TextAreaWidget = Widget.extend({
     render: function (res) {
         res.write('\n<textarea ');
         this.render_attributes(res);
-        res.write(' >');
-        res.write(escape(this.value));
-        res.write('</textarea>\n');
+        res.write(' >\n');
+        res.write(escapeHTMLComponent(this.value));
+        res.write('\n</textarea>\n');
         return this;
     }
 });
@@ -122,7 +98,6 @@ exports.RichTextAreaWidget = exports.TextAreaWidget.extend({
     init: function (options) {
         this._super(options);
         this.attrs.class.push('ckeditor');
-        this.static.js.push('/ckeditor/ckeditor.js');
     },
     render: function (res) {
         res.write('\n<div class="nf_widget">\n');
@@ -136,8 +111,6 @@ exports.DateWidget = exports.InputWidget.extend({
     init: function (options) {
         this._super('text', options);
         this.attrs.class.push('nf_datepicker');
-        this.static.js.push('/datepicker/bootstrap-datepicker.js');
-        this.static.css.push('/datepicker/datepicker.css');
     },
     render: function (res) {
         res.write('\n<div class="input-append date">\n');
@@ -152,8 +125,6 @@ exports.DateTimeWidget = exports.InputWidget.extend({
     init: function (options) {
         this._super('text', options);
         this.attrs['data-format'] = "yyyy-MM-dd hh:mm";
-        this.static.js.push('/vendor/bootstrap-datetimepicker.min.js');
-        this.static.css.push('/vendor/bootstrap-datetimepicker.min.css');
     },
     render: function (res) {
         var widget_id =  'datetimepicker' + this.name;
@@ -170,8 +141,6 @@ exports.TimeWidget = exports.InputWidget.extend({
     init: function (options) {
         this._super('time', options);
         this.attrs.class.push('nf_timepicker');
-        this.static.js.push('/timepicker/bootstrap-timepicker.js');
-        this.static.css.push('/timepicker/timepicker.css');
     },
     render: function (res) {
         res.write('\n<div class="input-append bootstrap-timepicker-component">\n');
@@ -290,19 +259,16 @@ exports.RefWidget = exports.ChoicesWidget.extend({
         var self = this;
         var base = self._super;
         this.ref.find({}).limit(self.limit).exec(function (err, objects) {
-            if (err) {
-                callback(err);
-            } else {
-                self.choices = [];
-                for (var i = 0; i < objects.length; i++) {
-                    var label = objects[i].name || objects[i].title || objects[i].toString;
-                    if (typeof(label) == 'function') {
-                        label = label.call(objects[i]);
-                    }
-                    self.choices.push([objects[i].id, label]);
+            if (err) throw callback(err);
+            self.choices = [];
+            for (var i = 0; i < objects.length; i++) {
+                var label = objects[i].name || objects[i].title || objects[i].toString;
+                if (typeof(label) == 'function') {
+                    label = label.call(objects[i]);
                 }
-                return base.call(self, callback);
+                self.choices.push([objects[i].id, label]);
             }
+            base.call(self, callback);
         });
     }
 });
@@ -313,7 +279,7 @@ exports.ListWidget = Widget.extend({
         this._super(options);
     },
     render: function (res, render_template, render_item) {
-        res.write('\n<div class="nf_listfield" name="' + this.name + '">\n<div class="nf_hidden_template">\n');
+        res.write('\n<div class="nf_listfield" ' + 'name="' + this.name + '">\n<div class="nf_hidden_template">\n');
         render_template(res);
         res.write('\n</div>\n<ul>\n');
         this.value = this.value || [];
@@ -342,15 +308,14 @@ exports.FileWidget = exports.InputWidget.extend({
 exports.FilepickerWidget = exports.InputWidget.extend({
     init: function (options) {
         this._super('filepicker', options);
-        this.static.js.push('//api.filepicker.io/v1/filepicker.js');
         this.attrs.class.push('_filepicker');
         //noinspection JSUnresolvedVariable
         this.attrs['data-fp-apikey'] = process.env.FILEPICKER_API_KEY;
     },
 
     render: function (res) {
-        var raw_value = this.value;
-        this.value = JSON.stringify(raw_value).replace(/"|\\/g, '\\$&');
+        var raw_value = this.value || '';
+        this.value = JSON.stringify(raw_value);
         this._super(res);
         if (raw_value && raw_value.url) {
             res.write(util.format('<a href="%s" target="_blank">%s</a>\n', raw_value.url, raw_value.filename));
@@ -380,7 +345,7 @@ exports.PictureWidget = exports.InputWidget.extend({
             res.write(util.format('<a href="%s" target="_blank">%s</a>\n', this.value.url, thumbnail_url));
             res.write(util.format('<input type="checkbox" name="%s_clear" value="false" />\nClear\n', this.name));
         }
-        res.write(util.format('<input type="hidden" name="%s" value="%s" />\n', this.name, escape(JSON.stringify(this.value))));
+        res.write(util.format('<input type="hidden" name="%s" value="%s" />\n', this.name, encodeJSONHTML(this.value)));
         this._super(res);
     },
     render_attributes: function (res) {
@@ -394,9 +359,7 @@ exports.MapWidget = exports.InputWidget.extend({
     init: function (options) {
         this._super('hidden', options);
         this.attrs.class.push('nf_mapview');
-        this.static.js.push('//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&language=he&libraries=places&key=AIzaSyCmNLGdcM_OYwPwmedDsECk9O6ashE-rjg');
-        this.static.js.push('/js/maps.js');
-        this.static.css.push('/css/maps.css');
+        this.head.push('<script src="//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&language=he&libraries=places&key=AIzaSyCmNLGdcM_OYwPwmedDsECk9O6ashE-rjg"></script>');
     },
 
     render: function (res) {
@@ -421,9 +384,6 @@ exports.MapWidget = exports.InputWidget.extend({
 exports.ComboBoxWidget = exports.ChoicesWidget.extend({
     init: function (options) {
         this._super(options);
-        this.static.js.push('/select2/select2.js');
-        this.static.css.push('/select2/select2.css');
-
         this.attrs.class.push('nf_comb');
     }
 });

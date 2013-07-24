@@ -81,37 +81,28 @@ var BaseForm = exports.BaseForm = Class.extend({
             });
         }
     },
-    get_static: function () {
-        var self = this;
-        self.static = self.static || {js:[], css:[]};
-        _.each(this.fields, function (field) {
-            var _static = ('fields' in field) ? self.get_static.call(field) :  field.get_static();
-            self.static.js = self.static.js.concat(_static.js || []);
-            self.static.css = self.static.css.concat(_static.css || []);
-        });
-        self.static.js = _(self.static.js).unique();
-        self.static.css = _(self.static.css).unique();
-        return self.static;
-    },
     render_head: function () {
         var self = this;
-        self.get_static();
-        return common.writer_to_string(function (res) {
-            self.static['js'].forEach(function (script_url) {
-                if (typeof(script_url) == 'string' &&!~script_url.indexOf('//')) script_url = path.join(self.admin_root, script_url).replace(/\\/g,'/');
-                res.write('\n<script src="' + script_url + '"></script>\n');
-            });
-            self.static['css'].forEach(function (style_url) {
-                if (typeof(style_url) == 'string' &&!~style_url.indexOf('://')) style_url = path.join(self.admin_root , style_url ).replace(/\\/g,'/');
-                res.write('\n<link type="text/css" href="' + style_url + '" rel="stylesheet">\n');
-            });
-            self.static['inline-style'].forEach(function (inline_style) {
-                res.write('\n<style>\n' + inline_style + '\n</style>\n');
-            });
-            self.static['inline-script'].forEach(function (inline_script) {
-                res.write('\n<script>\n' + inline_script + '\n</script>\n');
-            });
-        }, 1000);
+        var header_lines = _(this.fields).pluck('head').flatten();
+        self.static['js'].forEach(function (script_url) {
+            if (!~script_url.indexOf('//')) script_url = self.admin_root + script_url;
+            header_lines.push('<script src="' + script_url + '"></script>');
+            console.error("form.static is deprecated, will not work in formage 1.6")
+        });
+        self.static['css'].forEach(function (style_url) {
+            if (!~style_url.indexOf('://')) style_url = self.admin_root + style_url;
+            header_lines.push('<link type="text/css" href="' + style_url + '" rel="stylesheet">');
+            console.error("form.static is deprecated, will not work in formage 1.6")
+        });
+        self.static['inline-style'].forEach(function (inline_style) {
+            header_lines.push('<style>\n' + inline_style + '\n</style>');
+            console.error("form.static is deprecated, will not work in formage 1.6")
+        });
+        self.static['inline-script'].forEach(function (inline_script) {
+            header_lines.push('<script>\n' + inline_script + '\n</script>');
+            console.error("form.static is deprecated, will not work in formage 1.6")
+        });
+        return header_lines.uniqe().valoueOf()
     },
     get_fields: function () {
         var self = this;

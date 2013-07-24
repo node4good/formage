@@ -38,7 +38,7 @@
     "sji",
     "jest",
     "cloudinary",
-    "nodestum"
+    "nodestrum"
   ],
   "devDependencies": {
     "express": "",
