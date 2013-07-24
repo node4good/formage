@@ -176,6 +176,11 @@ MongooseAdmin.prototype.getModel = function(collectionName, onReady) {
 };
 
 
+MongooseAdmin.prototype.getModelConf = function(collectionName) {
+    return this.models[collectionName] || this.models[collectionName.toLowerCase()];
+};
+
+
 MongooseAdmin.prototype.modelCounts = function(collectionName,filters, onReady) {
     if(this.models[collectionName].is_single) {
         onReady(null,1);

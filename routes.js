@@ -340,20 +340,25 @@ var routes = {
         if (model.is_single)
             return res.redirect(req.path.split('/model/')[0]);
 
-        var isDialog = !!req.query._dialog;
-        delete req.query._dialog;
         // query
-        var query = req.query,
-            start = Number(query.start) || 0;
+        var query = req.query(req.query);
+
+        var start = Number(query.start) || 0;
         delete query.start;
+
+        var isDialog = Boolean(query._dialog);
+        delete query._dialog;
+
         var count = Number(query.count) || 50;
         delete query.count;
-        var currentQuery = _.clone(req.query);
+
         var sort = query.order_by;
         delete query.order_by;
+
         /** @namespace query.saved */
-            //var saved = query.saved;
+        //var saved = query.saved;
         delete query.saved;
+
         /** @namespace query._search */
         var search_value = query._search || '';
         delete query._search;
@@ -361,13 +366,13 @@ var routes = {
         var filters = parseFilters(model, query, search_value);
 
         return MongooseAdmin.singleton.modelCounts(name, filters, function (err, total_count) {
-            if (err) return res.redirect('/');
+            if (err) throw err;
 
             return MongooseAdmin.singleton.listModelDocuments(name, start, count, filters, sort, function (err, documents) {
-                if (err) return res.redirect('/');
+                if (err) throw err;
 
                 var makeLink = function (key, value) {
-                    var query = _.clone(currentQuery);
+                    var query = _.clone(req.query);
                     if (key)
                         query[key] = value;
                     if (isDialog)
@@ -406,7 +411,7 @@ var routes = {
                     orderLink: orderLink,
                     fieldLabel: fieldLabel,
                     filters: model.filters || [],
-                    current_filters: currentQuery,
+                    current_filters: req.query,
                     search: model.options.search,
                     search_value: search_value,
                     cloudinary: require('cloudinary'),
@@ -426,38 +431,38 @@ var routes = {
     },
 
     document: function (req, res) {
-        var name = req.params.modelName,
-            model = MongooseAdmin.singleton.models[name],
+        var model_conf = MongooseAdmin.singleton.getModelConf(req.params.modelName),
             id = req.params.documentId;
-
+        if (!model_conf) throw new Error("No model named" + req.params.modelName);
         async.waterfall([
+            // get document from DB
             function (cb) {
-                if (model.is_single)
-                    model.model.findOne().exec(cb);
+                if (model_conf.is_single)
+                    model_conf.model.findOne().exec(cb);
                 else if (id !== 'new')
-                    MongooseAdmin.singleton.getDocument(name, id, cb);
+                    model_conf.model.findById(id, cb);
                 else
                     cb(null, null);
             },
+            // setup the Form
             function (document, cb) {
-
-                var FormType = model.options.form || AdminForm,
-                    options = _.extend({ instance: document }, model.options);
+                var FormType = model_conf.options.form || AdminForm,
+                    options = _.extend({ instance: document }, model_conf.options);
                 if (id === 'new') {
                     var filters = _.clone(req.query);
                     delete filters._dialog;
-                    options.data = parseFilters(model, filters);
+                    options.data = parseFilters(model_conf, filters);
                 }
-                var form = new FormType(req, options, model.model);
+                var form = new FormType(req, options, model_conf.model);
 
                 cb(null, form);
             }
         ], function (err, form) {
-            if (err) return res.redirect('/error');
-
-            var editing = !model.is_single && id !== 'new',
-                clone = editing ? req.query.clone : false;
-            return renderForm(res, form, model, editing, clone, !!req.query._dialog);
+            if (err) throw err;
+            var editing = !model_conf.is_single && id !== 'new',
+                clone = editing ? req.query.clone : false,
+                is_dialog = Boolean(req.query._dialog);
+            return renderForm(res, form, model_conf, editing, clone, is_dialog);
         });
     },
 
@@ -510,6 +515,7 @@ var auth = function (role) {
     };
 };
 
+
 function userPanel(req, res, next) {
     MongooseAdmin.singleton.renderUserPanel(req, function (err, html) {
         if (err) return res.redirect(MongooseAdmin.singleton.buildPath('/error'));
@@ -523,8 +529,9 @@ function userPanel(req, res, next) {
 
 module.exports = function (admin, outer_app, root) {
     MongooseAdmin = admin;
-
+    var nodestrum = require('nodestrum');
     var app = require.main.require('express')();
+    app.use(nodestrum.domain_wrapper_middleware);
     app.locals.version = module.parent.exports.version;
     app.engine('jade', require('jade').__express);
     app.set('views', __dirname + '/views');

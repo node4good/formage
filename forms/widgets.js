@@ -344,6 +344,7 @@ exports.FilepickerWidget = exports.InputWidget.extend({
         this._super('filepicker', options);
         this.static.js.push('//api.filepicker.io/v1/filepicker.js');
         this.attrs.class.push('_filepicker');
+        //noinspection JSUnresolvedVariable
         this.attrs['data-fp-apikey'] = process.env.FILEPICKER_API_KEY;
     },
 
