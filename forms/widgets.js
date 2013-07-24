@@ -434,8 +434,6 @@ exports.AutocompleteWidget = exports.TextWidget.extend({
         if (!options.ref) throw new TypeError('model was not provided');
 
         this._super(options);
-        this.static.js.push('/select2/select2.js');
-        this.static.css.push('/select2/select2.css');
         this.attrs.class.push('nf_ref');
         this.attrs['data-ref'] = options.refForm || options.ref.label;
 
