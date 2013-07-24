@@ -27,19 +27,16 @@ var json_routes = {
 
     documents: function (req, res) {
         var admin_user = MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser);
-        if (!admin_user)
-            return res.json(401);
+        if (!admin_user) return res.json(401);
 
         var query = querystring.parse(Url.parse(req.url).query);
-        MongooseAdmin.singleton.modelCounts(query.collection, function (err, totalCount) {
-            if (err)
-                return res.json(500);
+        return MongooseAdmin.singleton.modelCounts(query.collection, function (err, totalCount) {
+            if (err) return res.json(500);
 
-            MongooseAdmin.singleton.listModelDocuments(query.collection, query.start, query.count, function (err, documents) {
-                if (err)
-                    return res.json(500);
+            return MongooseAdmin.singleton.listModelDocuments(query.collection, query.start, query.count, function (err, documents) {
+                if (err) return res.json(500);
 
-                res.json({
+                return res.json({
                     totalCount: totalCount,
                     documents: documents
                 });
@@ -138,7 +135,7 @@ var json_routes = {
 
 
     deleteDocument: function (req, res) {
-        var admin_user = MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser) ;
+        var admin_user = MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser);
         if (!admin_user) {
             res.writeHead(401, {"Content-Type": "application/json"});
             res.end();
@@ -159,7 +156,7 @@ var json_routes = {
     },
 
     linkedDocumentsList: function (req, res) {
-        var admin_user = MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser) ;
+        var admin_user = MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser);
         if (!admin_user) {
             res.writeHead(401, {"Content-Type": "application/json"});
             res.end();
@@ -195,33 +192,31 @@ var json_routes = {
 };
 
 
-function renderForm(res, form, model, allow_delete, clone,dialog) {
+function renderForm(res, form, model, allow_delete, clone, dialog) {
     if (clone)
         form.exclude.push('id');
 
     form.render_ready(function (err) {
-        if (err)
-            return res.redirect('/error');
+        if (err) return res.redirect('/error');
 
-        async.map(model.options.subCollections || [],function(sub,cbk){
-            var subDict = _.extend(sub,{count:0,value:form.instance.id});
-            if(form.instance.isNew)
-                return cbk(null,subDict);
+        var subCollections = model.options.subCollections || [];
+        return async.map(subCollections, function (sub, cbk) {
+            var subDict = _.extend(sub, {count: 0, value: form.instance.id});
+            if (form.instance.isNew) return cbk(null, subDict);
             var relatedModel = MongooseAdmin.singleton.models[sub.model];
-            relatedModel.model.count()
-                .where(sub.field,form.instance.id)
-                .exec(function(err,count){
+            return relatedModel.model.count()
+                .where(sub.field, form.instance.id)
+                .exec(function (err, count) {
                     subDict.count = count;
-                    cbk(err,subDict);
+                    cbk(err, subDict);
                 });
-        },function(err,subs){
-
-            if (err)
-                return res.redirect('/error');
+        }, function (err, subs) {
+            if (err) return res.redirect('/error');
 
             var html = form.to_html(),
                 head = form.render_head();
 
+            //noinspection JSUnusedGlobalSymbols
             return res.render('document.jade', {
                 rootPath: MongooseAdmin.singleton.root,
                 adminTitle: MongooseAdmin.singleton.getAdminTitle(),
@@ -238,24 +233,15 @@ function renderForm(res, form, model, allow_delete, clone,dialog) {
                 errors: form.errors ? Object.keys(form.errors).length > 0 : false,
                 allow_delete: allow_delete,
                 layout: 'layout.jade',
-                dialog:dialog,
+                dialog: dialog,
                 pretty: true,
-                subCollections:subs
+                subCollections: subs
             });
         })
     });
 }
 
 
-/**
- * Parse filters from strings to types
- * @param filters
- * dictionary of filters
- * @param search
- * free text search value
- * @return {Object}
- * dict of filters
- */
 var parseFilters = function (model_settings, filters, search) {
     var model = model_settings.model;
     var new_filters = {};
@@ -278,36 +264,40 @@ var parseFilters = function (model_settings, filters, search) {
         }
         else
             new_filters[key] = value;
-        if(parts[1]){
+        if (parts[1]) {
             var dict = {};
             dict['$' + parts[1]] = value;
             new_filters[key] = dict;
         }
     });
     if (search) {
-        var search_query = getSearchQuery(model_settings,search);
-        if(search_query){
+        var search_query = getSearchQuery(model_settings, search);
+        if (search_query) {
             new_filters['$where'] = search_query;
         }
     }
     return new_filters;
 };
+
+
 function escapeRegExp(str) {
     return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
 }
-function getSearchQuery(model,searchValue){
+
+
+function getSearchQuery(model, searchValue) {
     var searchRule = model && model.options && model.options.search;
-    if(!searchRule)
+    if (!searchRule)
         return null;
     var valueRegex = '/' + escapeRegExp(searchValue) + '/i';
     console.log(searchRule);
-    if(Array.isArray(searchRule)){
-        return searchRule.map(function(field){
+    if (Array.isArray(searchRule)) {
+        return searchRule.map(function (field) {
             return valueRegex + '.test(this.' + field + ')';
         }).join('||');
     }
-    else{
-        return searchRule.replace('__value__',valueRegex);
+    else {
+        return searchRule.replace('__value__', valueRegex);
     }
 }
 
@@ -316,6 +306,7 @@ var routes = {
     index: function (req, res) {
         MongooseAdmin.singleton.getRegisteredModels(req.admin_user, function (err, models) {
             if (err) return res.redirect(MongooseAdmin.singleton.buildPath('/error'));
+            //noinspection JSUnusedGlobalSymbols
             return res.render('models.jade', {
                 layout: 'layout.jade',
                 pageTitle: 'Admin Site',
@@ -361,7 +352,7 @@ var routes = {
         var sort = query.order_by;
         delete query.order_by;
         /** @namespace query.saved */
-        //var saved = query.saved;
+            //var saved = query.saved;
         delete query.saved;
         /** @namespace query._search */
         var search_value = query._search || '';
@@ -369,19 +360,17 @@ var routes = {
 
         var filters = parseFilters(model, query, search_value);
 
-        MongooseAdmin.singleton.modelCounts(name, filters, function (err, total_count) {
-            if (err)
-                return res.redirect('/');
+        return MongooseAdmin.singleton.modelCounts(name, filters, function (err, total_count) {
+            if (err) return res.redirect('/');
 
-            MongooseAdmin.singleton.listModelDocuments(name, start, count, filters, sort, function (err, documents) {
-                if (err)
-                    return res.redirect('/');
+            return MongooseAdmin.singleton.listModelDocuments(name, start, count, filters, sort, function (err, documents) {
+                if (err) return res.redirect('/');
 
                 var makeLink = function (key, value) {
                     var query = _.clone(currentQuery);
-                    if(key)
+                    if (key)
                         query[key] = value;
-                    if(isDialog)
+                    if (isDialog)
                         query['_dialog'] = 'yes';
                     return '?' + _.map(query,function (value, key) {
                         return encodeURIComponent(key) + '=' + encodeURIComponent(value);
@@ -395,33 +384,29 @@ var routes = {
                 };
                 //noinspection JSUnresolvedVariable
                 var schema = model.model.schema.tree;
-                var fieldLabel = function(field) {
+                var fieldLabel = function (field) {
                     return schema[field] && schema[field].label
                         ? schema[field].label
-                        : field[0].toUpperCase() + field.slice(1).replace(/_/g,' ');
+                        : field[0].toUpperCase() + field.slice(1).replace(/_/g, ' ');
                 };
 
+                //noinspection JSUnusedGlobalSymbols
                 res.locals({
                     adminTitle: MongooseAdmin.singleton.getAdminTitle(),
                     pageTitle: 'Admin - ' + model.model.label,
                     rootPath: MongooseAdmin.singleton.root,
-
                     model_name: name,
                     model: model,
                     list_fields: model.options.list,
                     documents: documents,
-
                     total_count: total_count,
                     start: start,
                     count: count,
-
                     makeLink: makeLink,
                     orderLink: orderLink,
                     fieldLabel: fieldLabel,
-
                     filters: model.filters || [],
                     current_filters: currentQuery,
-
                     search: model.options.search,
                     search_value: search_value,
                     cloudinary: require('cloudinary'),
@@ -432,7 +417,7 @@ var routes = {
                     creatable: model.options.creatable !== false && permissions.hasPermissions(req.admin_user, name, 'create'),
                     dialog:isDialog
                 });
-                res.render('model.jade', {
+                return res.render('model.jade', {
                     layout: 'layout.jade',
                     locals: res.locals
                 });
@@ -446,7 +431,7 @@ var routes = {
             id = req.params.documentId;
 
         async.waterfall([
-            function(cb) {
+            function (cb) {
                 if (model.is_single)
                     model.model.findOne().exec(cb);
                 else if (id !== 'new')
@@ -454,29 +439,28 @@ var routes = {
                 else
                     cb(null, null);
             },
-            function(document, cb) {
+            function (document, cb) {
 
                 var FormType = model.options.form || AdminForm,
                     options = _.extend({ instance: document }, model.options);
-                if(id === 'new') {
+                if (id === 'new') {
                     var filters = _.clone(req.query);
                     delete filters._dialog;
-                    var defaultValues = parseFilters(model,filters);
-                    options.data = defaultValues;
+                    options.data = parseFilters(model, filters);
                 }
                 var form = new FormType(req, options, model.model);
 
                 cb(null, form);
             }
-        ], function(err, form) {
-            if (err)
-                return res.redirect('/error');
+        ], function (err, form) {
+            if (err) return res.redirect('/error');
 
             var editing = !model.is_single && id !== 'new',
                 clone = editing ? req.query.clone : false;
-            renderForm(res, form, model, editing, clone, !!req.query._dialog);
+            return renderForm(res, form, model, editing, clone, !!req.query._dialog);
         });
     },
+
 
     documentPost: function (req, res) {
         var name = req.params.modelName,
@@ -486,25 +470,25 @@ var routes = {
 
         if (doc_id === 'new') doc_id = null;
         if (doc_id === 'single') doc_id = req.body['_id'];
-        var callback = function (err,doc) {
+        var callback = function (err, doc) {
             if (err) {
                 if (err.to_html)
                     return renderForm(res, err, model, true);
-                return res.send(500);
+                else
+                    return res.send(500);
             }
-            if(req.query._dialog && doc){
-                var docName = doc.name || doc.title || doc.toString;
-                if(typeof(docName) == 'function')
-                    docName = docName.call(doc);
-                res.render('dialog_callback.jade',{data:{id:doc.id,label:docName}});
-            }
-            else
+            if (!(req.query._dialog && doc)) {
                 return res.redirect(target_url);
+            }
+            var docName = doc.name || doc.title || doc.toString;
+            if (typeof(docName) == 'function')
+                docName = docName.call(doc);
+            return res.render('dialog_callback.jade', {data: {id: doc.id, label: docName}});
         };
         // Update
         if (doc_id) {
             MongooseAdmin.singleton.updateDocument(req, req.admin_user, name, doc_id, req.body, callback);
-        // Create
+            // Create
         } else {
             MongooseAdmin.singleton.createDocument(req, req.admin_user, name, req.body, callback);
         }
@@ -512,8 +496,8 @@ var routes = {
 };
 
 
-var auth = function(role) {
-    return function(req, res, next) {
+var auth = function (role) {
+    return function (req, res, next) {
         var admin_user = MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser);
         if (!admin_user)
             return res.redirect(MongooseAdmin.singleton.buildPath('/login'));
@@ -522,16 +506,17 @@ var auth = function(role) {
             return res.send('No permissions');
 
         req.admin_user = admin_user;
-        next();
+        return next();
     };
 };
 
-function userPanel(req,res,next){
-    MongooseAdmin.singleton.renderUserPanel(req,function(err,html){
+function userPanel(req, res, next) {
+    MongooseAdmin.singleton.renderUserPanel(req, function (err, html) {
         if (err) return res.redirect(MongooseAdmin.singleton.buildPath('/error'));
 
-        res.locals({userPanel:html});
-        next();
+        //noinspection JSUnusedGlobalSymbols
+        res.locals({userPanel: html});
+        return next();
     });
 }
 
@@ -544,10 +529,10 @@ module.exports = function (admin, outer_app, root) {
     app.engine('jade', require('jade').__express);
     app.set('views', __dirname + '/views');
 
-    app.get('/', auth(),userPanel, routes.index);
+    app.get('/', auth(), userPanel, routes.index);
     app.get('/login', routes.login);
     app.get('/logout', routes.logout);
-    app.get('/model/:modelName', auth('view'),userPanel, routes.model);
+    app.get('/model/:modelName', auth('view'), userPanel, routes.model);
     app.get('/model/:modelName/document/:documentId', auth('update'), routes.document);
     app.post('/model/:modelName/document/:documentId', auth(), routes.documentPost);
 
