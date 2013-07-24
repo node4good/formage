@@ -28,9 +28,10 @@ var AdminUserData = new mongoose.Schema({
             type: mongoose.Schema.ObjectId,
             ref: '_MongooseAdminPermission'
         }
-    ]
+    ],
+    lastVisit:{type:Date,'default':Date.now}
 }, {strict: true});
-mongoose.model('_MongooseAdminUser', AdminUserData);
+var AdminUserModel = mongoose.model('_MongooseAdminUser', AdminUserData);
 
 
 function MongooseAdminUser(data) {
@@ -48,8 +49,6 @@ MongooseAdminUser.fromSessionStore = function (sessionStore) {
 };
 
 MongooseAdminUser.ensureExists = function (username, password, callback) {
-    var AdminUserModel = mongoose.model('_MongooseAdminUser');
-
     AdminUserModel.findOne({'username': username}, function (err, adminUserData) {
         if (err) return callback(err);
         if (!adminUserData) {
@@ -78,6 +77,8 @@ MongooseAdminUser.getByUsernamePassword = function (username, password, callback
             return callback(null, null);
         }
         var admin_user = new MongooseAdminUser(adminUserData._doc);
+        // update last visit
+        AdminUserModel.update({_id:adminUserData._id},{$set:{lastVisit:new Date()}},function(err) { if(err) console.error('error updating admin user',err)});
         return callback(null, admin_user);
     });
 };

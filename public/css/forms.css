@@ -99,22 +99,41 @@ p.error {
     box-shadow: #eee 0 0 5px 0;
     -webkit-transition: box-shadow 200ms, border 200ms;
 }
-.nf_fieldset > div {
+.nf_listfield_container{
+    clear: both;
+    margin: 0 0 15px 180px;
+    padding: 20px 15px 5px 0;
+    position: relative;
+    border-radius: 3px;
+    -webkit-transition: box-shadow 200ms, border 200ms;
+    border:none;
+    box-shadow:none;
+}
+.nf_listfield_container.closed {
+    border: 1px solid #ddd;
+    box-shadow: #eee 0 0 5px 0;
+}
+.nf_fieldset > div, .nf_listfield_container > div {
     display: none;
 }
-.nf_fieldset.closed {
+.nf_fieldset.closed, .nf_listfield_container.closed {
     border-color: white;
     box-shadow: none;
 }
 .nf_fieldset.closed,
 .nf_fieldset > i,
-.nf_fieldset > h2 {
+.nf_fieldset > h2,
+.nf_listfield_container.closed,
+.nf_listfield_container > i,
+.nf_listfield_container > label
+{
     cursor: pointer;
 }
-.nf_fieldset:hover {
+.nf_fieldset:hover,
+.nf_listfield_container.closed:hover{
     box-shadow: #bbb 0 0 6px 0;
 }
-.nf_fieldset > h2 {
+.nf_fieldset > h2,.nf_listfield_container > label {
     font-size: 20px;
     text-align: right;
     width: 150px;
@@ -126,7 +145,7 @@ p.error {
 .nf_fieldset .field {
     overflow: hidden;
 }
-.nf_fieldset > i {
+.nf_fieldset > i,.nf_listfield_container > i {
     position: absolute; top: 5px; left: 5px;
 }
 .nf_fieldset .nf_fieldset .nf_fieldset input,
@@ -151,7 +170,7 @@ p.error {
     display: none;
 }
 .nf_listfield {
-    padding-left: 180px;
+    margin-top:4px;
 }
 .nf_listfield ul {
     margin: 0;
@@ -186,7 +205,14 @@ p.error {
     right: 20px;
     cursor: move;
 }
-
+.nf_listfield_container > .list_summary{
+    right: 18px;
+    top: 20px;
+    display:none;
+}
+.nf_listfield_container.closed > .list_summary{
+    display:block;
+}
 /*
     Auto Complete
 */
@@ -212,4 +238,11 @@ p.error {
 */
 .field a img {
     margin-bottom: 9px;
+}
+
+.subCollection{
+    font-size: 20px;
+    line-height:30px;
+    float:left;
+    clear:left;
 }
