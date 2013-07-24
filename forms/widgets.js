@@ -1,6 +1,6 @@
 'use strict';
 if (!module.parent) console.error('Please don\'t call me directly.I am just the main app\'s minion.') || process.process.exit(1);
-o0require('nodestrum');
+require('nodestrum');
 var Class = require('sji'),
     util = require('util'),
     cloudinary = require('cloudinary'),
