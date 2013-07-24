@@ -85,11 +85,11 @@
     }
 
     function refLink(){
-        var sel = $(this);
-        $('<a href="#">' + (sel.val() ? 'Edit' : 'New') + '</a>')
-            .insertAfter(sel)
+        var $this = $(this);
+        $(' <a href="#">' + ($this.val() ? 'Edit' : 'New') + '</a>')
+            .insertAfter($this)
             .click(function () {
-                var id = sel.val();
+                var id = $this.val();
                 var qry = $.map({
                     width:$(window).width() - 100,
                     height:$(window).height() - 100,
@@ -99,43 +99,37 @@
                 },function (v, k) {
                     return k + '=' + v;
                 }).join(',');
-                var url = root + '/model/' + sel.data('ref') + '/document/' + (id || 'new') + '?_dialog=yes';
-                var win = window.open(url, 'Edit ' + sel.data('ref'), qry);
-                var onDialogMessage = function(event){
-                    if(event.source != win)
-                        return;
-                    win = null;
-                    window.removeEventListener('message',onDialogMessage);
+                var url = root + '/model/' + $this.data('ref') + '/document/' + (id || 'new') + '?_dialog=yes';
+                var win = botobox(url, 'Edit ' + $this.data('ref'), function(event){
                     var rsp = event.data;
                     // on delete
                     if(rsp.deleted){
-                        if(sel.is('select'))
-                            $('option[value="' + id + '"]',sel).remove();
+                        if($this.is('select'))
+                            $('option[value="' + id + '"]',$this).remove();
                         else
-                            sel.select2('val','');
-                        sel.change();
+                            $this.select2('val','');
+                        $this.change();
                     }
                     // on create
                     if(rsp.id && !id){
-                        if(sel.is('select')) {
-                            $('option[selected]',sel).removeAttr('selected');
-                            $('<option selected value="' + rsp.id + '" >' + rsp.label + '</option>').appendTo(sel);
+                        if($this.is('select')) {
+                            $('option[selected]',$this).removeAttr('selected');
+                            $('<option selected value="' + rsp.id + '" >' + rsp.label + '</option>').appendTo($this);
                         }
                         else{
-                            sel.select2('val',rsp.id);
+                            $this.select2('val',rsp.id);
                         }
-                        sel.change();
+                        $this.change();
                     }
                     // on update
                     if(rsp.id && id){
-                        if(sel.is('select'))
-                            $('option[value="' + id + '"]',sel).text(rsp.label);
+                        if($this.is('select'))
+                            $('option[value="' + id + '"]',$this).text(rsp.label);
                     }
-                }
-                window.addEventListener('message',onDialogMessage,false);
+                });
             });
-        sel.change(function () {
-            $(this).siblings('a').text(sel.val() ? 'Edit' : 'New');
+        $this.change(function () {
+            $(this).siblings('a').text($this.val() ? 'Edit' : 'New');
         });
     }
 
