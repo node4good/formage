@@ -84,12 +84,6 @@
     })
     }
 
-    function createDialogCallback(win){
-        return function(event){
-
-        }
-    }
-
     function refLink(){
         var sel = $(this);
         $('<a href="#">' + (sel.val() ? 'Edit' : 'New') + '</a>')
@@ -215,7 +209,7 @@
     }
 
 
-    var getQueryFunctionForSelect2 = function () {
+    function getQueryFunctionForSelect2() {
         var jElem = $(this);
         var query_url = jElem.data('url');
         var query_data = decodeURIComponent(jElem.data('data'));
@@ -251,7 +245,7 @@
         });
     };
 
-    var deleteDocument = function () {
+    function deleteDocument() {
         $('#deleteButton').button('loading');
         $.post(
             root + '/json/dependencies',
@@ -264,36 +258,25 @@
                     ? 'there are some entities related to this entity: "' + result.join(', ') + '"'
                     : 'Are you sure you want to delete?';
 
-                if (confirm(msg))
-                    $.ajax({
-                        type:'DELETE',
-                        url:root + '/json/model/' + model + '/document?document_id=' + encodeURIComponent($('#document_id').val()),
-                        success:function (result) {
+                bootbox.confirm(msg, function (res) {
+                    if (!res) return $('#deleteButton').button('reset');
+                    return $.ajax({
+                        type: 'DELETE',
+                        url: root + '/json/model/' + model + '/document?document_id=' + encodeURIComponent($('#document_id').val()),
+                        success: function () {
                             $('#deleteButton').button('reset');
-                            if(dialog){
-                                dialogCallback({deleted:true});
-                            }
-                            else
-                                location.href = location.href.split('/document/')[0];
+                            location.href = location.href.split('/document/')[0];
                         },
-                        error:function (xhr, textStatus) {
+                        error: function (xhr, textStatus) {
                             $('#deleteButton').button('reset');
                             alert('Unable to delete');
                             console.error('Deleting error', arguments);
                         }
                     });
-                else
-                    $('#deleteButton').button('reset');
+                })
             }
         );
     };
-
-    function dialogCallback(rsp){
-        window.opener.postMessage(rsp,window.location.protocol + '//' + window.location.hostname);
-        setTimeout(function(){
-            window.close();
-        },500);
-    }
 
     function initActions(){
         $('button.action').click(function(e) {

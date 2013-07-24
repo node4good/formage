@@ -12,6 +12,8 @@ html(lang='en')
         script(src='#{rootPath}/js/lib/jquery-1.9.1.js')
         script(src='#{rootPath}/js/lib/jquery-ui-1.10.2.custom.min.js')
         script(src='#{rootPath}/js/lib/bootstrap.js')
+        script(src="#{rootPath}/js/lib/bootbox.min.js")
+        script(src="#{rootPath}/js/forms.js")
         script var root = '#{rootPath}';
 
         != typeof(renderedHead) != 'undefined' ? renderedHead : ''
@@ -59,12 +61,13 @@ html(lang='en')
                     a(href='http://github.com/Empeeric/formage-admin')
                         img(src='#{rootPath}/images/logo-40.png')
 
-            script(type='text/javascript').
-                $.getJSON('http://registry.npmjs.org/formage-admin/latest?jsonp=?').done(function (pack) {
-                    var version = '#{version}';
-                    var latest = pack.version;
-                    if (latest > version)
-                        $('#old-version').slideDown(100);
-                });
+
+        script(type='text/javascript').
+            $.getJSON('http://registry.npmjs.org/formage-admin/latest?jsonp=?').done(function (pack) {
+                var version = '#{version}';
+                var latest = pack.version;
+                if (latest > version)
+                    $('#old-version').slideDown(100);
+            });
 
         block scripts
