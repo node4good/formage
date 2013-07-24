@@ -87,20 +87,16 @@ var BaseForm = exports.BaseForm = Class.extend({
         self.static['js'].forEach(function (script_url) {
             if (!~script_url.indexOf('//')) script_url = self.admin_root + script_url;
             header_lines.push('<script src="' + script_url + '"></script>');
-            console.error("form.static is deprecated, will not work in formage 1.6")
         });
         self.static['css'].forEach(function (style_url) {
             if (!~style_url.indexOf('://')) style_url = self.admin_root + style_url;
             header_lines.push('<link type="text/css" href="' + style_url + '" rel="stylesheet">');
-            console.error("form.static is deprecated, will not work in formage 1.6")
         });
         self.static['inline-style'].forEach(function (inline_style) {
             header_lines.push('<style>\n' + inline_style + '\n</style>');
-            console.error("form.static is deprecated, will not work in formage 1.6")
         });
         self.static['inline-script'].forEach(function (inline_script) {
             header_lines.push('<script>\n' + inline_script + '\n</script>');
-            console.error("form.static is deprecated, will not work in formage 1.6")
         });
         return header_lines.uniqe().valoueOf()
     },
