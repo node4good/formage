@@ -1,6 +1,5 @@
 var Class = require('sji'),
     forms = require('../forms'),
-    jest = require('jest'),
     MongooseAdminAudit = require('./mongoose_admin_audit.js').MongooseAdminAudit,
     async = require('async'),
     _ = require('lodash');
@@ -11,7 +10,6 @@ var AdminModel = module.exports = Class.extend({
         this.name = options.name || null;
         this.model = options.model || null;
         this.form_type = options.form_type || forms.AdminForm;
-        this.resource = options.resource || jest.MongooseResource(this.model);
         this.list = [];
         this.sortable = null;
         this.actions = [];
