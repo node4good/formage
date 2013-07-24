@@ -98,7 +98,7 @@ var BaseForm = exports.BaseForm = Class.extend({
         self.static['inline-script'].forEach(function (inline_script) {
             header_lines.push('<script>\n' + inline_script + '\n</script>');
         });
-        return header_lines.uniqe().valoueOf()
+        return header_lines.unique().valueOf()
     },
     get_fields: function () {
         var self = this;
