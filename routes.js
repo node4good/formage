@@ -341,7 +341,7 @@ var routes = {
             return res.redirect(req.path.split('/model/')[0]);
 
         // query
-        var query = req.query(req.query);
+        var query = _.clone(req.query);
 
         var start = Number(query.start) || 0;
         delete query.start;

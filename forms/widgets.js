@@ -11,11 +11,12 @@ var Widget = exports.Widget = Class.extend({
     init: function (options) {
         this.options = options;
         this.limit = this.options.limit || 50;
-        this.required = options.required || false;
         this.validators = options.validators || [];
-        this.attrs = options.attrs || {};
-        this.attrs.class = this.attrs.class || [];
-        this.attrs.class.push(this.required ? 'required_label' : 'optional_label');
+        this.attrs = {};
+        this.attrs.class = [];
+        this.attrs.required = options.required || false;
+        _.assign(options.attr, this.attrs);
+        this.attrs.class.push(this.attrs.required ? 'required' : 'optional');
         this.data = options.data || {};
         this.name = '';
         this.value = null;
@@ -41,7 +42,7 @@ var Widget = exports.Widget = Class.extend({
             })
             .join(' ');
 
-        res.write(longString);
+        res.write(' ' + longString + ' ');
         return this;
     }
 });
@@ -222,7 +223,7 @@ exports.ChoicesWidget = Widget.extend({
         this.render_attributes(res);
         res.write(' >\n');
         var found_selected = false;
-        if (!this.required) {
+        if (!this.attrs.required) {
             var selected = this.value ? '' : 'selected="selected" ';
             if (selected) {
                 found_selected = true;

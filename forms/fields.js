@@ -81,15 +81,15 @@ var BaseField = exports.BaseField = Class.extend({
         return common.writer_to_string(this.render, 1024);
     },
     render_label: function (res) {
-        var class_str = 'field_label' + ('optional_label' in this.widget.attrs.class ? ' optional_label' : '');
-        res.write('<label for="id_' + this.name + '" class="' + class_str + '">' + this.get_label() + '</label>\n');
+        var class_str = 'field_label' + (this.widget.attrs.required ? ' required_label' : ' optional_label');
+        res.write('\n<label for="id_' + this.name + '" class="' + class_str + '">' + this.get_label() + '</label>\n');
     },
     render_with_label: function (res) {
-        res.write('<div class="field">\n');
+        res.write('\n<div class="field">\n');
         this.render_label(res);
         this.render(res);
         this.render_error(res);
-        res.write('</div>\n');
+        res.write('\n</div>\n');
     },
     render_with_label_str: function () {
         return common.writer_to_string(this.render_with_label, 1024);
