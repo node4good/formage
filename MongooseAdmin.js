@@ -352,6 +352,8 @@ function initPreviewModel(model){
                     delete previewDict._previewDate;
                     for(var key in previewDict)
                         self[key] = previewDict[key];
+                    // disable save for preview items
+                    self.save = function(cbk) { return cbk && cbk(null,this); };
                 }
                 else
                     self._preview = null;
@@ -385,7 +387,9 @@ MongooseAdmin.prototype.updateDocument = function (req, user, collectionName, do
 
     if (!permissions.hasPermissions(user, collectionName, 'update')) return onReady('unauthorized');
     var FormType2 = this.models[collectionName].options.form || AdminForm;
-    return model.findById(documentId, function (err, document) {
+    var qry =  model.findById(documentId);
+    qry._admin = true;
+    return qry.exec(function (err, document) {
         if (err) return onReady(err, null);
         var preview = params['_preview'];
         delete params['_preview'];
@@ -415,7 +419,9 @@ MongooseAdmin.prototype.deleteDocument = function(user, collectionName, document
     var self = this;
     var model = this.models[collectionName].model;
     if (!permissions.hasPermissions(user, collectionName, 'delete')) return onReady('unauthorized');
-    return model.findById(documentId, function (err, document) {
+    var qry = model.findById(documentId);
+    qry._admin = true;
+    return qry.exec(function (err, document) {
         if (err) return onReady(err);
         if (!document) {
             return onReady('Document not found');
