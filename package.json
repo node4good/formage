@@ -1,16 +1,16 @@
 {
-  "name": "formage-admin",
-  "description": "Admin gui express addon for mongoose and non mongoose projects",
+  "name": "formage",
+  "description": "Admin GUI addon for mongoose and non mongoose projects on Express.js",
   "version": "1.5.0",
+  "main": "index.js",
   "author": {
-    "name": "Ishai Jaffe",
-    "email": "ishai@empeeric.com"
-  },
-  "contributors": [
-    {
       "name": "Etai Peretz",
       "email": "etai@empeeric.com",
       "url": "http://www.empeeric.com/"
+  },
+  "contributors": [{
+      "name": "Ishai Jaffe",
+      "email": "ishai@bablic.com"
     },
     {
       "name": "Refael Ackermann",
@@ -26,39 +26,31 @@
   "dependencies": {
     "lodash": "",
     "async": "",
-    "jade": "",
-    "jest": "",
     "cloudinary": "",
-    "nodestrum": ""
+    "nodestrum": "",
+    "jade": "",
+    "node-ckeditor": ""
   },
-  "bundleDependencies": [
-    "lodash",
-    "async",
-    "jade",
-    "sji",
-    "jest",
-    "cloudinary",
-    "nodestrum"
-  ],
   "devDependencies": {
     "express": "",
-    "request": "",
-    "supertest": "",
-    "nodeunit": "",
-    "mongoose": "",
-    "mocha": "",
-    "buster": ""
+    "mongoose": ""
   },
-  "main": "index.js",
+  "bundleDependencies": [
+    "sji",
+    "nodestrum"
+  ],
   "keywords": [
     "admin",
     "forms",
     "mongoose",
-    "django"
+    "mongoose-gui"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Empeeric/formage-admin.git"
+    "url": "https://github.com/Empeeric/formage.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Empeeric/formage/issues"
   },
   "directories": {
     "example": "./example"

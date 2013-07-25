@@ -4,7 +4,9 @@ if (!module.parent) console.error('Please don\'t call me directly.I am just the 
 var MongooseAdmin = require('./MongooseAdmin.js'),
     path = require('path'),
     routes = require('./routes'),
-    express = require.main.require('express');
+    express = require.main.require('express'),
+    ckeditorPath = require('node-ckeditor');
+
 
 exports.version = require('./package.json').version;
 exports.forms = require('./forms');
@@ -34,6 +36,7 @@ exports.serve_static = function (app, express, options) {
     module._is_serving_static = true;
 
     app.use('/' + options.root, express.static(path.join(__dirname, '/public')));
+    app.use('/' + options.root + '/ckeditor', express.static(ckeditorPath));
 };
 
 
