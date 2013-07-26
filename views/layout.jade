@@ -55,7 +55,7 @@ html(lang='en')
                                 !{userPanel}
 
         .container
-            #old-version.alert.alert-warning.hide
+            #old-version.alert.alert-error(style='position: fixed;bottom: 1em;right: 1em;width: 30em;height: 4em;border-radius: 10px;display: block;opacity: 0.8;display:none')
                 button.close(type='button',data-dismiss='alert') &times;
                 strong Warning;
                 |  There is a newer version of formage-admin.
@@ -78,7 +78,7 @@ html(lang='en')
                 var version = '#{version}';
                 var latest = pack.version;
                 if (latest > version)
-                    $('#old-version').slideDown(100);
+                    $('#old-version').show('slow');
             });
 
         block scripts

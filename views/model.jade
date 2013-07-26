@@ -1,4 +1,4 @@
-extends layout
+extends layout.jade
 
 block breadcrumb
     span.divider /
@@ -112,7 +112,7 @@ block body
                         | Filters
                         small.pull-right
                             a(href='#{rootPath}/model/#{model_name}') Clear
-    
+
                     ul.nav.nav-list
                         - each filter in filters
                             li.nav-header
@@ -130,7 +130,7 @@ block body
                                             a(href='#{makeLink(filter.key, value.value)}') #{value.text}
                                         - else
                                             strong #{value.text}
-    
+
                             - if (filter.isString)
                                 div
                                     input(type='text',style='width:217px; !important ',name='#{filter.key}',value='#{current_filters[filter.key] || ""}')

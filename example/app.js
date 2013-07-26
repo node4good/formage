@@ -4,6 +4,8 @@ var express = require('express'),
     http = require('http'),
     path = require('path');
 
+require('../CompileTempletes.js');
+
 var app = express();
 
 app.configure('all', function(){

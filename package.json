@@ -28,10 +28,10 @@
     "async": "",
     "cloudinary": "",
     "nodestrum": "",
-    "jade": "",
     "node-ckeditor": ""
   },
   "devDependencies": {
+    "jade": "",
     "express": "",
     "mongoose": ""
   },

@@ -1,4 +1,4 @@
-extends layout
+extends layout.jade
 block head
     - if (model.static)
         - if (model.static.js)
@@ -38,6 +38,6 @@ block scripts
     script(type='text/javascript').
         var model = '#{model_name}';
         var dialog = #{dialog};
-    
+
     script(src="#{rootPath}/js/lib/bootbox.min.js")
     script(src="#{rootPath}/js/forms.js")

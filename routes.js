@@ -5,7 +5,8 @@ var Url = require('url'),
     _ = require('lodash'),
     forms = require('./forms').forms,
     permissions = require('./models/permissions'),
-    AdminForm = require('./AdminForm').AdminForm;
+    AdminForm = require('./AdminForm').AdminForm,
+    Templates = require('./templates');
 
 var MongooseAdmin;
 
@@ -217,7 +218,7 @@ function renderForm(res, form, model, allow_delete, clone, dialog) {
                 head = form.render_head();
 
             //noinspection JSUnusedGlobalSymbols
-            return res.render('document.jade', {
+            return res.send(Templates.document({
                 rootPath: MongooseAdmin.singleton.root,
                 adminTitle: MongooseAdmin.singleton.getAdminTitle(),
                 pageTitle: 'Admin - ' + model.model.label,
@@ -232,11 +233,10 @@ function renderForm(res, form, model, allow_delete, clone, dialog) {
                 actions: form.instance.isNew ? [] : model.options.actions || [],
                 errors: form.errors ? Object.keys(form.errors).length > 0 : false,
                 allow_delete: allow_delete,
-                layout: 'layout.jade',
                 dialog: dialog,
                 pretty: true,
                 subCollections: subs
-            });
+            }));
         })
     });
 }
@@ -307,25 +307,23 @@ var routes = {
         MongooseAdmin.singleton.getRegisteredModels(req.admin_user, function (err, models) {
             if (err) return res.redirect(MongooseAdmin.singleton.buildPath('/error'));
             //noinspection JSUnusedGlobalSymbols
-            return res.render('models.jade', {
-                layout: 'layout.jade',
+            return res.send(Templates.models({
                 pageTitle: 'Admin Site',
                 allModels: models,
                 renderedHead: '',
                 adminTitle: MongooseAdmin.singleton.getAdminTitle(),
                 rootPath: MongooseAdmin.singleton.root
-            });
+            }));
         });
     },
 
     login: function (req, res) {
-        res.render('login.jade', {
-            layout: 'layout.jade',
+        res.send(Templates.login({
             pageTitle: 'Admin Login',
             adminTitle: MongooseAdmin.singleton.getAdminTitle(),
             rootPath: MongooseAdmin.singleton.root,
             renderedHead: ''
-        });
+        }));
     },
 
     logout: function (req, res) {
@@ -395,8 +393,7 @@ var routes = {
                         : field[0].toUpperCase() + field.slice(1).replace(/_/g, ' ');
                 };
 
-                //noinspection JSUnusedGlobalSymbols
-                res.locals({
+                return res.send(Templates.model({
                     adminTitle: MongooseAdmin.singleton.getAdminTitle(),
                     pageTitle: 'Admin - ' + model.model.label,
                     rootPath: MongooseAdmin.singleton.root,
@@ -421,11 +418,7 @@ var routes = {
                     cloneable: model.options.cloneable !== false && permissions.hasPermissions(req.admin_user, name, 'create'),
                     creatable: model.options.creatable !== false && permissions.hasPermissions(req.admin_user, name, 'create'),
                     dialog:isDialog
-                });
-                return res.render('model.jade', {
-                    layout: 'layout.jade',
-                    locals: res.locals
-                });
+                }));
             });
         });
     },
@@ -488,7 +481,7 @@ var routes = {
             var docName = doc.name || doc.title || doc.toString;
             if (typeof(docName) == 'function')
                 docName = docName.call(doc);
-            return res.render('dialog_callback.jade', {data: {id: doc.id, label: docName}});
+            return res.send(Template.dialog_callback({data: {id: doc.id, label: docName}}));
         };
         // Update
         if (doc_id) {
@@ -533,8 +526,6 @@ module.exports = function (admin, outer_app, root) {
     var app = require.main.require('express')();
     app.use(nodestrum.domain_wrapper_middleware);
     app.locals.version = module.parent.exports.version;
-    app.engine('jade', require('jade').__express);
-    app.set('views', __dirname + '/views');
 
     app.get('/', auth(), userPanel, routes.index);
     app.get('/login', routes.login);

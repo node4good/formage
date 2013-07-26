@@ -8,7 +8,7 @@ var MongooseAdmin = require('./MongooseAdmin.js'),
     ckeditorPath = require('node-ckeditor');
 
 
-exports.version = require('./package.json').version;
+exports.version = require(path.join(__dirname, 'package.json')).version;
 exports.forms = require('./forms');
 exports.init = require('./init');
 exports.loadApi = require('./AdminForm').loadApi;
