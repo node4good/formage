@@ -211,15 +211,13 @@ function mongooseSort(query,sort) {
 }
 
 MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, count, filters, sort, onReady) {
-    var listFields = this.models[collectionName].options.list;
-    if (!listFields) {
-        return onReady(null, []);
-    }
-
-    var model = this.models[collectionName].model;
-    var query = this.models[collectionName].model.find(filters);
-    var sorts = this.models[collectionName].options.order_by || [];
-    var populates = this.models[collectionName].options.list_populate;
+    var model_config = this.models[collectionName];
+    var model = model_config.model;
+    var query = model.find(filters);
+    var sorts = model_config.options.order_by || [];
+    var populates = model_config.options.list_populate;
+    var listFields = model_config.options.list || ['id'];
+    var sortable = model_config.options.sortable;
     if (sort)
         sorts.unshift(sort);
     if (sorts) {
@@ -231,6 +229,7 @@ MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, cou
             query.populate(populate);
         });
     }
+    if (sortable) start=0, count=
     return query.skip(start).limit(count).execFind(function (err, documents) {
         if (err) {
             console.error('Unable to get documents for model because: ' + err);

@@ -333,9 +333,9 @@ var routes = {
 
     model: function (req, res) {
         var name = req.params.modelName,
-            model = MongooseAdmin.singleton.models[name];
+            modelConfig = MongooseAdmin.singleton.models[name];
 
-        if (model.is_single)
+        if (modelConfig.is_single)
             return res.redirect(req.path.split('/model/')[0]);
 
         // query
@@ -347,7 +347,7 @@ var routes = {
         var isDialog = Boolean(query._dialog);
         delete query._dialog;
 
-        var count = Number(query.count) || 50;
+        var count = Number(query.count) || 100;
         delete query.count;
 
         var sort = query.order_by;
@@ -361,7 +361,11 @@ var routes = {
         var search_value = query._search || '';
         delete query._search;
 
-        var filters = parseFilters(model, query, search_value);
+        var filters = parseFilters(modelConfig, query, search_value);
+
+        var sortable = typeof(modelConfig.options.sortable) == 'string' && permissions.hasPermissions(req.admin_user, name, 'order');
+
+        if (sortable) start = 0, count = 1000;
 
         return MongooseAdmin.singleton.modelCounts(name, filters, function (err, total_count) {
             if (err) throw err;
@@ -386,7 +390,7 @@ var routes = {
                     return makeLink('order_by', key);
                 };
                 //noinspection JSUnresolvedVariable
-                var schema = model.model.schema.tree;
+                var schema = modelConfig.model.schema.tree;
                 var fieldLabel = function (field) {
                     return schema[field] && schema[field].label
                         ? schema[field].label
@@ -395,11 +399,11 @@ var routes = {
 
                 return res.send(Templates.model({
                     adminTitle: MongooseAdmin.singleton.getAdminTitle(),
-                    pageTitle: 'Admin - ' + model.model.label,
+                    pageTitle: 'Admin - ' + modelConfig.model.label,
                     rootPath: MongooseAdmin.singleton.root,
                     model_name: name,
-                    model: model,
-                    list_fields: model.options.list,
+                    model: modelConfig,
+                    list_fields: modelConfig.options.list,
                     documents: documents,
                     total_count: total_count,
                     start: start,
@@ -407,16 +411,16 @@ var routes = {
                     makeLink: makeLink,
                     orderLink: orderLink,
                     fieldLabel: fieldLabel,
-                    filters: model.filters || [],
+                    filters: modelConfig.filters || [],
                     current_filters: req.query,
-                    search: model.options.search,
+                    search: modelConfig.options.search,
                     search_value: search_value,
                     cloudinary: require('cloudinary'),
-                    actions: model.options.actions || [],
+                    actions: modelConfig.options.actions || [],
                     editable: permissions.hasPermissions(req.admin_user, name, 'update'),
-                    sortable: typeof(model.options.sortable) == 'string' && permissions.hasPermissions(req.admin_user, name, 'order'),
-                    cloneable: model.options.cloneable !== false && permissions.hasPermissions(req.admin_user, name, 'create'),
-                    creatable: model.options.creatable !== false && permissions.hasPermissions(req.admin_user, name, 'create'),
+                    sortable: sortable,
+                    cloneable: modelConfig.options.cloneable !== false && permissions.hasPermissions(req.admin_user, name, 'create'),
+                    creatable: modelConfig.options.creatable !== false && permissions.hasPermissions(req.admin_user, name, 'create'),
                     dialog:isDialog
                 }));
             });
