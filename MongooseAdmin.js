@@ -217,7 +217,7 @@ MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, cou
     var sorts = model_config.options.order_by || [];
     var populates = model_config.options.list_populate;
     var listFields = model_config.options.list || ['id'];
-    var sortable = model_config.options.sortable;
+
     if (sort)
         sorts.unshift(sort);
     if (sorts) {
@@ -229,7 +229,7 @@ MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, cou
             query.populate(populate);
         });
     }
-    if (sortable) start=0, count=
+
     return query.skip(start).limit(count).execFind(function (err, documents) {
         if (err) {
             console.error('Unable to get documents for model because: ' + err);
