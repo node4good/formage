@@ -379,8 +379,8 @@ var routes = {
                         query[key] = value;
                     if (isDialog)
                         query['_dialog'] = 'yes';
-                    return '?' + _.map(query,function (value, key) {
-                        return encodeURIComponent(key) + '=' + encodeURIComponent(value);
+                    return '?' + _.map(query, function (v, k) {
+                        return encodeURIComponent(k) + '=' + encodeURIComponent(v);
                     }).join('&');
                 };
                 var orderLink = function (key) {
