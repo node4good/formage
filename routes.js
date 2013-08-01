@@ -377,8 +377,6 @@ var routes = {
                     var query = _.clone(req.query);
                     if (key)
                         query[key] = value;
-                    if (isDialog)
-                        query['_dialog'] = 'yes';
                     return '?' + _.map(query, function (v, k) {
                         return encodeURIComponent(k) + '=' + encodeURIComponent(v);
                     }).join('&');
