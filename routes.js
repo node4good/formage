@@ -249,21 +249,26 @@ var parseFilters = function (model_settings, filters, search) {
         var parts = key.split('__');
         key = parts[0];
         if (model.schema && model.schema.paths[key]) {
-            var type = model.schema.paths[key].options.type;
-            if (type == String) {
-                new_filters[key] = new RegExp(value, 'i');
+            var type = model.schema.paths[key].options.type.constructor.name;
+            switch (type) {
+                case 'String':
+                    new_filters[key] = new RegExp(value, 'i');
+                    break;
+                case 'Number':
+                    new_filters[key] = Number(value) || undefined;
+                    break;
+                case 'Boolean':
+                    new_filters[key] = value == 'true';
+                    break;
+                case 'ObjectId':
+                    new_filters[key] = value == 'true';
+                    break;
+                default:
+                    new_filters[key] = value;
             }
-            else if (type == Number) {
-                new_filters[key] = Number(value) || undefined;
-            }
-            else if (type == Boolean) {
-                new_filters[key] = value == 'true';
-            }
-            else
-                new_filters[key] = value;
-        }
-        else
+        } else {
             new_filters[key] = value;
+        }
         if (parts[1]) {
             var dict = {};
             dict['$' + parts[1]] = value;

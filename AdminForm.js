@@ -5,8 +5,8 @@ var forms = require('./forms')
     , mongoose = require.main.require('mongoose')
     , fields = forms.fields
     , widgets = forms.widgets
-    , MongooseForm = forms.forms.MongooseForm
-    , jest = require('jest');
+    , MongooseForm = forms.forms.MongooseForm;
+
 // Lazy load crypt
 var crypt = function () {return require('./models/mongoose_admin_user').crypt;};
 
@@ -53,61 +53,6 @@ var AdminForm = exports.AdminForm = MongooseForm.extend({
         this.scanFields(this.fields);
     }
 });
-
-
-//noinspection JSUnusedGlobalSymbols
-var _JestAdminResource = jest.Resource.extend({
-    init: function () {
-        this._super();
-
-        this.fields = {
-            id: null,
-            text: null
-        };
-
-        //noinspection JSUnusedGlobalSymbols
-        this.allowed_methods = ['get'];
-
-        //noinspection JSUnusedGlobalSymbols
-        this.filtering = {
-            data: null,
-            query: null,
-            id: null
-        };
-    },
-
-    get_objects: function (req, filters, sorts, limit, offset, callback) {
-        var data = JSON.parse(filters.data);
-        var model = mongoose.model(data.model);
-        if (filters.id) {
-            model.findById(filters.id, function (err, doc) {
-                var result = doc && {id: doc.id, text: doc.toString()};
-                callback(err, result);
-            });
-        }
-        else {
-            var escaped_filters = filters.query.replace(_escaper, "\\$&");
-            var query = data.query.replace(/__value__/g, escaped_filters);
-            model.find({'$where': query}).limit(limit).skip(offset).sort(sorts).exec(function (err, results) {
-                if (results) {
-                    if (results.objects) {
-                        results = results.objects;
-                    }
-                    results = results.map(function (object) { return { id: object.id, text: object.toString() }; });
-                }
-                callback(err, results);
-            });
-        }
-    }
-});
-
-
-exports.loadApi = function (app, path) {
-    var api = new jest.Api(path || 'admin_api', app);
-    api.register('ref', new _JestAdminResource());
-    api_path = '/' + api.path + 'ref';
-    api_loaded = true;
-};
 
 
 exports.AdminUserForm = AdminForm.extend({
@@ -162,4 +107,7 @@ exports.AdminUserForm = AdminForm.extend({
 
 
 
-
+exports.loadApi = function () {
+    var msg = (new Error).stack.split('\n')[1];
+    console.error("[Deprecated] There's no need for .loadApi%s", msg);
+};
