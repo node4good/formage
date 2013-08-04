@@ -1,14 +1,15 @@
 {
   "name": "formage",
   "description": "Admin GUI addon for mongoose and non mongoose projects on Express.js",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "main": "index.js",
   "author": {
-      "name": "Etai Peretz",
-      "email": "etai@empeeric.com",
-      "url": "http://www.empeeric.com/"
+    "name": "Etai Peretz",
+    "email": "etai@empeeric.com",
+    "url": "http://www.empeeric.com/"
   },
-  "contributors": [{
+  "contributors": [
+    {
       "name": "Ishai Jaffe",
       "email": "ishai@bablic.com"
     },
