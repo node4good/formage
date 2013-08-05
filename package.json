@@ -37,8 +37,7 @@
     "mongoose": ""
   },
   "bundleDependencies": [
-    "sji",
-    "nodestrum"
+    "sji"
   ],
   "keywords": [
     "admin",
