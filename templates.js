@@ -183,12 +183,12 @@ buf.push("<button" + (jade.attrs({ terse: true, 'value':('' + (action.value) + '
   }
 }).call(this);
 
-buf.push("</p></form></div>");
+buf.push("</p></form><div id=\"myModal\" tabindex=\"-1\" role=\"dialog\" style=\"width:1060px;height:624px\" class=\"modal hide fade\"><div class=\"modal-header\"><button type=\"button\" data-dismiss=\"modal\" class=\"close\">×</button><h3>Dialog</h3><div style=\"max-height:inherit\" class=\"modal-body\"><iframe src=\"\" style=\"zoom: 0.60;\" width=\"99.6%\" height=\"800\" frameborder=\"0\"></iframe></div><div class=\"modal-footer\"><button data-dismiss=\"modal\" class=\"btn\">OK</button></div></div></div></div>");
 if(!dialog)
 {
 buf.push("<footer class=\"footer\"><p><a href=\"http://github.com/Empeeric/formage-admin\">Formage-Admin</a> " + (jade.escape((jade.interp = version) == null ? '' : jade.interp)) + " , from&nbsp;<a href=\"http://empeeric.com\">Empeeric</a></p><a href=\"http://github.com/Empeeric/formage-admin\"><img" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/images/logo-40.png') }, {"src":true})) + "></a></footer>");
 }
-buf.push("</div><script type=\"text/javascript\">$.getJSON('http://registry.npmjs.org/formage-admin/latest?jsonp=?').done(function (pack) {\n    var version = '" + (jade.escape((jade.interp = version) == null ? '' : jade.interp)) + "';\n    var latest = pack.version;\n    if (latest > version)\n        $('#old-version').show('slow');\n});\n</script><script type=\"text/javascript\">var model = '" + (jade.escape((jade.interp = model_name) == null ? '' : jade.interp)) + "';\nvar dialog = " + (jade.escape((jade.interp = dialog) == null ? '' : jade.interp)) + ";\n</script><script" + (jade.attrs({ terse: true, 'src':("" + (rootPath) + "/js/lib/bootbox.min.js") }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':("" + (rootPath) + "/js/forms.js") }, {"src":true})) + "></script></body></html>");;return buf.join("");
+buf.push("</div><script type=\"text/javascript\">$.getJSON('http://registry.npmjs.org/formage-admin/latest?jsonp=?').done(function (pack) {\n    var version = '" + (jade.escape((jade.interp = version) == null ? '' : jade.interp)) + "';\n    var latest = pack.version;\n    if (latest > version)\n        $('#old-version').show('slow');\n});\n</script><script type=\"text/javascript\">var model = '" + (jade.escape((jade.interp = model_name) == null ? '' : jade.interp)) + "';\nvar dialog = " + (jade.escape((jade.interp = dialog) == null ? '' : jade.interp)) + ";\n</script><script" + (jade.attrs({ terse: true, 'src':("" + (rootPath) + "/js/lib/bootbox.min.js") }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':("" + (rootPath) + "/js/document.js") }, {"src":true})) + "></script></body></html>");;return buf.join("");
 }; 
 
 module.exports.layout = function anonymous(locals) {
