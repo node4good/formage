@@ -6,7 +6,7 @@ var Url = require('url'),
     forms = require('./forms').forms,
     permissions = require('./models/permissions'),
     AdminForm = require('./AdminForm').AdminForm,
-    Templates = require('./templates');
+    path = require('path');
 
 var MongooseAdmin;
 
@@ -50,7 +50,8 @@ var json_routes = {
         var name = req.body.model,
             id = req.body.id;
 
-        require('./dependencies').check(MongooseAdmin.singleton.models, name, id, function (err, results) {
+        var dependencies = require('./dependencies');
+        dependencies.check(MongooseAdmin.singleton.models, name, id, function (err, results) {
             var json = _.map(results, function (result) {
                 return result.name || result.title || result.toString();
             });
@@ -218,7 +219,7 @@ function renderForm(res, form, model, allow_delete, clone, dialog) {
                 head = form.render_head();
 
             //noinspection JSUnusedGlobalSymbols
-            return res.send(Templates.document({
+            return res.render('document.jade', {
                 rootPath: MongooseAdmin.singleton.root,
                 adminTitle: MongooseAdmin.singleton.getAdminTitle(),
                 pageTitle: 'Admin - ' + model.model.label,
@@ -236,7 +237,7 @@ function renderForm(res, form, model, allow_delete, clone, dialog) {
                 dialog: dialog,
                 pretty: true,
                 subCollections: subs
-            }));
+            });
         })
     });
 }
@@ -312,23 +313,23 @@ var routes = {
         MongooseAdmin.singleton.getRegisteredModels(req.admin_user, function (err, models) {
             if (err) return res.redirect(MongooseAdmin.singleton.buildPath('/error'));
             //noinspection JSUnusedGlobalSymbols
-            return res.send(Templates.models({
+            return res.render('models.jade', {
                 pageTitle: 'Admin Site',
                 allModels: models,
                 renderedHead: '',
                 adminTitle: MongooseAdmin.singleton.getAdminTitle(),
                 rootPath: MongooseAdmin.singleton.root
-            }));
+            });
         });
     },
 
     login: function (req, res) {
-        res.send(Templates.login({
+        res.render('login.jade', {
             pageTitle: 'Admin Login',
             adminTitle: MongooseAdmin.singleton.getAdminTitle(),
             rootPath: MongooseAdmin.singleton.root,
             renderedHead: ''
-        }));
+        });
     },
 
     logout: function (req, res) {
@@ -400,7 +401,7 @@ var routes = {
                         : field[0].toUpperCase() + field.slice(1).replace(/_/g, ' ');
                 };
 
-                return res.send(Templates.model({
+                return res.render('model.jade', {
                     adminTitle: MongooseAdmin.singleton.getAdminTitle(),
                     pageTitle: 'Admin - ' + modelConfig.model.label,
                     rootPath: MongooseAdmin.singleton.root,
@@ -425,7 +426,7 @@ var routes = {
                     cloneable: modelConfig.options.cloneable !== false && permissions.hasPermissions(req.admin_user, name, 'create'),
                     creatable: modelConfig.options.creatable !== false && permissions.hasPermissions(req.admin_user, name, 'create'),
                     dialog:isDialog
-                }));
+                });
             });
         });
     },
@@ -488,7 +489,7 @@ var routes = {
             var docName = doc.name || doc.title || doc.toString;
             if (typeof(docName) == 'function')
                 docName = docName.call(doc);
-            return res.send(Template.dialog_callback({data: {id: doc.id, label: docName}}));
+            return res.render('dialog_callback.jade', {data: {id: doc.id, label: docName}});
         };
         // Update
         if (doc_id) {
@@ -531,6 +532,18 @@ module.exports = function (admin, outer_app, root) {
     MongooseAdmin = admin;
     var nodestrum = require('nodestrum');
     var app = require.main.require('express')();
+    var Templates = require('./templates');
+
+    // Voodoo to get Express working with compiled templates
+    app.engine('jade', function(templatePath, locals, callback) {
+        var name = path.basename(templatePath, '.jade');
+        var ret = Templates[name](locals);
+        callback(null, ret);
+    });
+    app.set('view engine', 'jade');
+    app.set('views', __dirname + '/views');
+    // End voodoo
+
     app.use(nodestrum.domain_wrapper_middleware);
     app.locals.version = module.parent.exports.version;
 
