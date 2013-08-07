@@ -214,7 +214,7 @@ MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, cou
     var model_config = this.models[collectionName];
     var model = model_config.model;
     var query = model.find(filters);
-    var sorts = model_config.options.order_by || [];
+    var sorts = _.clone(model_config.options.order_by) || [];
     var populates = model_config.options.list_populate;
     var listFields = model_config.options.list || ['id'];
 
