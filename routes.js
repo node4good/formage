@@ -383,9 +383,10 @@ var routes = {
                     var query = _.clone(req.query);
                     if (key)
                         query[key] = value;
-                    return '?' + _.map(query, function (v, k) {
+                    return '?' + _(query).map(function (v, k) {
+                        if (!v || !k) return null;
                         return encodeURIComponent(k) + '=' + encodeURIComponent(v);
-                    }).join('&');
+                    }).compact().join('&');
                 };
                 var orderLink = function (key) {
                     if (req.query.order_by == key) {
