@@ -87,39 +87,26 @@ p.error {
     fieldset
 */
 
+.nf_fieldset, .nf_listfield_container {
+    clear: both;
+    margin: 0 0 15px 180px;
+    padding: 20px 15px 5px;
+    -webkit-transition: box-shadow 200ms, border 200ms;
+    position: relative;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    box-shadow: #eee 0 0 5px 0;
+}
+
 .nf_fieldset {
-    clear: both;
-    margin: 0 0 15px 180px;
-    padding: 20px 15px 5px 0;
     box-sizing: border-box;
-    border: 1px solid #ddd;
     background: white;
-    border-radius: 3px;
-    position: relative;
-    box-shadow: #eee 0 0 5px 0;
-    -webkit-transition: box-shadow 200ms, border 200ms;
 }
-.nf_listfield_container{
-    clear: both;
-    margin: 0 0 15px 180px;
-    padding: 20px 15px 5px 0;
-    position: relative;
-    border-radius: 3px;
-    -webkit-transition: box-shadow 200ms, border 200ms;
-    border:none;
-    box-shadow:none;
-}
-.nf_listfield_container.closed {
-    border: 1px solid #ddd;
-    box-shadow: #eee 0 0 5px 0;
-}
+
 .nf_fieldset > div, .nf_listfield_container > div {
     display: none;
 }
-.nf_fieldset.closed, .nf_listfield_container.closed {
-    border-color: white;
-    box-shadow: none;
-}
+
 .nf_fieldset.closed,
 .nf_fieldset > i,
 .nf_fieldset > h2,
@@ -129,7 +116,7 @@ p.error {
 {
     cursor: pointer;
 }
-.nf_fieldset:hover,
+.nf_fieldset.closed:hover,
 .nf_listfield_container.closed:hover{
     box-shadow: #bbb 0 0 6px 0;
 }
@@ -179,7 +166,7 @@ p.error {
     display: block;
     list-style: none;
     margin-bottom: 10px;
-    padding: 25px 5px 0 5px;
+    padding: 25px 15px 0 5px;
     border: 1px solid #ddd;
     background: #F7F7F9;
     border-radius: 2px;
