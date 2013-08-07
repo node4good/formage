@@ -12,7 +12,7 @@ var Widget = exports.Widget = Class.extend({
         this.options = options;
         this.limit = this.options.limit || 50;
         this.validators = options.validators || [];
-        this.attrs = {};
+        this.attrs = options.attrs || {};
         this.attrs.class = [];
         this.attrs.required = options.required || false;
         _.assign(options.attr, this.attrs);
