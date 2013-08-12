@@ -372,7 +372,7 @@ exports.PictureWidget = exports.InputWidget.extend({
 
 exports.MapWidget = exports.InputWidget.extend({
     init: function (options) {
-        this._super('hidden', options);
+        this._super(options.showLatLng ? 'text' : 'hidden', options);
         this.attrs.class.push('nf_mapview');
         this.static.js.push('//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&language=he&libraries=places&key=AIzaSyCmNLGdcM_OYwPwmedDsECk9O6ashE-rjg');
         this.static.js.push('/js/maps.js');
@@ -390,7 +390,7 @@ exports.MapWidget = exports.InputWidget.extend({
         var old_value = this.value;
         var lat = this.value && this.value.geometry ? this.value.geometry.lat : '';
         var lng = this.value && this.value.geometry ? this.value.geometry.lng : '';
-        this.value = lat + ',' + lng;
+        this.value = lat + '  ,  ' + lng;
         this._super(res);
         this.value = old_value;
         res.write('\n</div>\n');

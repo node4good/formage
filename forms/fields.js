@@ -710,7 +710,7 @@ var GeoField = exports.GeoField = BaseField.extend({
     },
     clean_value: function (req, callback) {
         var str = this.value;
-        var parts = str.split(',');
+        var parts = str.split(',').map(function(part){return part.trim()});
         if (parts.length !== 2 || parts[0] === '' || parts[1] === '')
             this.value = null;
         else {

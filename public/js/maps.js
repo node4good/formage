@@ -76,7 +76,8 @@ $.fn.geopicker = function(params) {
                     map.setCenter(location.geometry.location);
                 });
         };
-        center = { lat: latlng.split(',')[0], lng: latlng.split(',')[1]};
+        var parts = latlng.split(/\s*,\s*/);
+        center = { lat: Number(parts[0]), lng: Number(parts[1])};
         if(center.lat == 0.0 && center.lng == 0.0)
         {
             user_position(function(loc)
@@ -97,9 +98,27 @@ $.fn.geopicker = function(params) {
     var update_location = function(loc) {
         var lat = loc.lat();
         var lng = loc.lng();
-        elm.val(lat + ',' + lng);
+        elm.val(lat + '  ,  ' + lng);
     };
 
+    elm.change(function(e){
+        var val = $(this).val();
+        var parts = val.split(/\s*,\s*/);
+        var lat = Number(parts[0]);
+        var lng = Number(parts[1]);
+        if(!lat || !lng)
+            e.preventDefault();
+        else {
+            var loc =   new google.maps.LatLng(lat, lng);
+            marker.setPosition(loc);
+            map.setCenter(loc);
+            var geo = new google.maps.Geocoder();
+            geo.geocode({ latLng: loc }, function(results, status){
+                if(results && results.length > 0)
+                    $('#' + address_input).val(results[0].formatted_address);
+            });
+        }
+    })
     init();
 };
 
