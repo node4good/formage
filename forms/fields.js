@@ -549,6 +549,15 @@ var ListField_ = exports.ListField = BaseField.extend({
 
 });
 
+var MultiRefField = exports.MultiRefField = RefField.extend({
+	init: function (options,ref) {
+		options = options || {};
+		options.attrs = options.attrs || {};
+		options.attrs.multiple = true;
+		this._super(options,ref);
+	}
+});
+
 
 var FileField_ = exports.FileField = BaseField.extend({
     init: function (options) {
@@ -696,7 +705,7 @@ var PictureField = exports.PictureField = BaseField.extend({
                 result.original_size = req.files[upload_input_name].size;
                 self.value = result;
                 callback(null);
-            });
+            },self.options.cloudinary);
         } else
             callback(null);
     }

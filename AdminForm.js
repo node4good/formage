@@ -6,6 +6,7 @@ var forms = require('./forms')
     , fields = forms.fields
     , widgets = forms.widgets
     , MongooseForm = forms.forms.MongooseForm
+	,_ = require('lodash')
     , jest = require('jest');
 
 var api_loaded = false;
@@ -45,7 +46,17 @@ var AdminForm = exports.AdminForm = MongooseForm.extend({
                 value.widget = new widgets.ComboBoxWidget(value.options.widget_options);
             }
             else if (value instanceof fields.ListField) {
-                self.scanFields(value.fields);
+                if(value.fields['__self__']){
+                    var innerField = value.fields['__self__'];
+                    if(innerField instanceof fields.RefField){
+						var options = _.extend({},innerField.options,{
+							required:value.required
+						});
+                        form_fields[key] = new fields.MultiRefField(options,innerField.ref);
+					}
+                }
+                else
+                    self.scanFields(value.fields);
             }
         });
     },

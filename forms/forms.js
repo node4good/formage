@@ -392,6 +392,8 @@ var MongooseForm = exports.MongooseForm = BaseForm.extend({
                     single_field[attr] = mongoose_field.options[attr];
                 }
                 single_field['type'] = schemaType || mongoose_field.options.type[0];
+                if(single_field.ref)
+                    single_field.type = mongoose.Schema.ObjectId;
                 schema = new mongoose.Schema({__self__: single_field});
             }
             else {

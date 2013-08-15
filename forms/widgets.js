@@ -225,7 +225,7 @@ exports.ChoicesWidget = Widget.extend({
 
     isSelected: function (choice) {
         if (Array.isArray(this.value)) {
-            return Boolean(~this.value.indexOf(choice));
+            return Boolean(this.value.indexOf(choice)>0);
         } else {
             return choice == this.value;
         }
@@ -267,7 +267,7 @@ exports.ChoicesWidget = Widget.extend({
             }
             res.write('\n<option ' + selected2 + 'value="' + this.choices[i] + '">' + this.names[i] + '</option>\n');
         }
-        if (!found_selected && this.value) {
+        if (!found_selected && this.value && !Array.isArray(this.value)) {
             res.write('\n<option selected="selected" value="' + this.value + '">Current</option>\n');
         }
         res.write('\n</select>\n');
@@ -283,8 +283,16 @@ exports.RefWidget = exports.ChoicesWidget.extend({
             throw new TypeError('model was not provided');
         }
         this._super(options);
-        this.refForm = options.refForm || options.ref.label;
-        this.attrs['data-ref'] = this.refForm;
+		if(options.attrs && options.attrs.multiple){
+			this.static.js.push('/select2/select2.js');
+			this.static.css.push('/select2/select2.css');
+			this.attrs.class.push('nf_comb');
+			delete this.attrs['data-ref'];
+		}
+		else {
+			this.refForm = options.refForm || options.ref.label;
+			this.attrs['data-ref'] = this.refForm;
+		}
     },
     pre_render: function (callback) {
         var self = this;
