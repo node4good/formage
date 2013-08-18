@@ -37,7 +37,7 @@ html(lang='en')
                             block title
                                 a(href='#{rootPath}/') #{adminTitle}
                             block breadcrumb
-                        - if(userPanel)
+                        - if(typeof(userPanel) != 'undefined' && userPanel)
                             .user-panel
                                 !{userPanel}
 

@@ -2,7 +2,7 @@
 /dump/
 /node_modules/jade/node_modules/transformers/test/
 *.tgz
-/node_modules/buster
+/node_modules
 /node_modules/express
 /node_modules/.bin
 /node_modules/mocha
