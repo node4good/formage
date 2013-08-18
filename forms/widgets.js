@@ -14,7 +14,7 @@ var Widget = exports.Widget = Class.extend({
         this.validators = options.validators || [];
         this.attrs = options.attrs || {};
         this.attrs.class = [];
-        this.attrs.required = options.required || false;
+        this.attrs.required = options.required;
         _.assign(options.attr, this.attrs);
         this.attrs.class.push(this.attrs.required ? 'required' : 'optional');
         this.data = options.data || {};
@@ -37,8 +37,11 @@ var Widget = exports.Widget = Class.extend({
             .forEach(function(pair) {pair[0] = 'data-' + pair[0];})
             .concat(_.pairs(this.attrs), [['name', self.name], ['id','id_' + self.name]])
             .map(function (pair) {
-                pair[1] = Array.isArray(pair[1]) ? pair[1].join(' ') : pair[1];
-                return util.format('%s="%s"', escapeHTMLComponent(pair[0]), escapeHTMLComponent(pair[1]));
+                var name = pair[0];
+                var value = pair[1];
+                if (name in {required:1, selected:1, hidden:1} && !value) return '';
+                value = Object.isArray(value) ? value.join(' ') : value;
+                return util.format('%s="%s"', escapeHTMLComponent(name), escapeHTMLComponent(value));
             })
             .join(' ');
 
