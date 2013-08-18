@@ -40,7 +40,7 @@ var Widget = exports.Widget = Class.extend({
                 var name = pair[0];
                 var value = pair[1];
                 if (name in {required:1, selected:1, hidden:1} && !value) return '';
-                value = Object.isArray(value) ? value.join(' ') : value;
+                value = Array.isArray(value) ? value.join(' ') : value;
                 return util.format('%s="%s"', escapeHTMLComponent(name), escapeHTMLComponent(value));
             })
             .join(' ');
