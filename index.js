@@ -20,6 +20,8 @@ exports.createAdmin = function(app, options) {
 
     console.log('\x1b[36mformage-admin\x1b[0m at path', root);
     var admin = MongooseAdmin.singleton = new MongooseAdmin(app, root);
+	admin.tabs = options.tabs || [];
+	admin.dialogs = options.dialogs || {};
     routes(MongooseAdmin, app, root);
     return admin;
 };

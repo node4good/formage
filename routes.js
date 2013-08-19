@@ -527,7 +527,56 @@ var routes = {
         } else {
             MongooseAdmin.singleton.createDocument(req, req.admin_user, name, req.body, callback);
         }
-    }
+    },
+
+	renderDialogForm:function(form,req,res){
+		form.render_ready(function(err){
+			if (err) return res.redirect('/error');
+
+			var html = form.to_html(),
+				head = form.render_head();
+
+			return res.render('dialog.jade', {
+				rootPath: MongooseAdmin.singleton.root,
+				adminTitle: MongooseAdmin.singleton.getAdminTitle(),
+				pageTitle: 'Admin',
+
+				renderedDocument: html,
+				renderedHead: head,
+				error: form.errors ? Object.keys(form.errors).length > 0 : false,
+				dialog:true,
+				pretty: true
+			});
+		});
+	},
+	dialogGet:function(req,res){
+		var dialogName = req.params.dialogName;
+		var dialog = MongooseAdmin.singleton.dialogs[dialogName];
+		if(!dialog)
+			return res.send(500,'unknown dialog');
+
+		var form = new dialog.form(req);
+		return routes.renderDialogForm(form,req,res);
+	},
+
+	dialogPost:function(req,res){
+		var dialogName = req.params.dialogName;
+		var dialog = MongooseAdmin.singleton.dialogs[dialogName];
+		if(!dialog)
+			return res.send(500,'unknown dialog');
+
+		var form = new dialog.form(req);
+		form.is_valid(function(err,valid){
+			if(err)	return res.send(500,err);
+			if(!valid){
+				return routes.renderDialogForm(form,req,res)
+			}
+			else{
+				var data = form.clean_values;
+				res.render('dialog_callback.jade',{data:data});
+			}
+		});
+	}
 };
 
 
@@ -537,10 +586,14 @@ var auth = function(role) {
         if (!admin_user)
             return res.redirect(MongooseAdmin.singleton.buildPath('/login'));
 
-        if (role && !permissions.hasPermissions(admin_user, req.params.modelName, role))
+        if (role && !permissions.hasPermissions(admin_user, req.params && req.params.modelName, role))
             return res.send('No permissions');
 
         req.admin_user = admin_user;
+
+		res.locals({
+			tabs:MongooseAdmin.singleton.tabs || []
+		});
         next();
     };
 };
@@ -549,7 +602,7 @@ function userPanel(req,res,next){
     MongooseAdmin.singleton.renderUserPanel(req,function(err,html){
         if (err) return res.redirect(MongooseAdmin.singleton.buildPath('/error'));
 
-        res.locals({userPanel:html});
+        res.locals({userPanel:html,tab:''});
         next();
     });
 }
@@ -568,6 +621,8 @@ module.exports = function (admin, outer_app, root) {
     app.get('/model/:modelName', auth('view'),userPanel, routes.model);
     app.get('/model/:modelName/document/:documentId', auth('update'), routes.document);
     app.post('/model/:modelName/document/:documentId', auth(), routes.documentPost);
+	app.get('/dialog/:dialogName',auth(),routes.dialogGet);
+	app.post('/dialog/:dialogName',auth(),routes.dialogPost);
 
     app.post('/json/login', json_routes.login);
     app.post('/json/dependencies', json_routes.checkDependencies);
@@ -578,6 +633,18 @@ module.exports = function (admin, outer_app, root) {
     app.put('/json/model/:collectionName/document', json_routes.updateDocument);
     app.delete('/json/model/:collectionName/document', json_routes.deleteDocument);
     app.get('/json/model/:collectionName/linkedDocumentsList', json_routes.linkedDocumentsList);
+	if(MongooseAdmin.singleton.tabs){
+		MongooseAdmin.singleton.tabs.forEach(function(tab){
+			tab.handler.engine('jade', require('jade').__express);
+			//tab.handler.set("view options", { layout: __dirname + "/views/layout.jade" });
+			tab.handler.locals({rootPath:root,tab:tab.root});
+			tab.handler.use(auth(tab.permission));
+			tab.handler.loadRoutes();
+			app.use('/' + tab.root, tab.handler);
+			if(tab.permission)
+				permissions.registerPermission(tab.permission);
+		});
+	}
 
     if (root) {
         outer_app.use(root, app);

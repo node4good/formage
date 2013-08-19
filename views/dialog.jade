@@ -1,0 +1,18 @@
+extends layout
+block head
+    script(src="#{rootPath}/js/lib/bootbox.min.js")
+    script.
+        var dialog = true;
+
+
+block body
+    .page-header
+        h2 #{title}
+
+    - if (error)
+        p.alert.alert-error #{error}
+    form#document(enctype="multipart/form-data",method="post").clearfix
+        != renderedDocument
+        p.submit.btn-group
+            button#saveButton.btn.btn-large.btn-primary(type='submit',data-saving-text="Saving...") Next
+            a#cancelButton.btn.btn-large(href="#") Cancel

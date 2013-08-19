@@ -49,8 +49,12 @@ var AdminForm = exports.AdminForm = MongooseForm.extend({
                 if(value.fields['__self__']){
                     var innerField = value.fields['__self__'];
                     if(innerField instanceof fields.RefField){
-						var options = _.extend({},innerField.options,{
-							required:value.required
+						var options = _.extend({},
+							innerField.options,
+							value.options,{
+								required:value.required,
+								widget:null
+
 						});
                         form_fields[key] = new fields.MultiRefField(options,innerField.ref);
 					}
@@ -120,6 +124,9 @@ exports.loadApi = function (app, path) {
     api_loaded = true;
 };
 
+exports.AdminForm.getApiPath = function(){
+	return api_path;
+}
 
 var crypt = require('./models/mongoose_admin_user').crypt;
 

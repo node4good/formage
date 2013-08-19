@@ -38,8 +38,23 @@ exports.registerModel = function (modelName, permissions, callback) {
     },callback||function(){});
 };
 
+exports.registerPermission = function(permission,callback){
+	exports.model.update({name: permission}, {$set: {name: permission}}, {upsert: true}, function (err) {
+		if(err){
+			if(callback) callback(err);
+		}
+		else
+			exports.model.findOne({name: permission}, function (err, doc) {
+				if(doc)
+					permissions_by_name[doc.name] = doc.id;
+				if(callback) callback(err);
+			});
+	});
+
+}
+
 exports.getPermission = function (modelName, action) {
-    return permissions_by_name[modelName + '_' + action];
+    return permissions_by_name[modelName ? modelName + '_' + action : action];
 };
 
 exports.hasPermissions = function (user, modelName, action) {

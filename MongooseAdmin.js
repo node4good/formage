@@ -18,6 +18,8 @@ var MongooseAdmin = module.exports = function (app, root) {
     this.root = root;
     this.models = {};
     this.title = "Backoffice";
+	this.tabs = [];
+	this.dialogs = {};
 };
 
 /**

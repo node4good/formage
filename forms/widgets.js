@@ -73,6 +73,7 @@ var Widget = exports.Widget = Class.extend({
 
 exports.InputWidget = Widget.extend({
     init: function (type, options) {
+		options.attrs = options.attrs || {};
         options.attrs.type = options.attrs.type || type;
         this._super(options);
     },
@@ -225,7 +226,7 @@ exports.ChoicesWidget = Widget.extend({
 
     isSelected: function (choice) {
         if (Array.isArray(this.value)) {
-            return Boolean(this.value.indexOf(choice)>0);
+            return Boolean(this.value.indexOf(choice)>-1);
         } else {
             return choice == this.value;
         }
@@ -258,7 +259,8 @@ exports.ChoicesWidget = Widget.extend({
             if (selected) {
                 found_selected = true;
             }
-            res.write('\n<option ' + selected + 'value=""> ... </option>\n');
+			if(!this.options.attrs.multiple)
+            	res.write('\n<option ' + selected + 'value=""> ... </option>\n');
         }
         for (var i = 0; i < this.choices.length; i++) {
             var selected2 = this.isSelected(this.choices[i]) ? 'selected="selected" ' : '';

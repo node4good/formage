@@ -211,6 +211,8 @@
         var query_url = jElem.data('url');
         var query_data = decodeURIComponent(jElem.data('data'));
 
+		var allowCustom = jElem.data('allowcustom');
+
         jElem.select2({query:function (options) {
             var term = options.term;
             var page = options.page;
@@ -225,6 +227,9 @@
                         more:false,
                         context:context
                     };
+					if(allowCustom){
+						result.results.push({id:term,text:term});
+					}
                     callback(result);
                 });
         },
