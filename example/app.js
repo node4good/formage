@@ -8,26 +8,26 @@ require('../CompileTempletes.js');
 
 var app = express();
 
-app.configure('all', function(){
-    app.set('port', process.env.PORT || 8080);
-    app.set('mongo', process.env.MONGO_URL || 'mongodb://localhost/formage-admin-example');
-    app.set("view options", { layout: false, pretty: true });
+app.set('port', process.env.PORT || 8080);
+app.set('mongo', process.env.MONGO_URL || 'mongodb://localhost/formage-admin-example');
+app.set("view options", { layout: false, pretty: true });
 
-    app.use(express.favicon());
-    app.use(express.bodyParser());
-    app.use(express.methodOverride());
-    app.use(express.cookieParser('magical secret admin'));
-    app.use(express.cookieSession({cookie: { maxAge: 1000 * 60 * 60 *  24 }}));
-    app.use(express.static(path.join(__dirname, 'public')));
-    app.use(app.router);
-});
+app.use(express.favicon());
+app.use(express.bodyParser());
+app.use(express.methodOverride());
+app.use(express.cookieParser('magical secret admin'));
+app.use(express.cookieSession({cookie: { maxAge: 1000 * 60 * 60 *  24 }}));
+app.use(express.static(path.join(__dirname, 'public')));
+admin.serve_static();
 
 app.configure('development', function() {
+    app.use(express.logger('dev'));
     app.use(express.errorHandler());
 });
 
+app.use(app.router);
+
 require('mongoose').connect(app.get('mongo'));
-//require('./admin')(app);
 var formage = require('../index');
 var admin = formage.init(app, express, require('./models'), {
     title: 'Formage-Admin Example'

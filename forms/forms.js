@@ -16,9 +16,9 @@ var mongoose = require.main.require('mongoose');
 var FORM_EXCLUDE_FIELDS = ['__v'];
 
 var models = {};
-exports.set_models = function (mo) {
+exports.set_models = _.once(function (mo) {
     models = mo;
-};
+});
 
 exports.registerModel = function (name, model) {
     models[name] = model;

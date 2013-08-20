@@ -1,19 +1,24 @@
 'use strict';
 if (!module.parent) console.error('Please don\'t call me directly.I am just the main app\'s minion.') || process.process.exit(1);
 
-var fa = require('./index.js'),
+var path = require('path'),
+    MongooseAdmin = require('./MongooseAdmin.js'),
     _ = require('lodash'),
+    forms = require('./forms'),
+    ckeditorPath = require('node-ckeditor'),
+    registerRoutes = require('./routes'),
     LIST_EXCLUDED_FIELDS = ['order', '_id', 'show', '__v'];
+
 
 module.exports = function(app, express, models, opt) {
     opt || (opt = {});
 
-    var admin = fa.createAdmin(app, opt);
+    var admin = createAdmin(app, opt);
     admin.setAdminTitle(opt.title || app.get('site') + ' Admin');
     admin.ensureUserExists(opt.username || 'admin', opt.password || 'admin');
 
-    fa.serve_static(app, express, opt);
-    fa.register_models(models);
+    serve_static(app, express, opt);
+    forms.forms.set_models(models);
 
     Object.keys(models).sort().forEach(function(name) {
         var model = models[name];
@@ -40,9 +45,7 @@ module.exports = function(app, express, models, opt) {
         var options = _.extend({
             list: list,
             list_populate: list_populate,
-            cloneable: true,
-            disable_forms_css: true,
-            disable_forms_js: true
+            cloneable: true
         }, model.formage);
 
         if (paths.order) {
@@ -58,3 +61,29 @@ module.exports = function(app, express, models, opt) {
 
     return admin;
 };
+
+
+var serve_static = module.exports.serve_static = function (app, express, options) {
+    options = options || {};
+    options.root = options.root || 'admin';
+
+    if (module._is_serving_static) return;
+    module._is_serving_static = true;
+
+    app.use('/' + options.root, express.static(path.join(__dirname, '/public')));
+    app.use('/' + options.root + '/ckeditor', express.static(ckeditorPath));
+};
+
+
+var createAdmin = module.exports.createAdmin = function(app, options) {
+    options = options || {};
+    var root = '/' + (options.root || 'admin');
+
+    console.log('\x1b[36mformage-admin\x1b[0m at path', root);
+    var admin = MongooseAdmin.singleton = new MongooseAdmin(app, root);
+    registerRoutes(MongooseAdmin, app, root);
+    return admin;
+};
+
+
+module.exports.version = require(path.join(__dirname, 'package.json')).version;

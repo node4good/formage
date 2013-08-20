@@ -3,12 +3,16 @@ if (!module.parent) console.error('Please don\'t call me directly.I am just the 
 
 var util = require('util');
 var mongoose = require.main.require('mongoose');
+var _ = require('lodash');
 
 
 var CDN_PREFIX = '';
+exports.setCdnPrefix = function (prefix) {
+    CDN_PREFIX = prefix;
+};
 
 
-var init = function () {
+exports.loadTypes = _.once(function () {
     var File = function File (path, options) {
         File.super_.call(this, path, options);
     };
@@ -112,10 +116,4 @@ var init = function () {
 
     mongoose.Types.Html = String;
     mongoose.Schema.Types.Html = Html;
-};
-
-exports.setCdnPrefix = function (prefix) {
-    CDN_PREFIX = prefix;
-};
-
-exports.loadTypes = init;
+});
