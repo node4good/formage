@@ -341,6 +341,8 @@ var routes = {
         var name = req.params.modelName,
             modelConfig = MongooseAdmin.singleton.models[name];
 
+        if (!modelConfig) throw new Error("No model named" + req.params.modelName);
+
         if (modelConfig.is_single)
             return res.redirect(req.path.split('/model/')[0]);
 
@@ -434,36 +436,29 @@ var routes = {
 
     document: function (req, res) {
         var model_conf = MongooseAdmin.singleton.getModelConf(req.params.modelName),
-            id = req.params.documentId;
+            id = req.params.documentId,
+            orig_id = req.query['orig'];
         if (!model_conf) throw new Error("No model named" + req.params.modelName);
-        async.waterfall([
             // get document from DB
-            function (cb) {
-                if (model_conf.is_single)
-                    model_conf.model.findOne().exec(cb);
-                else if (id !== 'new')
-                    model_conf.model.findById(id, cb);
-                else
-                    cb(null, null);
-            },
-            // setup the Form
-            function (document, cb) {
-                var FormType = model_conf.options.form || AdminForm,
-                    options = _.extend({ instance: document }, model_conf.options);
-                if (id === 'new') {
-                    var filters = _.clone(req.query);
-                    delete filters._dialog;
-                    options.data = parseFilters(model_conf, filters);
-                }
-                var form = new FormType(req, options, model_conf.model);
-
-                cb(null, form);
+        var q;
+        if (model_conf.is_single) {
+            q = model_conf.model.findOne();
+        } else if (id === 'new') {
+            q = model_conf.model.findById(orig_id);
+        } else {
+            q = model_conf.model.findById(id);
+        }
+        q.exec(function (err, document) {
+            var FormType = model_conf.options.form || AdminForm,
+                options = _.extend({ instance: document }, model_conf.options),
+                is_dialog = Boolean(req.query['_dialog']),
+                editing = !model_conf.is_single && id !== 'new',
+                clone = !model_conf.is_single && id === 'new' && orig_id;
+            if (id === 'new') {
+                delete req.query['_dialog'];
+                options.data = parseFilters(model_conf, req.query);
             }
-        ], function (err, form) {
-            if (err) throw err;
-            var editing = !model_conf.is_single && id !== 'new',
-                clone = editing ? req.query.clone : false,
-                is_dialog = Boolean(req.query._dialog);
+            var form = new FormType(req, options, model_conf.model);
             return renderForm(res, form, model_conf, editing, clone, is_dialog);
         });
     },
@@ -529,7 +524,7 @@ function userPanel(req, res, next) {
 }
 
 
-module.exports = function (admin, outer_app, root) {
+module.exports = function (admin, outer_app, root, version) {
     MongooseAdmin = admin;
     var nodestrum = require('nodestrum');
     var app = require.main.require('express')();
@@ -546,7 +541,7 @@ module.exports = function (admin, outer_app, root) {
     // End voodoo
 
     app.use(nodestrum.domain_wrapper_middleware);
-    app.locals.version = module.parent.exports.version;
+    app.locals.version = version;
 
     app.get('/', auth(), userPanel, routes.index);
     app.get('/login', routes.login);

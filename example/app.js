@@ -2,7 +2,9 @@
 Error.stackTraceLimit = Infinity;
 var express = require('express'),
     http = require('http'),
-    path = require('path');
+    path = require('path'),
+    formage = require('../index');
+
 
 require('../CompileTempletes.js');
 
@@ -18,7 +20,7 @@ app.use(express.methodOverride());
 app.use(express.cookieParser('magical secret admin'));
 app.use(express.cookieSession({cookie: { maxAge: 1000 * 60 * 60 *  24 }}));
 app.use(express.static(path.join(__dirname, 'public')));
-admin.serve_static();
+formage.serve_static(app, express);
 
 app.configure('development', function() {
     app.use(express.logger('dev'));
@@ -28,7 +30,6 @@ app.configure('development', function() {
 app.use(app.router);
 
 require('mongoose').connect(app.get('mongo'));
-var formage = require('../index');
 var admin = formage.init(app, express, require('./models'), {
     title: 'Formage-Admin Example'
 });

@@ -90,7 +90,7 @@ block body
                                 td.span2.btn-group
                                     a.btn.btn-primary(href=url) Edit
                                     - if (cloneable)
-                                        a.btn(href=url+'?clone=true') Duplicate
+                                        a.btn(href="#{rootPath}/model/#{model_name}/document/new?orig=#{doc._id}") Duplicate
 
                 p.counter Viewing #{start+1}–#{start + documents.length} of #{total_count} documents
                 - if (total_count > count)

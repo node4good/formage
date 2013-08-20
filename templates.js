@@ -425,7 +425,7 @@ buf.push("</td>");
 buf.push("<td class=\"span2 btn-group\"><a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-primary')] }, {"href":true})) + ">Edit</a>");
 if (cloneable)
 {
-buf.push("<a" + (jade.attrs({ terse: true, 'href':(url+'?clone=true'), "class": [('btn')] }, {"href":true})) + ">Duplicate</a>");
+buf.push("<a" + (jade.attrs({ terse: true, 'href':("" + (rootPath) + "/model/" + (model_name) + "/document/new?orig=" + (doc._id) + ""), "class": [('btn')] }, {"href":true})) + ">Duplicate</a>");
 }
 buf.push("</td></tr>");
     }
@@ -499,7 +499,7 @@ buf.push("</td>");
 buf.push("<td class=\"span2 btn-group\"><a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-primary')] }, {"href":true})) + ">Edit</a>");
 if (cloneable)
 {
-buf.push("<a" + (jade.attrs({ terse: true, 'href':(url+'?clone=true'), "class": [('btn')] }, {"href":true})) + ">Duplicate</a>");
+buf.push("<a" + (jade.attrs({ terse: true, 'href':("" + (rootPath) + "/model/" + (model_name) + "/document/new?orig=" + (doc._id) + ""), "class": [('btn')] }, {"href":true})) + ">Duplicate</a>");
 }
 buf.push("</td></tr>");
     }
