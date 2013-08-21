@@ -29,7 +29,8 @@
     "jade": "",
 	"sji":"",
     "jest": "",
-    "cloudinary": ""
+    "cloudinary": "",
+	"underscore":""
   },
   "bundleDependencies": [
     "lodash",
