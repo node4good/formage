@@ -182,7 +182,6 @@ var EnumField = exports.EnumField = BaseField.extend({
         options.widget = options.widget || widgets.ChoicesWidget;
         options.widget_options = options.widget_options || {};
         options.widget_options.choices = options.widget_options.choices || choices;
-        options.required = true;
         this._super(options);
     },
     to_schema: function () {
@@ -224,11 +223,9 @@ var RefField = exports.RefField = EnumField.extend({
         if (!this.ref)
             throw new TypeError('Model was not provided');
         options = options || {};
-        this.required = 'required' in options ? options.required : false;
         options.widget = options.widget || widgets.RefWidget;
         options.widget_options = options.widget_options || {};
         options.widget_options.ref = options.widget_options.ref || ref;
-        options.widget_options.required = options.required;
         options.widget_options.limit = options.limit;
         this._super(options, []);
     },
