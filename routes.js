@@ -295,7 +295,7 @@ function getSearchQuery(model, searchValue) {
     var searchRule = model && model.options && model.options.search;
     if (!searchRule)
         return null;
-    var valueRegex = '/' + escapeRegExp(searchValue) + '/i';
+    var valueRegex = escapeRegExp(searchValue);
     console.log(searchRule);
     if (Array.isArray(searchRule)) {
         return searchRule.map(function (field) {
