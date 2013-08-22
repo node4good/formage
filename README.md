@@ -1,15 +1,15 @@
-![](http://i.imgur.com/9vVHCPY.png) Formage Admin
+![](http://i.imgur.com/9vVHCPY.png) Formage
 =============
 
-[Bootstraped](http://twitter.github.com/bootstrap/) admin forms for [Mongoose](http://mongoosejs.com/),
+[Bootstraped](http://twitter.github.com/bootstrap/) Admin Forms for [Mongoose](http://mongoosejs.com/),
 originally forked from [mongoose-admin](https://github.com/marccampbell/mongoose-admin).
 
 Usage
 -----
-`npm install formage-admin`
+`npm install formage`
 
 ```javascript
-var admin = require('formage-admin').init(app, express);
+var admin = require('formage').init(app, express);
 ```
 
 Also, look at `\example` directory.
@@ -56,8 +56,12 @@ model.single = true;
 field.label = 'Song Title';
 ```
 
-Sponsors
-========
+License
+-------
+MIT
+
+Sponsor
+--------
 <a id="stormlogo" href="http://www.jetbrains.com/webstorm/" alt="Smart IDE for web development with HTML Editor, CSS &amp; JavaScript support" title="Smart IDE for web development with HTML Editor, CSS &amp; JavaScript support">
   ![](http://i.imgur.com/ynQ6c.png)
 </a>
