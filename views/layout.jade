@@ -13,7 +13,8 @@ html(lang='en')
         script(src='#{rootPath}/js/lib/jquery-ui-1.10.2.custom.min.js')
         script(src='#{rootPath}/js/lib/bootstrap.js')
         script(src='#{rootPath}/js/dialog.js')
-        script var root = '#{rootPath}';
+        script.
+            var root = '#{rootPath}';
 
         != typeof(renderedHead) != 'undefined' ? renderedHead : ''
 

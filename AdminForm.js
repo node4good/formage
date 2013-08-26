@@ -101,9 +101,16 @@ var _JestAdminResource = jest.Resource.extend({
             });
         }
         else {
+            var qry;
             var escaped_filters = filters.query.replace(_escaper, "\\$&");
-            var query = data.query.replace(/__value__/g, escaped_filters);
-            model.find({$where: query}).limit(40).exec(function (err, results) {
+            if(data.query.indexOf('__value__') > -1){
+                var query = data.query.replace(/__value__/g, escaped_filters);
+                qry = model.find({$where: query});
+            }
+            else{
+                qry = model.find().where(data.query,new RegExp('^' + escaped_filters));
+            }
+            qry.limit(40).exec(function (err, results) {
                 if (results) {
                     if (results.objects) {
                         results = results.objects;
