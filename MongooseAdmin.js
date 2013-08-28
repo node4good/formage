@@ -162,8 +162,7 @@ MongooseAdmin.prototype.getRegisteredModels = function (user, callback) {
         })
         .filter(function (out_model) {
             //noinspection JSUnresolvedVariable
-            return
-                permissions.hasPermissions(user, out_model.modelName, 'view')
+            return permissions.hasPermissions(user, out_model.modelName, 'view')
                 && !out_model.options.hideFromMain;
         })
         .compact().valueOf();
