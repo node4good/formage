@@ -352,7 +352,7 @@ if (cloneable)
 {
 buf.push("<th>&nbsp;</th>");
 }
-buf.push("</tr></thead><tbody" + (jade.attrs({ terse: true, "class": [('' + (sortable?'sortable':'') + '')] }, {"class":true})) + ">");
+buf.push("</tr></thead><tbody" + (jade.attrs({ terse: true, "class": [(sortable?'sortable':'')] }, {"class":true})) + ">");
 // iterate documents
 ;(function(){
   var $$obj = documents;
@@ -376,7 +376,7 @@ buf.push("</td>");
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var field = $$obj[$index];
 
-buf.push("<td" + (jade.attrs({ terse: true, "class": [('span3'),('' + (field == 'picture'?'picture':'') + '')] }, {"class":true})) + ">");
+buf.push("<td" + (jade.attrs({ terse: true, "class": [('span3'),(field == 'picture'?'picture':'')] }, {"class":true})) + ">");
 if (field == 'picture')
 {
 if (doc[field] && doc[field].public_id)
@@ -400,7 +400,7 @@ buf.push("</td>");
     for (var $index in $$obj) {
       $$l++;      var field = $$obj[$index];
 
-buf.push("<td" + (jade.attrs({ terse: true, "class": [('span3'),('' + (field == 'picture'?'picture':'') + '')] }, {"class":true})) + ">");
+buf.push("<td" + (jade.attrs({ terse: true, "class": [('span3'),(field == 'picture'?'picture':'')] }, {"class":true})) + ">");
 if (field == 'picture')
 {
 if (doc[field] && doc[field].public_id)
@@ -450,7 +450,7 @@ buf.push("</td>");
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var field = $$obj[$index];
 
-buf.push("<td" + (jade.attrs({ terse: true, "class": [('span3'),('' + (field == 'picture'?'picture':'') + '')] }, {"class":true})) + ">");
+buf.push("<td" + (jade.attrs({ terse: true, "class": [('span3'),(field == 'picture'?'picture':'')] }, {"class":true})) + ">");
 if (field == 'picture')
 {
 if (doc[field] && doc[field].public_id)
@@ -474,7 +474,7 @@ buf.push("</td>");
     for (var $index in $$obj) {
       $$l++;      var field = $$obj[$index];
 
-buf.push("<td" + (jade.attrs({ terse: true, "class": [('span3'),('' + (field == 'picture'?'picture':'') + '')] }, {"class":true})) + ">");
+buf.push("<td" + (jade.attrs({ terse: true, "class": [('span3'),(field == 'picture'?'picture':'')] }, {"class":true})) + ">");
 if (field == 'picture')
 {
 if (doc[field] && doc[field].public_id)
@@ -679,7 +679,7 @@ buf.push("</div><script type=\"text/javascript\">$.getJSON('http://registry.npmj
 
 module.exports.models = function anonymous(locals) {
 var buf = [];
-var locals_ = (locals || {}),pageTitle = locals_.pageTitle,rootPath = locals_.rootPath,renderedHead = locals_.renderedHead,dialog = locals_.dialog,adminTitle = locals_.adminTitle,userPanel = locals_.userPanel,allModels = locals_.allModels,version = locals_.version;buf.push("<!DOCTYPE html><html lang=\"en\"><head><meta http-equiv=\"Content-type\" content=\"text/html; charset=utf-8\"><title>" + (null == (jade.interp = pageTitle) ? "" : jade.interp) + "</title><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/css/ui-lightness/jquery-ui-1.10.2.custom.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/css/bootstrap.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/css/main.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/css/forms.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/datepicker/datepicker.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/timepicker/timepicker.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/vendor/bootstrap-datetimepicker.min.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/css/maps.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/select2/select2.css') }, {"rel":true,"href":true})) + "><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/js/lib/jquery-1.9.1.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/js/lib/jquery-ui-1.10.2.custom.min.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/js/lib/bootstrap.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/timepicker/bootstrap-timepicker.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/vendor/bootstrap-datetimepicker.min.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/ckeditor/ckeditor.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/datepicker/bootstrap-datepicker.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/js/maps.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/select2/select2.js') }, {"src":true})) + ">;</script><script src=\"//api.filepicker.io/v1/filepicker.js\"></script><script>var root = '" + (jade.escape((jade.interp = rootPath) == null ? '' : jade.interp)) + "';</script>" + (null == (jade.interp = typeof(renderedHead) != 'undefined' ? renderedHead : '') ? "" : jade.interp) + "</head><body>");
+var locals_ = (locals || {}),pageTitle = locals_.pageTitle,rootPath = locals_.rootPath,renderedHead = locals_.renderedHead,dialog = locals_.dialog,adminTitle = locals_.adminTitle,userPanel = locals_.userPanel,sections = locals_.sections,version = locals_.version;buf.push("<!DOCTYPE html><html lang=\"en\"><head><meta http-equiv=\"Content-type\" content=\"text/html; charset=utf-8\"><title>" + (null == (jade.interp = pageTitle) ? "" : jade.interp) + "</title><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/css/ui-lightness/jquery-ui-1.10.2.custom.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/css/bootstrap.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/css/main.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/css/forms.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/datepicker/datepicker.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/timepicker/timepicker.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/vendor/bootstrap-datetimepicker.min.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/css/maps.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/select2/select2.css') }, {"rel":true,"href":true})) + "><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/js/lib/jquery-1.9.1.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/js/lib/jquery-ui-1.10.2.custom.min.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/js/lib/bootstrap.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/timepicker/bootstrap-timepicker.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/vendor/bootstrap-datetimepicker.min.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/ckeditor/ckeditor.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/datepicker/bootstrap-datepicker.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/js/maps.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/select2/select2.js') }, {"src":true})) + ">;</script><script src=\"//api.filepicker.io/v1/filepicker.js\"></script><script>var root = '" + (jade.escape((jade.interp = rootPath) == null ? '' : jade.interp)) + "';</script>" + (null == (jade.interp = typeof(renderedHead) != 'undefined' ? renderedHead : '') ? "" : jade.interp) + "</head><body>");
 if(!dialog)
 {
 buf.push("<header class=\"navbar navbar-static-top\"><div class=\"navbar-inner\"><div class=\"container\"><div class=\"btn-group pull-right\"><a" + (jade.attrs({ terse: true, 'href':('' + (rootPath) + '/'), "class": [('btn'),('btn-inverse')] }, {"href":true})) + "><i class=\"icon-home icon-white\"></i> Admin</a><a href=\"/\" class=\"btn\"><i class=\"icon-share\"></i> Site</a><a" + (jade.attrs({ terse: true, 'href':('' + (rootPath) + '/logout'), "class": [('btn')] }, {"href":true})) + "><div class=\"icon-lock\"></div> Logout</a></div><h1><a" + (jade.attrs({ terse: true, 'href':('' + (rootPath) + '/') }, {"href":true})) + ">" + (jade.escape((jade.interp = adminTitle) == null ? '' : jade.interp)) + "</a></h1>");
@@ -689,26 +689,37 @@ buf.push("<div class=\"user-panel\">" + (((jade.interp = userPanel) == null ? ''
 }
 buf.push("</div></div></header>");
 }
-buf.push("<div class=\"container\"><div id=\"old-version\" style=\"position: fixed;bottom: 1em;right: 1em;width: 30em;height: 4em;border-radius: 10px;display: block;opacity: 0.8;display:none\" class=\"alert alert-error\"><button type=\"button\" data-dismiss=\"alert\" class=\"close\">&times;</button><strong>Warning;</strong> There is a newer version of formage-admin.</div><div id=\"content\"><div class=\"page-header\"><h2>Model List</h2></div><ul class=\"models\">");
-// iterate allModels
+buf.push("<div class=\"container\"><div id=\"old-version\" style=\"position: fixed;bottom: 1em;right: 1em;width: 30em;height: 4em;border-radius: 10px;display: block;opacity: 0.8;display:none\" class=\"alert alert-error\"><button type=\"button\" data-dismiss=\"alert\" class=\"close\">&times;</button><strong>Warning;</strong> There is a newer version of formage-admin.</div><div id=\"content\"><div class=\"bs-example\"><ul class=\"sections list-group\">");
+// iterate sections
 ;(function(){
-  var $$obj = allModels;
+  var $$obj = sections;
+  if ('number' == typeof $$obj.length) {
+
+    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
+      var section = $$obj[$index];
+
+buf.push("<li class=\"section list-group-item\"><div class=\"panel panel-default\"><div class=\"panel-heading\"><h3>" + (jade.escape((jade.interp = section.name) == null ? '' : jade.interp)) + "</h3></div></div><div class=\"panel-body\"><ul class=\"models\">");
+// iterate section.models
+;(function(){
+  var $$obj = section.models;
   if ('number' == typeof $$obj.length) {
 
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var model = $$obj[$index];
 
 var url = rootPath + '/model/' + model.modelName
+{
 buf.push("<li><div class=\"btn-group pull-right\">");
 if (model.is_single)
 {
-buf.push("<a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/single'), "class": [('btn')] }, {"href":true})) + ">Edit</a>");
+buf.push("<a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/single'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">Edit</a>");
 }
 else
 {
-buf.push("<a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-info')] }, {"href":true})) + "><span" + (jade.attrs({ terse: true, 'id':('viewAll_' + (model.modelName) + '') }, {"id":true})) + ">View All</span></a><a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/new'), "class": [('btn')] }, {"href":true})) + ">New</a>");
+buf.push("<a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-info')] }, {"href":true})) + "><span" + (jade.attrs({ terse: true, 'id':('viewAll_' + (model.modelName) + '') }, {"id":true})) + ">View All</span></a><a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/new'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">New</a>");
 }
 buf.push("</div><a" + (jade.attrs({ terse: true, 'href':(url + (model.is_single ? '/document/single' : '')) }, {"href":true})) + "><h3>" + (jade.escape((jade.interp = model.label) == null ? '' : jade.interp)) + "</h3></a></li>");
+}
     }
 
   } else {
@@ -717,22 +728,85 @@ buf.push("</div><a" + (jade.attrs({ terse: true, 'href':(url + (model.is_single 
       $$l++;      var model = $$obj[$index];
 
 var url = rootPath + '/model/' + model.modelName
+{
 buf.push("<li><div class=\"btn-group pull-right\">");
 if (model.is_single)
 {
-buf.push("<a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/single'), "class": [('btn')] }, {"href":true})) + ">Edit</a>");
+buf.push("<a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/single'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">Edit</a>");
 }
 else
 {
-buf.push("<a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-info')] }, {"href":true})) + "><span" + (jade.attrs({ terse: true, 'id':('viewAll_' + (model.modelName) + '') }, {"id":true})) + ">View All</span></a><a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/new'), "class": [('btn')] }, {"href":true})) + ">New</a>");
+buf.push("<a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-info')] }, {"href":true})) + "><span" + (jade.attrs({ terse: true, 'id':('viewAll_' + (model.modelName) + '') }, {"id":true})) + ">View All</span></a><a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/new'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">New</a>");
 }
 buf.push("</div><a" + (jade.attrs({ terse: true, 'href':(url + (model.is_single ? '/document/single' : '')) }, {"href":true})) + "><h3>" + (jade.escape((jade.interp = model.label) == null ? '' : jade.interp)) + "</h3></a></li>");
+}
     }
 
   }
 }).call(this);
 
-buf.push("</ul></div>");
+buf.push("</ul></div></li>");
+    }
+
+  } else {
+    var $$l = 0;
+    for (var $index in $$obj) {
+      $$l++;      var section = $$obj[$index];
+
+buf.push("<li class=\"section list-group-item\"><div class=\"panel panel-default\"><div class=\"panel-heading\"><h3>" + (jade.escape((jade.interp = section.name) == null ? '' : jade.interp)) + "</h3></div></div><div class=\"panel-body\"><ul class=\"models\">");
+// iterate section.models
+;(function(){
+  var $$obj = section.models;
+  if ('number' == typeof $$obj.length) {
+
+    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
+      var model = $$obj[$index];
+
+var url = rootPath + '/model/' + model.modelName
+{
+buf.push("<li><div class=\"btn-group pull-right\">");
+if (model.is_single)
+{
+buf.push("<a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/single'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">Edit</a>");
+}
+else
+{
+buf.push("<a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-info')] }, {"href":true})) + "><span" + (jade.attrs({ terse: true, 'id':('viewAll_' + (model.modelName) + '') }, {"id":true})) + ">View All</span></a><a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/new'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">New</a>");
+}
+buf.push("</div><a" + (jade.attrs({ terse: true, 'href':(url + (model.is_single ? '/document/single' : '')) }, {"href":true})) + "><h3>" + (jade.escape((jade.interp = model.label) == null ? '' : jade.interp)) + "</h3></a></li>");
+}
+    }
+
+  } else {
+    var $$l = 0;
+    for (var $index in $$obj) {
+      $$l++;      var model = $$obj[$index];
+
+var url = rootPath + '/model/' + model.modelName
+{
+buf.push("<li><div class=\"btn-group pull-right\">");
+if (model.is_single)
+{
+buf.push("<a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/single'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">Edit</a>");
+}
+else
+{
+buf.push("<a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-info')] }, {"href":true})) + "><span" + (jade.attrs({ terse: true, 'id':('viewAll_' + (model.modelName) + '') }, {"id":true})) + ">View All</span></a><a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/new'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">New</a>");
+}
+buf.push("</div><a" + (jade.attrs({ terse: true, 'href':(url + (model.is_single ? '/document/single' : '')) }, {"href":true})) + "><h3>" + (jade.escape((jade.interp = model.label) == null ? '' : jade.interp)) + "</h3></a></li>");
+}
+    }
+
+  }
+}).call(this);
+
+buf.push("</ul></div></li>");
+    }
+
+  }
+}).call(this);
+
+buf.push("</ul></div></div>");
 if(!dialog)
 {
 buf.push("<footer class=\"footer\"><p><a href=\"http://github.com/Empeeric/formage-admin\">Formage-Admin</a> " + (jade.escape((jade.interp = version) == null ? '' : jade.interp)) + " , from&nbsp;<a href=\"http://empeeric.com\">Empeeric</a></p><a href=\"http://github.com/Empeeric/formage-admin\"><img" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/images/logo-40.png') }, {"src":true})) + "></a></footer>");
