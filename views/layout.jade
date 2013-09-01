@@ -71,14 +71,3 @@ html(lang='en')
                         a(href='http://empeeric.com') Empeeric
                     a(href='http://github.com/Empeeric/formage-admin')
                         img(src='#{rootPath}/images/logo-40.png')
-
-
-        script(type='text/javascript').
-            $.getJSON('http://registry.npmjs.org/formage-admin/latest?jsonp=?').done(function (pack) {
-                var version = '#{version}';
-                var latest = pack.version;
-                if (latest > version)
-                    $('#old-version').show('slow');
-            });
-
-        block scripts
