@@ -315,14 +315,15 @@ exports.FilepickerWidget = exports.InputWidget.extend({
         this.attrs.class.push('_filepicker');
         //noinspection JSUnresolvedVariable
         this.attrs['data-fp-apikey'] = process.env.FILEPICKER_API_KEY;
+        this.attrs['data-fp-button-class'] = "btn btn-primary";
     },
 
     render: function (res) {
         var raw_value = this.value || '';
         this.value = JSON.stringify(raw_value);
         this._super(res);
+        res.write(util.format('<a href="%s" target="_blank">%s</a>\n', raw_value.url || '#', raw_value.filename || ''));
         if (raw_value && raw_value.url) {
-            res.write(util.format('<a href="%s" target="_blank">%s</a>\n', raw_value.url, raw_value.filename));
             res.write(util.format('<input type="checkbox" name="%s_clear" value="false" /> Clear\n', this.name));
         }
     }

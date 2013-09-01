@@ -74,7 +74,7 @@ function initWidgets(ctx) {
     $('[data-ref]', ctx).each(refLink);
 
     // Wire FilePicker widget. FieldBinding is done automagicly by type="filepicker"
-    $('input[type=filepicker]').on('change', function (e) {
+    $('input[type=filepicker]', ctx).on('change', function (e) {
         e.preventDefault();
         //noinspection JSUnresolvedVariable
         var file = e.originalEvent.fpfile;
