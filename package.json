@@ -1,7 +1,7 @@
 {
   "name": "formage",
   "description": "Admin GUI addon for mongoose and non mongoose projects on Express.js",
-  "version": "1.6.10",
+  "version": "1.6.11",
   "main": "index.js",
   "author": {
     "name": "Etai Peretz",
