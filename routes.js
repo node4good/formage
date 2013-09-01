@@ -313,9 +313,18 @@ var routes = {
         MongooseAdmin.singleton.getRegisteredModels(req.admin_user, function (err, models) {
             if (err) return res.redirect(MongooseAdmin.singleton.buildPath('/error'));
             //noinspection JSUnusedGlobalSymbols
+            var sections = _(models)
+                .groupBy(function(item) {return item.options.section;})
+                .tap(function (val) {
+                    val.main = val.undefined;
+                    delete val.undefined;
+                    return val;
+                })
+                .map(function(value, key) { return {name: key, models: value}; }).valueOf();
+
             return res.render('models.jade', {
                 pageTitle: 'Admin Site',
-                allModels: models,
+                sections: sections,
                 renderedHead: '',
                 adminTitle: MongooseAdmin.singleton.getAdminTitle(),
                 rootPath: MongooseAdmin.singleton.root

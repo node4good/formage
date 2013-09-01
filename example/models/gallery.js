@@ -14,3 +14,4 @@ schema.methods.toString = function() {
 };
 
 var gallery = module.exports = mongoose.model('gallery', schema);
+gallery.formage = {section:'cms'};

@@ -66,7 +66,7 @@ block body
 
                             - if (cloneable)
                                 th &nbsp;
-                    tbody(class='#{sortable?'sortable':''}')
+                    tbody(class=sortable?'sortable':'')
                         - each doc in documents
                             - var url = rootPath + '/model/' + model_name + '/document/' + doc._id
                             tr(id=doc._id)
@@ -77,7 +77,7 @@ block body
                                             i.icon-resize-vertical
 
                                 - each field in list_fields
-                                    td.span3(class='#{field == 'picture'?'picture':''}')
+                                    td.span3(class=field == 'picture'?'picture':'')
                                         - if (field == 'picture')
                                             - if (doc[field] && doc[field].public_id)
                                                 a(href=url)
