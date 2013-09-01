@@ -188,7 +188,7 @@ if(!dialog)
 {
 buf.push("<footer class=\"footer\"><p><a href=\"http://github.com/Empeeric/formage-admin\">Formage-Admin</a> " + (jade.escape((jade.interp = version) == null ? '' : jade.interp)) + " , from&nbsp;<a href=\"http://empeeric.com\">Empeeric</a></p><a href=\"http://github.com/Empeeric/formage-admin\"><img" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/images/logo-40.png') }, {"src":true})) + "></a></footer>");
 }
-buf.push("</div></body></html>");;return buf.join("");
+buf.push("</div><script type=\"text/javascript\">var model = '" + (jade.escape((jade.interp = model_name) == null ? '' : jade.interp)) + "';\nvar dialog = " + (jade.escape((jade.interp = dialog) == null ? '' : jade.interp)) + ";\n</script><script" + (jade.attrs({ terse: true, 'src':("" + (rootPath) + "/js/lib/bootbox.min.js") }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':("" + (rootPath) + "/js/document.js") }, {"src":true})) + "></script></body></html>");;return buf.join("");
 }; 
 
 module.exports.layout = function anonymous(locals) {
@@ -228,7 +228,7 @@ if(!dialog)
 {
 buf.push("<footer class=\"footer\"><p><a href=\"http://github.com/Empeeric/formage-admin\">Formage-Admin</a> " + (jade.escape((jade.interp = version) == null ? '' : jade.interp)) + " , from&nbsp;<a href=\"http://empeeric.com\">Empeeric</a></p><a href=\"http://github.com/Empeeric/formage-admin\"><img" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/images/logo-40.png') }, {"src":true})) + "></a></footer>");
 }
-buf.push("</div></body></html>");;return buf.join("");
+buf.push("</div><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/js/login.js') }, {"src":true})) + "></script></body></html>");;return buf.join("");
 }; 
 
 module.exports.model = function anonymous(locals) {
@@ -674,7 +674,7 @@ if(!dialog)
 {
 buf.push("<footer class=\"footer\"><p><a href=\"http://github.com/Empeeric/formage-admin\">Formage-Admin</a> " + (jade.escape((jade.interp = version) == null ? '' : jade.interp)) + " , from&nbsp;<a href=\"http://empeeric.com\">Empeeric</a></p><a href=\"http://github.com/Empeeric/formage-admin\"><img" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/images/logo-40.png') }, {"src":true})) + "></a></footer>");
 }
-buf.push("</div></body></html>");;return buf.join("");
+buf.push("</div><script>var startIndex = " + (jade.escape((jade.interp = start) == null ? '' : jade.interp)) + ",\n    model = '" + (jade.escape((jade.interp = model_name) == null ? '' : jade.interp)) + "';\n    </script><script" + (jade.attrs({ terse: true, 'src':("" + (rootPath) + "/js/lib/bootbox.min.js") }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':("" + (rootPath) + "/js/model.js") }, {"src":true})) + "></script></body></html>");;return buf.join("");
 }; 
 
 module.exports.models = function anonymous(locals) {
@@ -811,6 +811,6 @@ if(!dialog)
 {
 buf.push("<footer class=\"footer\"><p><a href=\"http://github.com/Empeeric/formage-admin\">Formage-Admin</a> " + (jade.escape((jade.interp = version) == null ? '' : jade.interp)) + " , from&nbsp;<a href=\"http://empeeric.com\">Empeeric</a></p><a href=\"http://github.com/Empeeric/formage-admin\"><img" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/images/logo-40.png') }, {"src":true})) + "></a></footer>");
 }
-buf.push("</div></body></html>");;return buf.join("");
+buf.push("</div><script" + (jade.attrs({ terse: true, 'src':("" + (rootPath) + "/js/models.js") }, {"src":true})) + "></script><script type=\"text/javascript\">$.getJSON('http://registry.npmjs.org/formage-admin/latest?jsonp=?').done(function (pack) {\n    var version = '" + (jade.escape((jade.interp = version) == null ? '' : jade.interp)) + "';\n    var latest = pack.version;\n    if (latest > version)\n        $('#old-version').show('slow');\n});</script></body></html>");;return buf.join("");
 }; 
 
