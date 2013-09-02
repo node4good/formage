@@ -5,18 +5,22 @@ block title
     | Formage-Admin
 
 block body
+    div.error
     form.form-horizontal(role="form",method="post")
         div.input-group
             span.input-group-addon @
             input(type="text",name="username",class="form-control",placeholder="Username")
-
+            if(error)
+                span.input-group-addon.label-warning Wrong
         br
 
         div.input-group
             span.input-group-addon.glyphicon.glyphicon-asterisk
             input(type="password",name="password",class="form-control",placeholder="Password")
-
+            if(error)
+                span.input-group-addon.label-warning Wrong
         br
+
 
         div.controls.btn-group
             button#loginButton.btn.btn-large.btn-primary(type='submit',data-loading-text='Wait...') Login
