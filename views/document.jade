@@ -1,4 +1,12 @@
 extends layout.jade
+block head
+    - if (model.static)
+        - if (model.static.js)
+            - each f in model.static.js
+                script(src=f)
+        - if (model.static.css)
+            - each f in model.static.css
+                link(rel='stylesheet', href=f)
 
 block breadcrumb
     span.divider /
@@ -7,41 +15,39 @@ block breadcrumb
     | editor
 
 block body
-    - if (!isDialog)
-        .page-header
-            h2 #{model_label} editor
+    .page-header
+        h2 #{model_label} editor
 
-    - if (Object.keys(errors).length)
+    - if (errors)
         p.alert.alert-error Saving failed, fix the following errors and try again.
-    - if (errors.exception)
-        p.alert.alert-error #{errors.exception}
 
-    form#document(enctype="multipart/form-data",method="post").clearfix
-        != form
+    form#document(enctype="multipart/form-data", method="post", role="form").clearfix.form-inline
+        != renderedDocument
         - if(subCollections && subCollections.length)
             - each sub in subCollections
                 a.subCollection(href="#{rootPath}/model/#{sub.model}?#{sub.field}=#{sub.value}") #{sub.label} - #{sub.count? sub.count + ' Items' : 'No items'}
-
         p.submit.btn-group
             button#saveButton.btn.btn-large.btn-primary(type='submit',data-saving-text="Saving...") Save
             a#cancelButton.btn.btn-large(href="#{rootPath}/model/#{model_name}") Cancel
             - if (allow_delete)
                 button#deleteButton.btn.btn-large.btn-danger(type='button',data-loading-text='Deleting...') Delete
             - each action in actions
-                - if (action.id != 'delete')
-                    button.action.btn.btn-large(value='#{action.id}') #{action.label}
+                - if (action.value != 'delete')
+                    button.action.btn.btn-large(value='#{action.value}') #{action.label}
 
-    - if (!isDialog)
-        #myModal.modal.hide.fade(tabindex='-1', role='dialog', style='width:1060px;height:624px')
-            .modal-header
-                button.close(type='button', data-dismiss='modal') ×
-                h3#myModalLabel &nbsp;
+    #myModal.modal.hide.fade(tabindex='-1', role='dialog', style='width:1060px;height:624px')
+        .modal-header
+            button.close(type='button', data-dismiss='modal') ×
+            h3 Dialog
             .modal-body(style='max-height:inherit')
                 iframe(src='', style='zoom: 0.60;', width='99.6%', height='800', frameborder='0')
+            .modal-footer
+                button.btn(data-dismiss='modal') OK
 
 block scripts
-    script.
+    script(type='text/javascript').
         var model = '#{model_name}';
-        var isDialog = !{JSON.stringify(Boolean(isDialog))};
+        var dialog = #{dialog};
 
+    script(src="#{rootPath}/js/lib/bootbox.min.js")
     script(src="#{rootPath}/js/document.js")

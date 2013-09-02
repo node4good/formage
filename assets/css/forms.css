@@ -1,44 +1,36 @@
-.container { width: 1200px; }
-.field input, .field textarea { width: 400px; }
-.field textarea { height: 100px; }
-.nf_fieldset input[type="checkbox"], input[type="radio"] {
+input, .form-control { width: 300px; }
+input.form-control[type="checkbox"], input.form-control[type="radio"] {
     width: 1em;
 }
-.nf_fieldset select { min-width: 314px; }
-.nf_fieldset input[type="file"] {
+select.form-control { min-width: 314px; }
+input.form-control[type="file"] {
     width: 200px;
     margin-right: 15px;
 }
-.nf_fieldset textarea {
+textarea.form-control {
     width: 400px;
     height: 200px;
 }
-.nf_fieldset input[type="file"] + input[type=checkbox] {
+input[type="file"] + input[type=checkbox] {
     margin: 0 10px;
 }
 
-.nf_fieldset p.error {
+p.error {
     width: 100%;
     margin: 0 auto 10px auto;
 }
-
-.field input, .field select, .field textarea {
-    margin: 2px 0 10px;
-}
-
-
 
 /*
     clearfix
 */
 .field:before,
 .field:after {
-    content: "";
-    display: table;
+    content:"";
+    display:table;
 }
-.field:after { clear: both; }
-.field { zoom: 1; }
-/* For IE 6/7 (trigger hasLayout) */
+.field:after { clear:both; }
+.field { zoom:1; } /* For IE 6/7 (trigger hasLayout) */
+
 
 /*
     field
@@ -48,12 +40,10 @@
 }
 .field .field_label {
     float: left;
-    width: 100px;
-    min-height: 30px;
-    padding: 5px 15px 0 0;
+    width: 150px; min-height: 30px;
+    padding: 5px 30px 0 0;
     text-align: right;
     overflow: hidden;
-    margin-top: -4px;
 }
 .field span.error {
     /*float: right;*/
@@ -66,17 +56,21 @@
     border-radius: 4px;
 }
 
+
 /*
     widgets
 */
 .nf_widget {
-    margin: 0 0 10px 115px;
+    margin: 0 0 10px 180px;
 }
 .nf_add {
     margin-bottom: 10px;
 }
 .select2-container {
     min-width: 314px;
+}
+.nf_datepicker {
+    width: 273px;
 }
 .input-append {
     float: left;
@@ -90,30 +84,26 @@
     top: 35px; left: 20px;
 }
 
+
+
 /*
     fieldset
 */
 
 .nf_fieldset, .nf_listfield_container {
     clear: both;
-    margin: 0 0 15px 115px;
-    padding: 20px 20px 5px;
-    -webkit-transition: box-shadow .2s, border .2s;
+    margin: 0 0 15px 180px;
+    padding: 20px 15px 5px;
+    -webkit-transition: box-shadow 200ms, border 200ms;
     position: relative;
     border: 1px solid #ddd;
     border-radius: 3px;
     box-shadow: #eee 0 0 5px 0;
-    min-width: 585px;
-}
-.nf_listfield_container {
-    min-height: 30px;
-    background: white;
 }
 
 .nf_fieldset {
     box-sizing: border-box;
     background: white;
-    min-height: 30px;
 }
 
 .nf_fieldset > div, .nf_listfield_container > div {
@@ -125,33 +115,36 @@
 .nf_fieldset > h2,
 .nf_listfield_container.closed,
 .nf_listfield_container > i,
-.nf_listfield_container > label {
+.nf_listfield_container > label
+{
     cursor: pointer;
 }
 .nf_fieldset.closed:hover,
-.nf_listfield_container.closed:hover {
+.nf_listfield_container.closed:hover{
     box-shadow: #bbb 0 0 6px 0;
 }
-.nf_fieldset > h2,
-.nf_listfield_container > label {
+.nf_fieldset > h2,.nf_listfield_container > label {
     font-size: 20px;
     text-align: right;
     width: 150px;
     position: absolute;
-    margin: -21px 0 0 -145px;
-    white-space: nowrap;
+    margin: -21px 0 0 -180px;
+    word-break: break-all;
     line-height: 1.5em;
 }
-.nf_fieldset > h2 {
-    margin: -20px 0 0 -185px;
-}
-
 .nf_fieldset .field {
-    /*overflow: hidden;*/
+    overflow: hidden;
 }
-.nf_fieldset > i, .nf_listfield_container > i {
+.nf_fieldset > i,.nf_listfield_container > i {
     position: absolute; top: 5px; left: 5px;
 }
+.nf_fieldset .nf_fieldset .nf_fieldset input,
+.nf_fieldset .nf_fieldset .nf_fieldset textarea,
+.nf_fieldset .nf_fieldset .nf_fieldset select {
+    width: 150px;
+}
+
+
 
 /*
     list field
@@ -159,17 +152,15 @@
 .nf_listfield_container > .field_label {
     font-size: 20px;
     font-weight: bold;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    user-select: none;
-    margin-top: -25px;
-    margin-left: -135px;
+}
+.nf_listfield_container > span.error {
+    display: none;
 }
 .nf_hidden_template {
     display: none;
 }
 .nf_listfield {
-    /*margin-top: 4px;*/
+    margin-top:4px;
 }
 .nf_listfield ul {
     margin: 0;
@@ -178,7 +169,7 @@
     display: block;
     list-style: none;
     margin-bottom: 10px;
-    padding: 10px 10px 0;
+    padding: 25px 15px 0 5px;
     border: 1px solid #ddd;
     background: #F7F7F9;
     border-radius: 2px;
@@ -204,25 +195,25 @@
     right: 20px;
     cursor: move;
 }
-.nf_listfield_container > .list_summary {
-    position: static;
-    font-size: 14px;
-    margin: -5px 0 0 10px;
-    text-align: left;
-    display: inline-block;
+.nf_listfield_container > .list_summary{
+    right: 18px;
+    top: 20px;
+    display:none;
 }
-.nf_listfield_container.closed > .list_summary {
-    /*height: 30px;*/
+.nf_listfield_container.closed > .list_summary{
+    display:block;
 }
 /*
     Auto Complete
 */
 .ui-combobox {
 }
+
 .ui-combobox input {
     float: left;
     padding: 5px;
 }
+
 .ui-combobox a {
     float: left;
     height: 30px;
@@ -239,64 +230,9 @@
     margin-bottom: 9px;
 }
 
-.subCollection {
+.subCollection{
     font-size: 20px;
-    line-height: 30px;
-    float: left;
-    clear: left;
-}
-
-
-.field input.file-clear {
-    width: 1em;
-}
-
-.nf_listfield .list_summary {
-    display: inline;
-    margin: 1em;
-}
-
-.nf_listfield_container.closed {
-    min-width: 372px;
-    width: 372px;
-    min-height: 6px;
-}
-
-/* indicates a link to a new window */
-a[target='_blank'] {
-    color: forestgreen;
-}
-
-#filters ul.nav-list {
-    padding: 0;
-}
-
-
-#filters input.literal {
-    width:140px;
-}
-
-.file-link {
-    margin: 0 5px;
-}
-
-.thumb-picker {
-    border: 1px solid #ddd;
-    border-radius: 2px;
-    box-shadow: #eee 0 0 2px 0;
-}
-
-
-.th-medium {
-    width: 100px;
-}
-
-.th-slim {
-    width: 85px;
-    text-align: center;
-}
-
-.th-superslim {
-    width: 60px;
-    text-align: center;
+    line-height:30px;
+    float:left;
+    clear:left;
 }
