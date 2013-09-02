@@ -5,21 +5,18 @@ block title
     | Formage-Admin
 
 block body
-    form.form-horizontal
-        .control-group
-            label.control-label(for='username') Username
-            .controls
-                input#username(type='text', name='username')
+    form.form-horizontal(role="form",method="post")
+        div.input-group
+            span.input-group-addon @
+            input(type="text",name="username",class="form-control",placeholder="Username")
 
-        .control-group
-            label.control-label(for='password') Password
-            .controls
-                input#password(type='password', name='password')
+        br
 
-        .controls
+        div.input-group
+            span.input-group-addon.glyphicon.glyphicon-asterisk
+            input(type="password",name="password",class="form-control",placeholder="Password")
+
+        br
+
+        div.controls.btn-group
             button#loginButton.btn.btn-large.btn-primary(type='submit',data-loading-text='Wait...') Login
-
-block scripts
-    script(src='#{rootPath}/js/login.js')
-
-
