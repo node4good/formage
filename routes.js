@@ -12,20 +12,6 @@ var MongooseAdmin;
 
 
 var json_routes = {
-    login: function (req, res, next) {
-        MongooseAdmin.singleton.login(req.body.username, req.body.password, function (err, admin_user) {
-            if (err)
-                return next(err);
-
-            if (!admin_user)
-                return res.send(401, 'Not authorized');
-
-            req.session._mongooseAdminUser = admin_user.toSessionStore();
-            return res.json({});
-        });
-    },
-
-
     documents: function (req, res) {
         var admin_user = MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser);
         if (!admin_user) return res.json(401);
@@ -333,11 +319,26 @@ var routes = {
     },
 
     login: function (req, res) {
+        req.session._loginRefferer = req.get('Referrer');
         res.render('login.jade', {
             pageTitle: 'Admin Login',
             adminTitle: MongooseAdmin.singleton.getAdminTitle(),
             rootPath: MongooseAdmin.singleton.root,
             renderedHead: ''
+        });
+    },
+
+    postLogin: function (req, res) {
+        MongooseAdmin.singleton.login(req.body.username, req.body.password, function (err, admin_user) {
+            if (err) throw err;
+
+            if (!admin_user)
+                return res.send(401, 'Not authorized');
+
+            req.session._mongooseAdminUser = admin_user.toSessionStore();
+            var dest = req.session._loginRefferer || req.app.admin_root;
+            delete req.session._loginRefferer;
+            return res.redirect(dest);
         });
     },
 
@@ -554,12 +555,12 @@ module.exports = function (admin, outer_app, root, version) {
 
     app.get('/', auth(), userPanel, routes.index);
     app.get('/login', routes.login);
+    app.post('/login', routes.postLogin);
     app.get('/logout', routes.logout);
     app.get('/model/:modelName', auth('view'), userPanel, routes.model);
     app.get('/model/:modelName/document/:documentId', auth('update'), routes.document);
     app.post('/model/:modelName/document/:documentId', auth(), routes.documentPost);
 
-    app.post('/json/login', json_routes.login);
     app.post('/json/dependencies', json_routes.checkDependencies);
     app.get('/json/documents', json_routes.documents);
     app.post('/json/model/:collectionName/order', json_routes.orderDocuments);
