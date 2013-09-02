@@ -320,6 +320,7 @@ var routes = {
 
     login: function (req, res) {
         res.render('login.jade', {
+            error: req.query.error,
             pageTitle: 'Admin Login',
             adminTitle: MongooseAdmin.singleton.getAdminTitle(),
             rootPath: MongooseAdmin.singleton.root,
@@ -332,7 +333,7 @@ var routes = {
             if (err) throw err;
 
             if (!admin_user)
-                return res.send(401, 'Not authorized');
+                return res.redirect(MongooseAdmin.singleton.buildPath('/login') + '?error=true');
 
             req.session._mongooseAdminUser = admin_user.toSessionStore();
             var dest = MongooseAdmin.singleton.buildPath(req.session._loginRefferer);
