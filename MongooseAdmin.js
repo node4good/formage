@@ -26,7 +26,7 @@ var MongooseAdmin = module.exports = function (app, root) {
  * @param {String} path
  */
 MongooseAdmin.prototype.buildPath = function(path) {
-    return this.root + path;
+    return this.root + (path || '');
 };
 
 MongooseAdmin.prototype.getAdminTitle = function() {

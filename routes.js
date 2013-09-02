@@ -319,7 +319,6 @@ var routes = {
     },
 
     login: function (req, res) {
-        req.session._loginRefferer = req.get('Referrer');
         res.render('login.jade', {
             pageTitle: 'Admin Login',
             adminTitle: MongooseAdmin.singleton.getAdminTitle(),
@@ -336,7 +335,7 @@ var routes = {
                 return res.send(401, 'Not authorized');
 
             req.session._mongooseAdminUser = admin_user.toSessionStore();
-            var dest = req.session._loginRefferer || req.app.admin_root;
+            var dest = MongooseAdmin.singleton.buildPath(req.session._loginRefferer);
             delete req.session._loginRefferer;
             return res.redirect(dest);
         });
@@ -344,7 +343,9 @@ var routes = {
 
     logout: function (req, res) {
         req.session._mongooseAdminUser = undefined;
-        res.redirect(MongooseAdmin.singleton.buildPath('/'));
+        var ref = req.get('Referrer') || '';
+        var ref_rel = Url.parse(ref).path;
+        res.redirect(ref_rel);
     },
 
     model: function (req, res) {
@@ -511,11 +512,15 @@ var routes = {
 var auth = function (role) {
     return function (req, res, next) {
         var admin_user = MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser);
-        if (!admin_user)
+        if (!admin_user) {
+            req.session._loginRefferer = req.url;
             return res.redirect(MongooseAdmin.singleton.buildPath('/login'));
+        }
 
-        if (role && !permissions.hasPermissions(admin_user, req.params.modelName, role))
+        if (role && !permissions.hasPermissions(admin_user, req.params.modelName, role)) {
+            req.session._loginRefferer = req.url;
             return res.send('No permissions');
+        }
 
         req.admin_user = admin_user;
         return next();
