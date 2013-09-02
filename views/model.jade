@@ -1,5 +1,13 @@
 extends layout.jade
 
+mixin fielddesc(value, type)
+    - var cloudinary_url = value.public_id && cloudinary.url(value.public_id + '.png', { width: 80, height: 80, crop: 'fill' })
+    case type
+        when 'Picture': img(src=cloudinary_url)
+        when 'File': span #{value.filename}
+        when 'Filepicker': span #{value.filename}
+        default: span #{value}
+
 block breadcrumb
     span.divider /
     | #{model.label}
@@ -16,9 +24,9 @@ block body
                         i.icon-plus.icon-white
                         |  New
                         - if (model.singular)
-                            strong  #{model.singular}
+                            strong #{model.singular}
                         - else
-                            strong  #{model_name}
+                            strong #{model_name}
                             |  item
 
                 - if (search)
@@ -42,11 +50,11 @@ block body
                         span.add-on With selected: &nbsp;
                         div.btn-group
                             - each action in actions
-                                - if (action.value == 'delete')
+                                if (action.value == 'delete')
                                     button.btn.btn-danger(value='#{action.value}')
                                         i.icon-trash.icon-white
                                         |  #{action.label}
-                                - else
+                                else
                                     button.btn(value='#{action.value}') #{action.label}
 
             - if (!documents.length)
@@ -61,36 +69,34 @@ block body
                             th.center
                                 input.select-all-rows(type='checkbox')
                             - each field in list_fields
-                                th.table-header-repeat.line-left.minwidth-1
+                                th.table-header-repeat.line-left.minwidth-1.center
                                     a(href='#{orderLink(field)}') #{fieldLabel(field)}
-
-                            - if (cloneable)
+                            if cloneable
                                 th &nbsp;
+
                     tbody(class=sortable?'sortable':'')
                         - each doc in documents
                             - var url = rootPath + '/model/' + model_name + '/document/' + doc._id
                             tr(id=doc._id)
                                 td.span1.center
                                     input.select-row(type='checkbox')
-                                    - if (sortable)
-                                        .list-drag
-                                            i.icon-resize-vertical
+                                    if sortable
+                                        span.list-drag: i.icon-resize-vertical
 
                                 - each field in list_fields
-                                    td.span3(class=field == 'picture'?'picture':'')
-                                        - if (field == 'picture')
-                                            - if (doc[field] && doc[field].public_id)
-                                                a(href=url)
-                                                    img(src=cloudinary.url(doc[field].public_id + '.png', { width: 80, height: 80, crop: 'fill' }))
-                                        - else if (editable)
-                                            a(href=url) #{doc[field]}
-                                        - else
-                                            p #{doc[field]}
+                                    - var type = model.model.schema.paths[field].options.type.name
+                                    - var value = doc[field] || {}
+                                    td.span3.center(class=(type == 'Picture') ? 'picture' : '')
+                                        if (editable)
+                                            a(href=url): +fielddesc(value, type)
+                                        else
+                                            +fielddesc(value, type)
 
-                                td.span2.btn-group
-                                    a.btn.btn-primary(href=url) Edit
-                                    - if (cloneable)
-                                        a.btn(href="#{rootPath}/model/#{model_name}/document/new?orig=#{doc._id}") Duplicate
+                                td.span2.center
+                                    div.btn-group
+                                        a.btn.btn-primary(href=url) Edit
+                                        if cloneable
+                                            a.btn.btn-default(href="#{rootPath}/model/#{model_name}/document/new?orig=#{doc._id}") Duplicate
 
                 p.counter Viewing #{start+1}–#{start + documents.length} of #{total_count} documents
                 - if (total_count > count)
