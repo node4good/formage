@@ -110,7 +110,7 @@ var _JestAdminResource = jest.Resource.extend({
             else{
                 qry = model.find().where(data.query,new RegExp('^' + escaped_filters));
             }
-            qry.limit(40).exec(function (err, results) {
+            qry.limit(20).exec(function (err, results) {
                 if (results) {
                     if (results.objects) {
                         results = results.objects;

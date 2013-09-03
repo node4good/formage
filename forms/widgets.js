@@ -234,14 +234,16 @@ exports.ChoicesWidget = Widget.extend({
 
 
     prepareValues: function () {
-        if (!this.names) {
+        if (!this.names || !this.values) {
             this.names = new Array(this.choices.length);
+            this.values = new Array(this.choices.length);
             for (var i = 0; i < this.choices.length; i++) {
                 if (typeof(this.choices[i]) == 'object') {
                     this.names[i] = this.choices[i][1];
-                    this.choices[i] = this.choices[i][0];
+                    this.values[i] = this.choices[i][0];
                 } else {
                     this.names[i] = this.choices[i];
+                    this.values[i] = this.choices[i];
                 }
             }
         }
@@ -262,12 +264,12 @@ exports.ChoicesWidget = Widget.extend({
 			if(!this.options.attrs.multiple)
             	res.write('\n<option ' + selected + 'value=""> ... </option>\n');
         }
-        for (var i = 0; i < this.choices.length; i++) {
-            var selected2 = this.isSelected(this.choices[i]) ? 'selected="selected" ' : '';
+        for (var i = 0; i < this.values.length; i++) {
+            var selected2 = this.isSelected(this.values[i]) ? 'selected="selected" ' : '';
             if (selected2) {
                 found_selected = true;
             }
-            res.write('\n<option ' + selected2 + 'value="' + this.choices[i] + '">' + this.names[i] + '</option>\n');
+            res.write('\n<option ' + selected2 + 'value="' + this.values[i] + '">' + this.names[i] + '</option>\n');
         }
         if (!found_selected && this.value && !Array.isArray(this.value)) {
             res.write('\n<option selected="selected" value="' + this.value + '">Current</option>\n');
