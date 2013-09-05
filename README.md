@@ -46,7 +46,10 @@ model.formage = {
     order_by: ['-year', 'album', 'number'],
     
     // list of fields that must be populated (see http://mongoosejs.com/docs/api.html#document_Document-populate)
-    list_populate: ['album']
+    list_populate: ['album'],
+    
+    // list of fields on which full-text search is available
+    search: ['title', 'album', 'artist']
 };
 
 // one-document models

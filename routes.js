@@ -285,7 +285,7 @@ function getSearchQuery(model, searchValue) {
     console.log(searchRule);
     if (Array.isArray(searchRule)) {
         return searchRule.map(function (field) {
-            return valueRegex + '.test(this.' + field + ')';
+            return '/' + valueRegex + '/.test(this.' + field + ')';
         }).join('||');
     }
     else {
