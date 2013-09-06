@@ -1,11 +1,11 @@
 extends layout.jade
 
 mixin fielddesc(value, type)
-    - var cloudinary_url = value.public_id && cloudinary.url(value.public_id + '.png', { width: 80, height: 80, crop: 'fill' })
+    - var cloudinary_url = value && value.public_id && cloudinary.url(value.public_id + '.png', { width: 80, height: 80, crop: 'fill' })
     case type
         when 'Picture': img(src=cloudinary_url)
-        when 'File': span #{value.filename}
-        when 'Filepicker': span #{value.filename}
+        when 'File': span #{value ? value.filename : ''}
+        when 'Filepicker': span #{value ? value.filename : ''}
         default: span #{value}
 
 block breadcrumb
@@ -85,7 +85,7 @@ block body
 
                                 - each field in list_fields
                                     - var type = model.model.schema.paths[field].options.type.name
-                                    - var value = doc[field] || {}
+                                    - var value = doc[field]
                                     td.span3.center(class=(type == 'Picture') ? 'picture' : '')
                                         if (editable)
                                             a(href=url): +fielddesc(value, type)

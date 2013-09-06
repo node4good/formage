@@ -223,12 +223,12 @@ buf.push("<div class=\"user-panel\">" + (((jade.interp = userPanel) == null ? ''
 }
 buf.push("</div></div></header>");
 }
-buf.push("<div class=\"container\"><div id=\"old-version\" style=\"position: fixed;bottom: 1em;right: 1em;width: 30em;height: 4em;border-radius: 10px;display: block;opacity: 0.8;display:none\" class=\"alert alert-error\"><button type=\"button\" data-dismiss=\"alert\" class=\"close\">&times;</button><strong>Warning;</strong> There is a newer version of formage-admin.</div><div id=\"content\"><div class=\"error\"></div><form role=\"form\" method=\"post\" class=\"form-horizontal\"><div class=\"input-group\"><span class=\"input-group-addon\">@</span><input type=\"text\" name=\"username\" placeholder=\"Username\" class=\"form-control\">");
+buf.push("<div class=\"container\"><div id=\"old-version\" style=\"position: fixed;bottom: 1em;right: 1em;width: 30em;height: 4em;border-radius: 10px;display: block;opacity: 0.8;display:none\" class=\"alert alert-error\"><button type=\"button\" data-dismiss=\"alert\" class=\"close\">&times;</button><strong>Warning;</strong> There is a newer version of formage-admin.</div><div id=\"content\"><div class=\"error\"></div><form role=\"form\" method=\"post\" class=\"form-horizontal\"><div class=\"input-group\"><input type=\"text\" name=\"username\" placeholder=\"Username\" class=\"form-control\">");
 if ((error))
 {
 buf.push("<span class=\"input-group-addon label-warning\">Wrong</span>");
 }
-buf.push("</div><br><div class=\"input-group\"><span class=\"input-group-addon glyphicon glyphicon-asterisk\"></span><input type=\"password\" name=\"password\" placeholder=\"Password\" class=\"form-control\">");
+buf.push("</div><br><div class=\"input-group\"><input type=\"password\" name=\"password\" placeholder=\"Password\" class=\"form-control\">");
 if ((error))
 {
 buf.push("<span class=\"input-group-addon label-warning\">Wrong</span>");
@@ -245,16 +245,16 @@ module.exports.model = function anonymous(locals) {
 var buf = [];
 var locals_ = (locals || {}),cloudinary = locals_.cloudinary,pageTitle = locals_.pageTitle,rootPath = locals_.rootPath,renderedHead = locals_.renderedHead,dialog = locals_.dialog,adminTitle = locals_.adminTitle,model = locals_.model,userPanel = locals_.userPanel,filters = locals_.filters,creatable = locals_.creatable,model_name = locals_.model_name,makeLink = locals_.makeLink,search = locals_.search,search_value = locals_.search_value,current_filters = locals_.current_filters,sortable = locals_.sortable,actions = locals_.actions,documents = locals_.documents,start = locals_.start,total_count = locals_.total_count,list_fields = locals_.list_fields,orderLink = locals_.orderLink,fieldLabel = locals_.fieldLabel,cloneable = locals_.cloneable,editable = locals_.editable,count = locals_.count,version = locals_.version;var fielddesc_mixin = function(value, type){
 var block = this.block, attributes = this.attributes || {}, escaped = this.escaped || {};
-var cloudinary_url = value.public_id && cloudinary.url(value.public_id + '.png', { width: 80, height: 80, crop: 'fill' })
+var cloudinary_url = value && value.public_id && cloudinary.url(value.public_id + '.png', { width: 80, height: 80, crop: 'fill' })
 switch (type){
 case 'Picture':
 buf.push("<img" + (jade.attrs({ 'src':(cloudinary_url) }, {"src":true})) + "/>");
   break;
 case 'File':
-buf.push("<span>" + (jade.escape((jade.interp = value.filename) == null ? '' : jade.interp)) + "</span>");
+buf.push("<span>" + (jade.escape((jade.interp = value ? value.filename : '') == null ? '' : jade.interp)) + "</span>");
   break;
 case 'Filepicker':
-buf.push("<span>" + (jade.escape((jade.interp = value.filename) == null ? '' : jade.interp)) + "</span>");
+buf.push("<span>" + (jade.escape((jade.interp = value ? value.filename : '') == null ? '' : jade.interp)) + "</span>");
   break;
 default:
 buf.push("<span>" + (jade.escape((jade.interp = value) == null ? '' : jade.interp)) + "</span>");
@@ -405,7 +405,7 @@ buf.push("</td>");
       var field = $$obj[$index];
 
 var type = model.model.schema.paths[field].options.type.name
-var value = doc[field] || {}
+var value = doc[field]
 buf.push("<td" + (jade.attrs({ terse: true, "class": [('span3'),('center'),((type == 'Picture') ? 'picture' : '')] }, {"class":true})) + ">");
 if ( (editable))
 {
@@ -426,7 +426,7 @@ buf.push("</td>");
       $$l++;      var field = $$obj[$index];
 
 var type = model.model.schema.paths[field].options.type.name
-var value = doc[field] || {}
+var value = doc[field]
 buf.push("<td" + (jade.attrs({ terse: true, "class": [('span3'),('center'),((type == 'Picture') ? 'picture' : '')] }, {"class":true})) + ">");
 if ( (editable))
 {
@@ -473,7 +473,7 @@ buf.push("</td>");
       var field = $$obj[$index];
 
 var type = model.model.schema.paths[field].options.type.name
-var value = doc[field] || {}
+var value = doc[field]
 buf.push("<td" + (jade.attrs({ terse: true, "class": [('span3'),('center'),((type == 'Picture') ? 'picture' : '')] }, {"class":true})) + ">");
 if ( (editable))
 {
@@ -494,7 +494,7 @@ buf.push("</td>");
       $$l++;      var field = $$obj[$index];
 
 var type = model.model.schema.paths[field].options.type.name
-var value = doc[field] || {}
+var value = doc[field]
 buf.push("<td" + (jade.attrs({ terse: true, "class": [('span3'),('center'),((type == 'Picture') ? 'picture' : '')] }, {"class":true})) + ">");
 if ( (editable))
 {
