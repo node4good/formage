@@ -289,7 +289,7 @@ function getSearchQuery(model, searchValue) {
         }).join('||');
     }
     else {
-        return searchRule.replace('__value__', valueRegex);
+        return searchRule.replace(/__value__/g, valueRegex);
     }
 }
 
