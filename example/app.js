@@ -31,7 +31,7 @@ app.use(app.router);
 
 require('mongoose').connect(app.get('mongo'));
 var admin = formage.init(app, express, require('./models'), {
-    title: 'Formage-Admin Example'
+    title: process.env.ADMIN_TITLE || 'Formage-Admin Example'
 });
 
 admin.registerAdminUserModel();
