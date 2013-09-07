@@ -1,1 +1,1 @@
-web: ./examplerun
+web: sh examplerun
