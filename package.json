@@ -54,6 +54,9 @@
     "type": "git",
     "url": "https://github.com/Empeeric/formage.git"
   },
+  "scripts": {
+    "start": "./examplerun"
+  },
   "bugs": {
     "url": "https://github.com/Empeeric/formage/issues"
   },
@@ -61,7 +64,7 @@
     "example": "./example"
   },
   "engines": {
-    "node": "~0.11.7",
+    "node": "~0.11.6",
     "npm": "~1.3.10"
   },
   "license": "MIT"
