@@ -1,7 +1,7 @@
 ![](http://i.imgur.com/9vVHCPY.png) Formage
 =============
-
-[Bootstraped](http://twitter.github.com/bootstrap/) Admin Forms for [Mongoose](http://mongoosejs.com/),
+[![Build Status](https://travis-ci.org/Empeeric/formage.png?branch=master)](https://travis-ci.org/Empeeric/formage)
+[Bootstraped](http://twitter.github.com/bootstrap/) Admin Forms for MongoDB via [Mongoose](http://mongoosejs.com/),
 originally forked from [mongoose-admin](https://github.com/marccampbell/mongoose-admin).
 
 Usage
