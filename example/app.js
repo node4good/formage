@@ -11,7 +11,7 @@ require('../CompileTempletes.js');
 var app = express();
 
 app.set('port', process.env.PORT || 8080);
-app.set('mongo', process.env.MONGO_URL || 'mongodb://localhost/formage-admin-example');
+app.set('mongo', process.env.MONGO_URL || process.env.MONGOLAB_URI || 'mongodb://localhost/formage-admin-example');
 app.set("view options", { layout: false, pretty: true });
 
 app.use(express.favicon());
