@@ -1,5 +1,4 @@
-/.idea/
+/.*
 /dump/
 *.tgz
 /Procfile
-/.slugignore
