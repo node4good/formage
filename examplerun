@@ -1,2 +1,2 @@
-npm install mongoose
+npm install
 node example/app.js
