@@ -11,11 +11,16 @@
   "contributors": [
     {
       "name": "Ishai Jaffe",
-      "email": "ishai@bablic.com"
+      "email": "ishai@bablic.com",
+      "url": "http://www.bablic.com/"
     },
     {
       "name": "Refael Ackermann",
       "email": "refael@empeeric.com",
+      "url": "http://www.empeeric.com/"
+    },
+    {
+      "email": "etaypere@gmail.com",
       "url": "http://www.empeeric.com/"
     },
     {

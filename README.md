@@ -1,6 +1,9 @@
 ![](http://i.imgur.com/9vVHCPY.png) Formage
 =============
 [![Build Status](https://travis-ci.org/Empeeric/formage.png?branch=master)](https://travis-ci.org/Empeeric/formage)
+[![NPM](https://nodei.co/npm/formage.png?downloads=true)](https://nodei.co/npm/formage/)
+[![NPM](https://nodei.co/npm-dl/formage.png)](https://nodei.co/npm/formage/)
+
 [Bootstraped](http://twitter.github.com/bootstrap/) Admin Forms for MongoDB via [Mongoose](http://mongoosejs.com/),
 originally forked from [mongoose-admin](https://github.com/marccampbell/mongoose-admin).
 
