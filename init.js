@@ -81,7 +81,7 @@ var createAdmin = module.exports.createAdmin = function(app, options) {
 
     console.log('\x1b[36mformage-admin\x1b[0m at path', root);
     var admin = MongooseAdmin.singleton = new MongooseAdmin(app, root);
-    registerRoutes(MongooseAdmin, app, root, module.exports.version);
+    admin.app = registerRoutes(MongooseAdmin, app, root, module.exports.version);
     return admin;
 };
 

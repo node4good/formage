@@ -30,6 +30,9 @@ html(lang='en')
         != typeof(renderedHead) != 'undefined' ? renderedHead : ''
 
         block head
+
+        !{global_head}
+
     body
         - if(!dialog)
             header.navbar.navbar-static-top
@@ -73,3 +76,5 @@ html(lang='en')
                         img(src='#{rootPath}/images/logo-40.png')
 
         block scripts
+
+        !{global_script}
