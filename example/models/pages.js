@@ -13,4 +13,4 @@ schema.methods.toString = function() {
 
 var pages = module.exports = mongoose.model('pages', schema);
 pages.singular = 'page';
-pages.formage = {section:'cms'};
+//pages.formage = {section:'cms'};

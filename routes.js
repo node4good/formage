@@ -296,24 +296,27 @@ function getSearchQuery(model, searchValue) {
 
 var routes = {
     index: function (req, res) {
-        MongooseAdmin.singleton.getRegisteredModels(req.admin_user, function (err, models) {
-            if (err) return res.redirect(MongooseAdmin.singleton.buildPath('/error'));
+        var admin = MongooseAdmin.singleton;
+
+        admin.getRegisteredModels(req.admin_user, function (err, models) {
+            if (err) return res.redirect(admin.buildPath('/error'));
             //noinspection JSUnusedGlobalSymbols
             var sections = _(models)
-                .groupBy(function(item) {return item.options.section;})
+                .groupBy(function(item) { return item.options.section; })
                 .tap(function (val) {
-                    val.main = val.undefined;
+                    val[admin.options.default_section] = val.undefined;
                     delete val.undefined;
                     return val;
                 })
-                .map(function(value, key) { return {name: key, models: value}; }).valueOf();
+                .map(function(value, key) { return {name: key, models: value}; })
+                .valueOf();
 
             return res.render('models.jade', {
                 pageTitle: 'Admin Site',
                 sections: sections,
                 renderedHead: '',
-                adminTitle: MongooseAdmin.singleton.getAdminTitle(),
-                rootPath: MongooseAdmin.singleton.root
+                adminTitle: admin.getAdminTitle(),
+                rootPath: admin.root
             });
         });
     },

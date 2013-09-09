@@ -76,12 +76,9 @@ var serve_static = module.exports.serve_static = function (app, express, options
 
 
 var createAdmin = module.exports.createAdmin = function(app, options) {
-    options = options || {};
-    var root = '/' + (options.root || 'admin');
+    var admin = MongooseAdmin.singleton = new MongooseAdmin(app, options);
+    admin.app = registerRoutes(MongooseAdmin, app, admin.root, module.exports.version);
 
-    console.log('\x1b[36mformage-admin\x1b[0m at path', root);
-    var admin = MongooseAdmin.singleton = new MongooseAdmin(app, root);
-    admin.app = registerRoutes(MongooseAdmin, app, root, module.exports.version);
     return admin;
 };
 

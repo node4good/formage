@@ -13,11 +13,22 @@ var MongooseAdminUser = require('./models/mongoose_admin_user.js').MongooseAdmin
  *
  * @api private
  */
-var MongooseAdmin = module.exports = function (app, root) {
+var MongooseAdmin = module.exports = function (app, options) {
+    this.options = _.defaults(options, MongooseAdmin.defaults);
+    this.title = this.options.title;
+    this.root = this.options.root;
+    if (this.root[0] !== '/')
+        this.root = '/' + this.root;
+
     this.app = app;
-    this.root = root;
     this.models = {};
-    this.title = "Backoffice";
+
+    console.log('\x1b[36mformage-admin\x1b[0m at path', this.root);
+};
+MongooseAdmin.defaults = {
+    title: 'Backoffice',
+    root: '/admin',
+    default_section: 'main'
 };
 
 /**

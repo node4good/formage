@@ -18,8 +18,8 @@ var schema = new mongoose.Schema({
     }
 });
 
-var m = module.exports = mongoose.model('rate_filings', schema);
-m.singular = 'Rate Filing';
-m.static = {
+var model = module.exports = mongoose.model('rate_filings', schema);
+model.singular = 'Rate Filing';
+model.static = {
     js: [ '/rate_filings.js' ]
 };
