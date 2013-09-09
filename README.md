@@ -12,24 +12,37 @@ Usage
 var express = require('express'),
     app = express();
 
-require('formage').init(app, express);
+require('formage').init(app, express [, models, options]);
 ```
 
 Look at `\example` directory.
 
 Options
 ------------
-Here are some options you can set on the mongoose model.
+```js
+// Site-wide options, and their default values
+require('formage').init(app, express, models, {
+    title: 'Admin',
+    root: '/admin',
+    default_section: 'main',
+    username: 'admin',
+    password: 'admin'
+);
+```
+
+#### Model options
 ```js
 var model = new mongoose.model('songs', schema);
 
 model.label = 'My Songs';
 model.singular = 'Song';
+
 // external files specific to this model
 model.static = {
    js: [ '/js/songs.js' ],
    css: ['/css/songs.css' ]
 };
+
 // one-document models
 model.single = true; 
 
