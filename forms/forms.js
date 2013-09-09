@@ -225,9 +225,6 @@ var BaseForm = exports.BaseForm = Class.extend({
         } else {
             render_fields(Object.keys(self.fields));
         }
-        if (_.indexOf(self.exclude, 'id') === -1 && self.instance) {
-            res.write('\n<input type="hidden" id="document_id" name="_id" value="' + (self.instance.isNew ? '' : self.instance.id) + '" />\n');
-        }
     },
     to_html: function () {
         var self = this;

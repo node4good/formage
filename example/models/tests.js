@@ -28,7 +28,6 @@ var s = new Schema({
     text: { type: Schema.Types.Text, required: true },
     image: { type: Schema.Types.Picture, required: true },
     map: { type: Schema.Types.GeoPoint, required: true },
-    map2: { type: Schema.Types.GeoPoint, required: true },
     num: { type: Schema.Types.Integer, required: true },
     order: { type: Number, editable: false },
     bool: { type: Boolean, 'default': true },
@@ -65,4 +64,7 @@ var s = new Schema({
 });
 
 module.exports = mongoose.model('tests', s);
-module.exports.formage = {filters: ['ref']};
+module.exports.formage = {
+    filters: ['ref'],
+    list: ['string', 'date', 'image']
+};

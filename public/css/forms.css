@@ -1,4 +1,7 @@
 input { width: 300px; }
+input[type="checkbox"], input[type="radio"] {
+    width: 1em;
+}
 select { min-width: 314px; }
 input[type="file"] {
     width: 200px;

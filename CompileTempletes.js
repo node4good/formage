@@ -14,12 +14,17 @@ jadeFiles.forEach(function(file) {
     var key = file.substr(0, file.indexOf("."));
     var filePath = path.join(__dirname, 'views', file);
     var src = fs.readFileSync(filePath);
-    var compiled = jade.compile(src, {
-        debug: false,
-        compileDebug: false,
-        client: true,
-        filename: filePath
-    });
-    js += "module.exports." + key + " = " + compiled.toString() + "; \n\n";
+    try {
+        var compiled = jade.compile(src, {
+            debug: false,
+            compileDebug: false,
+            client: true,
+            filename: filePath
+        });
+        js += "module.exports." + key + " = " + compiled.toString() + "; \n\n";
+    } catch (e) {
+        console.log(e);
+        throw e;
+    }
 });
 fs.writeFileSync(path.join(__dirname, 'templates.js'), js);

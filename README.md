@@ -1,33 +1,42 @@
-![](http://i.imgur.com/9vVHCPY.png) Formage
+![](http://i.imgur.com/9vVHCPY.png) Formage [![Build Status](https://travis-ci.org/Empeeric/formage.png?branch=master)](https://travis-ci.org/Empeeric/formage)
 =============
 
-[Bootstraped](http://twitter.github.com/bootstrap/) Admin Forms for [Mongoose](http://mongoosejs.com/),
+[Bootstraped](http://twitter.github.com/bootstrap/) Admin Forms for MongoDB via [Mongoose](http://mongoosejs.com/),
 originally forked from [mongoose-admin](https://github.com/marccampbell/mongoose-admin).
 
 Usage
 -----
-`npm install formage`
+[![npm install formage](https://nodei.co/npm/formage.png?downloads=true)](https://nodei.co/npm/formage/)
+<!-- [![NPM](https://nodei.co/npm-dl/formage.png)](https://nodei.co/npm/formage/) -->
+```js
+var express = require('express'),
+    app = express();
 
-```javascript
-var admin = require('formage').init(app, express);
+require('formage').init(app, express);
 ```
 
-Also, look at `\example` directory.
+Look at `\example` directory.
 
-Some Options
+Options
 ------------
-```javascript
-// model options
+Here are some options you can set on the mongoose model.
+```js
+var model = new mongoose.model('songs', schema);
+
 model.label = 'My Songs';
 model.singular = 'Song';
+// external files specific to this model
 model.static = {
    js: [ '/js/songs.js' ],
    css: ['/css/songs.css' ]
 };
+// one-document models
+model.single = true; 
+
 model.formage = {
     filters: ['artist', 'year'],
     
-    // Additional actions on this model
+    // additional actions on this model
     actions: [
        {
           value: 'release',
@@ -46,14 +55,18 @@ model.formage = {
     order_by: ['-year', 'album', 'number'],
     
     // list of fields that must be populated (see http://mongoosejs.com/docs/api.html#document_Document-populate)
-    list_populate: ['album']
+    list_populate: ['album'],
+    
+    // list of fields on which full-text search is available
+    search: ['title', 'album', 'artist']
 };
+```
 
-// one-document models
-model.single = true;
-
-// field options
-field.label = 'Song Title';
+#### Field options
+```js
+var schema = new mongoose.Schema({
+    artist: { type: String, label: 'Who made it?' }
+});
 ```
 
 License
