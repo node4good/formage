@@ -325,7 +325,9 @@ exports.ListWidget = Widget.extend({
         this._super(options);
     },
     render: function (res, render_template, render_item) {
-        res.write('\n<div class="nf_listfield" name="' + this.name + '">\n<div class="nf_hidden_template">\n');
+        res.write('\n<div class="nf_listfield" name="' + this.name + '" ');
+        this.render_attributes(res);
+        res.write('>\n<div class="nf_hidden_template">\n');
         render_template(res);
         res.write('\n</div>\n<ul>\n');
         this.value = this.value || [];

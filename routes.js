@@ -592,7 +592,9 @@ var auth = function(role) {
         req.admin_user = admin_user;
 
 		res.locals({
-			tabs:MongooseAdmin.singleton.tabs || []
+			tabs:(MongooseAdmin.singleton.tabs || []).filter(function(tab){
+                return !tab.permission || permissions.hasPermissions(admin_user,'',tab.permission);
+            })
 		});
         next();
     };

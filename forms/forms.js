@@ -88,8 +88,8 @@ var BaseForm = exports.BaseForm = Class.extend({
         self.static = self.static || {js:[], css:[]};
         _.each(this.fields, function (field) {
             var _static = ('fields' in field) ? self.get_static.call(field) :  field.get_static();
-            self.static.js = self.static.js.concat(_static.js || []);
-            self.static.css = self.static.css.concat(_static.css || []);
+            self.static.js = self.static.js.concat(_(_static.js || []).value());
+            self.static.css = self.static.css.concat(_(_static.css || []).value());
         });
         self.static.js = _(self.static.js).unique();
         self.static.css = _(self.static.css).unique();
