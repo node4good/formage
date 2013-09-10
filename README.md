@@ -1,4 +1,4 @@
-![](http://i.imgur.com/9vVHCPY.png) Formage [![Build Status](https://travis-ci.org/Empeeric/formage.png?branch=master)](https://travis-ci.org/Empeeric/formage)
+<img src="http://i.imgur.com/9vVHCPY.png" align="top" />  Formage [![Build Status](https://travis-ci.org/Empeeric/formage.png?branch=master)](https://travis-ci.org/Empeeric/formage)
 =============
 
 [Bootstraped](http://twitter.github.com/bootstrap/) Admin Forms for MongoDB via [Mongoose](http://mongoosejs.com/),
@@ -18,7 +18,7 @@ require('formage').init(app, express [, models, options]);
 Look at `\example` directory.
 
 Options
-------------
+-------
 ```js
 // Site-wide options, and their default values
 require('formage').init(app, express, models, {
