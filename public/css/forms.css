@@ -246,3 +246,6 @@ p.error {
     float:left;
     clear:left;
 }
+.field .required_label{
+    border-color:#0081a8;
+}
