@@ -29,7 +29,9 @@ app.configure('development', function() {
 
 app.use(app.router);
 
-require('mongoose').connect(app.get('mongo'));
+var mongoose = require('mongoose');
+mongoose.connect(app.get('mongo'));
+mongoose.set('debug', true);
 var admin = formage.init(app, express, require('./models'), {
     title: process.env.ADMIN_TITLE || 'Formage-Admin Example',
     default_section: 'cms'
