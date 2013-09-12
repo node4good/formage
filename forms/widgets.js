@@ -364,7 +364,8 @@ exports.MapWidget = exports.InputWidget.extend({
     init: function (options) {
         this._super('hidden', options);
         this.attrs.class.push('nf_mapview');
-        this.head.push('<script src="//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&language=he&libraries=places&key=AIzaSyCmNLGdcM_OYwPwmedDsECk9O6ashE-rjg"></script>');
+        var lang = this.options.lang || 'en';
+        this.head.push('<script src="//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&language=' + lang + '&libraries=places&key=AIzaSyCmNLGdcM_OYwPwmedDsECk9O6ashE-rjg"></script>');
     },
 
     render: function (res) {

@@ -44,11 +44,11 @@ model.static = {
 };
 
 // one-document models
-model.single = true; 
+model.single = true;
 
 model.formage = {
     filters: ['artist', 'year'],
-    
+
     // additional actions on this model
     actions: [
        {
@@ -60,17 +60,17 @@ model.formage = {
           }
        }
     ],
-    
+
     // list of fields to be displayed by formage for this model
     list: ['number', 'title', 'album', 'artist', 'year'],
-    
+
     // list of order fields
     order_by: ['-year', 'album', 'number'],
-    
+
     // list of fields that must be populated
     // (see http://mongoosejs.com/docs/api.html#document_Document-populate)
     list_populate: ['album'],
-    
+
     // list of fields on which full-text search is available
     search: ['title', 'album', 'artist']
 };
@@ -79,9 +79,12 @@ model.formage = {
 #### Field options
 ```js
 var schema = new mongoose.Schema({
-    artist: { type: String, label: 'Who made it?' }
+    artist: { type: String, label: 'Who made it?' },
+    // lang is a two letter ISO 639-1 code as recognized by google
+    location: { type: Schema.Types.GeoPoint, widget_options: {lang: 'nl'}}
 });
 ```
+[ISO 639-1](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
 
 License
 -------
