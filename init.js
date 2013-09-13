@@ -70,8 +70,8 @@ var serve_static = module.exports.serve_static = function (app, express, options
     if (module._is_serving_static) return;
     module._is_serving_static = true;
 
-    app.use('/' + options.root, express.static(path.join(__dirname, '/public')));
-    app.use('/' + options.root + '/ckeditor', express.static(ckeditorPath));
+    app.use(options.root, express.static(path.join(__dirname, '/public')));
+    app.use(options.root + '/ckeditor', express.static(ckeditorPath));
 };
 
 
