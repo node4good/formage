@@ -223,17 +223,17 @@ buf.push("<div class=\"user-panel\">" + (((jade.interp = userPanel) == null ? ''
 }
 buf.push("</div></div></header>");
 }
-buf.push("<div class=\"container\"><div id=\"old-version\" style=\"position: fixed;bottom: 1em;right: 1em;width: 30em;height: 4em;border-radius: 10px;display: block;opacity: 0.8;display:none\" class=\"alert alert-error\"><button type=\"button\" data-dismiss=\"alert\" class=\"close\">&times;</button><strong>Warning;</strong> There is a newer version of formage-admin.</div><div id=\"content\"><div class=\"error\"></div><form role=\"form\" method=\"post\" class=\"form-horizontal\"><div class=\"input-group\"><input type=\"text\" name=\"username\" placeholder=\"Username\" class=\"form-control\">");
-if ((error))
+buf.push("<div class=\"container\"><div id=\"old-version\" style=\"position: fixed;bottom: 1em;right: 1em;width: 30em;height: 4em;border-radius: 10px;display: block;opacity: 0.8;display:none\" class=\"alert alert-error\"><button type=\"button\" data-dismiss=\"alert\" class=\"close\">&times;</button><strong>Warning;</strong> There is a newer version of formage-admin.</div><div id=\"content\"><div class=\"error\"></div><form role=\"form\" method=\"post\" class=\"form-horizontal\"><div class=\"control-group\"><label for=\"username\" class=\"control-label\">Username</label><div class=\"controls\"><input id=\"username\" type=\"text\" name=\"username\">");
+if ( (error))
 {
 buf.push("<span class=\"input-group-addon label-warning\">Wrong</span>");
 }
-buf.push("</div><br><div class=\"input-group\"><input type=\"password\" name=\"password\" placeholder=\"Password\" class=\"form-control\">");
-if ((error))
+buf.push("</div></div><div class=\"control-group\"><label for=\"password\" class=\"control-label\">Password</label><div class=\"controls\"><input id=\"password\" type=\"password\" name=\"password\">");
+if ( (error))
 {
 buf.push("<span class=\"input-group-addon label-warning\">Wrong</span>");
 }
-buf.push("</div><br><div class=\"controls btn-group\"><button id=\"loginButton\" type=\"submit\" data-loading-text=\"Wait...\" class=\"btn btn-large btn-primary\">Login</button></div></form></div>");
+buf.push("</div></div><div class=\"controls\"><button id=\"loginButton\" type=\"submit\" class=\"btn btn-primary\">Login</button></div></form></div>");
 if(!dialog)
 {
 buf.push("<footer class=\"footer\"><p><a href=\"http://github.com/Empeeric/formage-admin\">Formage-Admin</a> " + (jade.escape((jade.interp = version) == null ? '' : jade.interp)) + " , from&nbsp;<a href=\"http://empeeric.com\">Empeeric</a></p><a href=\"http://github.com/Empeeric/formage-admin\"><img" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/images/logo-40.png') }, {"src":true})) + "></a></footer>");
