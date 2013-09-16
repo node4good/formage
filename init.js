@@ -54,9 +54,9 @@ module.exports = function(app, express, models, opt) {
         }
 
         if (model.single)
-            admin.registerSingleRowModel(model, name, options);
+            admin.registerSingleRowModel(name, model, options);
         else
-            admin.registerMongooseModel(name, model, null, options);
+            admin.registerMongooseModel(name, model, options);
     });
 
     return admin;

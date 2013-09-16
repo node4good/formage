@@ -101,12 +101,11 @@ function buildModelFilters_fakeSync (model, filters, dict) {
 }
 
 
-MongooseAdmin.prototype.registerMongooseModel = function (name, model, fields, options) {
+MongooseAdmin.prototype.registerMongooseModel = function (name, model, options) {
     var models = this.models;
 
     options = options || {};
     options.actions = options.actions || [];
-    options.fields = fields;
     options.actions.push({
         value: 'delete',
         label: 'Delete',
@@ -128,18 +127,17 @@ MongooseAdmin.prototype.registerMongooseModel = function (name, model, fields, o
             );
         }
     });
-
-    this.registerModel(model, name, options);
+    this.registerModel(name, model, options);
 };
 
 
-MongooseAdmin.prototype.registerSingleRowModel = function(model, name, options) {
+MongooseAdmin.prototype.registerSingleRowModel = function(name, model, options) {
     model.is_single = true;
-    this.registerModel(model, name, options);
+    this.registerModel(name, model, options);
 };
 
 
-MongooseAdmin.prototype.registerModel = function(model, name, options) {
+MongooseAdmin.prototype.registerModel = function(name, model, options) {
     var filters = [];
     buildModelFilters_fakeSync(model, options.filters, filters);
     model.label = model.label || name[0].toUpperCase() + name.slice(1).replace(/_/g,' ');
