@@ -63,7 +63,19 @@ ul.models {
 .counter, .pagination {
     text-align: center;
 }
-a h3 { color: black; }
+a h3 { color: black; font-weight: normal; }
+.section {
+    margin-top: 30px;
+    border-top: 3px double #e2e2e2;
+}
+.section h2 {
+    margin: -23px auto 0;
+    text-align: center;
+}
+.section h2 span {
+    background: white;
+    padding: 10px 20px;
+}
 
 
 /*

@@ -705,7 +705,7 @@ buf.push("<div class=\"user-panel\">" + (((jade.interp = userPanel) == null ? ''
 }
 buf.push("</div></div></header>");
 }
-buf.push("<div class=\"container\"><div id=\"old-version\" style=\"position: fixed;bottom: 1em;right: 1em;width: 30em;height: 4em;border-radius: 10px;display: block;opacity: 0.8;display:none\" class=\"alert alert-error\"><button type=\"button\" data-dismiss=\"alert\" class=\"close\">&times;</button><strong>Warning;</strong> There is a newer version of formage-admin.</div><div id=\"content\"><div class=\"bs-example\"><ul class=\"sections list-group\">");
+buf.push("<div class=\"container\"><div id=\"old-version\" style=\"position: fixed;bottom: 1em;right: 1em;width: 30em;height: 4em;border-radius: 10px;display: block;opacity: 0.8;display:none\" class=\"alert alert-error\"><button type=\"button\" data-dismiss=\"alert\" class=\"close\">&times;</button><strong>Warning;</strong> There is a newer version of formage-admin.</div><div id=\"content\">");
 // iterate sections
 ;(function(){
   var $$obj = sections;
@@ -714,7 +714,12 @@ buf.push("<div class=\"container\"><div id=\"old-version\" style=\"position: fix
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var section = $$obj[$index];
 
-buf.push("<li class=\"section list-group-item\"><div class=\"panel panel-default\"><div class=\"panel-heading\"><h3>" + (jade.escape((jade.interp = section.name) == null ? '' : jade.interp)) + "</h3></div></div><div class=\"panel-body\"><ul class=\"models\">");
+buf.push("<div" + (jade.attrs({ terse: true, "class": [((sections.length > 1 ? 'section' : ''))] }, {"class":true})) + ">");
+if (sections.length > 1)
+{
+buf.push("<h2><span>" + (jade.escape((jade.interp = section.name) == null ? '' : jade.interp)) + "</span></h2>");
+}
+buf.push("<ul class=\"models\">");
 // iterate section.models
 ;(function(){
   var $$obj = section.models;
@@ -724,7 +729,6 @@ buf.push("<li class=\"section list-group-item\"><div class=\"panel panel-default
       var model = $$obj[$index];
 
 var url = rootPath + '/model/' + model.modelName
-{
 buf.push("<li><div class=\"btn-group pull-right\">");
 if (model.is_single)
 {
@@ -735,7 +739,6 @@ else
 buf.push("<a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-info')] }, {"href":true})) + "><span" + (jade.attrs({ terse: true, 'id':('viewAll_' + (model.modelName) + '') }, {"id":true})) + ">View All</span></a><a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/new'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">New</a>");
 }
 buf.push("</div><a" + (jade.attrs({ terse: true, 'href':(url + (model.is_single ? '/document/single' : '')) }, {"href":true})) + "><h3>" + (jade.escape((jade.interp = model.label) == null ? '' : jade.interp)) + "</h3></a></li>");
-}
     }
 
   } else {
@@ -744,7 +747,6 @@ buf.push("</div><a" + (jade.attrs({ terse: true, 'href':(url + (model.is_single 
       $$l++;      var model = $$obj[$index];
 
 var url = rootPath + '/model/' + model.modelName
-{
 buf.push("<li><div class=\"btn-group pull-right\">");
 if (model.is_single)
 {
@@ -755,13 +757,12 @@ else
 buf.push("<a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-info')] }, {"href":true})) + "><span" + (jade.attrs({ terse: true, 'id':('viewAll_' + (model.modelName) + '') }, {"id":true})) + ">View All</span></a><a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/new'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">New</a>");
 }
 buf.push("</div><a" + (jade.attrs({ terse: true, 'href':(url + (model.is_single ? '/document/single' : '')) }, {"href":true})) + "><h3>" + (jade.escape((jade.interp = model.label) == null ? '' : jade.interp)) + "</h3></a></li>");
-}
     }
 
   }
 }).call(this);
 
-buf.push("</ul></div></li>");
+buf.push("</ul></div>");
     }
 
   } else {
@@ -769,7 +770,12 @@ buf.push("</ul></div></li>");
     for (var $index in $$obj) {
       $$l++;      var section = $$obj[$index];
 
-buf.push("<li class=\"section list-group-item\"><div class=\"panel panel-default\"><div class=\"panel-heading\"><h3>" + (jade.escape((jade.interp = section.name) == null ? '' : jade.interp)) + "</h3></div></div><div class=\"panel-body\"><ul class=\"models\">");
+buf.push("<div" + (jade.attrs({ terse: true, "class": [((sections.length > 1 ? 'section' : ''))] }, {"class":true})) + ">");
+if (sections.length > 1)
+{
+buf.push("<h2><span>" + (jade.escape((jade.interp = section.name) == null ? '' : jade.interp)) + "</span></h2>");
+}
+buf.push("<ul class=\"models\">");
 // iterate section.models
 ;(function(){
   var $$obj = section.models;
@@ -779,7 +785,6 @@ buf.push("<li class=\"section list-group-item\"><div class=\"panel panel-default
       var model = $$obj[$index];
 
 var url = rootPath + '/model/' + model.modelName
-{
 buf.push("<li><div class=\"btn-group pull-right\">");
 if (model.is_single)
 {
@@ -790,7 +795,6 @@ else
 buf.push("<a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-info')] }, {"href":true})) + "><span" + (jade.attrs({ terse: true, 'id':('viewAll_' + (model.modelName) + '') }, {"id":true})) + ">View All</span></a><a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/new'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">New</a>");
 }
 buf.push("</div><a" + (jade.attrs({ terse: true, 'href':(url + (model.is_single ? '/document/single' : '')) }, {"href":true})) + "><h3>" + (jade.escape((jade.interp = model.label) == null ? '' : jade.interp)) + "</h3></a></li>");
-}
     }
 
   } else {
@@ -799,7 +803,6 @@ buf.push("</div><a" + (jade.attrs({ terse: true, 'href':(url + (model.is_single 
       $$l++;      var model = $$obj[$index];
 
 var url = rootPath + '/model/' + model.modelName
-{
 buf.push("<li><div class=\"btn-group pull-right\">");
 if (model.is_single)
 {
@@ -810,19 +813,18 @@ else
 buf.push("<a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-info')] }, {"href":true})) + "><span" + (jade.attrs({ terse: true, 'id':('viewAll_' + (model.modelName) + '') }, {"id":true})) + ">View All</span></a><a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/new'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">New</a>");
 }
 buf.push("</div><a" + (jade.attrs({ terse: true, 'href':(url + (model.is_single ? '/document/single' : '')) }, {"href":true})) + "><h3>" + (jade.escape((jade.interp = model.label) == null ? '' : jade.interp)) + "</h3></a></li>");
-}
     }
 
   }
 }).call(this);
 
-buf.push("</ul></div></li>");
+buf.push("</ul></div>");
     }
 
   }
 }).call(this);
 
-buf.push("</ul></div></div>");
+buf.push("</div>");
 if(!dialog)
 {
 buf.push("<footer class=\"footer\"><p><a href=\"http://github.com/Empeeric/formage-admin\">Formage-Admin</a> " + (jade.escape((jade.interp = version) == null ? '' : jade.interp)) + " , from&nbsp;<a href=\"http://empeeric.com\">Empeeric</a></p><a href=\"http://github.com/Empeeric/formage-admin\"><img" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/images/logo-40.png') }, {"src":true})) + "></a></footer>");
