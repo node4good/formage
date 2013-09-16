@@ -96,6 +96,9 @@ exports.HiddenWidget = exports.InputWidget.extend({
 exports.TextWidget = exports.InputWidget.extend({
     init: function (options) {
         this._super('text', options);
+        options.attrs = options.attrs || {};
+        if(options.help)
+            options.attrs['placeholder'] = options.help;
     }
 });
 
@@ -108,6 +111,12 @@ exports.PasswordWidget = exports.InputWidget.extend({
 
 
 exports.TextAreaWidget = Widget.extend({
+    init:function(options){
+        this._super(options);
+        options.attrs = options.attrs || {};
+        if(options.help)
+            options.attrs['placeholder'] = options.help;
+    },
     render: function (res) {
         res.write('\n<textarea ');
         this.render_attributes(res);
@@ -262,7 +271,7 @@ exports.ChoicesWidget = Widget.extend({
                 found_selected = true;
             }
 			if(!this.options.attrs.multiple)
-            	res.write('\n<option ' + selected + 'value=""> ... </option>\n');
+            	res.write('\n<option ' + selected + 'value="">' + (this.options.help || '') + '..</option>\n');
         }
         for (var i = 0; i < this.values.length; i++) {
             var selected2 = this.isSelected(this.values[i]) ? 'selected="selected" ' : '';

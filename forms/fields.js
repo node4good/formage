@@ -43,6 +43,7 @@ var BaseField = exports.BaseField = Class.extend({
         options.widget_options = widget_options;
         widget_options.attrs = options.attrs || {};
         widget_options.required = widget_options.required == null ? this.required : widget_options.required;
+        widget_options.help = options.help;
         this.widget = new options.widget(widget_options);
         this.value = null;
         this.errors = [];
@@ -86,7 +87,7 @@ var BaseField = exports.BaseField = Class.extend({
         res.write('<label for="id_' + this.name + '" class="' + class_str + '">' + this.get_label() + '</label>\n');
     },
     render_with_label: function (res) {
-        res.write('<div class="field">\n');
+        res.write('<div class="field" ' + (this.options.help ? 'title="' + this.options.help + '"' : '') + '>\n');
         this.render_label(res);
         this.render(res);
         this.render_error(res);
@@ -518,6 +519,7 @@ var ListField_ = exports.ListField = BaseField.extend({
                 return;
             field.name = prefix + field_name;
             field.errors = errors[field_name] || [];
+            field.widget.data['field'] = field_name;
             if (field_name === '__self__') {
                 field.set(value);
                 field.render(res);
