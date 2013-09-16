@@ -28,7 +28,7 @@ var MongooseAdmin = module.exports = function (app, options) {
 MongooseAdmin.defaults = {
     title: 'Backoffice',
     root: '/admin',
-    default_section: 'main'
+    default_section: 'Main'
 };
 
 /**

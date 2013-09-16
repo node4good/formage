@@ -2,7 +2,6 @@ var mongoose = require('mongoose'),
     Types = mongoose.Schema.Types,
     AdminForm = require('../../AdminForm').AdminForm;
 
-
 var schema = new mongoose.Schema({
     title: { type: String, required: true, label: 'כותרת'},
     email: { type: String, required: true, label: 'דוא"ל'},
