@@ -65,7 +65,7 @@ module.exports = function(app, express, models, opt) {
 
 var serve_static = module.exports.serve_static = function (app, express, options) {
     options = options || {};
-    options.root = options.root || 'admin';
+    options.root = options.root || '/admin';
 
     if (module._is_serving_static) return;
     module._is_serving_static = true;

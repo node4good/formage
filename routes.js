@@ -180,6 +180,15 @@ var json_routes = {
 };
 
 
+var singleMiddleware = function (req, res, next) {
+    var model = MongooseAdmin.singleton.models[req.params.modelName].model;
+    if (req.params.documentId === 'single')
+        model.findOne({}, function(err, doc) {if (err) throw err; req.params.theDoc = doc; next()});
+    else
+        next();
+};
+
+
 function renderForm(res, form, model, allow_delete, clone, dialog) {
     if (clone)
         form.exclude.push('id');
@@ -486,7 +495,7 @@ var routes = {
             target_url = req.path.split('/document/')[0].slice(1) + '?saved=true';
 
         if (doc_id === 'new') doc_id = null;
-        if (doc_id === 'single') doc_id = req.body['_id'];
+        if (doc_id === 'single') doc_id = req.params.theDoc.id;
         var callback = function (err, doc) {
             if (err) {
                 if (err.to_html)
@@ -568,7 +577,7 @@ module.exports = function (admin, outer_app, root, version) {
     app.get('/logout', routes.logout);
     app.get('/model/:modelName', auth('view'), userPanel, routes.model);
     app.get('/model/:modelName/document/:documentId', auth('update'), routes.document);
-    app.post('/model/:modelName/document/:documentId', auth(), routes.documentPost);
+    app.post('/model/:modelName/document/:documentId', [auth(), singleMiddleware], routes.documentPost);
 
     app.post('/json/dependencies', json_routes.checkDependencies);
     app.get('/json/documents', json_routes.documents);
