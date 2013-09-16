@@ -497,7 +497,7 @@ var routes = {
             target_url = req.path.split('/document/')[0].slice(1) + '?saved=true';
 
         if (doc_id === 'new') doc_id = null;
-        if (doc_id === 'single') doc_id = req.params.theDoc.id;
+        if (doc_id === 'single') doc_id = req.params.theDoc && req.params.theDoc.id;
         var callback = function (err, doc) {
             if (err) {
                 if (err.to_html)
