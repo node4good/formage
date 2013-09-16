@@ -313,8 +313,10 @@ var routes = {
             var sections = _(models)
                 .groupBy(function(item) { return item.options.section; })
                 .tap(function (val) {
-                    val[admin.options.default_section] = val.undefined;
-                    delete val.undefined;
+                    if ('undefined' in val) {
+                        val[admin.options.default_section] = val.undefined;
+                        delete val.undefined;
+                    }
                     return val;
                 })
                 .map(function(value, key) { return {name: key, models: value}; })
