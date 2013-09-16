@@ -31,6 +31,7 @@ var model = module.exports = mongoose.model('config', schema);
 model.single = true;
 model.label = 'הגדרות';
 model.formage = {
+    section: 'Configuration',
     form: AdminForm.extend({
         render: function (res, options) {
             this._super(res, options);

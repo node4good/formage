@@ -53,9 +53,6 @@ html(lang='en')
                             block title
                                 a(href='#{rootPath}/') #{adminTitle}
                             block breadcrumb
-                        - if(userPanel)
-                            .user-panel
-                                !{userPanel}
 
         .container
             #old-version.alert.alert-error(style='position: fixed;bottom: 1em;right: 1em;width: 30em;height: 4em;border-radius: 10px;display: block;opacity: 0.8;display:none')
@@ -66,11 +63,14 @@ html(lang='en')
             #content
                 block body
 
-            - if(!dialog)
+            - if (!dialog)
                 footer.footer
+                    - if (userPanel)
+                        p.user-panel
+                            !{userPanel}
                     p
                         a(href='http://github.com/Empeeric/formage-admin') Formage-Admin
-                        |  #{version} , from&nbsp;
+                        |  #{version}, from&nbsp;
                         a(href='http://empeeric.com') Empeeric
                     a(href='http://github.com/Empeeric/formage-admin')
                         img(src='#{rootPath}/images/logo-40.png')
