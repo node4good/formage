@@ -11,7 +11,7 @@ require('../CompileTempletes.js');
 var app = express();
 
 app.set('port', process.env.PORT || 8080);
-app.set('mongo', process.env.MONGO_URL || process.env.MONGOLAB_URI || 'mongodb://localhost/formage-admin-example');
+app.set('mongo', process.env.MONGO_URL || process.env.MONGOLAB_URI || 'mongodb://localhost/formage-example');
 app.set("view options", { layout: false, pretty: true });
 
 app.use(express.favicon());
@@ -33,7 +33,7 @@ var mongoose = require('mongoose');
 mongoose.connect(app.get('mongo'));
 mongoose.set('debug', true);
 var admin = formage.init(app, express, require('./models'), {
-    title: process.env.ADMIN_TITLE || 'Formage-Admin Example',
+    title: process.env.ADMIN_TITLE || 'Formage Example',
     default_section: 'Main'
 });
 

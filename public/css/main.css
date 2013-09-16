@@ -29,6 +29,14 @@ h2 {
 }
 
 /*
+    login form
+*/
+#login {
+    width: 500px;
+    margin: 0 auto;
+}
+
+/*
     footer
 */
 .footer {

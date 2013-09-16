@@ -34,7 +34,7 @@ html(lang='en')
         !{global_head}
 
     body
-        - if(!dialog)
+        - if (!dialog)
             header.navbar.navbar-static-top
                 .navbar-inner
                     .container
@@ -58,7 +58,7 @@ html(lang='en')
             #old-version.alert.alert-error(style='position: fixed;bottom: 1em;right: 1em;width: 30em;height: 4em;border-radius: 10px;display: block;opacity: 0.8;display:none')
                 button.close(type='button',data-dismiss='alert') &times;
                 strong Warning;
-                |  There is a newer version of formage-admin.
+                |  There is a newer version of formage.
 
             #content
                 block body
@@ -69,10 +69,10 @@ html(lang='en')
                         p.user-panel
                             !{userPanel}
                     p
-                        a(href='http://github.com/Empeeric/formage-admin') Formage-Admin
+                        a(href='http://github.com/Empeeric/formage') Formage
                         |  #{version}, from&nbsp;
                         a(href='http://empeeric.com') Empeeric
-                    a(href='http://github.com/Empeeric/formage-admin')
+                    a(href='http://github.com/Empeeric/formage')
                         img(src='#{rootPath}/images/logo-40.png')
 
         block scripts

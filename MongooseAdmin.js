@@ -23,7 +23,7 @@ var MongooseAdmin = module.exports = function (app, options) {
     this.app = app;
     this.models = {};
 
-    console.log('\x1b[36mformage-admin\x1b[0m at path', this.root);
+    console.log('\x1b[36mformage\x1b[0m at path', this.root);
 };
 MongooseAdmin.defaults = {
     title: 'Backoffice',
@@ -151,7 +151,7 @@ MongooseAdmin.prototype.registerModel = function(name, model, options) {
         is_single: model.is_single
     };
     permissions.registerModel(name);
-    console.log('\x1b[36mformage-admin:\x1b[0m %s', name);
+    console.log('\x1b[36mformage:\x1b[0m %s', name);
 };
 
 MongooseAdmin.prototype.renderUserPanel = function(req,cbk){
@@ -385,7 +385,7 @@ MongooseAdmin.userFromSessionStore = function(sessionStore) {
 MongooseAdmin.prototype.ensureUserExists = function(username, password) {
     MongooseAdminUser.ensureExists(username, password, function(err, adminUser) {
         if (!err)
-            console.log('\x1b[36mformage-admin\x1b[0m user: %s', adminUser.fields.username);
+            console.log('\x1b[36mformage\x1b[0m user: %s', adminUser.fields.username);
     });
 };
 

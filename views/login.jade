@@ -3,21 +3,20 @@ extends layout.jade
 block nav
 
 block body
-    div.error
-    form.form-horizontal(role="form",method="post")
+    form#login.form-horizontal(role="form",method="post")
+        if (error)
+            p.controls
+                strong.text-error Wrong username or password.
+
         .control-group
             label.control-label(for="username") Username
             .controls
                 input#username(type="text", name="username")
-                if (error)
-                    span.input-group-addon.label-warning Wrong
 
         .control-group
             label.control-label(for="password") Password
             .controls
                 input#password(type="password", name="password")
-                if (error)
-                    span.input-group-addon.label-warning Wrong
 
         .controls
-            button#loginButton.btn.btn-primary(type='submit') Login
+            button#loginButton.btn(type='submit') Login

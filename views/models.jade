@@ -23,7 +23,7 @@ block body
 block scripts
     script(src="#{rootPath}/js/models.js")
     script(type='text/javascript').
-        $.getJSON('http://registry.npmjs.org/formage-admin/latest?jsonp=?').done(function (pack) {
+        $.getJSON('http://registry.npmjs.org/formage/latest?jsonp=?').done(function (pack) {
             var version = '#{version}';
             var latest = pack.version;
             if (latest > version)

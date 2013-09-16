@@ -218,17 +218,12 @@ if(!dialog)
 {
 buf.push("<header class=\"navbar navbar-static-top\"><div class=\"navbar-inner\"><div class=\"container\"><h1><a" + (jade.attrs({ terse: true, 'href':('' + (rootPath) + '/') }, {"href":true})) + ">" + (jade.escape((jade.interp = adminTitle) == null ? '' : jade.interp)) + "</a></h1></div></div></header>");
 }
-buf.push("<div class=\"container\"><div id=\"old-version\" style=\"position: fixed;bottom: 1em;right: 1em;width: 30em;height: 4em;border-radius: 10px;display: block;opacity: 0.8;display:none\" class=\"alert alert-error\"><button type=\"button\" data-dismiss=\"alert\" class=\"close\">&times;</button><strong>Warning;</strong> There is a newer version of formage-admin.</div><div id=\"content\"><div class=\"error\"></div><form role=\"form\" method=\"post\" class=\"form-horizontal\"><div class=\"control-group\"><label for=\"username\" class=\"control-label\">Username</label><div class=\"controls\"><input id=\"username\" type=\"text\" name=\"username\">");
+buf.push("<div class=\"container\"><div id=\"old-version\" style=\"position: fixed;bottom: 1em;right: 1em;width: 30em;height: 4em;border-radius: 10px;display: block;opacity: 0.8;display:none\" class=\"alert alert-error\"><button type=\"button\" data-dismiss=\"alert\" class=\"close\">&times;</button><strong>Warning;</strong> There is a newer version of formage-admin.</div><div id=\"content\"><form id=\"login\" role=\"form\" method=\"post\" class=\"form-horizontal\">");
 if ( (error))
 {
-buf.push("<span class=\"input-group-addon label-warning\">Wrong</span>");
+buf.push("<p class=\"controls\"><strong class=\"text-error\">Wrong username or password.</strong></p>");
 }
-buf.push("</div></div><div class=\"control-group\"><label for=\"password\" class=\"control-label\">Password</label><div class=\"controls\"><input id=\"password\" type=\"password\" name=\"password\">");
-if ( (error))
-{
-buf.push("<span class=\"input-group-addon label-warning\">Wrong</span>");
-}
-buf.push("</div></div><div class=\"controls\"><button id=\"loginButton\" type=\"submit\" class=\"btn btn-primary\">Login</button></div></form></div>");
+buf.push("<div class=\"control-group\"><label for=\"username\" class=\"control-label\">Username</label><div class=\"controls\"><input id=\"username\" type=\"text\" name=\"username\"></div></div><div class=\"control-group\"><label for=\"password\" class=\"control-label\">Password</label><div class=\"controls\"><input id=\"password\" type=\"password\" name=\"password\"></div></div><div class=\"controls\"><button id=\"loginButton\" type=\"submit\" class=\"btn\">Login</button></div></form></div>");
 if (!dialog)
 {
 buf.push("<footer class=\"footer\">");
