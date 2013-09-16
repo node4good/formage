@@ -6,7 +6,15 @@ var schema = new mongoose.Schema({
     picture: Types.Picture,
     pictures: [Types.Picture],
     tags: [String],
-    file: Types.Filepicker
+    file: Types.Filepicker,
+    fieldset: {
+        name: String,
+        age: Number
+    },
+    listfield: [String],
+    listfield2: [{
+        name: String
+    }]
 });
 
 schema.methods.toString = function() {

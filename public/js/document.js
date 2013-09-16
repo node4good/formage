@@ -1,15 +1,18 @@
 'use strict';
 var MINIMUM_ITEM_COUNT_TO_EXPAND = 1;
+
 var btn = {
-    delete: function () {
+    'delete': function () {
         return $('<button type="button" class="nf_listfield_delete"><i class="icon-remove"></i></button>')
             .click(function (e) {
+                e.stopPropagation();
                 e.preventDefault();
-                $($(this).parent()).slideUp(400, function () {
+
+                var t = $(this);
+                t.parent().slideUp(400, function() {
                     $(this).remove();
                 });
-                var length = $(this).parents('.nf_listfield').find('> ul > li').length;
-                $(this).parents('.nf_listfield_container').find('.list_summary').text(length ? length + ' items' : 'No items');
+                updateListfield(t.closest('.nf_listfield_container'));
             });
     },
     drag: function () {
@@ -20,15 +23,17 @@ var btn = {
     }
 };
 
+
 function initFieldSet(ctx) {
+    // On first run, close all field-sets, open only those with errors
     if (!ctx) {
         $('.nf_fieldset,.nf_listfield_container').addClass('closed');
         $('.error')
-            .parents('.nf_fieldset > div,.nf_listfield_container > div').show()
-            .parents('.nf_fieldset,.nf_listfield_container').removeClass('closed');
+            .closest('.nf_fieldset > div,.nf_listfield_container > div').show()
+            .closest('.nf_fieldset, .nf_listfield_container').removeClass('closed');
     }
 
-    $('.nf_fieldset, .nf_listfield_container', ctx).each(function () {
+    $('.nf_fieldset, .nf_listfield_container', ctx).each(function() {
         if ($(this).data('nf_fieldset'))
             return;
         $(this).data('nf_fieldset', true);
@@ -50,14 +55,20 @@ function initFieldSet(ctx) {
             t.toggleClass('closed');
             div.stop(1, 1).slideToggle('fast');
         });
+
+        // Only list-view
         if (t.is('.nf_listfield_container')) {
-            var length = $('.nf_listfield > ul > li', t).length;
-            var summary = length ? length + ' items' : 'No items';
-            t.append('<label class="list_summary">' + summary + '</label>');
-            if (length <= MINIMUM_ITEM_COUNT_TO_EXPAND)
+            t.prepend('<label class="list_summary" />');
+            if (updateListfield(t) <= MINIMUM_ITEM_COUNT_TO_EXPAND)
                 t.click();
         }
     });
+}
+
+function updateListfield(t) {
+    var length = $('> .nf_listfield > ul > li', t).length;
+    t.find('.list_summary').text(length ? length + ' items' : 'No items');
+    return length;
 }
 
 function initWidgets(ctx) {
@@ -142,6 +153,7 @@ function ListField(el) {
     self.el = $(el);
 
     self.add = function (e) {
+        e.stopPropagation();
         e.preventDefault();
 
         var li = $('<li />').hide()
@@ -149,7 +161,7 @@ function ListField(el) {
             .append(btn.delete())
             .append(btn.drag())
             .appendTo($(this).prev())
-            .slideDown(function () {
+            .slideDown(function() {
                 $('input:first', li).focus();
             });
 

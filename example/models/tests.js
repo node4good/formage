@@ -4,16 +4,12 @@ var mongoose = require('mongoose'),
     fWidgets = require('../../forms/widgets');
 
 var s = new Schema({
-    list: [
-        {
-            name: { type: String, required: true },
-            list: [
-                {
-                    name: String
-                }
-            ]
-        }
-    ],
+    list: [{
+        name: { type: String, required: true },
+        list: [{
+            name: String
+        }]
+    }],
     list_o_list: {
         inner_list: [String]
     },
