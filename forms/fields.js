@@ -5,12 +5,29 @@ var widgets = require('./widgets'),
     async = require('async'),
 	Class = require('sji'),
 	_ = require('lodash'),
-	common = require('./common'),
 	path = require('path'),
 	fs = require('fs'),
 	util = require('util'),
     cloudinary = require('cloudinary'),
     mongoose = require.main.require('mongoose');
+
+
+exports.writer_to_string = function (writer, limit) {
+    limit = limit || 256;
+    var buff = new Buffer(limit);
+    var pointer = 0;
+    writer({write: function (str) {
+        if (str.length + pointer > limit) {
+            limit = limit * 2;
+            var new_buff = new Buffer(limit);
+            new_buff.write(buff.toString('utf8', 0, pointer));
+            delete buff;
+            buff = new_buff;
+        }
+        pointer += buff.write(str, pointer);
+    }});
+    return buff.toString('utf8', 0, pointer);
+};
 
 
 exports.setAmazonCredentials = function (credentials) {
@@ -69,7 +86,7 @@ var BaseField = exports.BaseField = Class.extend({
         return arr.join(' ');
     },
     render_label_str: function () {
-        return common.writer_to_string(this.render_label, 80);
+        return exports.writer_to_string(this.render_label, 80);
     },
     render: function (res) {
         this.widget.name = this.name;
@@ -78,7 +95,7 @@ var BaseField = exports.BaseField = Class.extend({
         return this;
     },
     render_str: function () {
-        return common.writer_to_string(this.render, 1024);
+        return exports.writer_to_string(this.render, 1024);
     },
     render_label: function (res) {
         var class_str = 'field_label' + (this.widget.attrs.required ? ' required_label' : ' optional_label');
@@ -92,7 +109,7 @@ var BaseField = exports.BaseField = Class.extend({
         res.write('\n</div>\n');
     },
     render_with_label_str: function () {
-        return common.writer_to_string(this.render_with_label, 1024);
+        return exports.writer_to_string(this.render_with_label, 1024);
     },
     render_error: function (res) {
         if (this.errors && this.errors.length) {

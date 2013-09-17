@@ -6,7 +6,6 @@ if (!module.parent) {
 
 var path = require('path');
 
-module.exports.common = require('./common');
 module.exports.types = require('./mongoose-types');
 module.exports.forms = require('./forms');
 module.exports.fields = require('./fields');
