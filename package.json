@@ -34,7 +34,8 @@
     "async": "",
     "cloudinary": "",
     "nodestrum": "",
-    "node-ckeditor": ""
+    "node-ckeditor": "",
+    "formage-mongoose-types": ""
   },
   "devDependencies": {
     "jade": "",

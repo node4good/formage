@@ -3,12 +3,14 @@ var Url = require('url'),
     querystring = require('querystring'),
     async = require('async'),
     _ = require('lodash'),
-    forms = require('./forms').forms,
+    forms = require('./forms/forms'),
     permissions = require('./models/permissions'),
     AdminForm = require('./AdminForm').AdminForm,
     path = require('path');
 
 var MongooseAdmin;
+var DEFAULT_QUERY_COUNT_LIMIT = 100;
+var DEFAULT_QUERY_COUNT_LIMIT_SORTABLE = 1000;
 
 
 var json_routes = {
@@ -201,6 +203,7 @@ function renderForm(res, form, model, allow_delete, clone, dialog) {
             var subDict = _.extend(sub, {count: 0, value: form.instance.id});
             if (form.instance.isNew) return cbk(null, subDict);
             var relatedModel = MongooseAdmin.singleton.models[sub.model];
+            //noinspection JSUnresolvedVariable
             return relatedModel.model.count()
                 .where(sub.field, form.instance.id)
                 .exec(function (err, count) {
@@ -378,10 +381,12 @@ var routes = {
         var start = Number(query.start) || 0;
         delete query.start;
 
+        //noinspection JSUnresolvedVariable
         var isDialog = Boolean(query._dialog);
+        //noinspection JSUnresolvedVariable
         delete query._dialog;
 
-        var count = Number(query.count) || 100;
+        var count = Number(query.count) || DEFAULT_QUERY_COUNT_LIMIT;
         delete query.count;
 
         var sort = query.order_by;
@@ -399,7 +404,10 @@ var routes = {
 
         var sortable = typeof(modelConfig.options.sortable) == 'string' && permissions.hasPermissions(req.admin_user, name, 'order');
 
-        if (sortable) start = 0, count = 1000;
+        if (sortable) {
+            start = 0;
+            count = DEFAULT_QUERY_COUNT_LIMIT_SORTABLE;
+        }
 
         return MongooseAdmin.singleton.modelCounts(name, filters, function (err, total_count) {
             if (err) throw err;
@@ -505,6 +513,7 @@ var routes = {
                 else
                     return res.send(500);
             }
+            //noinspection JSUnresolvedVariable
             if (!(req.query._dialog && doc)) {
                 return res.redirect(target_url);
             }

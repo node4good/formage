@@ -4,7 +4,7 @@ if (!module.parent) console.error('Please don\'t call me directly.I am just the 
 var path = require('path'),
     MongooseAdmin = require('./MongooseAdmin.js'),
     _ = require('lodash'),
-    forms = require('./forms'),
+    forms = require('./forms/forms'),
     ckeditorPath = require('node-ckeditor'),
     registerRoutes = require('./routes'),
     LIST_EXCLUDED_FIELDS = ['order', '_id', 'show', '__v'];
@@ -18,7 +18,7 @@ module.exports = function(app, express, models, opt) {
     admin.ensureUserExists(opt.username || 'admin', opt.password || 'admin');
 
     serve_static(app, express, opt);
-    forms.forms.set_models(models);
+    forms.set_models(models);
 
     Object.keys(models).sort().forEach(function(name) {
         var model = models[name];

@@ -5,7 +5,7 @@ var MongooseAdminUser = require('./models/mongoose_admin_user.js').MongooseAdmin
     permissions = require('./models/permissions'),
     mongoose = require.main.require('mongoose'),
     AdminForm = require('./AdminForm').AdminForm,
-    forms = require('./forms').forms,
+    forms = require('./forms/forms'),
     dependencies = require('./dependencies');
 
 /**
