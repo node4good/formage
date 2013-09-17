@@ -10,8 +10,7 @@ var Class = require('sji'),
     fields = require('./fields'),
     widgets = require('./widgets'),
     path = require('path'),
-    common = require('./common');
-var mongoose = require.main.require('mongoose');
+    mongoose = require.main.require('mongoose');
 
 var FORM_EXCLUDE_FIELDS = ['__v'];
 
@@ -228,7 +227,7 @@ var BaseForm = exports.BaseForm = Class.extend({
     },
     to_html: function () {
         var self = this;
-        return common.writer_to_string(function (res) {
+        return fields.writer_to_string(function (res) {
             self.render(res);
         }, 36000);
     },
