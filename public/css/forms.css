@@ -91,16 +91,20 @@ p.error {
     clear: both;
     margin: 0 0 15px 180px;
     padding: 15px 15px 5px;
-    -webkit-transition: box-shadow 200ms, border 200ms;
+    -webkit-transition: box-shadow .2s, border .2s;
     position: relative;
     border: 1px solid #ddd;
     border-radius: 3px;
     box-shadow: #eee 0 0 5px 0;
 }
+.nf_listfield_container {
+    min-height: 30px;
+}
 
 .nf_fieldset {
     box-sizing: border-box;
     background: white;
+    min-height: 30px;
 }
 
 .nf_fieldset > div, .nf_listfield_container > div {
@@ -129,7 +133,7 @@ p.error {
     line-height: 1.5em;
 }
 .nf_fieldset .field {
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 .nf_fieldset > i, .nf_listfield_container > i {
     position: absolute; top: 5px; left: 5px;
@@ -146,6 +150,9 @@ p.error {
 .nf_listfield_container > .field_label {
     font-size: 20px;
     font-weight: bold;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 .nf_listfield_container > span.error {
     display: none;
@@ -154,7 +161,7 @@ p.error {
     display: none;
 }
 .nf_listfield {
-    margin-top: 4px;
+    /*margin-top: 4px;*/
 }
 .nf_listfield ul {
     margin: 0;
@@ -190,12 +197,14 @@ p.error {
     cursor: move;
 }
 .nf_listfield_container > .list_summary {
-    margin: 0;
-    right: 13px; top: 13px;
-    display: none;
+    position: static;
+    font-size: 14px;
+    margin: -5px 0 0 10px;
+    text-align: left;
+    display: inline-block;
 }
 .nf_listfield_container.closed > .list_summary {
-    display: block;
+    /*height: 30px;*/
 }
 /*
     Auto Complete

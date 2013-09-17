@@ -43,7 +43,7 @@ function initFieldSet(ctx) {
             div = $('> div', t),
             i = $('<i class="icon-chevron-right" />').prependTo(t);
 
-        t.css('min-height', h2.height());
+//        t.css('min-height', h2.height());
 
         t.off('click').click(function (e) {
             var is_closed = t.is('.closed');
@@ -58,7 +58,6 @@ function initFieldSet(ctx) {
 
         // Only list-view
         if (t.is('.nf_listfield_container')) {
-            t.prepend('<label class="list_summary" />');
             if (updateListfield(t) <= MINIMUM_ITEM_COUNT_TO_EXPAND)
                 t.click();
         }
@@ -153,7 +152,7 @@ function ListField(el) {
     self.el = $(el);
 
     self.add = function (e) {
-        e.stopPropagation();
+//        e.stopPropagation();
         e.preventDefault();
 
         var li = $('<li />').hide()
@@ -196,18 +195,18 @@ function ListField(el) {
     self.name = self.el.attr('name');
 
     var tpl = $('> .nf_hidden_template', el);
-    tpl.find(".nf_listfield").addClass('closed');
+    tpl.find('.nf_listfield').addClass('closed');
     self.template = tpl.html();
     tpl.remove();
 
-    self.list = $('> ul', el)
+    self.list = $('> ul', el);
+    self.el.after('<label class="list_summary" />')
         .after(btn.add().click(self.add));
 
     self.length = $('> li', self.list)
         .append(btn.drag())
         .append(btn.delete())
         .length;
-
 
     self.list.sortable({
         items: 'li:not(.new_li)',
