@@ -1,11 +1,10 @@
 'use strict';
 if (!module.parent) console.error('Please don\'t call me directly.I am just the main app\'s minion.') || process.process.exit(1);
 
-var forms = require('./forms')
-    , mongoose = require.main.require('mongoose')
-    , fields = forms.fields
-    , widgets = forms.widgets
-    , MongooseForm = forms.forms.MongooseForm;
+var mongoose = require.main.require('mongoose')
+    , fields = require('./forms/fields')
+    , widgets = require('./forms/widgets')
+    , MongooseForm = require('./forms/forms').MongooseForm;
 
 // Lazy load crypt
 var crypt = function () {return require('./models/mongoose_admin_user').crypt;};
@@ -65,9 +64,9 @@ exports.AdminUserForm = AdminForm.extend({
         this._super();
         var fields = this.fields;
         delete fields['passwordHash'];
-        this.fields['current_password'] = new forms.fields.StringField({widget: forms.widgets.PasswordWidget, label: 'Current Password'});
-        this.fields['password'] = new forms.fields.StringField({widget: forms.widgets.PasswordWidget, label: 'New Password'});
-        this.fields['password_again'] = new forms.fields.StringField({widget: forms.widgets.PasswordWidget, label: 'Again'});
+        this.fields['current_password'] = new fields.StringField({widget: widgets.PasswordWidget, label: 'Current Password'});
+        this.fields['password'] = new fields.StringField({widget: widgets.PasswordWidget, label: 'New Password'});
+        this.fields['password_again'] = new fields.StringField({widget: widgets.PasswordWidget, label: 'Again'});
         //noinspection JSUnresolvedVariable
         this.fieldsets[0].fields = ['username', 'is_superuser', 'permissions', 'current_password', 'password', 'password_again'];
         return fields;
