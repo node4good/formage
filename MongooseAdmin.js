@@ -254,18 +254,6 @@ MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, cou
 };
 
 
-MongooseAdmin.prototype.getDocument = function(collectionName, documentId, onReady) {
-    this.models[collectionName].model.findById(documentId, function(err, document) {
-        if (err) {
-            console.log('Unable to get document because: ' + err);
-            onReady('Unable to get document', null);
-        } else {
-            onReady(null, document);
-        }
-    });
-};
-
-
 MongooseAdmin.prototype.createDocument = function (req, user, collectionName, params, onReady) {
     var self = this;
     var model = this.models[collectionName].model;
