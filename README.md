@@ -86,6 +86,35 @@ var schema = new mongoose.Schema({
 ```
 [ISO 639-1](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
 
+#### Extending
+``` js
+var ReversedWidget = formage.widgets.TextWidget.extend({
+    render: function (res) {
+        this.value = this.value.split("").reverse().join("");
+        this.attrs.style = '-moz-transform: scale(-1, 1); -webkit-transform: scale(-1, 1); transform: scale(-1, 1);';
+        this._super(res);
+    }
+});
+
+var ReversedField = formage.fields.StringField.extend({
+    init: function (options) {
+        options = options || {};
+        options.widget = ReversedWidget;
+        this._super(options);
+    },
+    clean_value: function (req, callback) {
+        this.value = this.value.split("").reverse().join("");
+        this._super(req, callback);
+    }
+});
+
+var schema = new mongoose.Schema({
+    reversed: { type: String, formageField: ReversedField}
+});
+```
+shout-out to my man @jrowny
+
+
 License
 -------
 MIT
