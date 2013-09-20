@@ -12,9 +12,6 @@ var crypt = function () {return require('./models/mongoose_admin_user').crypt;};
 var api_loaded = false;
 var api_path;
 
-//noinspection JSHint
-var _escaper = /[-[\]{}()*+?.,\\^$|#\s]/g;
-
 
 var AdminForm = exports.AdminForm = MongooseForm.extend({
     init: function (request, options, model) {
@@ -103,10 +100,3 @@ exports.AdminUserForm = AdminForm.extend({
         this._super(callback);
     }
 });
-
-
-
-exports.loadApi = function () {
-    var msg = (new Error).stack.split('\n')[1];
-    console.error("[Deprecated] There's no need for .loadApi%s", msg);
-};
