@@ -8,7 +8,7 @@ var Class = require('sji'),
 var FORM_EXCLUDE_FIELDS = ['__v'];
 
 
-var BaseForm = exports.BaseForm = Class.extend({
+exports.BaseForm = Class.extend({
     init: function (request, options) {
         this.fields = {};
         options = options || {};
@@ -96,12 +96,13 @@ var BaseForm = exports.BaseForm = Class.extend({
         return this.data[field_name];
     },
     init_fields: function () {
+        var self = this;
         this.get_fields();
-        for (var field_name in this.fields) {
-            var value = this.get_value(field_name);
-            var field = this.fields[field_name].set(value);
+        Object.keys(this.fields).forEach(function (field_name){
+            var value = self.get_value(field_name);
+            var field = self.fields[field_name].set(value);
             field.name = field_name;
-        }
+        });
         this._fields_ready = true;
     },
     save: function (callback) {
