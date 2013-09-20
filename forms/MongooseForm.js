@@ -174,13 +174,19 @@ var MongooseForm = module.exports = BaseForm.extend({
             options.widget = widgets.TextAreaWidget;
             return new fields.StringField(options);
         }
-        if (mongoose_field.instance && mongoose_field.instance === 'String') {
-            return new fields.StringField(options);
+
+        if ('formageField' in mongoose_field.options) {
+            var Field = mongoose_field.options.formageField;
+            return new Field(options);
         }
 
         var fieldName = mongoose_field.options.type.name + 'Field';
         if (fieldName in fields) {
             return new fields[fieldName](options);
+        }
+
+        if (mongoose_field.instance && mongoose_field.instance === 'String') {
+            return new fields.StringField(options);
         }
         return new fields.StringField(options);
     },
