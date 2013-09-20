@@ -112,8 +112,59 @@ var schema = new mongoose.Schema({
     reversed: { type: String, formageField: ReversedField}
 });
 ```
-shout-out to my man @jrowny
+Shout-out to my man @jrowny
 
+---
+
+If we want to have a complex underlining type we need to "lie" to mongoose
+
+```js
+var TwoDWidget = formage.widgets.TextWidget.extend({
+    render: function (res) {
+        var value = this.value || {};
+        var lat = value.lat;
+        var lng = value.lng;
+        var name = this.name;
+        this.name = name + '_lat';
+        this.value = lat;
+        this._super(res);
+        this.name = name + '_lng';
+        this.value = lng;
+        this._super(res);
+    }
+});
+
+
+var TwoDField = formage.fields.StringField.extend({
+    init: function (options) {
+        options = options || {};
+        options.widget = TwoDWidget;
+        this._super(options);
+    },
+    to_schema: function () {
+        return {
+            lat: Number,
+            lng: Number
+        };
+    },
+    clean_value: function (req, callback) {
+        var lat = Number(req.body[this.name + '_lat']);
+        var lng = Number(req.body[this.name + '_lng']);
+        this.value = { lat: lat, lng: lng};
+        this._super(req, callback);
+    }
+});
+var TwoD = function TwoD(path, options) {
+    TwoD.super_.call(this, path, options);
+};
+util.inherits(TwoD, Schema.Types.Mixed);
+Types.TwoD = Object;
+Schema.Types.TwoD = TwoD;
+
+var schema = new mongoose.Schema({
+    two_d: { type: TwoD, formageField: TwoDField}
+});
+```
 
 License
 -------

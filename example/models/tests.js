@@ -18,7 +18,7 @@ var schema = new mongoose.Schema({
     string: { type: String, required: true },
     date: { type: Date, required: true },
     datetime: { type: Date, required: true, widget:fWidgets.DateTimeWidget },
-    time: { type: Schema.Types.Time },
+    time: { type: Types.Time },
     enum: { type: String, enum: ['1', '2', '3'], required: true },
     rich_text: { type: Types.Html, required: true },
     text: { type: Types.Text, required: true },
