@@ -7,6 +7,8 @@ var path = require('path'),
     init = require('./init');
 
 exports.forms = require('./forms/forms');
+exports.widgets = require('./forms/widgets');
+exports.fields = fields;
 exports.AdminForm = require('./AdminForm').AdminForm;
 exports.init = function () {
     return module.admin = init.apply(init, arguments);
