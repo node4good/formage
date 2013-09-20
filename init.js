@@ -18,7 +18,6 @@ module.exports = function(app, express, models, opt) {
     admin.ensureUserExists(opt.username || 'admin', opt.password || 'admin');
 
     serve_static(app, express, opt);
-    forms.set_models(models);
 
     Object.keys(models).sort().forEach(function(name) {
         var model = models[name];
@@ -75,7 +74,7 @@ var serve_static = module.exports.serve_static = function (app, express, options
 };
 
 
-var createAdmin = module.exports.createAdmin = function(app, options) {
+var createAdmin = function(app, options) {
     var admin = MongooseAdmin.singleton = new MongooseAdmin(app, options);
     admin.app = registerRoutes(MongooseAdmin, app, admin.root, module.exports.version);
 

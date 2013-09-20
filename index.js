@@ -1,16 +1,22 @@
 'use strict';
 var path = require('path'),
     _ = require('lodash'),
-    forms = require('./forms/forms'),
     fields = require('./forms/fields'),
-    mongoose_types = require('formage-mongoose-types/mongoose-types');
+    mongoose_types = require('formage-mongoose-types/mongoose-types'),
+    mongoose = module.parent.require('mongoose'),
+    init = require('./init');
 
-exports.forms =
-exports.init = require('./init');
+exports.forms = require('./forms/forms');
 exports.AdminForm = require('./AdminForm').AdminForm;
+exports.init = function () {
+    return module.admin = init.apply(init, arguments);
+};
 
-exports.version = exports.init.version;
-exports.serve_static = exports.init.serve_static;
+exports.version = init.version;
+exports.serve_static = init.serve_static;
 exports.loadTypes = mongoose_types.loadTypes;
-exports.register_models = forms.set_models;
+//noinspection JSUnusedGlobalSymbols
 exports.set_amazon_credentials = fields.setAmazonCredentials;
+
+exports.getMongoose = function () {return mongoose};
+exports.getModel = function (name) {return module.admin.getModelConfig(name).model;};

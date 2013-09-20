@@ -9,7 +9,7 @@ var widgets = require('./widgets'),
 	fs = require('fs'),
 	util = require('util'),
     cloudinary = require('cloudinary'),
-    mongoose = require.main.require('mongoose');
+    formage = require('..');
 
 
 exports.writer_to_string = function (writer, limit) {
@@ -193,11 +193,12 @@ var BooleanField = exports.BooleanField = BaseField.extend({
 
 
 var EnumField = exports.EnumField = BaseField.extend({
-    init: function (options, choices) {
+    init: function (options) {
         options = options || {};
+        this.choises = options.enum || options.choises;
         options.widget = options.widget || widgets.ChoicesWidget;
         options.widget_options = options.widget_options || {};
-        options.widget_options.choices = options.widget_options.choices || choices;
+        options.widget_options.choices = options.widget_options.choices || this.choises;
         this._super(options);
     },
     to_schema: function () {
@@ -216,11 +217,11 @@ var EnumField = exports.EnumField = BaseField.extend({
 
 
 var EnumMultiField = exports.EnumMultiField = EnumField.extend({
-    init: function (options, choices) {
+    init: function (options) {
         options = options || {};
         options.attrs = options.attrs || {};
         options.attrs.multiple = typeof(options.attrs.multiple) === 'undefined' ? 'multiple' : options.attrs.multiple;
-        this._super(options, choices);
+        this._super(options);
     },
     clean_value: function (req, callback) {
         if (!this.value)
@@ -234,21 +235,19 @@ var EnumMultiField = exports.EnumMultiField = EnumField.extend({
 
 
 var RefField = exports.RefField = EnumField.extend({
-    init: function (options, ref) {
-        this.ref = ref;
-        if (!this.ref)
-            throw new TypeError('Model was not provided');
+    init: function (options) {
+        this.ref = formage.getModel(options.ref);
         options = options || {};
         options.widget = options.widget || widgets.RefWidget;
         options.widget_options = options.widget_options || {};
-        options.widget_options.ref = options.widget_options.ref || ref;
+        options.widget_options.ref = options.widget_options.ref || this.ref;
         options.widget_options.limit = options.limit;
         this._super(options, []);
     },
     to_schema: function () {
         var schema = RefField.super_.prototype.to_schema.call(this);
-        schema['type'] = mongoose.Schema.ObjectId;
-        schema['ref'] = this.ref + '';
+        schema['type'] = formage.getMongoose().Schema.ObjectId;
+        schema['ref'] = this.options.ref;
         return schema;
     }
 });

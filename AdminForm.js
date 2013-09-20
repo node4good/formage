@@ -4,7 +4,7 @@ if (!module.parent) console.error('Please don\'t call me directly.I am just the 
 var mongoose = require.main.require('mongoose')
     , fields = require('./forms/fields')
     , widgets = require('./forms/widgets')
-    , MongooseForm = require('./forms/forms').MongooseForm;
+    , MongooseForm = require('./forms/MongooseForm');
 
 // Lazy load crypt
 var crypt = function () {return require('./models/mongoose_admin_user').crypt;};
