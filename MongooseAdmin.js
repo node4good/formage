@@ -179,13 +179,7 @@ MongooseAdmin.prototype.getRegisteredModels = function (user, callback) {
 };
 
 
-MongooseAdmin.prototype.getModel = function(collectionName, onReady) {
-    var model = this.models[collectionName];
-    onReady(null, model.model, model.fields, model.options);
-};
-
-
-MongooseAdmin.prototype.getModelConf = function(collectionName) {
+MongooseAdmin.prototype.getModelConfig = function(collectionName) {
     return this.models[collectionName] || this.models[collectionName.toLowerCase()];
 };
 
@@ -404,12 +398,6 @@ MongooseAdmin.prototype.login = function(username, password, onReady) {
     });
 };
 
-
-exports.loadApi = require('./AdminForm').loadApi;
-
-exports.AdminForm = AdminForm;
-
-exports.AdminUserForm = require('./AdminForm').AdminUserForm;
 
 MongooseAdmin.prototype.registerAdminUserModel = function(name,options){
     this.registerMongooseModel(name || 'Admin Users',mongoose.model('_MongooseAdminUser'),null, _.extend({

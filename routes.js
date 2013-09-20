@@ -152,30 +152,24 @@ var json_routes = {
             res.end();
             return;
         }
-        MongooseAdmin.singleton.getModel(req.params.collectionName, function (err, model, fields, options) {
+        var modelConfig = MongooseAdmin.singleton.getModelConfig(req.params.collectionName);
+        MongooseAdmin.singleton.listModelDocuments(req.params.collectionName, 0, 500, function (err, documents) {
             if (err) {
                 res.writeHead(500);
                 res.end();
             } else {
-                MongooseAdmin.singleton.listModelDocuments(req.params.collectionName, 0, 500, function (err, documents) {
-                    if (err) {
-                        res.writeHead(500);
-                        res.end();
-                    } else {
-                        var result = [];
-                        documents.forEach(function (document) {
-                            var d = {'_id': document._id};
-                            options.list.forEach(function (listField) {
-                                d[listField] = document[listField];
-                            });
-                            result.push(d);
-                        });
-
-                        res.writeHead(200, {"Content-Type": "application/json"});
-                        res.write(JSON.stringify(result));
-                        res.end();
-                    }
+                var result = [];
+                documents.forEach(function (document) {
+                    var d = {'_id': document._id};
+                    modelConfig.options.list.forEach(function (listField) {
+                        d[listField] = document[listField];
+                    });
+                    result.push(d);
                 });
+
+                res.writeHead(200, {"Content-Type": "application/json"});
+                res.write(JSON.stringify(result));
+                res.end();
             }
         });
     }
@@ -469,7 +463,7 @@ var routes = {
     },
 
     document: function (req, res) {
-        var model_conf = MongooseAdmin.singleton.getModelConf(req.params.modelName),
+        var model_conf = MongooseAdmin.singleton.getModelConfig(req.params.modelName),
             id = req.params.documentId,
             orig_id = req.query['orig'];
         if (!model_conf) throw new Error("No model named" + req.params.modelName);
