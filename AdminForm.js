@@ -7,7 +7,7 @@ var mongoose = require.main.require('mongoose')
     , MongooseForm = require('./forms/MongooseForm');
 
 // Lazy load crypt
-var crypt = function () {return require('./models/mongoose_admin_user').crypt;};
+var crypt = function () {return require('./models/MongooseAdminUser').crypt;};
 
 var api_loaded = false;
 var api_path;

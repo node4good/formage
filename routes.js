@@ -4,7 +4,7 @@ var Url = require('url'),
     async = require('async'),
     _ = require('lodash'),
     forms = require('./forms/forms'),
-    permissions = require('./models/permissions'),
+    permissions = require('./models/MongooseAdminPermission'),
     AdminForm = require('./AdminForm').AdminForm,
     path = require('path');
 
