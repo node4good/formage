@@ -4,7 +4,6 @@ var Url = require('url'),
     async = require('async'),
     _ = require('lodash'),
     forms = require('./forms/forms'),
-    permissions = require('./models/MongooseAdminPermission'),
     AdminForm = require('./AdminForm').AdminForm,
     path = require('path');
 
@@ -362,7 +361,8 @@ var routes = {
 
     model: function (req, res) {
         var name = req.params.modelName,
-            modelConfig = MongooseAdmin.singleton.models[name];
+            admin = MongooseAdmin.singleton,
+            modelConfig = admin.models[name];
 
         if (!modelConfig) throw new Error("No model named" + req.params.modelName);
 
@@ -396,17 +396,17 @@ var routes = {
 
         var filters = parseFilters(modelConfig, query, search_value);
 
-        var sortable = typeof(modelConfig.options.sortable) == 'string' && permissions.hasPermissions(req.admin_user, name, 'order');
+        var sortable = typeof(modelConfig.options.sortable) == 'string' && req.admin_user.hasPermissions(name, 'order');
 
         if (sortable) {
             start = 0;
             count = DEFAULT_QUERY_COUNT_LIMIT_SORTABLE;
         }
 
-        return MongooseAdmin.singleton.modelCounts(name, filters, function (err, total_count) {
+        return admin.modelCounts(name, filters, function (err, total_count) {
             if (err) throw err;
 
-            return MongooseAdmin.singleton.listModelDocuments(name, start, count, filters, sort, function (err, documents) {
+            return admin.listModelDocuments(name, start, count, filters, sort, function (err, documents) {
                 if (err) throw err;
 
                 var makeLink = function (key, value) {
@@ -433,9 +433,9 @@ var routes = {
                 };
 
                 return res.render('model.jade', {
-                    adminTitle: MongooseAdmin.singleton.getAdminTitle(),
+                    adminTitle: admin.getAdminTitle(),
                     pageTitle: 'Admin - ' + modelConfig.model.label,
-                    rootPath: MongooseAdmin.singleton.root,
+                    rootPath: admin.root,
                     model_name: name,
                     model: modelConfig,
                     list_fields: modelConfig.options.list,
@@ -452,10 +452,10 @@ var routes = {
                     search_value: search_value,
                     cloudinary: require('cloudinary'),
                     actions: modelConfig.options.actions || [],
-                    editable: permissions.hasPermissions(req.admin_user, name, 'update'),
+                    editable: req.admin_user.hasPermissions(name, 'update'),
                     sortable: sortable,
-                    cloneable: modelConfig.options.cloneable !== false && permissions.hasPermissions(req.admin_user, name, 'create'),
-                    creatable: modelConfig.options.creatable !== false && permissions.hasPermissions(req.admin_user, name, 'create'),
+                    cloneable: modelConfig.options.cloneable !== false && req.admin_user.hasPermissions(name, 'create'),
+                    creatable: modelConfig.options.creatable !== false && req.admin_user.hasPermissions(name, 'create'),
                     dialog:isDialog
                 });
             });
@@ -535,7 +535,7 @@ var auth = function (role) {
             return res.redirect(MongooseAdmin.singleton.buildPath('/login'));
         }
 
-        if (role && !permissions.hasPermissions(admin_user, req.params.modelName, role)) {
+        if (role && !admin_user.hasPermissions(req.params.modelName, role)) {
             req.session._loginRefferer = req.url;
             return res.send('No permissions');
         }

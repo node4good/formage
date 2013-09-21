@@ -130,7 +130,7 @@ var MongooseForm = module.exports = BaseForm.extend({
                     inner_schema = inner_schema.type[0];
                 }
             }
-            var SchemaType = formage.getMongoose().Schema;
+            var SchemaType = formage.mongoose.Schema;
             var schema;
             if (inner_schema && (typeof(inner_schema) !== 'object' || inner_schema.type)) {
                 var single_field = {};

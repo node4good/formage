@@ -1,12 +1,13 @@
 'use strict';
-var MongooseAdminUser = require('./models/MongooseAdminUser.js').MongooseAdminUser,
-    _ = require('lodash'),
+var _ = require('lodash'),
     async = require('async'),
-    permissions = require('./models/MongooseAdminPermission'),
-    mongoose = require.main.require('mongoose'),
-    AdminForm = require('./AdminForm').AdminForm,
-    forms = require('./forms/forms'),
+    formage = require('./'),
+    Users = formage.models.MongooseAdminUser,
+    MongooseAdminAudit = formage.models.MongooseAdminAudit,
+    mongoose = formage.models.mongoose,
+    AdminForm = formage.AdminForm,
     dependencies = require('./dependencies');
+
 
 /**
  * MongooseAdmin Constructor
@@ -150,12 +151,12 @@ MongooseAdmin.prototype.registerModel = function(name, model, options) {
         fields: options.fields,
         is_single: model.is_single
     };
-    permissions.registerModel(name);
+    Users.registerModelPermissions(name);
     console.log('\x1b[36mformage:\x1b[0m %s', name);
 };
 
 MongooseAdmin.prototype.renderUserPanel = function(req,cbk){
-    var user = req.admin_user.fields;
+    var user = req.admin_user;
     var html = [
         '<div>Hello '+ user.username  + (user.lastVisit ? ', your last visit was on ' + new Date(user.lastVisit).toLocaleDateString() : '' ) + '</div>'
     ];
@@ -171,7 +172,7 @@ MongooseAdmin.prototype.getRegisteredModels = function (user, callback) {
         })
         .filter(function (out_model) {
             //noinspection JSUnresolvedVariable
-            return permissions.hasPermissions(user, out_model.modelName, 'view')
+            return user.hasPermissions(out_model.modelName, 'view')
                 && !out_model.options.hideFromMain;
         })
         .compact().valueOf();
@@ -200,10 +201,8 @@ MongooseAdmin.prototype.modelCounts = function(collectionName,filters, onReady) 
     });
 };
 
-var IS_OLD_MONGOOSE = Number(mongoose.version.split('.')[0]) < 3;
-
 function mongooseSort(query,sort) {
-    if(IS_OLD_MONGOOSE) {
+    if(Number(mongoose.version.split('.')[0]) < 3) {
         if(sort[0] === '-')
             query.sort(sort.slice(1),'descending');
         else
@@ -259,7 +258,7 @@ MongooseAdmin.prototype.createDocument = function (req, user, collectionName, pa
     var model = this.models[collectionName].model;
     //noinspection LocalVariableNamingConventionJS
     var FormType = this.models[collectionName].options.form || AdminForm;
-    if (!permissions.hasPermissions(user, collectionName, 'create')) return onReady('unauthorizaed');
+    if (!user.hasPermissions(collectionName, 'create')) return onReady('unauthorizaed');
     var form = new FormType(req, {data: params}, model);
     return form.is_valid(function (err, valid) {
         if (err) return onReady(err);
@@ -281,7 +280,7 @@ MongooseAdmin.prototype.updateDocument = function (req, user, collectionName, do
     var self = this,
         model = this.models[collectionName].model;
 
-    if (!permissions.hasPermissions(user, collectionName, 'update')) return onReady('unauthorized');
+    if (!user.hasPermissions(collectionName, 'update')) return onReady('unauthorized');
     var FormType2 = this.models[collectionName].options.form || AdminForm;
     return model.findById(documentId, function (err, document) {
         if (err) return onReady(err, null);
@@ -306,7 +305,7 @@ MongooseAdmin.prototype.updateDocument = function (req, user, collectionName, do
 MongooseAdmin.prototype.deleteDocument = function(user, collectionName, documentId, onReady) {
     var self = this;
     var model = this.models[collectionName].model;
-    if (!permissions.hasPermissions(user, collectionName, 'delete')) return onReady('unauthorized');
+    if (!user.hasPermissions(collectionName, 'delete')) return onReady('unauthorized');
     return model.findById(documentId, function (err, document) {
         if (err) return onReady(err);
         if (!document) {
@@ -324,7 +323,7 @@ MongooseAdmin.prototype.deleteDocument = function(user, collectionName, document
 
 
 MongooseAdmin.prototype.orderDocuments = function (user, collectionName, data, callback) {
-    if (!permissions.hasPermissions(user, collectionName, 'order')) return callback('unauthorized');
+    if (!user.hasPermissions(collectionName, 'order')) return callback('unauthorized');
     var model = this.models[collectionName];
     var sorting_attr = model.options.sortable;
     if (!sorting_attr) return callback();
@@ -338,7 +337,7 @@ MongooseAdmin.prototype.orderDocuments = function (user, collectionName, data, c
 
 
 MongooseAdmin.prototype.actionDocuments = function (user, collectionName, actionId, data, onReady) {
-    if (!permissions.hasPermissions(user, collectionName, 'action')) return onReady('unauthorized');
+    if (!user.hasPermissions(collectionName, 'action')) return onReady('unauthorized');
     var action = _.find(this.models[collectionName].options.actions, {value: actionId});
     if (!action) return onReady('no action');
     return action.func(user, data.ids, onReady);
@@ -353,7 +352,7 @@ MongooseAdmin.prototype.actionDocuments = function (user, collectionName, action
  * @api private
  */
 MongooseAdmin.userFromSessionStore = function(sessionStore) {
-    return sessionStore ? MongooseAdminUser.fromSessionStore(sessionStore) : false;
+    return sessionStore ? Users.fromSessionStore(sessionStore) : false;
 };
 
 /**
@@ -365,9 +364,9 @@ MongooseAdmin.userFromSessionStore = function(sessionStore) {
  * @api public
  */
 MongooseAdmin.prototype.ensureUserExists = function(username, password) {
-    MongooseAdminUser.ensureExists(username, password, function(err, adminUser) {
+    Users.ensureExists(username, password, function(err, adminUser) {
         if (!err)
-            console.log('\x1b[36mformage\x1b[0m user: %s', adminUser.fields.username);
+            console.log('\x1b[36mformage\x1b[0m user: %s', adminUser.username);
     });
 };
 
@@ -381,14 +380,14 @@ MongooseAdmin.prototype.ensureUserExists = function(username, password) {
  * @api public
  */
 MongooseAdmin.prototype.login = function(username, password, onReady) {
-    MongooseAdminUser.getByUsernamePassword(username, password, function(err, adminUser) {
+    Users.getByUsernamePassword(username, password, function(err, adminUser) {
         onReady(err, adminUser);
     });
 };
 
 
 MongooseAdmin.prototype.registerAdminUserModel = function(name,options){
-    this.registerMongooseModel(name || 'Admin Users',mongoose.model('_MongooseAdminUser'),null, _.extend({
+    this.registerMongooseModel(name || 'Admin Users', Users, null, _.extend({
         form:exports.AdminUserForm,
         list:['username'],
         order_by:['username']

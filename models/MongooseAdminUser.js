@@ -1,88 +1,97 @@
 'use strict';
-if (!module.parent) console.error('Please don\'t call me directly.I am just the main app\'s minion.') || process.process.exit(1);
+module.exports = function (mongoose) {
+    var crypto = require('crypto');
 
-var mongoose = require.main.require('mongoose');
-var crypto = require('crypto');
+    //noinspection SpellCheckingInspection
+    var salt = 'wherestheninja';
 
-//noinspection SpellCheckingInspection
-var salt = 'wherestheninja';
+    var actions = ['view', 'delete', 'create', 'update', 'order'];
 
-var crypt = {
-    encryptSync: function (password) {
-        if (!password) return password;
-        return crypto.createHmac('sha1', salt).update(password).digest('hex');
-    },
-    compareSync: function (raw, hashed) {
-        var hashed_pass = crypt.encryptSync(raw);
-        return (!hashed && !raw) || hashed == hashed_pass;
-    }
-};
+    var permissions_by_name = [];
 
+    var toName = function (modelName, action) {
+        return modelName + '_' + action
+    };
 
-var AdminUserData = new mongoose.Schema({
-    username: {type: String, required: true, unique: true},
-    passwordHash: {type: String, editable: false},
-    is_superuser: {type: Boolean, 'default': false},
-    permissions: [
-        {
-            type: mongoose.Schema.ObjectId,
-            ref: '_MongooseAdminPermission'
+    var crypt = {
+        encryptSync: function (password) {
+            if (!password) return password;
+            return crypto.createHmac('sha1', salt).update(password).digest('hex');
+        },
+        compareSync: function (raw, hashed) {
+            var hashed_pass = crypt.encryptSync(raw);
+            return (!hashed && !raw) || hashed == hashed_pass;
         }
-    ],
-    lastVisit:{type:Date,'default':Date.now}
-}, {strict: true});
-var AdminUserModel = mongoose.model('_MongooseAdminUser', AdminUserData);
+    };
 
 
-function MongooseAdminUser(data) {
-    this.fields = data;
-}
+    var schema = new mongoose.Schema({
+        username: {type: String, required: true, unique: true},
+        passwordHash: {type: String, editable: false},
+        is_superuser: {type: Boolean, 'default': false},
+        permissions: [
+            { type: String, enum: permissions_by_name }
+        ],
+        lastVisit: {type: Date, 'default': Date.now}
+    }, {strict: true});
 
 
-MongooseAdminUser.prototype.toSessionStore = function () {
-    return this.fields;
-};
+    // **** Methods ****
+    schema.methods.toSessionStore = function () {
+        return this.toObject();
+    };
 
-MongooseAdminUser.fromSessionStore = function (sessionStore) {
-    var admin_user = new MongooseAdminUser(sessionStore);
-    return admin_user;
-};
+    schema.methods.hasPermissions = function (modelName, action) {
+        return this.is_superuser || ~this.permissions.indexOf(toName(modelName, action));
+    };
 
-MongooseAdminUser.ensureExists = function (username, password, callback) {
-    AdminUserModel.findOne({'username': username}, function (err, adminUserData) {
-        if (err) return callback(err);
-        if (!adminUserData) {
-            adminUserData = new AdminUserModel();
-            adminUserData.username = username;
-        }
-        adminUserData.passwordHash = crypt.encryptSync(password);
-        adminUserData.is_superuser = true;
-        adminUserData.save(function (err) {
-            if (err) {
-                console.log('Unable to create or update admin user because: ' + err);
-                callback('Unable to create or update admin user', null);
-            } else {
-                var admin_user = new MongooseAdminUser(adminUserData._doc);
-                callback(null, admin_user);
-            }
+
+    // **** Statics ****
+    schema.statics.fromSessionStore = function (sessionStore) {
+        return new MongooseAdminUser(sessionStore);
+    };
+
+
+    schema.statics.registerModelPermissions = function (modelName, permissions) {
+        if (!permissions) permissions = actions;
+        permissions.forEach(function (permission) {
+            permissions_by_name.push(toName(modelName, permission));
         });
-    });
+    };
+
+
+    schema.statics.ensureExists = function (username, password, callback) {
+        var model = this;
+        model.findOne({'username': username}, function (err, adminUserData) {
+            if (err) throw err;
+            if (!adminUserData) {
+                adminUserData = new model();
+                adminUserData.username = username;
+            }
+            adminUserData.passwordHash = crypt.encryptSync(password);
+            adminUserData.is_superuser = true;
+            adminUserData.save(function (err, admin_user) {
+                if (err) throw err;
+                callback(null, admin_user);
+            });
+        });
+    };
+
+
+    schema.statics.getByUsernamePassword = function (username, password, callback) {
+        var model = this;
+        model.findOne({'username': username}, function (err, adminUserData) {
+            if (err) return callback('Unable to get admin user');
+            if (!adminUserData) return callback();
+            if (!crypt.compareSync(password, adminUserData.passwordHash)) {
+                return callback(null, null);
+            }
+            var admin_user = new MongooseAdminUser(adminUserData._doc);
+            // update last visit
+            model.update({_id: adminUserData._id}, {$set: {lastVisit: new Date()}}, function (err) { if (err) console.error('error updating admin user', err) });
+            return callback(null, admin_user);
+        });
+    };
+
+    return mongoose.model('_MongooseAdminUser', schema);
 };
-
-MongooseAdminUser.getByUsernamePassword = function (username, password, callback) {
-    mongoose.model('_MongooseAdminUser').findOne({'username': username}, function (err, adminUserData) {
-        if (err) return callback('Unable to get admin user');
-        if (!adminUserData) return callback();
-        if (!crypt.compareSync(password, adminUserData.passwordHash)) {
-            return callback(null, null);
-        }
-        var admin_user = new MongooseAdminUser(adminUserData._doc);
-        // update last visit
-        AdminUserModel.update({_id:adminUserData._id},{$set:{lastVisit:new Date()}},function(err) { if(err) console.error('error updating admin user',err)});
-        return callback(null, admin_user);
-    });
-};
-
-exports.MongooseAdminUser = MongooseAdminUser;
-
-exports.crypt = crypt;

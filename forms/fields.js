@@ -246,7 +246,7 @@ var RefField = exports.RefField = EnumField.extend({
     },
     to_schema: function () {
         var schema = RefField.super_.prototype.to_schema.call(this);
-        schema['type'] = formage.getMongoose().Schema.ObjectId;
+        schema['type'] = formage.mongoose.Schema.ObjectId;
         schema['ref'] = this.options.ref;
         return schema;
     }
