@@ -3,7 +3,7 @@ var _ = require('lodash'),
     async = require('async'),
     formage = require('./'),
     Users = formage.models.MongooseAdminUser,
-    MongooseAdminAudit = formage.models.MongooseAdminAudit,
+//    MongooseAdminAudit = formage.models.MongooseAdminAudit,
     AdminForm = formage.AdminForm,
     dependencies = require('./dependencies');
 
@@ -57,7 +57,7 @@ MongooseAdmin.prototype.close = function() {
     this.app.close();
 };
 
-function buildModelFilters_fakeSync (model, filters, dict) {
+function buildModelFilters_fireAndForget (model, filters, dict) {
     if (!filters)
         return;
 
@@ -129,7 +129,7 @@ MongooseAdmin.prototype.registerSingleRowModel = function(name, model, options) 
 
 MongooseAdmin.prototype.registerModel = function(name, model, options) {
     var filters = [];
-    buildModelFilters_fakeSync(model, options.filters, filters);
+    buildModelFilters_fireAndForget(model, options.filters, filters);
     model.label = model.label || name[0].toUpperCase() + name.slice(1).replace(/_/g,' ');
     this.models[name] = {
         model: model,
@@ -319,7 +319,7 @@ MongooseAdmin.prototype.orderDocuments = function (user, collectionName, data, c
     Object.keys(data).forEach(function (id) {
         var set_dict = {};
         set_dict[sorting_attr] = data[id];
-        model.model.update({_id: id}, {$set: set_dict}, function (err, r) {});
+        model.model.update({_id: id}, {'$set': set_dict}, function (err, r) {});
     });
     return callback();
 };
