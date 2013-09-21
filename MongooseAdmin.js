@@ -4,7 +4,6 @@ var _ = require('lodash'),
     formage = require('./'),
     Users = formage.models.MongooseAdminUser,
     MongooseAdminAudit = formage.models.MongooseAdminAudit,
-    mongoose = formage.models.mongoose,
     AdminForm = formage.AdminForm,
     dependencies = require('./dependencies');
 
@@ -63,41 +62,31 @@ function buildModelFilters_fakeSync (model, filters, dict) {
         return;
 
     process.nextTick(function () {
-        async.forEach(
-            filters,
-            function (filter, cbk) {
-                model.collection.distinct(filter, function (err, results) {
-                    if (results) {
-                        if (results[0] && Array.isArray(results[0])) {
-                            results = _.flatten(results);
-                        }
-                        if (results.length > 30)
-                            results.splice(5);
-                        if (model.schema.paths[filter] && model.schema.paths[filter].options.ref) {
-                            mongoose.model(model.schema.paths[filter].options.ref).find()
-                                .where('_id').in(results)
-                                .exec(function (err, refs) {
-                                    if (refs)
-                                        dict.push({ key: filter, isString: false, values: _.map(refs, function (ref) {
-                                            return { value: ref.id, text: ref.toString()};
-                                        }) });
-                                    cbk(err);
-                                });
-                        }
-                        else {
-                            dict.push({key: filter, values: _.map(results, function (result) {
-                                return { value: result, text: result, isString: model.schema.paths[filter] && model.schema.paths[filter].options && model.schema.paths[filter].options.type == String };
-                            })});
-                            cbk();
-                        }
-                    }
-                    else
-                        cbk(err);
+        filters.forEach(function (filter) {
+            var path = model.schema.paths[filter];
+            var options = path && path.options;
+            model.collection.distinct(filter, function (err, results) {
+                if (!results) return;
+                results = _.flatten(results);
+                if (results.length > 30) results.splice(5);
+                if (!options.ref) {
+                    dict.push({
+                        key: filter,
+                        isString: options.type == String,
+                        values: _.map(results, function (result) {return { value: result, text: result };})
+                    });
+                    return;
+                }
+                formage.mongoose.model(options.ref).find().where('_id').in(results).exec(function (err, refs) {
+                    if (!refs) return;
+                    dict.push({
+                        key: filter,
+                        isString: false,
+                        values: _.map(refs, function (ref) { return { value: ref.id, text: ref.toString() }; })
+                    });
                 });
-
-            }, function () {
-
-            })
+            });
+        })
     });
 }
 
@@ -202,7 +191,7 @@ MongooseAdmin.prototype.modelCounts = function(collectionName,filters, onReady) 
 };
 
 function mongooseSort(query,sort) {
-    if(Number(mongoose.version.split('.')[0]) < 3) {
+    if(Number(formage.mongoose.version.split('.')[0]) < 3) {
         if(sort[0] === '-')
             query.sort(sort.slice(1),'descending');
         else

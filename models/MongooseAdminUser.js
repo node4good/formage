@@ -48,7 +48,7 @@ module.exports = function (mongoose) {
 
     // **** Statics ****
     schema.statics.fromSessionStore = function (sessionStore) {
-        return new MongooseAdminUser(sessionStore);
+        return new model(sessionStore);
     };
 
 
@@ -61,7 +61,6 @@ module.exports = function (mongoose) {
 
 
     schema.statics.ensureExists = function (username, password, callback) {
-        var model = this;
         model.findOne({'username': username}, function (err, adminUserData) {
             if (err) throw err;
             if (!adminUserData) {
@@ -79,19 +78,19 @@ module.exports = function (mongoose) {
 
 
     schema.statics.getByUsernamePassword = function (username, password, callback) {
-        var model = this;
         model.findOne({'username': username}, function (err, adminUserData) {
             if (err) return callback('Unable to get admin user');
             if (!adminUserData) return callback();
             if (!crypt.compareSync(password, adminUserData.passwordHash)) {
                 return callback(null, null);
             }
-            var admin_user = new MongooseAdminUser(adminUserData._doc);
+            var admin_user = new model(adminUserData._doc);
             // update last visit
             model.update({_id: adminUserData._id}, {$set: {lastVisit: new Date()}}, function (err) { if (err) console.error('error updating admin user', err) });
             return callback(null, admin_user);
         });
     };
 
-    return mongoose.model('_MongooseAdminUser', schema);
+    var model = mongoose.model('_FormageUser_', schema);
+    return model;
 };
