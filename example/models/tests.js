@@ -3,6 +3,7 @@ var mongoose = require('mongoose'),
     ObjectId = Types.ObjectId;
     fWidgets = require('../..').widgets;
 
+//noinspection JSUnusedGlobalSymbols
 var schema = new mongoose.Schema({
     list: [{
         name: { type: String, required: true },
