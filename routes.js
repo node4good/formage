@@ -491,7 +491,7 @@ var routes = {
 
     documentPost: function (req, res) {
         var name = req.params.modelName,
-            doc_id = req.params.documentId,
+            doc_id = req.body._id,
             model = MongooseAdmin.singleton.models[name],
             target_url = req.path.split('/document/')[0].slice(1) + '?saved=true';
 
