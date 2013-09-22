@@ -1,12 +1,12 @@
 'use strict';
 Error.stackTraceLimit = Infinity;
+require('../utils/CompileTempletes.js');
+
+
 var express = require('express'),
     http = require('http'),
     path = require('path'),
     formage = require('../index');
-
-
-require('../CompileTempletes.js');
 
 var app = express();
 

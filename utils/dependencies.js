@@ -7,7 +7,7 @@ exports.check = function (modelPrefs, modelName, id, callback) {
         .pluck('model')
         .filter('schema')
         .map(function(model) {
-            var ref_paths;
+            var ref_paths = null;
             var new_paths = _(model.schema.paths)
                 // Take only paths that are refs to our model
                 .filter(function (innerModel) {return innerModel.options.ref == modelName;})
@@ -43,13 +43,13 @@ exports.unlink = function (models, model, id, callback) {
 
         return async.forEach(deps, function (dep, cbk) {
             var schema = dep.schema,
-                action;
+                action = null;
 
             Object.keys(schema.paths).filter(function (fieldName) {
                 return schema.paths[fieldName].options.ref === model && dep[fieldName] === id;
             }).forEach(function (fieldName) {
-                action = schema.paths[fieldName].options.onDelete;
-                if ('setNull' === action)
+                action = schema.paths[fieldName].options['onDelete'];
+                if (action === 'setNull')
                     dep[fieldName] = null;
             });
             switch (action) {

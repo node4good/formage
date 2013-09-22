@@ -1,9 +1,5 @@
-'use strict';
 module.exports = function (mongoose) {
-    var crypto = require('crypto');
-
-    //noinspection SpellCheckingInspection
-    var salt = 'wherestheninja';
+    var crypt = require('../utils/crypt');
 
     var actions = ['view', 'delete', 'create', 'update', 'order'];
 
@@ -12,18 +8,6 @@ module.exports = function (mongoose) {
     var toName = function (modelName, action) {
         return modelName + '_' + action
     };
-
-    var crypt = {
-        encryptSync: function (password) {
-            if (!password) return password;
-            return crypto.createHmac('sha1', salt).update(password).digest('hex');
-        },
-        compareSync: function (raw, hashed) {
-            var hashed_pass = crypt.encryptSync(raw);
-            return (!hashed && !raw) || hashed == hashed_pass;
-        }
-    };
-
 
     var schema = new mongoose.Schema({
         username: {type: String, required: true, unique: true},

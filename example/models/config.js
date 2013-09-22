@@ -1,6 +1,6 @@
 var mongoose = require('mongoose'),
     Types = mongoose.Schema.Types,
-    AdminForm = require('../../AdminForm').AdminForm;
+    AdminForm = require('../../forms/AdminForm').AdminForm;
 
 var schema = new mongoose.Schema({
     title: { type: String, required: true, label: 'כותרת'},

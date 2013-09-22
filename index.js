@@ -8,9 +8,9 @@ exports.models = require('./models')(exports.mongoose);
 exports.forms = require('./forms/forms');
 exports.widgets = require('./forms/widgets');
 exports.fields = require('./forms/fields');
-exports.AdminForm = require('./AdminForm').AdminForm;
+exports.AdminForm = require('./forms/AdminForm').AdminForm;
 
-var init = require('./init');
+var init = require('./lib/init');
 exports.init = function () {
     return module.admin = init.apply(init, arguments);
 };

@@ -3,31 +3,30 @@ Error.stackTraceLimit = Infinity;
 
 var s = 'mongodb://localhost/mongodb-driver-find-bug';
 
-exports.driverBugWithDriver = function (test) {
-    var mongodb = require('mongodb');
-    mongodb.connect(s, function (err, db) {
-        db.collection('_formageuser_s').remove({}, function () {
-            db.collection('_formageuser_s').findOne({'username': ''}, function (err) {
-                if (err) throw err;
+exports['Driver Bug'] = {
+    'With Driver': function (test) {
+        var domain = require('domain');
+        var d = domain.create();
+        var errOrig = new TypeError('let me out');
+        d.once('error', function (err) {
+            test.equals(err, errOrig);
+            test.done();
+        });
+        d.run(function () {
+            var mongodb = require('mongodb');
+            mongodb.connect(s, {w: 1}, function (err, db) {
+                db.on('error', function (err) {
+                    test.equals(err, errOrig);
+                    throw err;
+                });
+                db.collection('_formageuser_s').remove({}, function () {
+                    db.collection('_formageuser_s').findOne({'username': ''}, function (err) {
+                        if (err) throw err;
+                    });
+
+                    throw errOrig;
+                });
             });
-
-            throw new Error('let me out');
         });
-    });
-    test.done();
-};
-
-
-exports.driverBugWithMongoose = function (test) {
-    var mongoose = require('mongoose');
-    mongoose.set('debug', true);
-    var db = mongoose.createConnection(s);
-    db.collection('_formageuser_s').remove({}, function () {
-        db.collection('_formageuser_s').findOne({'username': ''}, function (err) {
-            if (err) throw err;
-        });
-
-        throw new Error('let me out');
-    });
-    test.done();
-};
+    }
+}
