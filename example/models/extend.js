@@ -1,7 +1,5 @@
 //noinspection JSUnresolvedVariable
 var mongoose = require('mongoose'),
-    Types = mongoose.Types,
-    Schema = mongoose.Schema,
     util = require('util'),
     formage = require('../../');
 
@@ -66,9 +64,9 @@ var TwoDField = formage.fields.StringField.extend({
 var TwoD = function TwoD(path, options) {
     TwoD.super_.call(this, path, options);
 };
-util.inherits(TwoD, Schema.Types.Mixed);
-Types.TwoD = Object;
-Schema.Types.TwoD = TwoD;
+util.inherits(TwoD, mongoose.Schema.Types.Mixed);
+mongoose.Types.TwoD = Object;
+mongoose.Schema.Types.TwoD = TwoD;
 
 
 var schema = new mongoose.Schema({
