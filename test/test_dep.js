@@ -14,7 +14,7 @@ nconf.set('database:host', '127.0.0.1');
 nconf.set('database:port', 5983);
 nconf.get('database');
 
-var dep = require('../utils/dependencies');
+var dep = require('../lib/dependencies');
 
 module.exports = testCase({
     "0": function (test) {
