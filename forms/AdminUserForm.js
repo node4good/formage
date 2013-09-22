@@ -1,4 +1,4 @@
-var formage = require('../index'),
+var formage = require('../lib/index'),
     AdminForm = formage.AdminForm,
     widgets = formage.widgets,
     Users = formage.models.MongooseAdminUser,

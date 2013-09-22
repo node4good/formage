@@ -6,7 +6,7 @@ require('../utils/CompileTempletes.js');
 var express = require('express'),
     http = require('http'),
     path = require('path'),
-    formage = require('../index');
+    formage = require('../lib/index');
 
 var app = express();
 
