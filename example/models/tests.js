@@ -1,7 +1,7 @@
 var mongoose = require('mongoose'),
     Types = mongoose.Schema.Types,
     ObjectId = Types.ObjectId;
-    fWidgets = require('../../forms/widgets');
+    fWidgets = require('../..').widgets;
 
 var schema = new mongoose.Schema({
     list: [{
