@@ -1,10 +1,11 @@
+//noinspection JSUnresolvedVariable
 var mongoose = require('mongoose'),
-    Types = mongoose.Schema.Types,
-    ObjectId = Types.ObjectId;
+    Schema = mongoose.Schema,
+    SchemaTypes = Schema.Types,
+    ObjectId = SchemaTypes.ObjectId;
     fWidgets = require('../..').widgets;
 
-//noinspection JSUnusedGlobalSymbols
-var schema = new mongoose.Schema({
+var schema = new Schema({
     list: [{
         name: { type: String, required: true },
         list: [{
@@ -14,18 +15,18 @@ var schema = new mongoose.Schema({
     list_o_list: {
         inner_list: [String]
     },
-    ref: { type: Types.ObjectId, ref: 'pages', required: true },
-//    second_ref: { type: ObjectId, ref: 'users', limit: 500, query: '/__value__/i.test(this.email)', required: true },
+    list_o_numbers: [Number],
+    ref: { type: SchemaTypes.ObjectId, ref: 'pages', required: true },
     string: { type: String, required: true },
     date: { type: Date, required: true },
     datetime: { type: Date, required: true, widget:fWidgets.DateTimeWidget },
-    time: { type: Types.Time },
+    time: { type: SchemaTypes.Time },
     enum: { type: String, enum: ['1', '2', '3'], required: true },
-    rich_text: { type: Types.Html, required: true },
-    text: { type: Types.Text, required: true },
-    image: { type: Types.Picture, required: true },
-    map: { type: Types.GeoPoint, required: true, widget_options: {lang: 'nl'}},
-    num: { type: Types.Integer, required: true },
+    rich_text: { type: SchemaTypes.Html, required: true },
+    text: { type: SchemaTypes.Text, required: true },
+    image: { type: SchemaTypes.Picture, required: true },
+    map: { type: SchemaTypes.GeoPoint, required: true, widget_options: {lang: 'nl'}},
+    num: { type: SchemaTypes.Integer, required: true },
     order: { type: Number, editable: false },
     bool: { type: Boolean, 'default': true },
     object: {
@@ -35,23 +36,23 @@ var schema = new mongoose.Schema({
             }
         }
     },
-    mixed: Types.Mixed,
+    mixed: SchemaTypes.Mixed,
     spilon_steps: [
         {
             rewards: {
-                xp: {type: Types.Integer, 'default': 0},
-                cash: {min: {type: Types.Integer, min: 0, 'default': 0}, max: {type: Types.Integer, min: 0, 'default': 0}},
-                tokens: {min: {type: Types.Integer, min: 0, 'default': 0}, max: {type: Types.Integer, min: 0, 'default': 0}},
-                morale: {min: {type: Types.Integer, min: 0, 'default': 0}, max: {type: Types.Integer, min: 0, 'default': 0}},
-                reputation: {min: {type: Types.Integer, min: 0, 'default': 0}, max: {type: Types.Integer, min: 0, 'default': 0}},
-                intimidation: {min: {type: Types.Integer, min: 0, 'default': 0}, max: {type: Types.Integer, min: 0, 'default': 0}},
-                members: {min: {type: Types.Integer, min: 0, 'default': 0}, max: {type: Types.Integer, min: 0, 'default': 0}}
+                xp: {type: SchemaTypes.Integer, 'default': 0},
+                cash: {min: {type: SchemaTypes.Integer, min: 0, 'default': 0}, max: {type: SchemaTypes.Integer, min: 0, 'default': 0}},
+                tokens: {min: {type: SchemaTypes.Integer, min: 0, 'default': 0}, max: {type: SchemaTypes.Integer, min: 0, 'default': 0}},
+                morale: {min: {type: SchemaTypes.Integer, min: 0, 'default': 0}, max: {type: SchemaTypes.Integer, min: 0, 'default': 0}},
+                reputation: {min: {type: SchemaTypes.Integer, min: 0, 'default': 0}, max: {type: SchemaTypes.Integer, min: 0, 'default': 0}},
+                intimidation: {min: {type: SchemaTypes.Integer, min: 0, 'default': 0}, max: {type: SchemaTypes.Integer, min: 0, 'default': 0}},
+                members: {min: {type: SchemaTypes.Integer, min: 0, 'default': 0}, max: {type: SchemaTypes.Integer, min: 0, 'default': 0}}
             },
             loot: {
                 items: [
-                    {item_id: {type: Types.ObjectId, ref: 'pages', required: true},
-                        amount: {type: Types.Integer, min: 0, 'default': 0},
-                        percent: {type: Types.Integer, min: 0, max: 100, 'default': 0},
+                    {item_id: {type: SchemaTypes.ObjectId, ref: 'pages', required: true},
+                        amount: {type: SchemaTypes.Integer, min: 0, 'default': 0},
+                        percent: {type: SchemaTypes.Integer, min: 0, max: 100, 'default': 0},
                         is_mandatory: {type: Boolean, 'default': false}}
                 ]
             },

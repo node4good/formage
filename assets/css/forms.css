@@ -154,9 +154,6 @@ p.error {
     -webkit-user-select: none;
     user-select: none;
 }
-.nf_listfield_container > span.error {
-    display: none;
-}
 .nf_hidden_template {
     display: none;
 }
