@@ -1,4 +1,5 @@
 'use strict';
+/*global dialogCallback*/
 var MINIMUM_ITEM_COUNT_TO_EXPAND = 1;
 
 var btn = {
@@ -9,7 +10,7 @@ var btn = {
                 e.preventDefault();
 
                 var t = $(this);
-                t.parent().slideUp(400, function() {
+                t.parent().slideUp(400, function () {
                     $(this).remove();
                 });
                 updateListfield(t.closest('.nf_listfield_container'));
@@ -33,9 +34,10 @@ function initFieldSet(ctx) {
             .closest('.nf_fieldset, .nf_listfield_container').removeClass('closed');
     }
 
-    $('.nf_fieldset, .nf_listfield_container', ctx).each(function() {
-        if ($(this).data('nf_fieldset'))
+    $('.nf_fieldset, .nf_listfield_container', ctx).each(function () {
+        if ($(this).data('nf_fieldset')) {
             return;
+        }
         $(this).data('nf_fieldset', true);
 
         var t = $(this),
@@ -43,12 +45,11 @@ function initFieldSet(ctx) {
             div = $('> div', t),
             i = $('<i class="icon-chevron-right" />').prependTo(t);
 
-//        t.css('min-height', h2.height());
-
         t.off('click').click(function (e) {
             var is_closed = t.is('.closed');
-            if (!(is_closed || $(e.target).is(h2) || $(e.target).is(i)))
+            if (!(is_closed || $(e.target).is(h2) || $(e.target).is(i))) {
                 return;
+            }
 
             i.toggleClass('icon-chevron-right icon-chevron-down');
 
@@ -58,8 +59,9 @@ function initFieldSet(ctx) {
 
         // Only list-view
         if (t.is('.nf_listfield_container')) {
-            if (updateListfield(t) <= MINIMUM_ITEM_COUNT_TO_EXPAND)
+            if (updateListfield(t) <= MINIMUM_ITEM_COUNT_TO_EXPAND) {
                 t.click();
+            }
         }
     });
 }
@@ -93,36 +95,31 @@ function initWidgets(ctx) {
     })
 }
 
+
+
 function refLink() {
     var $this = $(this);
     $('<a href="#">' + ($this.val() ? 'Edit' : 'New') + '</a>')
         .insertAfter($this)
         .click(function () {
             var id = $this.val();
-            var qry = $.map({
-                width: $(window).width() - 100,
-                height: $(window).height() - 100,
-                top: 50,
-                left: 50,
-                scrollbars: 1
-            },function (v, k) {
-                return k + '=' + v;
-            }).join(',');
             var url = root + '/model/' + $this.data('ref').toLocaleLowerCase() + '/document/' + (id || 'new') + '?_dialog=yes';
             var modal = $('#myModal');
             modal.on('show', function () {
                 modal.find('iframe').attr("src", url);
                 modal.find('h3').text('Edit ' + $this.data('ref'));
             });
-            modal.modal({show:true});
+            modal.modal({show: true});
             modal.on('hide', function (event) {
                 var rsp = event.data;
                 // on delete
                 if (rsp.deleted) {
-                    if ($this.is('select'))
+                    if ($this.is('select')) {
                         $('option[value="' + id + '"]', $this).remove();
-                    else
+                    }
+                    else {
                         $this.select2('val', '');
+                    }
                     $this.change();
                 }
                 // on create
@@ -136,8 +133,9 @@ function refLink() {
                     $this.change();
                 }
                 // on update
-                if (rsp.id && id && $this.is('select'))
+                if (rsp.id && id && $this.is('select')) {
                     $('option[value="' + id + '"]', $this).text(rsp.label);
+                }
             });
         });
 
@@ -152,7 +150,7 @@ function ListField(el) {
     self.el = $(el);
 
     self.add = function (e) {
-//        e.stopPropagation();
+        //        e.stopPropagation();
         e.preventDefault();
 
         var li = $('<li />').hide()
@@ -160,7 +158,7 @@ function ListField(el) {
             .append(btn.delete())
             .append(btn.drag())
             .appendTo($(this).prev())
-            .slideDown(function() {
+            .slideDown(function () {
                 $('input:first', li).focus();
             });
 
@@ -186,8 +184,9 @@ function ListField(el) {
         $('.list_summary', self.el.parent()).text(self.length ? self.length + ' items' : 'No items');
     };
 
-    if (self.el.data('processed') == 'true')
+    if (self.el.data('processed') == 'true') {
         return;
+    }
     self.el.data('processed', 'true');
 
     self.el.closest('.field').addClass('nf_listfield_container');
@@ -257,10 +256,7 @@ function deleteDocument() {
     $('#deleteButton').button('loading');
     $.post(
         root + '/json/dependencies',
-        {
-            model: window.model,
-            id: $('#document_id').val()
-        },
+        { model: window.model, id: location.href.split('/').pop() },
         function (result) {
             var msg = result.length
                 ? 'there are some entities related to this entity: "' + result.join(', ') + '"'
@@ -344,11 +340,11 @@ $(function () {
             height: $(window).height() - 100,
             top: 50,
             left: 50,
-            scrollbars: 1
+            'scrollbars': 1
         },function (v, k) {
             return k + '=' + v;
         }).join(',');
-        var win = window.open(href + '&_dialog=yes', $(this).text().split('-')[0], qry);
+        window.open(href + '&_dialog=yes', $(this).text().split('-')[0], qry);
     });
 
     initActions();
