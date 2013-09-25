@@ -1,3 +1,4 @@
+//noinspection JSUnresolvedVariable
 var mongoose = require('mongoose'),
     Types = mongoose.Schema.Types;
 
