@@ -60,6 +60,8 @@ var schema = new Schema({
         }
     ]
 });
+schema.methods.toString = function () {return this.string};
+
 
 var model = module.exports = mongoose.model('tests', schema);
 model.formage = {

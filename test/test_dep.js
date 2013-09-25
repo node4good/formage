@@ -1,22 +1,8 @@
 'use strict';
-var testCase = require('nodeunit').testCase,
-    express = require('express'),
-    request = require('request'),
-    chai = require('chai'),
-    spies = require('chai-spies'),
-    supertest = require('supertest'),
-    nconf = require("nconf");
-
-chai.spy = function () {};
-chai.use(spies);
-
-nconf.set('database:host', '127.0.0.1');
-nconf.set('database:port', 5983);
-nconf.get('database');
 
 var dep = require('../lib/dependencies');
 
-module.exports = testCase({
+module.exports = {
     "0": function (test) {
         test.ok(true);
         test.done();
@@ -54,7 +40,7 @@ module.exports = testCase({
                 data: [
                     { author: id },
                     { author: id },
-                    { author: 2 },
+                    { author: 2 }
                 ]
             }
         };
@@ -87,7 +73,7 @@ module.exports = testCase({
                 },
                 data: [
                     { from: id, to: 2 },
-                    { from: 2, to: id },
+                    { from: 2, to: id }
                 ]
             }
         };
@@ -97,4 +83,254 @@ module.exports = testCase({
             test.done(!!err);
         });
     }
-});
+};
+
+
+var registered_model = {
+    "config": {
+        "filters": [],
+        "modelName": "config",
+        "options": {
+            "list": [
+                "title",
+                "email",
+                "mail_sent.title"
+            ],
+            "list_populate": [],
+            "cloneable": true,
+            "section": "Configuration"
+        },
+        "label": "הגדרות",
+        "is_single": true
+    },
+    "embed": {
+        "filters": [],
+        "modelName": "embed",
+        "options": {
+            "list": [
+                "parent.child",
+                "parent.child2",
+                "number"
+            ],
+            "list_populate": [],
+            "cloneable": true,
+            "actions": [
+                {
+                    "value": "delete",
+                    "label": "Delete"
+                }
+            ]
+        },
+        "label": "Embed"
+    },
+    "extend": {
+        "filters": [],
+        "modelName": "extend",
+        "options": {
+            "list": [
+                "reversed",
+                "two_d"
+            ],
+            "list_populate": [],
+            "cloneable": true,
+            "actions": [
+                {
+                    "value": "delete",
+                    "label": "Delete"
+                }
+            ]
+        },
+        "label": "Extend"
+    },
+    "gallery": {
+        "filters": [],
+        "modelName": "gallery",
+        "options": {
+            "list": [
+                "title",
+                "picture",
+                "file"
+            ],
+            "list_populate": [],
+            "cloneable": true,
+            "actions": [
+                {
+                    "value": "delete",
+                    "label": "Delete"
+                }
+            ]
+        },
+        "label": "Gallery"
+    },
+    "geo": {
+        "filters": [],
+        "modelName": "geo",
+        "options": {
+            "list": ["map"],
+            "list_populate": [],
+            "cloneable": true,
+            "actions": [
+                {
+                    "value": "delete",
+                    "label": "Delete"
+                }
+            ]
+        },
+        "label": "Geo"
+    },
+    "lists": {
+        "filters": [],
+        "modelName": "lists",
+        "options": {
+            "list": [
+                "fieldset.name",
+                "fieldset.age"
+            ],
+            "list_populate": [],
+            "cloneable": true,
+            "actions": [
+                {
+                    "value": "delete",
+                    "label": "Delete"
+                }
+            ]
+        },
+        "label": "Lists"
+    },
+    "pages": {
+        "filters": [],
+        "modelName": "pages",
+        "options": {
+            "list": [
+                "title",
+                "picture",
+                "author"
+            ],
+            "list_populate": ["author"],
+            "cloneable": true,
+            "actions": [
+                {
+                    "value": "delete",
+                    "label": "Delete"
+                }
+            ]
+        },
+        "label": "Pages"
+    },
+    "rate_filings": {
+        "filters": [],
+        "modelName": "rate_filings",
+        "options": {
+            "list": [
+                "title",
+                "data",
+                "factors.BI"
+            ],
+            "list_populate": [],
+            "cloneable": true,
+            "actions": [
+                {
+                    "value": "delete",
+                    "label": "Delete"
+                }
+            ]
+        },
+        "label": "Rate filings"
+    },
+    "spilon_user": {
+        "filters": [],
+        "modelName": "spilon_user",
+        "options": {
+            "list": [
+                "is_rejected_during_alpha",
+                "is_rejected_during_beta",
+                "is_published"
+            ],
+            "list_populate": [
+                "current_tier_id",
+                "last_mission_played.mission_id",
+                "fanclub.team_id",
+                "fanclub.country_id",
+                "last_mission_viewed.mission_id"
+            ],
+            "cloneable": true,
+            "actions": [
+                {
+                    "value": "delete",
+                    "label": "Delete"
+                }
+            ]
+        },
+        "label": "Spilon user"
+    },
+    "tests": {
+        "filters": [
+            {
+                "key": "ref",
+                "isString": false,
+                "values": [
+                    {
+                        "value": "51e19aa8646812140e00000e",
+                        "text": "a"
+                    }
+                ]
+            }
+        ],
+        "modelName": "tests",
+        "options": {
+            "list": [
+                "string",
+                "date",
+                "image"
+            ],
+            "list_populate": ["ref"],
+            "cloneable": true,
+            "filters": ["ref"],
+            "order_by": ["order"],
+            "sortable": "order",
+            "actions": [
+                {
+                    "value": "delete",
+                    "label": "Delete"
+                }
+            ]
+        },
+        "label": "Tests"
+    },
+    "users": {
+        "filters": [],
+        "modelName": "users",
+        "options": {
+            "list": [
+                "name",
+                "email"
+            ],
+            "list_populate": [],
+            "cloneable": true,
+            "order_by": ["order"],
+            "sortable": "order",
+            "actions": [
+                {
+                    "value": "delete",
+                    "label": "Delete"
+                }
+            ]
+        },
+        "label": "Users"
+    },
+    "Admin Users": {
+        "filters": [],
+        "modelName": "Admin Users",
+        "options": {
+            "list": ["username"],
+            "order_by": ["username"],
+            "actions": [
+                {
+                    "value": "delete",
+                    "label": "Delete"
+                }
+            ]
+        },
+        "label": "Admin Users"
+    }
+};

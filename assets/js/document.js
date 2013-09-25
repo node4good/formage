@@ -254,19 +254,18 @@ function getQueryFunctionForSelect2() {
 
 function deleteDocument() {
     $('#deleteButton').button('loading');
+    var docId = location.href.split('/').pop();
     $.post(
         root + '/json/dependencies',
-        { model: window.model, id: location.href.split('/').pop() },
+        { model: window.model, id: docId },
         function (result) {
-            var msg = result.length
-                ? 'there are some entities related to this entity: "' + result.join(', ') + '"'
-                : 'Are you sure you want to delete?';
-
+            var msg = result.length ? 'there are other entities dependent on this document:<ul><li>' + result.join('</li><li>') + '</li></ul>' : '';
+            msg += 'Are you sure you want to delete?';
             bootbox.confirm(msg, function (res) {
                 if (!res) return $('#deleteButton').button('reset');
                 return $.ajax({
                     type: 'DELETE',
-                    url: root + '/json/model/' + model + '/document?document_id=' + encodeURIComponent($('#document_id').val()),
+                    url: root + '/json/model/' + model + '/document?document_id=' + docId,
                     success: function () {
                         $('#deleteButton').button('reset');
                         location.href = location.href.split('/document/')[0];
