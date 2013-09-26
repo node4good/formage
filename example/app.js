@@ -36,7 +36,7 @@ app.use(app.router);
 
 var mongoose = require('mongoose');
 mongoose.connect(app.get('mongo'));
-mongoose.set('debug', true);
+//mongoose.set('debug', true);
 var admin = formage.init(app, express, require('./models'), {
     title: title || 'Formage Example',
     default_section: 'Main'
