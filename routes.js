@@ -491,7 +491,7 @@ var routes = {
 
     documentPost: function (req, res) {
         var name = req.params.modelName,
-            doc_id = req.body._id,
+            doc_id = req.params['documentId'],
             model = MongooseAdmin.singleton.models[name],
             target_url = req.path.split('/document/')[0].slice(1) + '?saved=true';
 
@@ -521,7 +521,7 @@ var routes = {
                 return res.redirect(target_url);
         };
         // Update
-        if (doc_id) {
+        if (doc_id && !req.query.clone) {
             MongooseAdmin.singleton.updateDocument(req, req.admin_user, name, doc_id, req.body, callback);
         // Create
         } else {
