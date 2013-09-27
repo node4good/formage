@@ -1,8 +1,5 @@
-/*
- TODO:
- 2. select by right click
- */
-
+'use strict';
+/*global google*/
 var maps = [];
 var geocoder = window.google ? new google.maps.Geocoder() : null;
 

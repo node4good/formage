@@ -1,5 +1,6 @@
+'use strict';
+/*global root,model*/
 $(function () {
-    //noinspection JSUnresolvedVariable
     var url = root + '/json/model/' + model;
 
     $('.free_search').click(function () {
