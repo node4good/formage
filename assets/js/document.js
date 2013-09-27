@@ -1,5 +1,5 @@
 'use strict';
-/*global dialogCallback*/
+/*global dialogCallback,_dialog_response,isDialog,root*/
 var MINIMUM_ITEM_COUNT_TO_EXPAND = 1;
 
 var btn = {
@@ -99,44 +99,13 @@ function initWidgets(ctx) {
 
 function refLink() {
     var $this = $(this);
-    $('<a href="#">' + ($this.val() ? 'Edit' : 'New') + '</a>')
+    $('<a class="btn" >' + ($this.val() ? 'Edit' : 'New') + '</a>')
         .insertAfter($this)
         .click(function () {
-            var id = $this.val();
-            var url = root + '/model/' + $this.data('ref').toLocaleLowerCase() + '/document/' + (id || 'new') + '?_dialog=yes';
-            var modal = $('#myModal');
-            modal.on('show', function () {
-                modal.find('iframe').attr("src", url);
-                modal.find('h3').text('Edit ' + $this.data('ref'));
-            });
-            modal.modal({show: true});
-            modal.on('hide', function (event) {
-                var rsp = event.data;
-                // on delete
-                if (rsp.deleted) {
-                    if ($this.is('select')) {
-                        $('option[value="' + id + '"]', $this).remove();
-                    }
-                    else {
-                        $this.select2('val', '');
-                    }
-                    $this.change();
-                }
-                // on create
-                if (rsp.id && !id) {
-                    if ($this.is('select')) {
-                        $('option[selected]', $this).removeAttr('selected');
-                        $('<option selected value="' + rsp.id + '" >' + rsp.label + '</option>').appendTo($this);
-                    } else {
-                        $this.select2('val', rsp.id);
-                    }
-                    $this.change();
-                }
-                // on update
-                if (rsp.id && id && $this.is('select')) {
-                    $('option[value="' + id + '"]', $this).text(rsp.label);
-                }
-            });
+            var id = $this.val() || 'new';
+            var refType = $this.data('ref').toLocaleLowerCase();
+            var url = [root, '/model/', refType, '/document/', id, '?_dialog=yes'].join('');
+            window.showDialog($this, url);
         });
 
     $this.change(function () {
@@ -231,7 +200,7 @@ function getQueryFunctionForSelect2() {
             query: term
         }).success(function (rsp) {
                 var result = {
-                    results: rsp.objects || rsp,
+                    results: rsp['objects'] || rsp,
                     more: false,
                     context: context
                 };
@@ -306,7 +275,7 @@ function initActions() {
                         }
                     ]);
                 } else {
-                    if (dialog) {
+                    if (isDialog) {
                         dialogCallback({});
                     } else {
                         location.href = location.href.split('/document/')[0];
@@ -318,33 +287,66 @@ function initActions() {
 
 }
 
+function initModal() {
+    var modal = $('#myModal');
+    window.showDialog = function (parentSelector, url) {
+        modal.on('show', function () {
+            modal.parentSelector = parentSelector;
+            modal.find('h3').text(parentSelector.data('ref') + " Editor");
+            modal.find('iframe').attr("src", url);
+        });
+        modal.modal('show');
+    };
+
+    window.hideDialog = function (response) {
+        modal.response = response;
+        modal.modal('hide');
+    };
+
+    modal.on('hide', function (e) {
+        e.preventDefault();
+        var response = modal.response;
+        delete  modal.response;
+        if (!response) return;
+        if (response.cancel) return;
+        // on delete
+        if (response.delete) {
+            modal.parentSelector.select2('val', '');
+            modal.parentSelector.change();
+        }
+        // on create
+        var id = modal.parentSelector.val();
+        if (response.id && !id) {
+            modal.parentSelector.select2('val', response.id);
+            modal.parentSelector.change();
+        }
+        // on update
+        if (response.id && id) {
+            $('option[value="' + id + '"]', modal.parentSelector).text(response.label);
+        }
+    });
+
+    modal.on('hidden', function () {
+        modal.find('iframe').attr("src", "about:blank");
+        delete modal.parentSelector;
+    });
+
+}
+
 $(function () {
     initWidgets();
+    initModal();
 
     $('form#document').submit(function () {
         $('p.submit button').prop('disabled', true);
     });
-    if (dialog) {
+    if (isDialog) {
         $('#cancelButton').click(function (e) {
             e.preventDefault();
-            window.close();
+            window.parent.hideDialog({cancel:true, delete:false});
         });
     }
     $('#deleteButton').click(deleteDocument);
-    $('a.subCollection').click(function (event) {
-        event.preventDefault();
-        var href = $(this).attr('href');
-        var qry = $.map({
-            width: $(window).width() - 100,
-            height: $(window).height() - 100,
-            top: 50,
-            left: 50,
-            'scrollbars': 1
-        },function (v, k) {
-            return k + '=' + v;
-        }).join(',');
-        window.open(href + '&_dialog=yes', $(this).text().split('-')[0], qry);
-    });
 
     initActions();
 });

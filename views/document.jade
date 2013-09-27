@@ -15,8 +15,9 @@ block breadcrumb
     | editor
 
 block body
-    .page-header
-        h2 #{model_label} editor
+    - if (!isDialog)
+        .page-header
+            h2 #{model_label} editor
 
     - if (errors)
         p.alert.alert-error Saving failed, fix the following errors and try again.
@@ -25,6 +26,7 @@ block body
         - if(subCollections && subCollections.length)
             - each sub in subCollections
                 a.subCollection(href="#{rootPath}/model/#{sub.model}?#{sub.field}=#{sub.value}") #{sub.label} - #{sub.count? sub.count + ' Items' : 'No items'}
+
         p.submit.btn-group
             button#saveButton.btn.btn-large.btn-primary(type='submit',data-saving-text="Saving...") Save
             a#cancelButton.btn.btn-large(href="#{rootPath}/model/#{model_name}") Cancel
@@ -34,19 +36,18 @@ block body
                 - if (action.value != 'delete')
                     button.action.btn.btn-large(value='#{action.value}') #{action.label}
 
-    #myModal.modal.hide.fade(tabindex='-1', role='dialog', style='width:1060px;height:624px')
-        .modal-header
-            button.close(type='button', data-dismiss='modal') ×
-            h3 Dialog
+    - if (!isDialog)
+        #myModal.modal.hide.fade(tabindex='-1', role='dialog', style='width:1060px;height:624px')
+            .modal-header
+                button.close(type='button', data-dismiss='modal') ×
+                h3#myModalLabel &nbsp;
             .modal-body(style='max-height:inherit')
                 iframe(src='', style='zoom: 0.60;', width='99.6%', height='800', frameborder='0')
-            .modal-footer
-                button.btn(data-dismiss='modal') OK
 
 block scripts
-    script(type='text/javascript').
+    script.
         var model = '#{model_name}';
-        var dialog = #{dialog};
+        var isDialog = !{JSON.stringify(Boolean(isDialog))};
 
     script(src="#{rootPath}/js/lib/bootbox.min.js")
     script(src="#{rootPath}/js/document.js")

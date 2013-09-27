@@ -66,5 +66,6 @@ schema.methods.toString = function () {return this.string};
 var model = module.exports = mongoose.model('tests', schema);
 model.formage = {
     filters: ['ref'],
-    list: ['string', 'date', 'image']
+    list: ['string', 'date', 'image'],
+    subCollections: [{label: 'Spilon Users', model: 'spilon_user', field:'current_tier_id'}]
 };
