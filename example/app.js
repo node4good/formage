@@ -16,7 +16,7 @@ var MONGO_URL = process.env.MONGO_URL,
 var app = express();
 app.set('port', process.env.PORT || 8080);
 app.set('mongo', MONGO_URL || MONGOLAB_URI || 'mongodb://localhost/formage-example');
-app.set("view options", { layout: false, pretty: false });
+app.set("view options", { layout: false, pretty: true });
 
 app.use(express.favicon());
 app.use(express.bodyParser());
@@ -27,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 formage.serve_static(app, express);
 
 app.configure('development', function() {
+    app.locals('pretty', true);
     app.use(express.logger('dev'));
     app.use(express.errorHandler());
 });

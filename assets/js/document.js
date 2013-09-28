@@ -1,6 +1,7 @@
 'use strict';
-/*global dialogCallback,_dialog_response,isDialog,root*/
+/*global dialogCallback,_dialog_response,isDialog,root,$ */
 var MINIMUM_ITEM_COUNT_TO_EXPAND = 1;
+
 
 var btn = {
     'delete': function () {
@@ -66,11 +67,13 @@ function initFieldSet(ctx) {
     });
 }
 
+
 function updateListfield(t) {
     var length = $('> .nf_listfield > ul > li', t).length;
     t.find('.list_summary').text(length ? length + ' items' : 'No items');
     return length;
 }
+
 
 function initWidgets(ctx) {
     $('.nf_listfield', ctx).each(function () {
@@ -96,10 +99,9 @@ function initWidgets(ctx) {
 }
 
 
-
 function refLink() {
     var $this = $(this);
-    $('<a class="btn" >' + ($this.val() ? 'Edit' : 'New') + '</a>')
+    var $a = $('<a class="btn" ></a>')
         .insertAfter($this)
         .click(function () {
             var id = $this.val() || 'new';
@@ -109,8 +111,10 @@ function refLink() {
         });
 
     $this.change(function () {
-        $(this).siblings('a').text($this.val() ? 'Edit' : 'New');
+        $a.text($this.val() ? 'Edit' : 'New');
     });
+
+    $this.change();
 }
 
 
@@ -221,34 +225,33 @@ function getQueryFunctionForSelect2() {
     });
 }
 
-function deleteDocument() {
+
+function deleteDocument(callback) {
     $('#deleteButton').button('loading');
-    var docId = location.href.split('/').pop();
-    $.post(
-        root + '/json/dependencies',
-        { model: window.model, id: docId },
-        function (result) {
-            var msg = result.length ? 'there are other entities dependent on this document:<ul><li>' + result.join('</li><li>') + '</li></ul>' : '';
-            msg += 'Are you sure you want to delete?';
-            bootbox.confirm(msg, function (res) {
-                if (!res) return $('#deleteButton').button('reset');
-                return $.ajax({
-                    type: 'DELETE',
-                    url: root + '/json/model/' + model + '/document?document_id=' + docId,
-                    success: function () {
-                        $('#deleteButton').button('reset');
-                        location.href = location.href.split('/document/')[0];
-                    },
-                    error: function (xhr, textStatus) {
-                        $('#deleteButton').button('reset');
-                        alert('Unable to delete');
-                        console.error('Deleting error', arguments);
-                    }
-                });
-            })
-        }
-    );
+    var depsUrl = [root, 'json', 'model', window.model, 'document', window.docId, 'dependencies'].join('/');
+    $.get(depsUrl).done(function (result) {
+        var msg = result.length ? 'there are other entities dependent on this document:<ul><li>' + result.join('</li><li>') + '</li></ul>' : '';
+        msg += 'Are you sure you want to delete?';
+        bootbox.confirm(msg, function (res) {
+            if (!res) return $('#deleteButton').button('reset');
+            return $.ajax({
+                type: 'DELETE',
+                url: root + '/json/model/' + model + '/document/' + docId,
+                success: function () {
+                    $('#deleteButton').button('reset');
+                    if (callback) return callback();
+                    return location.href = location.href.split('/document/')[0];
+                },
+                error: function (xhr, textStatus) {
+                    $('#deleteButton').button('reset');
+                    alert('Unable to delete');
+                    console.error('Deleting error', arguments);
+                }
+            });
+        })
+    });
 }
+
 
 function initActions() {
     $('button.action').click(function (e) {
@@ -257,7 +260,7 @@ function initActions() {
         var action_id = $(this).val();
         if (!action_id) return;
 
-        var ids = [$('#document_id').val()];
+        var ids = [window.docId];
 
         var msg = 'Are you sure you want to ' + $(this).text().toLowerCase() + ' this document? Changes made will not be saved!';
 
@@ -287,6 +290,7 @@ function initActions() {
 
 }
 
+
 function initModal() {
     var modal = $('#myModal');
     window.showDialog = function (parentSelector, url) {
@@ -303,27 +307,30 @@ function initModal() {
         modal.modal('hide');
     };
 
-    modal.on('hide', function (e) {
-        e.preventDefault();
+    modal.on('hide', function () {
         var response = modal.response;
         delete  modal.response;
         if (!response) return;
         if (response.cancel) return;
         // on delete
         if (response.delete) {
+            modal.parentSelector.find("option[selected]").remove();
             modal.parentSelector.select2('val', '');
             modal.parentSelector.change();
+            return;
         }
         // on create
         var id = modal.parentSelector.val();
         if (response.id && !id) {
-            modal.parentSelector.select2('val', response.id);
-            modal.parentSelector.change();
+            modal.parentSelector.find('option[selected]').removeAttr('selected');
+            modal.parentSelector.append('<option selected value="' + response.id + '" >' + response.label + '</option>');
         }
         // on update
-        if (response.id && id) {
-            $('option[value="' + id + '"]', modal.parentSelector).text(response.label);
+        if (response.id == id) {
+            modal.parentSelector.find('option[value="' + id + '"]').text(response.label);
         }
+        modal.parentSelector.select2('val', response.id);
+        modal.parentSelector.change();
     });
 
     modal.on('hidden', function () {
@@ -333,20 +340,38 @@ function initModal() {
 
 }
 
+
 $(function () {
+    window.docId = location.pathname.split('/').pop();
+
     initWidgets();
+
     initModal();
 
-    $('form#document').submit(function () {
+    $('form#document').submit(function (e) {
         $('p.submit button').prop('disabled', true);
+        if (isDialog) {
+            e.preventDefault();
+            var upsertURL = [root, 'json', 'model', window.model, 'document', window.docId].join('/');
+            $.post(upsertURL, $(this).serialize()).done(function (docInfo) {
+                window.parent.hideDialog({id: docInfo.id, label: docInfo.label});
+            });
+        }
     });
     if (isDialog) {
         $('#cancelButton').click(function (e) {
             e.preventDefault();
-            window.parent.hideDialog({cancel:true, delete:false});
+            window.parent.hideDialog({cancel: true});
         });
     }
-    $('#deleteButton').click(deleteDocument);
+    $('#deleteButton').click(function () {
+        deleteDocument(function () {
+            if (isDialog) {
+                window.parent.hideDialog({delete: true})
+            }
+        });
+    });
 
     initActions();
-});
+})
+;
