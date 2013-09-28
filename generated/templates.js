@@ -247,7 +247,7 @@ buf.push("</div>" + (((jade.interp = global_script) == null ? '' : jade.interp))
 
 module.exports.model = function anonymous(locals) {
 var buf = [];
-var locals_ = (locals || {}),cloudinary = locals_.cloudinary,pageTitle = locals_.pageTitle,rootPath = locals_.rootPath,renderedHead = locals_.renderedHead,global_head = locals_.global_head,dialog = locals_.dialog,adminTitle = locals_.adminTitle,model = locals_.model,filters = locals_.filters,creatable = locals_.creatable,model_name = locals_.model_name,makeLink = locals_.makeLink,search = locals_.search,search_value = locals_.search_value,current_filters = locals_.current_filters,sortable = locals_.sortable,actions = locals_.actions,documents = locals_.documents,start = locals_.start,total_count = locals_.total_count,list_fields = locals_.list_fields,orderLink = locals_.orderLink,fieldLabel = locals_.fieldLabel,cloneable = locals_.cloneable,editable = locals_.editable,count = locals_.count,userPanel = locals_.userPanel,version = locals_.version,global_script = locals_.global_script;var fielddesc_mixin = function(value, type){
+var locals_ = (locals || {}),cloudinary = locals_.cloudinary,pageTitle = locals_.pageTitle,rootPath = locals_.rootPath,renderedHead = locals_.renderedHead,global_head = locals_.global_head,dialog = locals_.dialog,adminTitle = locals_.adminTitle,modelConfig = locals_.modelConfig,filters = locals_.filters,creatable = locals_.creatable,model_name = locals_.model_name,makeLink = locals_.makeLink,search = locals_.search,search_value = locals_.search_value,current_filters = locals_.current_filters,sortable = locals_.sortable,actions = locals_.actions,documents = locals_.documents,start = locals_.start,total_count = locals_.total_count,list_fields = locals_.list_fields,orderLink = locals_.orderLink,fieldLabel = locals_.fieldLabel,cloneable = locals_.cloneable,editable = locals_.editable,count = locals_.count,userPanel = locals_.userPanel,version = locals_.version,global_script = locals_.global_script;var fielddesc_mixin = function(value, type){
 var block = this.block, attributes = this.attributes || {}, escaped = this.escaped || {};
 var cloudinary_url = value && value.public_id && cloudinary.url(value.public_id + '.png', { width: 80, height: 80, crop: 'fill' })
 switch (type){
@@ -268,15 +268,15 @@ buf.push("<span>" + (jade.escape((jade.interp = value) == null ? '' : jade.inter
 buf.push("<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>" + (null == (jade.interp = pageTitle) ? "" : jade.interp) + "</title><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/css/ui-lightness/jquery-ui-1.10.2.custom.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/bootstrap/css/bootstrap.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/css/main.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/css/forms.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/datepicker/datepicker.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/timepicker/timepicker.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/vendor/bootstrap-datetimepicker.min.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/css/maps.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/select2/select2.css') }, {"rel":true,"href":true})) + "><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/js/lib/jquery-1.9.1.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/js/lib/jquery-ui-1.10.2.custom.min.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/bootstrap/js/bootstrap.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/timepicker/bootstrap-timepicker.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/vendor/bootstrap-datetimepicker.min.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/ckeditor/ckeditor.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/datepicker/bootstrap-datepicker.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/js/maps.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/select2/select2.js') }, {"src":true})) + "></script><script src=\"//api.filepicker.io/v1/filepicker.js\"></script><script>var root = '" + (jade.escape((jade.interp = rootPath) == null ? '' : jade.interp)) + "';</script>" + (null == (jade.interp = typeof(renderedHead) != 'undefined' ? renderedHead : '') ? "" : jade.interp) + "" + (((jade.interp = global_head) == null ? '' : jade.interp)) + "</head><body>");
 if (!dialog)
 {
-buf.push("<header class=\"navbar navbar-static-top\"><div class=\"navbar-inner\"><div class=\"container\"><div class=\"btn-group pull-right\"><a" + (jade.attrs({ terse: true, 'href':('' + (rootPath) + '/'), "class": [('btn'),('btn-inverse')] }, {"href":true})) + "><i class=\"icon-home icon-white\"></i> Admin</a><a href=\"/\" class=\"btn\"><i class=\"icon-share\"></i> Site</a><a" + (jade.attrs({ terse: true, 'href':('' + (rootPath) + '/logout'), "class": [('btn')] }, {"href":true})) + "><div class=\"icon-lock\"></div> Logout</a></div><h1><a" + (jade.attrs({ terse: true, 'href':('' + (rootPath) + '/') }, {"href":true})) + ">" + (jade.escape((jade.interp = adminTitle) == null ? '' : jade.interp)) + "</a><span class=\"divider\">/</span>" + (jade.escape((jade.interp = model.label) == null ? '' : jade.interp)) + "</h1></div></div></header>");
+buf.push("<header class=\"navbar navbar-static-top\"><div class=\"navbar-inner\"><div class=\"container\"><div class=\"btn-group pull-right\"><a" + (jade.attrs({ terse: true, 'href':('' + (rootPath) + '/'), "class": [('btn'),('btn-inverse')] }, {"href":true})) + "><i class=\"icon-home icon-white\"></i> Admin</a><a href=\"/\" class=\"btn\"><i class=\"icon-share\"></i> Site</a><a" + (jade.attrs({ terse: true, 'href':('' + (rootPath) + '/logout'), "class": [('btn')] }, {"href":true})) + "><div class=\"icon-lock\"></div> Logout</a></div><h1><a" + (jade.attrs({ terse: true, 'href':('' + (rootPath) + '/') }, {"href":true})) + ">" + (jade.escape((jade.interp = adminTitle) == null ? '' : jade.interp)) + "</a><span class=\"divider\">/</span>" + (jade.escape((jade.interp = modelConfig.label) == null ? '' : jade.interp)) + "</h1></div></div></header>");
 }
-buf.push("<div class=\"container\"><div id=\"old-version\" style=\"position: fixed;bottom: 1em;right: 1em;width: 30em;height: 4em;border-radius: 10px;display: block;opacity: 0.8;display:none\" class=\"alert alert-error\"><button type=\"button\" data-dismiss=\"alert\" class=\"close\">&times;</button><strong>Warning;</strong> There is a newer version of formage.</div><div id=\"content\"><div class=\"page-header\"><h2>" + (jade.escape((jade.interp = model.label) == null ? '' : jade.interp)) + "</h2></div><div id=\"content\" class=\"row\"><div" + (jade.attrs({ terse: true, "class": [('span' + (filters.length ? 9 : 12) + '')] }, {"class":true})) + "><div class=\"btn-toolbar clearfix\">");
+buf.push("<div class=\"container\"><div id=\"old-version\" style=\"position: fixed;bottom: 1em;right: 1em;width: 30em;height: 4em;border-radius: 10px;display: block;opacity: 0.8;display:none\" class=\"alert alert-error\"><button type=\"button\" data-dismiss=\"alert\" class=\"close\">&times;</button><strong>Warning;</strong> There is a newer version of formage.</div><div id=\"content\"><div class=\"page-header\"><h2>" + (jade.escape((jade.interp = modelConfig.label) == null ? '' : jade.interp)) + "</h2></div><div id=\"content\" class=\"row\"><div" + (jade.attrs({ terse: true, "class": [('span' + (filters.length ? 9 : 12) + '')] }, {"class":true})) + "><div class=\"btn-toolbar clearfix\">");
 if (creatable)
 {
 buf.push("<a" + (jade.attrs({ terse: true, 'href':("" + (rootPath) + "/model/" + (model_name) + "/document/new" + (makeLink()) + ""), "class": [('btn'),('pull-right'),('btn-warning')] }, {"href":true})) + "><i class=\"icon-plus icon-white\"></i> New&nbsp;");
-if (model.singular)
+if (modelConfig.singular)
 {
-buf.push("<strong>" + (jade.escape((jade.interp = model.singular) == null ? '' : jade.interp)) + "</strong>");
+buf.push("<strong>" + (jade.escape((jade.interp = modelConfig.singular) == null ? '' : jade.interp)) + "</strong>");
 }
 else
 {
@@ -403,7 +403,7 @@ buf.push("</td>");
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var field = $$obj[$index];
 
-var type = model.model.schema.paths[field].options.type.name
+var type = modelConfig.model.schema.paths[field].options.type.name
 var value = doc[field]
 buf.push("<td" + (jade.attrs({ terse: true, "class": [('span3'),('center'),((type == 'Picture') ? 'picture' : '')] }, {"class":true})) + ">");
 if ( (editable))
@@ -424,7 +424,7 @@ buf.push("</td>");
     for (var $index in $$obj) {
       $$l++;      var field = $$obj[$index];
 
-var type = model.model.schema.paths[field].options.type.name
+var type = modelConfig.model.schema.paths[field].options.type.name
 var value = doc[field]
 buf.push("<td" + (jade.attrs({ terse: true, "class": [('span3'),('center'),((type == 'Picture') ? 'picture' : '')] }, {"class":true})) + ">");
 if ( (editable))
@@ -471,7 +471,7 @@ buf.push("</td>");
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var field = $$obj[$index];
 
-var type = model.model.schema.paths[field].options.type.name
+var type = modelConfig.model.schema.paths[field].options.type.name
 var value = doc[field]
 buf.push("<td" + (jade.attrs({ terse: true, "class": [('span3'),('center'),((type == 'Picture') ? 'picture' : '')] }, {"class":true})) + ">");
 if ( (editable))
@@ -492,7 +492,7 @@ buf.push("</td>");
     for (var $index in $$obj) {
       $$l++;      var field = $$obj[$index];
 
-var type = model.model.schema.paths[field].options.type.name
+var type = modelConfig.model.schema.paths[field].options.type.name
 var value = doc[field]
 buf.push("<td" + (jade.attrs({ terse: true, "class": [('span3'),('center'),((type == 'Picture') ? 'picture' : '')] }, {"class":true})) + ">");
 if ( (editable))
@@ -725,37 +725,37 @@ buf.push("<ul class=\"models\">");
   if ('number' == typeof $$obj.length) {
 
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var model = $$obj[$index];
+      var modelConfig = $$obj[$index];
 
-var url = rootPath + '/model/' + model.modelName
+var url = rootPath + '/model/' + modelConfig.modelName
 buf.push("<li><div class=\"btn-group pull-right\">");
-if (model.is_single)
+if (modelConfig.is_single)
 {
 buf.push("<a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/single'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">Edit</a>");
 }
 else
 {
-buf.push("<a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-info')] }, {"href":true})) + "><span" + (jade.attrs({ terse: true, 'id':('viewAll_' + (model.modelName) + '') }, {"id":true})) + ">View All</span></a><a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/new'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">New</a>");
+buf.push("<a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-info')] }, {"href":true})) + "><span" + (jade.attrs({ terse: true, 'id':('viewAll_' + (modelConfig.modelName) + '') }, {"id":true})) + ">View All</span></a><a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/new'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">New</a>");
 }
-buf.push("</div><a" + (jade.attrs({ terse: true, 'href':(url + (model.is_single ? '/document/single' : '')) }, {"href":true})) + "><h3>" + (jade.escape((jade.interp = model.label) == null ? '' : jade.interp)) + "</h3></a></li>");
+buf.push("</div><a" + (jade.attrs({ terse: true, 'href':(url + (modelConfig.is_single ? '/document/single' : '')) }, {"href":true})) + "><h3>" + (jade.escape((jade.interp = modelConfig.label) == null ? '' : jade.interp)) + "</h3></a></li>");
     }
 
   } else {
     var $$l = 0;
     for (var $index in $$obj) {
-      $$l++;      var model = $$obj[$index];
+      $$l++;      var modelConfig = $$obj[$index];
 
-var url = rootPath + '/model/' + model.modelName
+var url = rootPath + '/model/' + modelConfig.modelName
 buf.push("<li><div class=\"btn-group pull-right\">");
-if (model.is_single)
+if (modelConfig.is_single)
 {
 buf.push("<a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/single'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">Edit</a>");
 }
 else
 {
-buf.push("<a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-info')] }, {"href":true})) + "><span" + (jade.attrs({ terse: true, 'id':('viewAll_' + (model.modelName) + '') }, {"id":true})) + ">View All</span></a><a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/new'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">New</a>");
+buf.push("<a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-info')] }, {"href":true})) + "><span" + (jade.attrs({ terse: true, 'id':('viewAll_' + (modelConfig.modelName) + '') }, {"id":true})) + ">View All</span></a><a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/new'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">New</a>");
 }
-buf.push("</div><a" + (jade.attrs({ terse: true, 'href':(url + (model.is_single ? '/document/single' : '')) }, {"href":true})) + "><h3>" + (jade.escape((jade.interp = model.label) == null ? '' : jade.interp)) + "</h3></a></li>");
+buf.push("</div><a" + (jade.attrs({ terse: true, 'href':(url + (modelConfig.is_single ? '/document/single' : '')) }, {"href":true})) + "><h3>" + (jade.escape((jade.interp = modelConfig.label) == null ? '' : jade.interp)) + "</h3></a></li>");
     }
 
   }
@@ -781,37 +781,37 @@ buf.push("<ul class=\"models\">");
   if ('number' == typeof $$obj.length) {
 
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var model = $$obj[$index];
+      var modelConfig = $$obj[$index];
 
-var url = rootPath + '/model/' + model.modelName
+var url = rootPath + '/model/' + modelConfig.modelName
 buf.push("<li><div class=\"btn-group pull-right\">");
-if (model.is_single)
+if (modelConfig.is_single)
 {
 buf.push("<a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/single'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">Edit</a>");
 }
 else
 {
-buf.push("<a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-info')] }, {"href":true})) + "><span" + (jade.attrs({ terse: true, 'id':('viewAll_' + (model.modelName) + '') }, {"id":true})) + ">View All</span></a><a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/new'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">New</a>");
+buf.push("<a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-info')] }, {"href":true})) + "><span" + (jade.attrs({ terse: true, 'id':('viewAll_' + (modelConfig.modelName) + '') }, {"id":true})) + ">View All</span></a><a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/new'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">New</a>");
 }
-buf.push("</div><a" + (jade.attrs({ terse: true, 'href':(url + (model.is_single ? '/document/single' : '')) }, {"href":true})) + "><h3>" + (jade.escape((jade.interp = model.label) == null ? '' : jade.interp)) + "</h3></a></li>");
+buf.push("</div><a" + (jade.attrs({ terse: true, 'href':(url + (modelConfig.is_single ? '/document/single' : '')) }, {"href":true})) + "><h3>" + (jade.escape((jade.interp = modelConfig.label) == null ? '' : jade.interp)) + "</h3></a></li>");
     }
 
   } else {
     var $$l = 0;
     for (var $index in $$obj) {
-      $$l++;      var model = $$obj[$index];
+      $$l++;      var modelConfig = $$obj[$index];
 
-var url = rootPath + '/model/' + model.modelName
+var url = rootPath + '/model/' + modelConfig.modelName
 buf.push("<li><div class=\"btn-group pull-right\">");
-if (model.is_single)
+if (modelConfig.is_single)
 {
 buf.push("<a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/single'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">Edit</a>");
 }
 else
 {
-buf.push("<a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-info')] }, {"href":true})) + "><span" + (jade.attrs({ terse: true, 'id':('viewAll_' + (model.modelName) + '') }, {"id":true})) + ">View All</span></a><a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/new'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">New</a>");
+buf.push("<a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-info')] }, {"href":true})) + "><span" + (jade.attrs({ terse: true, 'id':('viewAll_' + (modelConfig.modelName) + '') }, {"id":true})) + ">View All</span></a><a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/new'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">New</a>");
 }
-buf.push("</div><a" + (jade.attrs({ terse: true, 'href':(url + (model.is_single ? '/document/single' : '')) }, {"href":true})) + "><h3>" + (jade.escape((jade.interp = model.label) == null ? '' : jade.interp)) + "</h3></a></li>");
+buf.push("</div><a" + (jade.attrs({ terse: true, 'href':(url + (modelConfig.is_single ? '/document/single' : '')) }, {"href":true})) + "><h3>" + (jade.escape((jade.interp = modelConfig.label) == null ? '' : jade.interp)) + "</h3></a></li>");
     }
 
   }

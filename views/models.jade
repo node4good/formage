@@ -7,18 +7,18 @@ block body
                 h2
                     span #{section.name}
             ul.models
-                - each model in section.models
-                    - var url = rootPath + '/model/' + model.modelName
+                - each modelConfig in section.models
+                    - var url = rootPath + '/model/' + modelConfig.modelName
                     li
                         .btn-group.pull-right
-                            - if (model.is_single)
+                            - if (modelConfig.is_single)
                                 a.btn.btn-default(href='#{url}/document/single') Edit
                             - else
                                 a.btn.btn-info(href=url)
-                                    span(id='viewAll_#{model.modelName}') View All
+                                    span(id='viewAll_#{modelConfig.modelName}') View All
                                 a.btn.btn-default(href='#{url}/document/new') New
-                        a(href=url + (model.is_single ? '/document/single' : ''))
-                            h3 #{model.label}
+                        a(href=url + (modelConfig.is_single ? '/document/single' : ''))
+                            h3 #{modelConfig.label}
 
 block scripts
     script(src="#{rootPath}/js/models.js")

@@ -10,11 +10,11 @@ mixin fielddesc(value, type)
 
 block breadcrumb
     span.divider /
-    | #{model.label}
+    | #{modelConfig.label}
 
 block body
     .page-header
-        h2 #{model.label}
+        h2 #{modelConfig.label}
 
     #content.row
         div(class='span#{filters.length ? 9 : 12}')
@@ -23,8 +23,8 @@ block body
                     a.btn.pull-right.btn-warning(href="#{rootPath}/model/#{model_name}/document/new#{makeLink()}")
                         i.icon-plus.icon-white
                         |  New&nbsp;
-                        - if (model.singular)
-                            strong #{model.singular}
+                        - if (modelConfig.singular)
+                            strong #{modelConfig.singular}
                         - else
                             strong #{model_name}
                             |  item
@@ -84,7 +84,7 @@ block body
                                         span.list-drag: i.icon-resize-vertical
 
                                 - each field in list_fields
-                                    - var type = model.model.schema.paths[field].options.type.name
+                                    - var type = modelConfig.model.schema.paths[field].options.type.name
                                     - var value = doc[field]
                                     td.span3.center(class=(type == 'Picture') ? 'picture' : '')
                                         if (editable)
