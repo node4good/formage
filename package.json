@@ -65,8 +65,7 @@
     "example": "./example"
   },
   "engines": {
-    "node": "~0.11.6",
-    "npm": "~1.3.10"
+    "node": "0.11.x"
   },
   "license": "MIT"
 }
