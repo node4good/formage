@@ -1,8 +1,13 @@
 "use strict";
 var fs = require("fs");
 var path = require("path");
-var jade = require("jade");
-var jadert = require("jade/runtime");
+try {
+    var jade = require("jade");
+    var jadert = require("jade/runtime");
+} catch (e) {
+    console.log("no Jade, can't compile templates");
+    return;
+}
 
 var js = "function joinClasses(val) {return Array.isArray(val) ? val.map(joinClasses).filter(nulls).join(' ') : val;};function nulls(val) {return val != null && val !== '';};var jade = {};\n";
 js += "jade.attrs=" + jadert.attrs.toString() + ";\n";
