@@ -9,7 +9,8 @@ if (!module.parent) console.error('Please don\'t call me directly.I am just the 
 
 var Class = require('sji'),
     util = require('util'),
-    cloudinary = require('cloudinary');
+    cloudinary = require('cloudinary'),
+    _ = require('lodash');
 
 
 function escape(str) {
@@ -310,7 +311,20 @@ exports.RefWidget = exports.ChoicesWidget.extend({
     pre_render: function (callback) {
         var self = this;
         var base = self._super;
-        this.ref.find({}).limit(self.limit).exec(function (err, objects) {
+        var qry;
+        if(this.options.constraints){
+            if(!self.value)
+                qry = self.options.constraints;
+            else if(Array.isArray(self.value)){
+                var ids = _(self.value).compact().value();
+                qry = ids.length ? {$or:[this.options.constraints,{_id:{$in:ids}}]} : self.options.constraints;
+            }
+            else
+                qry = {$or:[this.options.constraints,{_id:self.value + ''}]};
+        }
+        else
+            qry = {};
+        this.ref.find(qry).limit(self.limit).exec(function (err, objects) {
             if (err) {
                 callback(err);
             } else {

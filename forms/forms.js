@@ -381,7 +381,7 @@ var MongooseForm = exports.MongooseForm = BaseForm.extend({
                     inner_schema = inner_schema.type[0];
                 }
             }
-            var schema;
+            var schema, isSubSchema = false;
             if (inner_schema && (typeof(inner_schema) !== 'object' || inner_schema.type)) {
                 var single_field = {};
                 var schemaType = inner_schema['type'];
@@ -399,6 +399,7 @@ var MongooseForm = exports.MongooseForm = BaseForm.extend({
             else {
                 if (mongoose_field.options.type[0].paths && mongoose_field.options.type[0].tree) {
                     schema = mongoose_field.options.type[0];
+                    isSubSchema = true;
                 }
                 else {
                     schema = new mongoose.Schema(mongoose_field.options.type[0]);
@@ -409,6 +410,10 @@ var MongooseForm = exports.MongooseForm = BaseForm.extend({
             this.mongoose_fields_to_fieldsets(schema.paths, schema.tree, list_fields, list_fieldsets);
             if(!Object.keys(list_fields).length)
                 return null;
+            if(isSubSchema && list_fieldsets.length){
+                list_fields['id'] = new fields.ReadonlyField({});
+                list_fieldsets[0].fields.push('id');
+            }
             return new fields.ListField(options, list_fields, list_fieldsets);
         }
         if (mongoose_field.options.type.name === 'File') {
@@ -469,12 +474,48 @@ var MongooseForm = exports.MongooseForm = BaseForm.extend({
         return (typeof(this.data[field_name]) === 'undefined' || this.data[field_name] == null) ? this.instance.get(field_name) : this.data[field_name];
     },
 
+    /**
+     * Set values to mongoose model instance
+     * @param model
+     * @param values
+     */
+    setValuesToModel:function(model,values){
+        var self = this;
+        for (var field_name in values) {
+            if(field_name == 'id')
+                continue;
+            var value = values[field_name];
+            // if array
+            if(Array.isArray(value)){
+                // remove non-existing items
+                // add new items
+                // modify existing
+                var originalArray = model[field_name];
+                var newArray = [];
+                value.forEach(function(obj){
+                    if(obj.id){
+                        var match = _.find(originalArray,function(iter){
+                            return iter.id == obj.id;
+                        });
+                        if(match){
+                            self.setValuesToModel(match,obj);
+                            newArray.push(match);
+                            originalArray.splice(originalArray.indexOf(match),1);
+                        }
+                    }
+                    else
+                        newArray.push(obj);
+                });
+                model[field_name] = newArray;
+            }
+            else
+                model[field_name] = value;
+        }
+    },
 
     actual_save: function (callback) {
         var self = this;
-        for (var field_name in self.clean_values) {
-            self.instance.set(field_name, self.clean_values[field_name]);
-        }
+        self.setValuesToModel(self.instance,self.clean_values);
         self.instance.save(function (err, object) {
             // Doing it flipped, since no error is simple
             if (!err) return callback(null, object);

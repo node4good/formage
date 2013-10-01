@@ -230,6 +230,7 @@ var RefField = exports.RefField = EnumField.extend({
         options.widget = options.widget || widgets.RefWidget;
         options.widget_options = options.widget_options || {};
         options.widget_options.ref = options.widget_options.ref || ref;
+        options.widget_options.constraints = options.widget_options.constraints || options.constraints;
         options.widget_options.required = options.required;
         options.widget_options.limit = options.limit;
         this._super(options, []);
@@ -350,17 +351,18 @@ var ListField_ = exports.ListField = BaseField.extend({
 				// lodash doesn't clone the prototype;
                 inner_field.__proto__ = self.fields[field_name].__proto__;
                 var request_copy = _.defaults({body:post_data, files:file_data}, req);
-                var old_field_value = post_data[field_name] || (old_value.get ? old_value.get(field_name) : old_value[field_name]);
+                var old_field_value = field_name in post_data ? post_data[field_name] : (old_value.get ? old_value.get(field_name) : old_value[field_name]);
                 inner_field.set(old_field_value);
                 inner_field.clean_value(request_copy, function (err) {
                     if (err) console.trace(err);
+                    // if there are errors, populate to parent
                     if (inner_field.errors && inner_field.errors.length) {
                         self.errors = _.union(self.errors, inner_field.errors);
                         parent_errors[field_name] = _.clone(inner_field.errors);
                     }
-                    else {
-                        output_data[field_name] = inner_field.value;
-                    }
+                    // set data to output
+                    old_value[field_name] = inner_field.value;
+                    output_data[field_name] = inner_field.value;
                     cbk(null);
                 });
             }

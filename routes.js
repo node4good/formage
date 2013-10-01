@@ -200,8 +200,7 @@ function renderForm(res, form, model, allow_delete, clone,dialog) {
         form.exclude.push('id');
 
     form.render_ready(function (err) {
-        if (err)
-            return res.redirect('/error');
+        if (err) return res.send(err.stack || err.message || err);
 
         async.map(model.options.subCollections || [],function(sub,cbk){
             var subDict = _.extend(sub,{count:0,value:form.instance.id});

@@ -3,7 +3,7 @@ block head
     script(src="#{rootPath}/js/lib/bootbox.min.js")
     script.
         var model = '#{model_name}';
-        var dialog = #{dialog};
+        var dialog = #{dialog||false};
     - if (model.static)
         - if (model.static.js)
             - each f in model.static.js
