@@ -14,5 +14,5 @@ block body
     form#document(enctype="multipart/form-data",method="post").clearfix
         != renderedDocument
         p.submit.btn-group
-            button#saveButton.btn.btn-large.btn-primary(type='submit',data-saving-text="Saving...") Next
+            button#saveButton.btn.btn-large.btn-primary(type='submit',data-saving-text="Saving...") #{dialogOptions.finishButton || 'Next'}
             a#cancelButton.btn.btn-large(href="#") Cancel

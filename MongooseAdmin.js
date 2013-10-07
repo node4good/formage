@@ -457,7 +457,7 @@ MongooseAdmin.prototype.actionDocuments = function (user, collectionName, action
     if (!permissions.hasPermissions(user, collectionName, 'action')) return onReady('unauthorized');
     var action = _.find(this.models[collectionName].options.actions, {value: actionId});
     if (!action) return onReady('no action');
-    return action.func(user, data.ids, onReady);
+    return action.func(user, data.ids, onReady,data.data);
 };
 
 

@@ -528,7 +528,7 @@ var routes = {
         }
     },
 
-	renderDialogForm:function(form,req,res){
+	renderDialogForm:function(form,dialog,req,res){
 		form.render_ready(function(err){
 			if (err) return res.redirect('/error');
 
@@ -544,6 +544,7 @@ var routes = {
 				renderedHead: head,
 				error: form.errors ? Object.keys(form.errors).length > 0 : false,
 				dialog:true,
+                dialogOptions:dialog,
 				pretty: true
 			});
 		});
@@ -555,7 +556,7 @@ var routes = {
 			return res.send(500,'unknown dialog');
 
 		var form = new dialog.form(req);
-		return routes.renderDialogForm(form,req,res);
+		return routes.renderDialogForm(form,dialog,req,res);
 	},
 
 	dialogPost:function(req,res){
@@ -568,7 +569,7 @@ var routes = {
 		form.is_valid(function(err,valid){
 			if(err)	return res.send(500,err);
 			if(!valid){
-				return routes.renderDialogForm(form,req,res)
+				return routes.renderDialogForm(form,dialog,req,res)
 			}
 			else{
 				var data = form.clean_values;

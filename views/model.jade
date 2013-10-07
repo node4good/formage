@@ -47,7 +47,7 @@ block body
                                         i.icon-trash.icon-white
                                         |  #{action.label}
                                 - else
-                                    button.btn(value='#{action.value}') #{action.label}
+                                    button.btn(value='#{action.value}',data-dialogs='#{(action.dialogs || []).join("")}') #{action.label}
 
             - if (!documents.length)
                 p.center No documents yet

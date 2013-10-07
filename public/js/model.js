@@ -42,22 +42,40 @@ $(function() {
         });
         if (!ids.length) return;
 
+        var dialogs = $(this).data('dialogs');
+
+        if(dialogs){
+            dialogs = dialogs.split(',');
+            var i=0;
+            var allData = {};
+            var cbk = function(data){
+                $.extend(allData,data);
+                if(i < dialogs.length)
+                    formageDialog(dialogs[i++],cbk);
+                else
+                    fireAction(allData);
+            }
+            return cbk();
+        }
         var msg = 'Are you sure you want to ' + $(this).text().toLowerCase() + ' ' + ids.length + ' documents?';
 
-        bootbox.confirm(msg, function(result) {
-            if (!result) return;
-
-            $.post(url + '/action/' + action_id, { ids: ids }).always(function(data) {
+        function fireAction(data){
+            $.post(url + '/action/' + action_id, { ids: ids,data:data }).always(function(data) {
                 if (data.responseText) data = JSON.parse(data.responseText);
                 if (data.error) {
                     bootbox.dialog("Some documents failed: " + data.error, [{
-                    "label" : "Error",
-                    "class" : "btn-danger",
-                    "callback": function() {
-                        location.reload();
-                    }}]);
+                        "label" : "Error",
+                        "class" : "btn-danger",
+                        "callback": function() {
+                            location.reload();
+                        }}]);
                 } else location.reload();
             });
+        }
+
+        bootbox.confirm(msg, function(result) {
+            if (!result) return;
+            fireAction();
         });
     });
 

@@ -386,7 +386,7 @@ exports.PictureWidget = exports.InputWidget.extend({
         if (this.value && this.value.url) {
             var thumbnail_url = cloudinary.image(
                 this.value.public_id, {
-                    format: 'png',
+                   // format: 'png',
                     width: 150,
                     height: 110,
                     crop: 'fill',
