@@ -31,7 +31,7 @@
   ],
   "dependencies": {
     "lodash": "",
-    "async": "",
+    "async": ">= 0.2.6",
     "cloudinary": "",
     "nodestrum": "",
     "node-ckeditor": "",
