@@ -352,6 +352,9 @@ var ListField_ = exports.ListField = BaseField.extend({
                 inner_field.__proto__ = self.fields[field_name].__proto__;
                 var request_copy = _.defaults({body:post_data, files:file_data}, req);
                 var old_field_value = field_name in post_data ? post_data[field_name] : (old_value.get ? old_value.get(field_name) : old_value[field_name]);
+                inner_field.form = self.form;
+                inner_field.parent = self;
+                inner_field.parentData = output_data;
                 inner_field.set(old_field_value);
                 inner_field.clean_value(request_copy, function (err) {
                     if (err) console.trace(err);
@@ -579,8 +582,8 @@ var FileField_ = exports.FileField = BaseField.extend({
         };
     },
     create_filename: function (file) {
-        var ext = path.extname(file);
-        var basename = path.basename(file, ext);
+        var ext = path.extname(file).replace(/\./g,'');
+        var basename = path.basename(file, ext).replace(/\./g,'');
         var unique = (Date.now() + global_counter++) % 1000;
         var filename = util.format('%s_%d.%s', basename, unique, ext);
         return filename;
@@ -615,7 +618,11 @@ var FileField_ = exports.FileField = BaseField.extend({
             // copy file from temp location
             if (module.knox_client) {
                 var stream = fs.createReadStream(uploaded_file.path);
-                var filename_to_upload = '/' + self.create_filename(uploaded_file.name);
+                var filename_to_upload
+                if(self.options.createFilename)
+                    filename_to_upload = '/' + self.options.createFilename(self,uploaded_file.name);
+                else
+                    filename_to_upload = '/' + self.create_filename(uploaded_file.name);
                 module.knox_client.putStream(stream, filename_to_upload, {'Content-Length': uploaded_file.size}, function (err, res) {
                     if (err) {
                         //noinspection JSUnresolvedVariable
@@ -623,8 +630,7 @@ var FileField_ = exports.FileField = BaseField.extend({
                             res = err;
                         } else {
                             console.error('upload to amazon failed', err.stack || err);
-                            callback(err);
-                            return;
+                            return callback(err);
                         }
                     }
 

@@ -57,4 +57,4 @@ exports.register_models = function (models) {
 };
 
 
-exports.set_amazon_credentials = module.exports.forms.set_amazon_credentials;
+exports.set_amazon_credentials = exports.setAmazonCredentials = module.exports.forms.setAmazonCredentials;

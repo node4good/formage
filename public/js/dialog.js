@@ -31,7 +31,9 @@ function formageDialog(type,params,options,callback){
 		window.removeEventListener('message',onDialogMessage);
 		var rsp = event.data;
 		// on delete
-		callback(rsp);
+        setTimeout(function(){
+		    callback(rsp);
+        },500);
 	}
 	window.addEventListener('message',onDialogMessage,false);
 }
