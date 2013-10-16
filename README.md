@@ -44,10 +44,10 @@ model.static = {
    css: ['/css/songs.css' ]
 };
 
-// one-document models
-model.single = true;
-
 model.formage = {
+    // one-document models
+    is_single: true,
+
     filters: ['artist', 'year'],
 
     // additional actions on this model
