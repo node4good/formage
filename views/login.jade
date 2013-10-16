@@ -3,7 +3,7 @@ extends layout.jade
 block nav
 
 block body
-    form#login.form-horizontal(role="form",method="post")
+    form#login.form-horizontal(role="form",method="post",action="#")
         if (error)
             p.controls
                 strong.text-error Wrong username or password.
