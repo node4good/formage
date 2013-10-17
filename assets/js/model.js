@@ -87,6 +87,7 @@ $(function () {
                     url + '/order',
                     data,
                     function () {
+                        window.onbeforeunload = null;
                         btn.button('saved')
                             .delay(1000)
                             .fadeOut('slow')
@@ -100,6 +101,9 @@ $(function () {
         },
         change: function () {
             btn.fadeIn('fast');
+            window.onbeforeunload = function () {
+                return 'Are you sure you want to leave before you click save.';
+            };
         }
     });
 });
