@@ -319,7 +319,10 @@ MongooseAdmin.prototype.createDocument = function (req, user, collectionName, pa
         if (err) return onReady(err);
         if (!valid) return onReady(form, null);
         return form.save(function (err, document) {
-            if (err) return onReady(form);
+            if (err) {
+                console.error('Admin save error',err);
+                return onReady(form);
+            }
             if (self.models[collectionName].options && self.models[collectionName].options.post) {
                 document = self.models[collectionName].options.post(document);
             }
@@ -404,7 +407,10 @@ MongooseAdmin.prototype.updateDocument = function (req, user, collectionName, do
                 return;
             }
             return form.save(function (err, document) {
-                if (err) return onReady(form, null);
+                if (err) {
+                    console.error('Admin save error',err);
+                    return onReady(form, null);
+                }
                 if (self.models[collectionName].options && self.models[collectionName].options.post) {
                     document = self.models[collectionName].options.post(document);
                 }
