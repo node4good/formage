@@ -1,7 +1,11 @@
 var async = require('async');
 var _ = require('lodash');
 
-exports.check = function (modelPrefs, modelName, id, callback) {
+var NO_UNLINK_POLICY = 0;
+var REMOVE_POLICY = 1;
+var UPDATE_POLICY = 2;
+
+exports.check = function (remove,modelPrefs, modelName, id, callback) {
     //noinspection JSValidateTypes
     var models_with_deps = _(modelPrefs)
         .pluck('model')
@@ -14,7 +18,7 @@ exports.check = function (modelPrefs, modelName, id, callback) {
                 .pluck('path')
                 .tap(function(paths) {ref_paths = paths})
                 // map each path to the id of our parent
-                .map(function(path) {return _.object([[path, {'$in': id}]]);})
+                .map(function(path) {return _.object([[path,id]]);})
                 .valueOf();
             if (!new_paths.length) return null;
             return {model:model, query:new_paths, paths:ref_paths};
@@ -25,53 +29,70 @@ exports.check = function (modelPrefs, modelName, id, callback) {
     return async.map(
         models_with_deps,
         function (tuple, cb) {
-            tuple.model.find({ '$or': tuple.paths}).limit(3).exec(cb);
+            tuple.model.find({ '$or': tuple.query}).exec(cb);
         },
         function (err, results) {
             var all_dep_docs = _.flatten(results);
             if (!all_dep_docs.length) return callback(err, null);
-            return callback(null, [id, all_dep_docs]);
+            if(!remove)
+                return callback(err,[id, all_dep_docs]);
+            var policies = all_dep_docs.map(function(doc){
+                return checkDependencyPolicy(doc,modelName,id);
+            });
+            if(policies.indexOf(NO_UNLINK_POLICY) > -1)
+                return callback(null, [id, all_dep_docs]);
+            else{
+                async.each(all_dep_docs,function(dep,cbk,i){
+                    var policy = policies[i];
+                    if(policy == REMOVE_POLICY)
+                        dep.remove(cbk);
+                    else
+                        dep.save(cbk);
+                },function(err){
+                    return callback(err,[]);
+                });
+            }
+
         }
     );
-};
+}
 
+/**
+ * Check the unlink policy of this document
+ * @param doc
+ * Dependent document
+ * @param modelName
+ * Root model name
+ * @param id
+ * Root document id
+ * @return {Number}
+ * 0 - no policy,
+ * 1 - remove dependency,
+ * 2 - update dependency
+ */
+function checkDependencyPolicy(doc,modelName,id){
+    var schema = doc.schema,
+        shouldSave = false,
+        shouldRemove = false;
 
-exports.unlink = function (models, model, id, callback) {
-    exports.check(models, model, id, function (err, args) {
-        if (err) return callback(err);
-        var id = args[0];
-        var deps = args[1] || [];
-        return async.each(deps, function (dep, cbk) {
-            var schema = dep.schema,
-                shouldSave = false,
-                shouldRemove = false;
+    Object.keys(schema.paths).forEach(function (fieldName) {
+        if ((schema.paths[fieldName].options.ref) && (schema.paths[fieldName].options.ref === modelName) && (doc[fieldName] + '' === id)) {
+            //noinspection JSUnresolvedVariable
+            switch (schema.paths[fieldName].options.onDelete) {
+                case 'delete':
+                    shouldRemove = true;
+                    break;
 
-            Object.keys(schema.paths).forEach(function (fieldName) {
-                if ((schema.paths[fieldName].options.ref) && (schema.paths[fieldName].options.ref === model) && (dep[fieldName] + '' === id)) {
-                    //noinspection JSUnresolvedVariable
-                    switch (schema.paths[fieldName].options.onDelete) {
-                        case 'delete':
-                            shouldRemove = true;
-                            break;
-
-                        case 'setNull':
-                            dep[fieldName] = null;
-                            shouldSave = true;
-                            break;
-                    }
-                }
-            });
-            if (shouldRemove) {
-                dep.remove(cbk);
+                case 'setNull':
+                    doc[fieldName] = null;
+                    shouldSave = true;
+                    break;
             }
-            else {
-                if (shouldSave) {
-                    dep.save(cbk);
-                }
-                else {
-                    cbk();
-                }
-            }
-        }, callback);
+        }
     });
+    return shouldRemove ? REMOVE_POLICY :( shouldSave ? UPDATE_POLICY : NO_UNLINK_POLICY);
+}
+
+exports.unlink = function(modelPrefs,modelName,id,cbk){
+    exports.check(true,modelPrefs,modelName,id,cbk);
 };

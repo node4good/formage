@@ -106,7 +106,7 @@ MongooseAdmin.prototype.registerMongooseModel = function (name, model, fields, o
             //noinspection JSUnresolvedFunction
             async.map(
                 ids,
-                _.partial(dependencies.check, models, name),
+                _.partial(dependencies.check,true, models, name),
                 function (err, results) {
                     if (err) return callback(err);
                     results = _(results).compact().object().valueOf();

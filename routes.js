@@ -52,7 +52,7 @@ var json_routes = {
         var name = req.body.model,
             id = req.body.id;
 
-        require('./dependencies').check(MongooseAdmin.singleton.models, name, id, function (err, results) {
+        require('./dependencies').check(false,MongooseAdmin.singleton.models, name, id, function (err, results) {
             var json = _.map(results, function (result) {
                 return result.name || result.title || result.toString();
             });

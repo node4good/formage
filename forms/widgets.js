@@ -411,7 +411,7 @@ exports.MapWidget = exports.InputWidget.extend({
     init: function (options) {
         this._super(options.showLatLng ? 'text' : 'hidden', options);
         this.attrs.class.push('nf_mapview');
-        this.static.js.push('//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&language=he&libraries=places&key=AIzaSyCmNLGdcM_OYwPwmedDsECk9O6ashE-rjg');
+        this.static.js.push('//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&language=he&libraries=places');
         this.static.js.push('/js/maps.js');
         this.static.css.push('/css/maps.css');
     },
