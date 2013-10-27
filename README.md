@@ -27,7 +27,7 @@ require('formage').init(app, express, models, {
     default_section: 'main',
     username: 'admin',
     password: 'admin',
-    admin_users_gui: ture
+    admin_users_gui: true
 );
 ```
 
