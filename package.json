@@ -1,8 +1,8 @@
 {
   "name": "formage",
-  "description": "Admin GUI addon for mongoose and non mongoose projects on Express.js",
+  "description": "Admin GUI addon for mongoose, jugglingdb, or just any project",
   "version": "2.0.13",
-  "main": "lib/index.js",
+  "main": "index.js",
   "author": {
     "name": "Etai Peretz",
     "email": "etai@empeeric.com",
@@ -40,7 +40,8 @@
   "devDependencies": {
     "jade": "",
     "express": "",
-    "mongoose": ""
+    "mongoose": "",
+    "jugglingdb": ""
   },
   "bundleDependencies": [
     "sji"
@@ -48,15 +49,20 @@
   "keywords": [
     "admin",
     "forms",
+    "cross-database",
     "mongoose",
-    "mongoose-gui"
+    "mongoose-gui",
+    "juggling",
+    "jugglingdb",
+    "backoffice",
+    "cms"
   ],
   "repository": {
     "type": "git",
     "url": "https://github.com/Empeeric/formage.git"
   },
   "scripts": {
-    "start": "./examplerun"
+    "start": "node example/app"
   },
   "bugs": {
     "url": "https://github.com/Empeeric/formage/issues"
@@ -65,7 +71,7 @@
     "example": "./example"
   },
   "engines": {
-    "node": "0.11.x"
+    "node": "0.10.x"
   },
   "license": "MIT"
 }
