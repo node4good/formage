@@ -6,6 +6,7 @@ Error.stackTraceLimit = Infinity;
 var express = require('express');
 var sinon = require('sinon');
 
+var formage = require('../lib/index');
 var Schema = require("jugglingdb").Schema;
 var schema = new Schema("mssql", {host: "(LocalDB)\\v11.0", database: "maskar"});
 
@@ -30,7 +31,6 @@ module.exports = {
 //                    });
 //                });
                 var app = express();
-                var formage = require('../lib/index');
                 var admin = formage.init(app, express, {AppliesTo: AppliesTo}, {
                     title: 'Formage Example',
                     default_section: 'Main',
@@ -47,9 +47,9 @@ module.exports = {
                 };
                 var mock_res = {};
                 var cb = sinon.spy();
-                admin_app.routes.get[4].callbacks[1](mock_req, mock_res, cb);
-                sinon.assert.calledOnce(cb);
-                test.done();
+                admin_app.routes.get[4].callbacks[1](mock_req, mock_res, function (req, res) {
+                    test.done();
+                });
             }
         );
     }
