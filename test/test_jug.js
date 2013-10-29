@@ -6,7 +6,7 @@ Error.stackTraceLimit = Infinity;
 var express = require('express');
 var sinon = require('sinon');
 
-var formage = require('../lib/index');
+var formage = require('../index');
 var Schema = require("jugglingdb").Schema;
 var schema = new Schema("mssql", {host: "(LocalDB)\\v11.0", database: "maskar"});
 
