@@ -31,13 +31,13 @@ module.exports = {
 //                });
                 var app = express();
                 var formage = require('../lib/index');
-                //noinspection JSUnresolvedVariable
-                var admin_app = app.admin_app;
                 var admin = formage.init(app, express, {AppliesTo: AppliesTo}, {
                     title: 'Formage Example',
                     default_section: 'Main',
                     admin_users_gui: true
                 });
+                //noinspection JSUnresolvedVariable
+                var admin_app = app.admin_app;
                 var mock_req = {
                     params: {modelName: "AppliesTo", documentId: "1"},
                     session: {_mongooseAdminUser: {}},
