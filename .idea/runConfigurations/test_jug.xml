@@ -1,7 +1,9 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="test jug" type="NodeunitConfigurationType" factoryName="Nodeunit" singleton="true">
     <setting name="nodePath" value="c:/node10/node" />
-    <envs />
+    <envs>
+      <env name="FORMAGE_DB_LAYER" value="jugglingdb" />
+    </envs>
     <setting name="passParentEnvVars" value="true" />
     <setting name="nodeunitModuleDir" value="c:/node10/node_modules/nodeunit" />
     <setting name="workingDirectory" value="$PROJECT_DIR$" />
