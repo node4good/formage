@@ -5,6 +5,7 @@ var Url = require('url'),
     _ = require('lodash'),
     forms = require('./forms').forms,
     permissions = require('./models/permissions'),
+    formidable = require('formidable'),
     AdminForm = require('./AdminForm').AdminForm;
 
 var MongooseAdmin;
@@ -616,6 +617,19 @@ module.exports = function (admin, outer_app, root) {
     var app = require.main.require('express')();
     app.engine('jade', require('jade').__express);
     app.set('views', __dirname + '/views');
+
+    app.use(function(req,res,next){
+        if(!/multipart/i.test(req.header('content-type')))
+            return next();
+
+        var form = new formidable.IncomingForm();
+
+        form.parse(req,function(err,fields,files){
+            req.files = files;
+            req.body = fields;
+            next();
+        });
+    });
 
     app.get('/', auth(),userPanel, routes.index);
     app.get('/login', routes.login);

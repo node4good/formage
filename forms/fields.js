@@ -262,11 +262,13 @@ var NumberField = exports.NumberField = StringField.extend({
         return schema;
     },
     clean_value: function (req, callback) {
-        if (this.value === null && this.value === '' && !this.required)
+        if ((this.value === null || this.value === '' || this.value === undefined) && !this.required)
             this.value = null;
         else {
             try {
                 this.value = Number(this.value);
+                if(Number.isNaN(this.value))
+                    this.value = null;
             }
             catch (e) {
                 this.errors.push('value ' + this.value + ' is not a number');
