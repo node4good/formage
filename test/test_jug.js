@@ -72,8 +72,11 @@ module.exports.pages = {
         mock_res.render = function (view, options) {
             test.ok(view, "document.jade");
             test.ok(options);
-            console.log("=========\n\n%j\n\n========", options);
-            //test.done()
+            this.req.app.render(view, options, function (err, doc) {
+                test.ok(doc);
+                test.ifError(err);
+                test.done();
+            });
         };
 
         var d = domain.createDomain();
@@ -185,7 +188,8 @@ module.exports.z_testtoteardown = function (test) {
 var mock_req_proto = {
     params: {},
     session: {_mongooseAdminUser: {}},
-    query: {}
+    query: {},
+    admin_user: {hasPermissions: function () {return true}}
 };
 
 
