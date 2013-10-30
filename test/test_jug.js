@@ -22,7 +22,7 @@ module.exports.a_testtosetup = function (test) {
         });
 
         var app = express();
-        var admin = formage.init(app, express, {AppliesTo: AppliesTo}, {
+        formage.init(app, express, {AppliesTo: AppliesTo}, {
             title: 'Formage Example',
             default_section: 'Main',
             admin_users_gui: true
@@ -211,4 +211,4 @@ var mock_res_proto = {
         // render
         app.render(view, options, this.end);
     }
-}
+};
