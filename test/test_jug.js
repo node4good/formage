@@ -28,7 +28,7 @@ module.exports.a_testtosetup = function (test) {
             admin_users_gui: true
         });
         //noinspection JSUnresolvedVariable
-        module.admin_app = app.admin_app;
+        mock_req_proto.app = module.admin_app = app.admin_app;
         test.done()
     });
 };
@@ -40,90 +40,140 @@ module.exports.pages = {
             params: {modelName: "AppliesTo", documentId: "1"},
             method: "GET"
         }, mock_req_proto);
-        var mock_res = _.defaults({
-            end: function (err, doc) {
-                test.done()
-            },
-            req: mock_req
-        }, mock_res_proto);
-        var cb = sinon.spy();
+        var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
+        mock_res.render = function (view, options) {
+            test.ok(view, "document.jade");
+            test.ok(options);
+            console.log("=========\n\n%j\n\n========", options);
+            d.exit();
+            test.done()
+        };
 
         var d = domain.createDomain();
         d.on('error', function (err) {
             d.exit();
-            console.log(err.stack);
-            test.done();
+            test.fail(err);
+            //test.done();
         });
         d.enter();
 
-        module.admin_app.routes.get[4].callbacks[1](mock_req, mock_res, function (req, res) {
-            test.done();
-        });
-    },
+        module.admin_app.routes.get[4].callbacks[1](mock_req, mock_res);
+    }
 
-
-    "Mock test admin user page load": function (test) {
-
+    , "Mock test model page": function (test) {
         //noinspection JSUnresolvedVariable
         var mock_req = _.defaults({
-            params: {modelName: "Admin_Users", documentId: "new"},
+            params: {modelName: "AppliesTo"},
             method: "GET"
         }, mock_req_proto);
-        var mock_res = _.defaults({
-            end: function (err, doc) {test.done()},
-            req: mock_req
-        }, mock_res_proto);
-        var cb = sinon.spy();
+        var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+
+        mock_res.render = function (view, options) {
+            test.ok(view, "document.jade");
+            test.ok(options);
+            console.log("=========\n\n%j\n\n========", options);
+            //test.done()
+        };
 
         var d = domain.createDomain();
         d.on('error', function (err) {
             d.exit();
-            console.log(err.stack);
+            test.fail(err);
             test.done();
         });
         d.enter();
 
-        try {
-            module.admin_app.routes.get[4].callbacks[1](mock_req, mock_res, function (req, res) {
-                d.exit();
-                test.done();
-            });
-        } catch (e) {
-            d.emit('error', e);
-        }
-    },
-
-    "Mock test admin user page post": function (test) {
-        var mock_req = _.defaults({
-            params: {modelName: "Admin_Users", documentId: "new"},
-            body: {username: "admin"},
-            method: "POST"
-        }, mock_req_proto);
-        var mock_res = _.defaults({
-            end: function (err, doc) {test.done()},
-            req: mock_req
-        }, mock_res_proto);
-        var cb = sinon.spy();
-
-
-        var d = domain.createDomain();
-        d.on('error', function (err) {
-            d.exit();
-            console.log(err.stack);
-            test.done();
-        });
-        d.enter();
-
-        try {
-            module.admin_app.routes.get[4].callbacks[1](mock_req, mock_res, function (req, res) {
-                d.exit();
-                test.done();
-            });
-        } catch (e) {
-            d.emit('error', e);
-        }
+        module.admin_app.routes.get[3].callbacks[2](mock_req, mock_res);
     }
+
+    , "Mock test models page": function (test) {
+        //noinspection JSUnresolvedVariable
+        var mock_req = _.defaults({
+            params: {modelName: "AppliesTo", documentId: "1"},
+            method: "GET"
+        }, mock_req_proto);
+        var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+
+        mock_res.render = function (view, options) {
+            test.ok(view, "document.jade");
+            test.ok(options);
+            console.log("=========\n\n%j\n\n========", options);
+            //test.done()
+        };
+
+        var d = domain.createDomain();
+        d.on('error', function (err) {
+            d.exit();
+            test.fail(err);
+            test.done();
+        });
+        d.enter();
+
+        module.admin_app.routes.get[0].callbacks[2](mock_req, mock_res);
+    }
+
+//    ,    "Mock test admin user page load": function (test) {
+//
+//        //noinspection JSUnresolvedVariable
+//        var mock_req = _.defaults({
+//            params: {modelName: "Admin_Users", documentId: "new"},
+//            method: "GET"
+//        }, mock_req_proto);
+//        var mock_res = _.defaults({
+//            end: function (err, doc) {test.done()},
+//            req: mock_req
+//        }, mock_res_proto);
+//        var cb = sinon.spy();
+//
+//        var d = domain.createDomain();
+//        d.on('error', function (err) {
+//            d.exit();
+//            console.log(err.stack);
+//            test.done();
+//        });
+//        d.enter();
+//
+//        try {
+//            module.admin_app.routes.get[4].callbacks[1](mock_req, mock_res, function (req, res) {
+//                d.exit();
+//                test.done();
+//            });
+//        } catch (e) {
+//            d.emit('error', e);
+//        }
+//    },
+//
+//    "Mock test admin user page post": function (test) {
+//        var mock_req = _.defaults({
+//            params: {modelName: "Admin_Users", documentId: "new"},
+//            body: {username: "admin"},
+//            method: "POST"
+//        }, mock_req_proto);
+//        var mock_res = _.defaults({
+//            end: function (err, doc) {test.done()},
+//            req: mock_req
+//        }, mock_res_proto);
+//        var cb = sinon.spy();
+//
+//
+//        var d = domain.createDomain();
+//        d.on('error', function (err) {
+//            d.exit();
+//            console.log(err.stack);
+//            test.done();
+//        });
+//        d.enter();
+//
+//        try {
+//            module.admin_app.routes.get[4].callbacks[1](mock_req, mock_res, function (req, res) {
+//                d.exit();
+//                test.done();
+//            });
+//        } catch (e) {
+//            d.emit('error', e);
+//        }
+//    }
 };
 
 
