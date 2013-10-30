@@ -75,6 +75,7 @@ module.exports.pages = {
             this.req.app.render(view, options, function (err, doc) {
                 test.ok(doc);
                 test.ifError(err);
+                d.exit();
                 test.done();
             });
         };
@@ -101,8 +102,12 @@ module.exports.pages = {
         mock_res.render = function (view, options) {
             test.ok(view, "document.jade");
             test.ok(options);
-            console.log("=========\n\n%j\n\n========", options);
-            //test.done()
+            this.req.app.render(view, options, function (err, doc) {
+                test.ok(doc);
+                test.ifError(err);
+                d.exit();
+                test.done();
+            });
         };
 
         var d = domain.createDomain();
