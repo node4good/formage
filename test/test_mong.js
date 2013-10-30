@@ -22,14 +22,13 @@ module.exports.a_testtosetup = function (test) {
         }));
 
         var app = express();
-        mock_req_proto.app = app;
         var admin = formage.init(app, express, {AppliesTo: AppliesTo}, {
             title: 'Formage Example',
             default_section: 'Main',
             admin_users_gui: true
         });
         //noinspection JSUnresolvedVariable
-        module.admin_app = app.admin_app;
+        mock_req_proto.app = module.admin_app = app.admin_app;
         test.done()
     });
 };
@@ -53,9 +52,36 @@ module.exports.pages = {
         };
         module.admin_app.routes.get[4].callbacks[1](mock_req, mock_res);
 
-    },
+    }
 
-    "Mock test admin user page load": function (test) {
+    , "Mock test model page": function (test) {
+        //noinspection JSUnresolvedVariable
+        var mock_req = _.defaults({
+            params: {modelName: "AppliesTo"},
+            method: "GET"
+        }, mock_req_proto);
+        var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+
+        mock_res.render = function (view, options) {
+            test.ok(view, "document.jade");
+            test.ok(options);
+            console.log("=========\n\n%j\n\n========", options);
+            d.exit();
+            test.done()
+        };
+
+        var d = domain.createDomain();
+        d.on('error', function (err) {
+            d.exit();
+            test.fail(err);
+            test.done();
+        });
+        d.enter();
+
+        module.admin_app.routes.get[3].callbacks[2](mock_req, mock_res);
+    }
+
+    , "Mock test admin user page load": function (test) {
 
         //noinspection JSUnresolvedVariable
         var mock_req = _.defaults({
@@ -73,9 +99,9 @@ module.exports.pages = {
             test.done()
         };
         module.admin_app.routes.get[4].callbacks[1](mock_req, mock_res);
-    },
+    }
 
-    "Mock test admin user page post": function (test) {
+    , "Mock test admin user page post": function (test) {
         var mock_req = _.defaults({
             params: {modelName: "Admin_Users", documentId: "new"},
             body: {username: "admin" + Math.random()},

@@ -2,6 +2,7 @@
 var nodestrum = require("nodestrum");
 nodestrum.register_process_catcher();
 
+var formage = require('../lib/index');
 var Schema = require("jugglingdb").Schema;
 var schema = new Schema("mssql", {host: "(LocalDB)\\v11.0", database: "maskar"});
 
@@ -40,7 +41,6 @@ schema.on("connected", function () {
             app = express();
 
         try {
-            var formage = require('../lib/index');
             var admin = formage.init(app, express, {AppliesTo: AppliesTo}, {
                 title: 'Formage Example',
                 default_section: 'Main',
