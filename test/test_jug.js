@@ -45,7 +45,6 @@ module.exports.pages = {
         mock_res.render = function (view, options) {
             test.ok(view, "document.jade");
             test.ok(options);
-            console.log("=========\n\n%j\n\n========", options);
             d.exit();
             test.done()
         };
@@ -61,10 +60,42 @@ module.exports.pages = {
         module.admin_app.routes.get[4].callbacks[1](mock_req, mock_res);
     }
 
+    , "Mock test document post": function (test) {
+        //noinspection JSUnresolvedVariable
+        var mock_req = _.defaults({
+            params: {modelName: "AppliesTo", documentId: "1"},
+            method: "POST",
+            body: {
+                Title: "gaga5",
+                Identifier: "asdf",
+                Editable: "1"
+            },
+            path: ""
+        }, mock_req_proto);
+        var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+
+        mock_res.redirect = function (path) {
+            test.ok(arguments.length == 1);
+            d.exit();
+            test.done();
+        };
+
+        var d = domain.createDomain();
+        d.on('error', function (err) {
+            d.exit();
+            test.fail(err);
+            test.done();
+        });
+        d.enter();
+
+        module.admin_app.routes.post[1].callbacks[2](mock_req, mock_res);
+    }
+
     , "Mock test model page": function (test) {
         //noinspection JSUnresolvedVariable
         var mock_req = _.defaults({
             params: {modelName: "AppliesTo"},
+            query: {start:"2"},
             method: "GET"
         }, mock_req_proto);
         var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
@@ -120,68 +151,6 @@ module.exports.pages = {
 
         module.admin_app.routes.get[0].callbacks[2](mock_req, mock_res);
     }
-
-//    ,    "Mock test admin user page load": function (test) {
-//
-//        //noinspection JSUnresolvedVariable
-//        var mock_req = _.defaults({
-//            params: {modelName: "Admin_Users", documentId: "new"},
-//            method: "GET"
-//        }, mock_req_proto);
-//        var mock_res = _.defaults({
-//            end: function (err, doc) {test.done()},
-//            req: mock_req
-//        }, mock_res_proto);
-//        var cb = sinon.spy();
-//
-//        var d = domain.createDomain();
-//        d.on('error', function (err) {
-//            d.exit();
-//            console.log(err.stack);
-//            test.done();
-//        });
-//        d.enter();
-//
-//        try {
-//            module.admin_app.routes.get[4].callbacks[1](mock_req, mock_res, function (req, res) {
-//                d.exit();
-//                test.done();
-//            });
-//        } catch (e) {
-//            d.emit('error', e);
-//        }
-//    },
-//
-//    "Mock test admin user page post": function (test) {
-//        var mock_req = _.defaults({
-//            params: {modelName: "Admin_Users", documentId: "new"},
-//            body: {username: "admin"},
-//            method: "POST"
-//        }, mock_req_proto);
-//        var mock_res = _.defaults({
-//            end: function (err, doc) {test.done()},
-//            req: mock_req
-//        }, mock_res_proto);
-//        var cb = sinon.spy();
-//
-//
-//        var d = domain.createDomain();
-//        d.on('error', function (err) {
-//            d.exit();
-//            console.log(err.stack);
-//            test.done();
-//        });
-//        d.enter();
-//
-//        try {
-//            module.admin_app.routes.get[4].callbacks[1](mock_req, mock_res, function (req, res) {
-//                d.exit();
-//                test.done();
-//            });
-//        } catch (e) {
-//            d.emit('error', e);
-//        }
-//    }
 };
 
 
