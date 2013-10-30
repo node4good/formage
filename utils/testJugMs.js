@@ -1,4 +1,5 @@
 "use strict";
+require('longjohn');
 var nodestrum = require("nodestrum");
 nodestrum.register_process_catcher();
 
@@ -26,19 +27,13 @@ schema.on("connected", function () {
             }
         });
 
-        schema.automigrate(function () {
-
-            var at = new AppliesTo;
-            at.Title = "gaga";
-            at.save(function (err, doc) {
-                console.log(doc);
-            });
-        });
+        //schema.automigrate();
 
         var express = require('express'),
             http = require('http'),
             path = require('path'),
             app = express();
+        app.use(express.bodyParser());
 
         try {
             var admin = formage.init(app, express, {AppliesTo: AppliesTo}, {
