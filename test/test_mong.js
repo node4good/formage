@@ -46,9 +46,9 @@ module.exports.pages = {
         }, mock_res_proto);
         var cb = sinon.spy();
 
-        mock_res.render = function (view, options) {
-            test.ok(view);
-            test.ok(options);
+        mock_res.end = function (err, doc) {
+            test.ifError(err);
+            test.ok(doc);
             test.done()
         };
         module.admin_app.routes.get[4].callbacks[1](mock_req, mock_res);
@@ -59,7 +59,7 @@ module.exports.pages = {
 
         //noinspection JSUnresolvedVariable
         var mock_req = _.defaults({
-            params: {modelName: "Admin Users", documentId: "new"},
+            params: {modelName: "Admin_Users", documentId: "new"},
             method: "GET"
         }, mock_req_proto);
         var mock_res = _.defaults({
@@ -67,44 +67,32 @@ module.exports.pages = {
         }, mock_res_proto);
         var cb = sinon.spy();
 
-        mock_res.render = function (view, options) {
-            test.ok(view);
-            test.ok(options);
+        mock_res.end = function (err, doc) {
+            test.ifError(err);
+            test.ok(doc);
             test.done()
         };
         module.admin_app.routes.get[4].callbacks[1](mock_req, mock_res);
     },
 
-    "Mock test admin user page post - Create": function (test) {
+    "Mock test admin user page post": function (test) {
         var mock_req = _.defaults({
-            params: {modelName: "Admin Users", documentId: "new"},
-            body: {
-                username: "admin" + Math.random(),
-                is_superuser: "on",
-                password: "admin",
-                password_again: "admin"
-            },
-            method: "POST",
-            path: ""
+            params: {modelName: "Admin_Users", documentId: "new"},
+            body: {username: "admin"},
+            method: "POST"
         }, mock_req_proto);
         var mock_res = _.defaults({
              req: mock_req
         }, mock_res_proto);
         var cb = sinon.spy();
-        var d = domain.createDomain();
-        d.on('error', function (err) {
-            d.exit();
-            test.fail(err);
-            test.done();
-        });
-        d.enter();
 
-        mock_res.redirect = function () {
-            d.exit();
+        mock_res.end = function (err, doc) {
+            test.ifError(err);
+            test.ok(doc);
             test.done()
         };
 
-        module.admin_app.routes.post[1].callbacks[2](mock_req, mock_res);
+        module.admin_app.routes.get[4].callbacks[1](mock_req, mock_res);
     }
 };
 
@@ -118,8 +106,7 @@ module.exports.z_testtoteardown = function (test) {
 var mock_req_proto = {
     params: {},
     session: {_mongooseAdminUser: {}},
-    query: {},
-    admin_user: {hasPermissions: function () {return true}}
+    query: {}
 };
 
 
