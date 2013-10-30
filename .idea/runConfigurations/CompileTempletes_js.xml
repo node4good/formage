@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="CompileTempletes.js" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="c:/node10/node" path-to-js-file="utils/CompileTempletes.js" working-dir="$PROJECT_DIR$">
+    <browser start="false" url="" with-js-debugger="false" />
+    <RunnerSettings RunnerId="NodeJS.debug" />
+    <RunnerSettings RunnerId="NodeJS.run" />
+    <ConfigurationWrapper RunnerId="NodeJS.debug" />
+    <ConfigurationWrapper RunnerId="NodeJS.run" />
+    <method />
+  </configuration>
+</component>
