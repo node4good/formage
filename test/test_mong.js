@@ -39,7 +39,7 @@ describe("high level REST requests", function () {
         it("Mock test document page", function (done) {
             //noinspection JSUnresolvedVariable
             var mock_req = _.defaults({
-                params: {modelName: "AppliesTo", documentId: "new"},
+                url: "/model/AppliesTo/document/new",
                 method: "GET"
             }, mock_req_proto);
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
@@ -58,14 +58,14 @@ describe("high level REST requests", function () {
             });
             d.enter();
 
-            module.admin_app.routes.get[4].callbacks[1](mock_req, mock_res);
+            module.admin_app.handle(mock_req, mock_res);
         });
 
 
         it("Mock test document post", function (done) {
             //noinspection JSUnresolvedVariable
             var mock_req = _.defaults({
-                params: {modelName: "AppliesTo", documentId: "new"},
+                url: "/model/AppliesTo/document/new",
                 method: "POST",
                 body: {
                     Title: "gaga5",
@@ -89,14 +89,14 @@ describe("high level REST requests", function () {
             });
             d.enter();
 
-            module.admin_app.routes.post[1].callbacks[2](mock_req, mock_res);
+            module.admin_app.handle(mock_req, mock_res);
         });
 
 
         it("Mock test model page", function (done) {
             //noinspection JSUnresolvedVariable
             var mock_req = _.defaults({
-                params: {modelName: "AppliesTo"},
+                url: "/model/AppliesTo/",
                 query: {start: "2"},
                 method: "GET"
             }, mock_req_proto);
@@ -119,13 +119,14 @@ describe("high level REST requests", function () {
             });
             d.enter();
 
-            module.admin_app.routes.get[3].callbacks[2](mock_req, mock_res);
+            module.admin_app.handle(mock_req, mock_res);
         });
 
 
         it("Mock test models page", function (done) {
             //noinspection JSUnresolvedVariable
             var mock_req = _.defaults({
+                url: "/",
                 method: "GET"
             }, mock_req_proto);
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
@@ -147,12 +148,12 @@ describe("high level REST requests", function () {
             });
             d.enter();
 
-            module.admin_app.routes.get[0].callbacks[2](mock_req, mock_res);
+            module.admin_app.handle(mock_req, mock_res);
         });
 
         it("Mock test admin user page post", function (done) {
             var mock_req = _.defaults({
-                params: {modelName: "Admin_Users", documentId: "new"},
+                url: "/model/AppliesTo/document/new",
                 body: {username: "admin" + Math.random()},
                 method: "POST",
                 path: ""
@@ -175,7 +176,7 @@ describe("high level REST requests", function () {
                 done();
             };
 
-            module.admin_app.routes.post[1].callbacks[2](mock_req, mock_res);
+            module.admin_app.handle(mock_req, mock_res);
         });
     });
 
@@ -195,6 +196,7 @@ var mock_req_proto = {
 
 
 var mock_res_proto = {
+    setHeader: function () {},
     render: function (view, options) {
         options = options || {};
         var self = this
