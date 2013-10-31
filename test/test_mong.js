@@ -153,7 +153,7 @@ describe("high level REST requests", function () {
 
         it("Mock test admin user page post", function (done) {
             var mock_req = _.defaults({
-                url: "/model/AppliesTo/document/new",
+                url: "/model/Admin_Users/document/new",
                 body: {username: "admin" + Math.random()},
                 method: "POST",
                 path: ""
