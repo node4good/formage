@@ -403,8 +403,8 @@ buf.push("</td>");
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var field = $$obj[$index];
 
-var type = getTypeName(field)
-var value = doc[field]
+var type = getTypeName(field);
+var value = doc[field];
 buf.push("<td" + (jade.attrs({ terse: true, "class": [('span3'),('center'),((type == 'Picture') ? 'picture' : '')] }, {"class":true})) + ">");
 if ( (editable))
 {
@@ -424,8 +424,8 @@ buf.push("</td>");
     for (var $index in $$obj) {
       $$l++;      var field = $$obj[$index];
 
-var type = getTypeName(field)
-var value = doc[field]
+var type = getTypeName(field);
+var value = doc[field];
 buf.push("<td" + (jade.attrs({ terse: true, "class": [('span3'),('center'),((type == 'Picture') ? 'picture' : '')] }, {"class":true})) + ">");
 if ( (editable))
 {
@@ -471,8 +471,8 @@ buf.push("</td>");
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var field = $$obj[$index];
 
-var type = getTypeName(field)
-var value = doc[field]
+var type = getTypeName(field);
+var value = doc[field];
 buf.push("<td" + (jade.attrs({ terse: true, "class": [('span3'),('center'),((type == 'Picture') ? 'picture' : '')] }, {"class":true})) + ">");
 if ( (editable))
 {
@@ -492,8 +492,8 @@ buf.push("</td>");
     for (var $index in $$obj) {
       $$l++;      var field = $$obj[$index];
 
-var type = getTypeName(field)
-var value = doc[field]
+var type = getTypeName(field);
+var value = doc[field];
 buf.push("<td" + (jade.attrs({ terse: true, "class": [('span3'),('center'),((type == 'Picture') ? 'picture' : '')] }, {"class":true})) + ">");
 if ( (editable))
 {
