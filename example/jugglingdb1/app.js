@@ -3,7 +3,7 @@ require('longjohn');
 var nodestrum = require("nodestrum");
 nodestrum.register_process_catcher();
 
-var formage = require('../lib/index');
+var formage = require('../../lib/index');
 var Schema = require("jugglingdb").Schema;
 var schema = new Schema("mssql", {host: "(LocalDB)\\v11.0", database: "maskar"});
 
