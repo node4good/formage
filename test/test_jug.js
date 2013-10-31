@@ -9,7 +9,7 @@ var sinon = require('sinon');
 var domain = require('domain');
 var chai = require('chai');
 var should = chai.should();
-chai.Assertion.includeStack = true
+chai.Assertion.includeStack = true;
 
 var formage = require('../index');
 var Schema = require("jugglingdb").Schema;
@@ -128,7 +128,6 @@ describe("high level REST requests", function () {
         it("Mock test models page", function (done) {
             //noinspection JSUnresolvedVariable
             var mock_req = _.defaults({
-                params: {modelName: "AppliesTo", documentId: "1"},
                 method: "GET"
             }, mock_req_proto);
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
