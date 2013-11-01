@@ -1,0 +1,18 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="mocha" type="mocha-javascript-test-runner" factoryName="Mocha" singleton="true">
+    <working-directory>$PROJECT_DIR$</working-directory>
+    <test-directory>$PROJECT_DIR$/test</test-directory>
+    <pass-parent-env>true</pass-parent-env>
+    <envs>
+      <env name="MONGOOSE_DISABLE_STABILITY_WARNING" value="1" />
+    </envs>
+    <ui>BDD</ui>
+    <require />
+    <recursive>false</recursive>
+    <RunnerSettings RunnerId="MochaDebugRunner" />
+    <RunnerSettings RunnerId="RunnerForMochaJavaScript" />
+    <ConfigurationWrapper RunnerId="MochaDebugRunner" />
+    <ConfigurationWrapper RunnerId="RunnerForMochaJavaScript" />
+    <method />
+  </configuration>
+</component>

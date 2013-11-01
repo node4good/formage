@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="mocha juggling" type="NodeJSConfigurationType" factoryName="Node.js" singleton="true" path-to-node="c:/node10/node" path-to-js-file="C:/node10/node_modules/mocha/bin/_mocha" application-parameters="test/test_jug.js -R spec" working-dir="$PROJECT_DIR$">
+    <browser start="false" url="" with-js-debugger="false" />
+    <RunnerSettings RunnerId="NodeJS.debug" />
+    <RunnerSettings RunnerId="NodeJS.run" />
+    <ConfigurationWrapper RunnerId="NodeJS.debug" />
+    <ConfigurationWrapper RunnerId="NodeJS.run" />
+    <method />
+  </configuration>
+</component>

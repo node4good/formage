@@ -41,7 +41,8 @@
     "jade": "",
     "express": "",
     "mongoose": "",
-    "jugglingdb": ""
+    "jugglingdb": "",
+    "mocha": ""
   },
   "bundleDependencies": [
     "sji"
@@ -62,7 +63,8 @@
     "url": "https://github.com/Empeeric/formage.git"
   },
   "scripts": {
-    "start": "node example/app"
+    "start": "node example/app",
+    "test": "node ./node_modules/mocha/bin/_mocha --timeout 2000 --ui bdd test -R spec"
   },
   "bugs": {
     "url": "https://github.com/Empeeric/formage/issues"
