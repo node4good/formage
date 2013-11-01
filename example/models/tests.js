@@ -16,23 +16,25 @@ var schema = new Schema({
         inner_list: [String]
     },
     list_o_numbers: [Number],
-    ref: { type: SchemaTypes.ObjectId, ref: 'pages', required: true },
-    string: { type: String, required: true },
-    date: { type: Date, required: true },
-    datetime: { type: Date, required: true, widget:fWidgets.DateTimeWidget },
+    ref: { type: SchemaTypes.ObjectId, ref: 'pages' },
+    string: { type: String },
+    string_req: { type: String, required: true },
+    date: { type: Date },
+    datetime: { type: Date, widget:fWidgets.DateTimeWidget },
     time: { type: SchemaTypes.Time },
-    enum: { type: String, enum: ['1', '2', '3'], required: true },
-    rich_text: { type: SchemaTypes.Html, required: true },
-    text: { type: SchemaTypes.Text, required: true },
-    image: { type: SchemaTypes.Picture, required: true },
-    map: { type: SchemaTypes.GeoPoint, required: true, widget_options: {lang: 'nl'}},
-    num: { type: SchemaTypes.Integer, required: true },
+    enum: { type: String, enum: ['1', '2', '3'] },
+    rich_text: { type: SchemaTypes.Html },
+    text: { type: SchemaTypes.Text },
+    image: { type: SchemaTypes.Picture },
+    map: { type: SchemaTypes.GeoPoint, widget_options: {lang: 'nl'} },
+    num: { type: SchemaTypes.Integer },
     order: { type: Number, editable: false },
     bool: { type: Boolean, 'default': true },
     object: {
         object: {
             object: {
-                string: { type: String, required: true }
+                nested_string: { type: String },
+                nested_string_req: { type: String, required: true }
             }
         }
     },
@@ -60,12 +62,12 @@ var schema = new Schema({
         }
     ]
 });
-schema.methods.toString = function () {return this.string};
-
+schema.methods.toString = function () {return this.string_req};
 
 var model = module.exports = mongoose.model('tests', schema);
+
 model.formage = {
     filters: ['ref'],
-    list: ['string', 'date', 'image'],
-    subCollections: [{label: 'Spilon Users', model: 'spilon_user', field:'current_tier_id'}]
+    list: ['string_req', 'date', 'image'],
+    subCollections: [{label: 'Sub Tests', model: 'pages', field:'ref'}]
 };

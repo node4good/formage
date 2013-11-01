@@ -15,6 +15,7 @@ var formage = require('../index');
 var mongoose = require("mongoose");
 
 describe("high level REST requests", function () {
+    //this.timeout(5000);
     before(function (done) {
         mongoose.connect('mongodb://localhost/formage-test', function () {
             var AppliesTo = mongoose.model('AppliesTo', new mongoose.Schema({
@@ -22,14 +23,14 @@ describe("high level REST requests", function () {
                 Identifier: {type: String, limit: 100},
                 Editable: {type: Number}
             }));
-
+            var tests = require('../example/models/tests');
+            var pages = require('../example/models/pages');
             var app = express();
-            formage.init(app, express, {AppliesTo: AppliesTo}, {
+            formage.init(app, express, {pages:pages, AppliesTo: AppliesTo, Tests:tests}, {
                 title: 'Formage Example',
                 default_section: 'Main',
                 admin_users_gui: true
             });
-            //noinspection JSUnresolvedVariable
             mock_req_proto.app = module.admin_app = app.admin_app;
             done()
         });
@@ -37,9 +38,8 @@ describe("high level REST requests", function () {
 
     describe("pages", function () {
         it("Mock test document page", function (done) {
-            //noinspection JSUnresolvedVariable
             var mock_req = _.defaults({
-                url: "/model/AppliesTo/document/new",
+                url: "/model/Tests/document/new",
                 method: "GET"
             }, mock_req_proto);
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
@@ -62,8 +62,7 @@ describe("high level REST requests", function () {
         });
 
 
-        it("Mock test document post", function (done) {
-            //noinspection JSUnresolvedVariable
+        it("test document - post simple", function (done) {
             var mock_req = _.defaults({
                 url: "/model/AppliesTo/document/new",
                 method: "POST",
@@ -78,25 +77,39 @@ describe("high level REST requests", function () {
 
             mock_res.redirect = function (path) {
                 Number(1).should.equal(arguments.length);
-                d.exit();
                 done();
             };
 
-            var d = domain.createDomain();
-            d.on('error', function (err) {
-                d.exit();
-                done(err);
-            });
-            d.enter();
+            module.admin_app.handle(mock_req, mock_res);
+        });
+
+
+        it("test document - post progressive", function (done) {
+            var mock_req = _.defaults({
+                url: "/json/model/Tests/document/new",
+                method: "POST",
+                body: {
+                    string_req: "gaga",
+                    enum: "",
+                    "object.object.object.nested_string_req" : "gigi"
+                },
+                path: ""
+            }, mock_req_proto);
+            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+
+            mock_res.json = function (status, data) {
+                status.should.equal(205);
+                data.label.should.equal(mock_req.body.string_req);
+                done();
+            };
 
             module.admin_app.handle(mock_req, mock_res);
         });
 
 
         it("Mock test model page", function (done) {
-            //noinspection JSUnresolvedVariable
             var mock_req = _.defaults({
-                url: "/model/AppliesTo/",
+                url: "/model/Tests/",
                 query: {start: "2"},
                 method: "GET"
             }, mock_req_proto);
@@ -124,7 +137,6 @@ describe("high level REST requests", function () {
 
 
         it("Mock test models page", function (done) {
-            //noinspection JSUnresolvedVariable
             var mock_req = _.defaults({
                 url: "/",
                 method: "GET"
@@ -150,6 +162,7 @@ describe("high level REST requests", function () {
 
             module.admin_app.handle(mock_req, mock_res);
         });
+
 
         it("Mock test admin user page post", function (done) {
             var mock_req = _.defaults({
@@ -179,6 +192,7 @@ describe("high level REST requests", function () {
             module.admin_app.handle(mock_req, mock_res);
         });
     });
+
 
     after(function (done) {
         mongoose.disconnect();
