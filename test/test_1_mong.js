@@ -1,22 +1,18 @@
 'use strict';
-var nodestrum = require("nodestrum");
-nodestrum.register_process_catcher();
-process.env.FORMAGE_DB_LAYER = 'mongoose';
 
 var _ = require('lodash');
-var express = require('express');
 var sinon = require('sinon');
-var domain = require('domain');
 var chai = require('chai');
 var should = chai.should();
 chai.Assertion.includeStack = true;
 
-var formage = require('../index');
-var mongoose = require("mongoose");
 
-describe("high level REST requests", function () {
+describe("high level REST requests on mongoose", function () {
     //this.timeout(5000);
     before(function (done) {
+        process.env.FORMAGE_DB_LAYER = 'mongoose';
+        var formage = require('../index');
+        var mongoose = module.mongoose = require("mongoose");
         mongoose.connect('mongodb://localhost/formage-test', function () {
             var AppliesTo = mongoose.model('AppliesTo', new mongoose.Schema({
                 Title: {type: String, limit: 100, required: true},
@@ -25,6 +21,7 @@ describe("high level REST requests", function () {
             }));
             var tests = require('../example/models/tests');
             var pages = require('../example/models/pages');
+            var express = require('express');
             var app = express();
             formage.init(app, express, {pages:pages, AppliesTo: AppliesTo, Tests:tests}, {
                 title: 'Formage Example',
@@ -47,16 +44,8 @@ describe("high level REST requests", function () {
             mock_res.render = function (view, options) {
                 view.should.equal("document.jade");
                 should.exist(options);
-                d.exit();
                 done()
             };
-
-            var d = domain.createDomain();
-            d.on('error', function (err) {
-                d.exit();
-                done(err);
-            });
-            d.enter();
 
             module.admin_app.handle(mock_req, mock_res);
         });
@@ -144,17 +133,9 @@ describe("high level REST requests", function () {
                 should.exist(options);
                 this.req.app.render(view, options, function (err, doc) {
                     should.exist(doc);
-                    d.exit();
                     done(err);
                 });
             };
-
-            var d = domain.createDomain();
-            d.on('error', function (err) {
-                d.exit();
-                done(err);
-            });
-            d.enter();
 
             module.admin_app.handle(mock_req, mock_res);
         });
@@ -172,17 +153,9 @@ describe("high level REST requests", function () {
                 should.exist(options);
                 this.req.app.render(view, options, function (err, doc) {
                     should.exist(doc);
-                    d.exit();
                     done(err);
                 });
             };
-
-            var d = domain.createDomain();
-            d.on('error', function (err) {
-                d.exit();
-                done(err);
-            });
-            d.enter();
 
             module.admin_app.handle(mock_req, mock_res);
         });
@@ -200,16 +173,8 @@ describe("high level REST requests", function () {
                 req: mock_req
             }, mock_res_proto);
 
-            var d = domain.createDomain();
-            d.on('error', function (err) {
-                d.exit();
-                done(err);
-            });
-            d.enter();
-
             mock_res.redirect = function (p) {
                 should.exist(p);
-                d.exit();
                 done();
             };
 
@@ -219,7 +184,11 @@ describe("high level REST requests", function () {
 
 
     after(function (done) {
-        mongoose.disconnect();
+        module.mongoose.disconnect();
+        _.each(require.cache, function (mod, modName) {
+            if (~modName.indexOf('formage'))
+                delete require.cache[modName];
+        });
         done();
     });
 });
