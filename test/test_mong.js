@@ -19,7 +19,7 @@ describe("high level REST requests", function () {
     before(function (done) {
         mongoose.connect('mongodb://localhost/formage-test', function () {
             var AppliesTo = mongoose.model('AppliesTo', new mongoose.Schema({
-                Title: {type: String, limit: 100},
+                Title: {type: String, limit: 100, required: true},
                 Identifier: {type: String, limit: 100},
                 Editable: {type: Number}
             }));
@@ -76,7 +76,31 @@ describe("high level REST requests", function () {
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
             mock_res.redirect = function (path) {
+                should.not.exist(mock_res._status);
                 Number(1).should.equal(arguments.length);
+                done();
+            };
+
+            module.admin_app.handle(mock_req, mock_res);
+        });
+
+
+        it("test document - post - failing validation", function (done) {
+            var mock_req = _.defaults({
+                url: "/model/AppliesTo/document/new",
+                method: "POST",
+                body: {
+                    Identifier: "asdf",
+                    Editable: "1"
+                },
+                path: ""
+            }, mock_req_proto);
+            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+
+            mock_res.render = function (view, options) {
+                view.should.equal("document.jade");
+                should.exist(options.errors.Title);
+                Number(422).should.equal(mock_res._status);
                 done();
             };
 
@@ -211,6 +235,7 @@ var mock_req_proto = {
 
 var mock_res_proto = {
     setHeader: function () {},
+    status: function (val) {this._status = val;},
     render: function (view, options) {
         options = options || {};
         var self = this

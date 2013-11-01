@@ -24,6 +24,7 @@ describe("high level REST requests", function () {
                 Identifier: {type: String, limit: 100},
                 Editable: {type: Number}
             });
+            AppliesTo.validatesPresenceOf('Title');
 
             var app = express();
             formage.init(app, express, {AppliesTo: AppliesTo}, {
@@ -39,9 +40,8 @@ describe("high level REST requests", function () {
 
     describe("pages", function () {
         it("Mock test document page", function (done) {
-            //noinspection JSUnresolvedVariable
             var mock_req = _.defaults({
-                params: {modelName: "AppliesTo", documentId: "1"},
+                url: "/model/AppliesTo/document/new",
                 method: "GET"
             }, mock_req_proto);
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
@@ -60,14 +60,13 @@ describe("high level REST requests", function () {
             });
             d.enter();
 
-            module.admin_app.routes.get[4].callbacks[1](mock_req, mock_res);
+            module.admin_app.handle(mock_req, mock_res);
         });
 
 
-        it("Mock test document post", function (done) {
-            //noinspection JSUnresolvedVariable
+        it("test document - post simple", function (done) {
             var mock_req = _.defaults({
-                params: {modelName: "AppliesTo", documentId: "1"},
+                url: "/model/AppliesTo/document/new",
                 method: "POST",
                 body: {
                     Title: "gaga5",
@@ -79,26 +78,64 @@ describe("high level REST requests", function () {
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
             mock_res.redirect = function (path) {
+                should.not.exist(mock_res._status);
                 Number(1).should.equal(arguments.length);
-                d.exit();
                 done();
             };
 
-            var d = domain.createDomain();
-            d.on('error', function (err) {
-                d.exit();
-                done(err);
-            });
-            d.enter();
+            module.admin_app.handle(mock_req, mock_res);
+        });
 
-            module.admin_app.routes.post[1].callbacks[2](mock_req, mock_res);
+
+        it("test document - post - failing validation", function (done) {
+            var mock_req = _.defaults({
+                url: "/model/AppliesTo/document/new",
+                method: "POST",
+                body: {
+                    Identifier: "asdf",
+                    Editable: "1"
+                },
+                path: ""
+            }, mock_req_proto);
+            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+
+            mock_res.render = function (view, options) {
+                view.should.equal("document.jade");
+                should.exist(options.errors.Title);
+                Number(422).should.equal(mock_res._status);
+                done();
+            };
+
+            module.admin_app.handle(mock_req, mock_res);
+        });
+
+
+        it.skip("test document - post progressive", function (done) {
+            var mock_req = _.defaults({
+                url: "/json/model/AppliesTo/document/new",
+                method: "POST",
+                body: {
+                    string_req: "gaga",
+                    enum: "",
+                    "object.object.object.nested_string_req" : "gigi"
+                },
+                path: ""
+            }, mock_req_proto);
+            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+
+            mock_res.json = function (status, data) {
+                status.should.equal(205);
+                data.label.should.equal(mock_req.body.string_req);
+                done();
+            };
+
+            module.admin_app.handle(mock_req, mock_res);
         });
 
 
         it("Mock test model page", function (done) {
-            //noinspection JSUnresolvedVariable
             var mock_req = _.defaults({
-                params: {modelName: "AppliesTo"},
+                url: "/model/AppliesTo/",
                 query: {start: "2"},
                 method: "GET"
             }, mock_req_proto);
@@ -121,13 +158,13 @@ describe("high level REST requests", function () {
             });
             d.enter();
 
-            module.admin_app.routes.get[3].callbacks[2](mock_req, mock_res);
+            module.admin_app.handle(mock_req, mock_res);
         });
 
 
         it("Mock test models page", function (done) {
-            //noinspection JSUnresolvedVariable
             var mock_req = _.defaults({
+                url: "/",
                 method: "GET"
             }, mock_req_proto);
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
@@ -149,9 +186,38 @@ describe("high level REST requests", function () {
             });
             d.enter();
 
-            module.admin_app.routes.get[0].callbacks[2](mock_req, mock_res);
+            module.admin_app.handle(mock_req, mock_res);
         });
-    })
+
+
+        it.skip("Mock test admin user page post", function (done) {
+            var mock_req = _.defaults({
+                url: "/model/Admin_Users/document/new",
+                body: {username: "admin" + Math.random()},
+                method: "POST",
+                path: ""
+            }, mock_req_proto);
+
+            var mock_res = _.defaults({
+                req: mock_req
+            }, mock_res_proto);
+
+            var d = domain.createDomain();
+            d.on('error', function (err) {
+                d.exit();
+                done(err);
+            });
+            d.enter();
+
+            mock_res.redirect = function (p) {
+                should.exist(p);
+                d.exit();
+                done();
+            };
+
+            module.admin_app.handle(mock_req, mock_res);
+        });
+    });
 
 });
 
@@ -165,6 +231,8 @@ var mock_req_proto = {
 
 
 var mock_res_proto = {
+    setHeader: function () {},
+    status: function (val) {this._status = val;},
     render: function (view, options) {
         options = options || {};
         var self = this
