@@ -119,7 +119,7 @@ if (!isDialog)
 {
 buf.push("<div class=\"page-header\"><h2>" + (jade.escape((jade.interp = model_label) == null ? '' : jade.interp)) + " editor</h2></div>");
 }
-if (errors)
+if (errors.length)
 {
 buf.push("<p class=\"alert alert-error\">Saving failed, fix the following errors and try again.</p>");
 }

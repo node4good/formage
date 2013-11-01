@@ -19,7 +19,7 @@ block body
         .page-header
             h2 #{model_label} editor
 
-    - if (errors)
+    - if (errors.length)
         p.alert.alert-error Saving failed, fix the following errors and try again.
     form#document(enctype="multipart/form-data",method="post").clearfix
         != renderedDocument
