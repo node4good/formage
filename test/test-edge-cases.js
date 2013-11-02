@@ -42,7 +42,7 @@ describe("edge cases on mongoose", function () {
         it("show login screen", function (done) {
             var mock_req = _.defaults({
                 url: "/login",
-                method: "GET",
+                method: "GET"
             }, mock_req_proto);
 
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
