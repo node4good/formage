@@ -2,7 +2,9 @@
 global._ = require('lodash');
 global.chai = require('chai');
 global.should = chai.should();
-chai.Assertion.includeStack = true;
+require('nodestrum');
+Error.stackTraceLimit = 100;
+chai.Assertion.includeStack = false;
 process.env.FORMAGE_DISABLE_DOMAINS = true;
 process.env.MONGOOSE_DISABLE_STABILITY_WARNING = true;
 
