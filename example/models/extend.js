@@ -50,12 +50,6 @@ var TwoDField = formage.fields.StringField.extend({
         options.widget = TwoDWidget;
         this._super(options);
     },
-    to_schema: function () {
-        return {
-            lat: Number,
-            lng: Number
-        };
-    },
     clean_value: function (req, callback) {
         var lat = Number(req.body[this.name + '_lat']);
         var lng = Number(req.body[this.name + '_lng']);
