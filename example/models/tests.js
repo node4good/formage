@@ -16,6 +16,7 @@ var schema = new Schema({
     rich_text: { type: SchemaTypes.Html },
     text: { type: SchemaTypes.Text },
     image: { type: SchemaTypes.Picture },
+    file: { type: SchemaTypes.File },
     map: { type: SchemaTypes.GeoPoint, widget_options: {lang: 'nl'} },
     num: { type: SchemaTypes.Integer },
     num_validated: { type: SchemaTypes.Integer, validate: [function (val) {return true;}, "boo"] },
