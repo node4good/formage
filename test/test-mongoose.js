@@ -242,8 +242,11 @@ describe("high level REST requests on mongoose", function () {
     });
 
 
-    after(function (done) {
+    after(function () {
         module.mongoose.disconnect();
-        done();
+        _.each(require.cache, function (mod, modName) {
+            if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb'))
+                delete require.cache[modName];
+        });
     });
 });
