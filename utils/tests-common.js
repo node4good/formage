@@ -9,7 +9,6 @@ process.env.MONGOOSE_DISABLE_STABILITY_WARNING;
 
 global.mock_req_proto = {
     params: {},
-    session: {_mongooseAdminUser: {}},
     query: {},
     admin_user: {hasPermissions: function () {return true}}
 };
