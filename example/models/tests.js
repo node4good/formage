@@ -7,6 +7,22 @@ var mongoose = require('mongoose'),
 require('formage-mongoose-types').loadTypes_DI(mongoose);
 
 var schema = new Schema({
+    string: { type: String },
+    string_req: { type: String, required: true },
+    ref: { type: SchemaTypes.ObjectId, ref: 'pages' },
+    date: { type: Date },
+    datetime: { type: Date, widget:fWidgets.DateTimeWidget },
+    time: { type: SchemaTypes.Time },
+    enum: { type: String, enum: ['1', '2', '3'] },
+    rich_text: { type: SchemaTypes.Html },
+    text: { type: SchemaTypes.Text },
+    image: { type: SchemaTypes.Picture },
+    map: { type: SchemaTypes.GeoPoint, widget_options: {lang: 'nl'} },
+    num: { type: SchemaTypes.Integer },
+    num_validated: { type: SchemaTypes.Integer, validate: [function (val) {return true;}, "boo"] },
+    num_with_params: { type: SchemaTypes.Integer, min: 0, max: 10, step: 2 },
+    order: { type: Number, editable: false },
+    bool: { type: Boolean, 'default': true },
     list: [{
         name: { type: String, required: true },
         list: [{
@@ -17,20 +33,6 @@ var schema = new Schema({
         inner_list: [String]
     },
     list_o_numbers: [Number],
-    ref: { type: SchemaTypes.ObjectId, ref: 'pages' },
-    string: { type: String },
-    string_req: { type: String, required: true },
-    date: { type: Date },
-    datetime: { type: Date, widget:fWidgets.DateTimeWidget },
-    time: { type: SchemaTypes.Time },
-    enum: { type: String, enum: ['1', '2', '3'] },
-    rich_text: { type: SchemaTypes.Html },
-    text: { type: SchemaTypes.Text },
-    image: { type: SchemaTypes.Picture },
-    map: { type: SchemaTypes.GeoPoint, widget_options: {lang: 'nl'} },
-    num: { type: SchemaTypes.Integer },
-    order: { type: Number, editable: false },
-    bool: { type: Boolean, 'default': true },
     object: {
         object: {
             object: {
@@ -70,5 +72,6 @@ var model = module.exports = mongoose.model('tests', schema);
 model.formage = {
     filters: ['ref'],
     list: ['string_req', 'date', 'image'],
-    subCollections: [{label: 'Sub Tests', model: 'pages', field:'ref'}]
+    subCollections: [{label: 'Sub Tests', model: 'pages', field:'ref'}],
+    list_populate: ['ref']
 };
