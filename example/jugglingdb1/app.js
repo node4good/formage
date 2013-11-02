@@ -1,5 +1,4 @@
 "use strict";
-require('longjohn');
 var nodestrum = require("nodestrum");
 nodestrum.register_process_catcher();
 
