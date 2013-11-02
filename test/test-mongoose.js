@@ -100,14 +100,15 @@ describe("high level REST requests on mongoose", function () {
                     string_req: "gaga",
                     num_with_params: "0",
                     enum: "",
-                    "object.object.object.nested_string_req" : "gigi"
+                    "object.object.object.nested_string_req" : "gigi",
+                    list_o_numbers_li0___self__: "5"
                 },
                 path: ""
             }, mock_req_proto);
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
             mock_res.json = function (status, data) {
-                status.should.equal(205);
+                status.should.equal(200);
                 data.label.should.equal(mock_req.body.string_req);
                 module._create_id = data.id;
                 done();
