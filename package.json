@@ -42,10 +42,12 @@
     "express": "",
     "mongoose": "",
     "jugglingdb": "",
-    "msnodesql": "",
-    "jugglingdb-mssql": "",
     "chai": "",
     "mocha": ""
+  },
+  "optionalDependencies": {
+    "msnodesql": "",
+    "jugglingdb-mssql": ""
   },
   "bundleDependencies": [
     "sji"
