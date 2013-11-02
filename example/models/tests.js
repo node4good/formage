@@ -4,6 +4,7 @@ var mongoose = require('mongoose'),
     SchemaTypes = Schema.Types,
     ObjectId = SchemaTypes.ObjectId;
     fWidgets = require('../..').widgets;
+require('formage-mongoose-types').loadTypes_DI(mongoose);
 
 var schema = new Schema({
     list: [{

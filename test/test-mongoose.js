@@ -1,34 +1,28 @@
 'use strict';
-var _ = require('lodash');
-var sinon = require('sinon');
-var chai = require('chai');
-var should = chai.should();
-chai.Assertion.includeStack = true;
-
-
-describe("high level REST requests on JugglingDB", function () {
+describe("high level REST requests on mongoose", function () {
+    this.timeout(2000);
     before(function (done) {
-        process.env.FORMAGE_DB_LAYER = 'jugglingdb';
+        _.each(require.cache, function (mod, modName) {
+            if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb'))
+                delete require.cache[modName];
+        });
         var formage = require('../index');
-        var Schema = require("jugglingdb").Schema;
-        var schema = new Schema("mssql", {host: "(LocalDB)\\v11.0", database: "maskar"});
-        schema.on("connected", function () {
-            var AppliesTo = schema.define("AppliesTo", {
-                AppliesToID: {type: Number, primaryKey: true},
-                Title: {type: String, limit: 100},
+        var mongoose = module.mongoose = require("mongoose");
+        mongoose.connect('mongodb://localhost/formage-test', function () {
+            var AppliesTo = mongoose.model('AppliesTo', new mongoose.Schema({
+                Title: {type: String, limit: 100, required: true},
                 Identifier: {type: String, limit: 100},
                 Editable: {type: Number}
-            });
-            AppliesTo.validatesPresenceOf('Title');
-
+            }));
+            var tests = require('../example/models/tests');
+            var pages = require('../example/models/pages');
             var express = require('express');
             var app = express();
-            formage.init(app, express, {AppliesTo: AppliesTo}, {
+            formage.init(app, express, {pages:pages, AppliesTo: AppliesTo, Tests:tests}, {
                 title: 'Formage Example',
                 default_section: 'Main',
                 admin_users_gui: true
             });
-            //noinspection JSUnresolvedVariable
             mock_req_proto.app = module.admin_app = app.admin_app;
             done()
         });
@@ -37,7 +31,7 @@ describe("high level REST requests on JugglingDB", function () {
     describe("pages", function () {
         it("Mock test document page", function (done) {
             var mock_req = _.defaults({
-                url: "/model/AppliesTo/document/new",
+                url: "/model/Tests/document/new",
                 method: "GET"
             }, mock_req_proto);
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
@@ -98,9 +92,9 @@ describe("high level REST requests on JugglingDB", function () {
         });
 
 
-        it.skip("test document - post progressive", function (done) {
+        it("test document - post progressive", function (done) {
             var mock_req = _.defaults({
-                url: "/json/model/AppliesTo/document/new",
+                url: "/json/model/Tests/document/new",
                 method: "POST",
                 body: {
                     string_req: "gaga",
@@ -123,7 +117,7 @@ describe("high level REST requests on JugglingDB", function () {
 
         it("Mock test model page", function (done) {
             var mock_req = _.defaults({
-                url: "/model/AppliesTo/",
+                url: "/model/Tests/",
                 query: {start: "2"},
                 method: "GET"
             }, mock_req_proto);
@@ -162,7 +156,8 @@ describe("high level REST requests on JugglingDB", function () {
         });
 
 
-        it.skip("Mock test admin user page post", function (done) {
+        it("Mock test admin user page post", function (done) {
+            this.timeout(2000);
             var mock_req = _.defaults({
                 url: "/model/Admin_Users/document/new",
                 body: {username: "admin" + Math.random()},
@@ -175,6 +170,7 @@ describe("high level REST requests on JugglingDB", function () {
             }, mock_res_proto);
 
             mock_res.redirect = function (p) {
+                mock_res.app.route.should.equal(p);
                 should.exist(p);
                 done();
             };
@@ -185,36 +181,7 @@ describe("high level REST requests on JugglingDB", function () {
 
 
     after(function (done) {
-        _.each(require.cache, function (mod, modName) {
-            if (~modName.indexOf('formage'))
-                delete require.cache[modName];
-        });
+        module.mongoose.disconnect();
         done();
     });
 });
-
-
-var mock_req_proto = {
-    params: {},
-    session: {_mongooseAdminUser: {}},
-    query: {},
-    admin_user: {hasPermissions: function () {return true}}
-};
-
-
-var mock_res_proto = {
-    setHeader: function () {},
-    status: function (val) {this._status = val;},
-    render: function (view, options) {
-        options = options || {};
-        var self = this
-            , req = this.req
-            , app = req.app;
-
-        // merge res.locals
-        options._locals = self.locals;
-
-        // render
-        app.render(view, options, this.end);
-    }
-};

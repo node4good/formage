@@ -64,7 +64,8 @@
   },
   "scripts": {
     "start": "node example/app",
-    "test": "node ./node_modules/mocha/bin/_mocha --timeout 2000 --ui bdd test -R spec"
+    "test": "node ./node_modules/mocha/bin/_mocha",
+    "cover": "istanbul cover ./node_modules/mocha/bin/_mocha"
   },
   "bugs": {
     "url": "https://github.com/Empeeric/formage/issues"
