@@ -29,15 +29,19 @@ describe("edge cases on mongoose", function () {
             this.app.use(this.express.cookieParser('magical secret admin'));
             this.app.use(this.express.cookieSession({cookie: { maxAge: 1000 * 60 * 60 *  24 }}));
             this.registry = this.formage.init(this.app, this.express);
-            this.registry.adapter.ensureExists("admin", "admin", function (err) {
-                done();
-            })
         });
 
 
         it("works", function (done) {
             should.exist(this.registry);
             done()
+        });
+
+
+        it("ensureExists", function (done) {
+            this.registry.adapter.ensureExists("admin", "admin", function (err) {
+                done(err);
+            })
         });
 
 
