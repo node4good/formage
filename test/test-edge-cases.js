@@ -2,40 +2,38 @@
 describe("edge cases on mongoose", function () {
     this.timeout(2000);
     before(function (done) {
-        _.each(require.cache, function (mod, modName) {
-            if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb'))
-                delete require.cache[modName];
-        });
         this.formage = require('../index');
         this.mongoose = require("mongoose");
+        this.express = require('express');
         this.mongoose.connect('mongodb://localhost/formage-test', function () {
-            this.express = require('express');
             done()
         }.bind(this));
     });
 
-    after(function (done) {
+    after(function () {
         delete this.formage;
         this.mongoose.disconnect();
         delete this.mongoose;
         delete this.express;
-        done()
+
+        _.each(require.cache, function (mod, modName) {
+            if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb'))
+                delete require.cache[modName];
+        });
     });
 
 
     describe("no init options, no models", function () {
-        before(function (done) {
+        before(function () {
             this.app = this.express();
             this.app.use(this.express.cookieParser('magical secret admin'));
             this.app.use(this.express.cookieSession({cookie: { maxAge: 1000 * 60 * 60 *  24 }}));
             this.registry = this.formage.init(this.app, this.express);
-            done();
         });
 
 
-        it("works", function (done) {
+        it("works", function () {
             should.exist(this.registry);
-            done()
         });
 
 
@@ -183,4 +181,73 @@ describe("edge cases on mongoose", function () {
             this.app.admin_app.handle(mock_req, mock_res);
         });
     });
+
+
+});
+
+describe("no init options, no models, changed ENV for 100% in routes.js", function () {
+    before(function () {
+        this.formage = require('../index');
+        this.mongoose = require("mongoose");
+        this.express = require('express');
+
+        this.app = this.express();
+        this.app.use(this.express.cookieParser('magical secret admin'));
+        this.app.use(this.express.cookieSession({cookie: { maxAge: 1000 * 60 * 60 *  24 }}));
+
+        var old_node_debug = process.env.NODE_DEBUG;
+        process.env.NODE_DEBUG += " views";
+        delete process.env.FORMAGE_DISABLE_DOMAINS;
+
+        this.registry = this.formage.init(this.app, this.express);
+
+        process.env.FORMAGE_DISABLE_DOMAINS = true;
+        process.env.NODE_DEBUG = old_node_debug;
+    });
+
+
+    after(function () {
+        delete this.formage;
+        this.mongoose.disconnect();
+        delete this.mongoose;
+        delete this.express;
+
+        _.each(require.cache, function (mod, modName) {
+            if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb'))
+                delete require.cache[modName];
+        });
+    });
+
+
+    it("works", function () {
+        should.exist(this.registry);
+    });
+
+    it("try to get a 500", function (done) {
+        var mock_req = _.defaults({
+            url: "/model/gaga",
+            method: "get",
+            session: {}
+        }, mock_req_proto);
+
+        var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+        var old_console_error = console.error;
+        console.error = function silenceFirstError(err) {
+            Boolean(~err.indexOf("gaga")).should.equal(true);
+        };
+        mock_res.send = function (status, err) {
+            should.not.exist(mock_res._status);
+            should.exist(err);
+            Number(500).should.equal(status);
+            console.error = function silenceSecondError(err) {
+                Boolean(~err.indexOf("ooff")).should.equal(true);
+                console.error = old_console_error;
+                done();
+            };
+            throw new Error("ooff");
+        };
+
+        this.app.admin_app.handle(mock_req, mock_res);
+    });
+
 });
