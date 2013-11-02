@@ -42,6 +42,9 @@
     "express": "",
     "mongoose": "",
     "jugglingdb": "",
+    "msnodesql": "",
+    "jugglingdb-mssql": "",
+    "chai": "",
     "mocha": ""
   },
   "bundleDependencies": [
@@ -65,7 +68,7 @@
   "scripts": {
     "start": "node example/app",
     "test": "node ./node_modules/mocha/bin/_mocha",
-    "cover": "istanbul cover ./node_modules/mocha/bin/_mocha"
+    "cover": "istanbul cover ./node_modules/mocha/bin/_mocha -x generated/**"
   },
   "bugs": {
     "url": "https://github.com/Empeeric/formage/issues"
