@@ -1,11 +1,10 @@
 var mongoose = require('mongoose'),
     Types = mongoose.Schema.Types;
-require('formage-mongoose-types').loadTypes_DI(mongoose);
 
 var schema = new mongoose.Schema({
     title: { type: String, required: true },
     picture: { type: Types.Picture },
-    author: { type: Types.ObjectId, ref: 'pages', required: true }
+    author: { type: Types.ObjectId, ref: 'pages' }
 });
 
 schema.methods.toString = function() {
