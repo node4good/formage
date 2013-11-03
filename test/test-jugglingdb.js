@@ -1,5 +1,5 @@
 'use strict';
-describe.only("high level REST requests on JugglingDB", function () {
+describe("high level REST requests on JugglingDB", function () {
     var schema;
     before(function (done) {
         _.each(require.cache, function (mod, modName) {
