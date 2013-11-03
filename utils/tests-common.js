@@ -17,5 +17,7 @@ global.mock_req_proto = {
 
 global.mock_res_proto = {
     setHeader: function () {},
-    status: function (val) {this._status = val;}
+    status: function (val) {this._status = val;},
+    output: {push: _.identity},
+    outputEncodings: {push: _.identity}
 };
