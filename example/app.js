@@ -1,11 +1,6 @@
 'use strict';
-Error.stackTraceLimit = Infinity;
-require('../utils/CompileTempletes.js');
-
-
 var express = require('express'),
-    http = require('http'),
-    path = require('path'),
+    mongoose = require('mongoose'),
     formage = require('../lib/index');
 
 //noinspection JSUnresolvedVariable
@@ -13,17 +8,17 @@ var MONGO_URL = process.env.MONGO_URL,
     MONGOLAB_URI = process.env.MONGOLAB_URI,
     title = process.env.ADMIN_TITLE;
 
-var app = express();
+var app = exports.app = express();
 app.set('port', process.env.PORT || 8080);
 app.set('mongo', MONGO_URL || MONGOLAB_URI || 'mongodb://localhost/formage-example');
-app.set("view options", { layout: false, pretty: true });
 
 app.use(express.favicon());
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser('magical secret admin'));
 app.use(express.cookieSession({cookie: { maxAge: 1000 * 60 * 60 *  24 }}));
-app.use(express.static(path.join(__dirname, 'public')));
+
+// A nice feature so that we server the admin statics before the logger
 formage.serve_static(app, express);
 
 app.configure('development', function() {
@@ -32,11 +27,10 @@ app.configure('development', function() {
     app.use(express.errorHandler());
 });
 
-//noinspection JSUnresolvedVariable
 app.use(app.router);
 
-var mongoose = require('mongoose');
 mongoose.connect(app.get('mongo'));
+
 //mongoose.set('debug', true);
 var admin = formage.init(app, express, require('./models'), {
     title: title || 'Formage Example',
@@ -50,8 +44,7 @@ app.get('/', function(req, res) {
     res.redirect('/admin');
 });
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
-});
+var server = app.listen(app.get('port'));
+console.log('Express server listening on port ', server.address().port);
 
-exports.app = app;
+
