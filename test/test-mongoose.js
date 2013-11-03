@@ -1,6 +1,6 @@
 'use strict';
 describe("high level REST requests on mongoose", function () {
-    this.timeout(2000);
+    this.timeout(5000);
     before(function (done) {
         _.each(require.cache, function (mod, modName) {
             if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb'))
@@ -39,6 +39,7 @@ describe("high level REST requests on mongoose", function () {
             mock_res.render = function (view, options) {
                 view.should.equal("document.jade");
                 should.exist(options);
+                options.subCollections["0"].label.should.equal("Sub Tests");
                 done()
             };
 
