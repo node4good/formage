@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
     ObjectId = SchemaTypes.ObjectId;
     fWidgets = require('../..').widgets;
 
-var schema = new Schema({
+module.exports = new Schema({
     string: { type: String },
     string_req: { type: String, required: true },
     ref: { type: SchemaTypes.ObjectId, ref: 'pages' },
@@ -65,11 +65,9 @@ var schema = new Schema({
         }
     ]
 });
-schema.methods.toString = function () {return this.string_req};
+module.exports.methods.toString = function () {return this.string_req};
 
-var model = module.exports = mongoose.model('tests', schema);
-
-model.formage = {
+module.exports.formage = {
     filters: ['ref'],
     list: ['string_req', 'date', 'image'],
     subCollections: [{label: 'Sub Tests', model: 'pages', field:'ref'}],

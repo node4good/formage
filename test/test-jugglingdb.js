@@ -7,11 +7,13 @@ describe("high level REST requests on JugglingDB", function () {
                 delete require.cache[modName];
         });
         var formage = require('../index');
-        var Schema = require("jugglingdb").Schema;
+        var jugglingdb = require("jugglingdb");
+        var Schema = jugglingdb.Schema;
         schema = new Schema("mssql", {host: "(LocalDB)\\v11.0", database: "maskar"});
         if (!schema.connect)
             schema = new Schema("memory");
         schema.on("connected", function () {
+            jugglingdb.connected = schema;
             var express = require('express');
             var app = express();
             var AppliesTo = schema.define("AppliesTo", {
@@ -20,8 +22,10 @@ describe("high level REST requests on JugglingDB", function () {
                 Identifier: {type: String, limit: 100},
                 Editable: {type: Number}
             });
+            var tests = require('../example/models/tests');
+
             AppliesTo.validatesPresenceOf('Title');
-            formage.init(app, express, {AppliesTo: AppliesTo}, {
+            formage.init(app, express, {AppliesTo: AppliesTo, Tests:tests}, {
                 title: 'Formage Example',
                 default_section: 'Main',
                 admin_users_gui: true,
