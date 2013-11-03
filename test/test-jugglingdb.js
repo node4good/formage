@@ -1,5 +1,6 @@
 'use strict';
-describe("high level REST requests on JugglingDB", function () {
+describe.only("high level REST requests on JugglingDB", function () {
+    var schema;
     before(function (done) {
         _.each(require.cache, function (mod, modName) {
             if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb'))
@@ -7,7 +8,9 @@ describe("high level REST requests on JugglingDB", function () {
         });
         var formage = require('../index');
         var Schema = require("jugglingdb").Schema;
-        var schema = new Schema("mssql", {host: "(LocalDB)\\v11.0", database: "maskar"});
+        schema = new Schema("mssql", {host: "(LocalDB)\\v11.0", database: "maskar"});
+        if (!schema.connect)
+            schema = new Schema("memory");
         schema.on("connected", function () {
             var express = require('express');
             var app = express();
@@ -180,5 +183,6 @@ describe("high level REST requests on JugglingDB", function () {
 
 
     after(function () {
+        if (schema.disconnect) schema.disconnect();
     });
 });
