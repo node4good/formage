@@ -2,7 +2,6 @@
 =============
 
 [Bootstraped](http://twitter.github.com/bootstrap/) Admin GUI addon for [Mongoose](http://mongoosejs.com/), [JugglingDB](https://github.com/1602/jugglingdb), or just as a form generator.
-Bootstraped Admin GUI addon for mongoose, jugglingdb, or just as a form generator
 Originally forked from [mongoose-admin](https://github.com/marccampbell/mongoose-admin).
 
 Example Usage
