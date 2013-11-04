@@ -4,7 +4,7 @@ global.chai = require('chai');
 global.should = chai.should();
 require('nodestrum');
 Error.stackTraceLimit = 100;
-chai.Assertion.includeStack = false;
+chai.Assertion.includeStack = true;
 process.env.FORMAGE_DISABLE_DOMAINS = true;
 process.env.MONGOOSE_DISABLE_STABILITY_WARNING = true;
 
