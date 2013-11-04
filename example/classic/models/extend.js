@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
     MongooseSchema = mongoose.Schema,
     MongooseTypes = mongoose.Types,
     util = require('util'),
-    formage = require('../../');
+    formage = require('../../../.');
 
 
 var ReversedWidget = formage.widgets.TextWidget.extend({

@@ -1,7 +1,7 @@
 'use strict';
 var express = require('express'),
     mongoose = require('mongoose'),
-    formage = require('../lib/index');
+    formage = require('../..');
 
 //noinspection JSUnresolvedVariable
 var MONGO_URL = process.env.MONGO_URL,

@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     SchemaTypes = Schema.Types,
     ObjectId = SchemaTypes.ObjectId;
-    fWidgets = require('../..').widgets;
+    fWidgets = require('../../../').widgets;
 
 module.exports = new Schema({
     string: { type: String },
