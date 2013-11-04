@@ -8,7 +8,7 @@ describe("high level REST requests on mongoose", function () {
         });
         var formage = require('../index');
         var mongoose = module.mongoose = require("mongoose");
-        mongoose.connect('mongodb://localhost/formage-test', function () {
+        mongoose.connect('mongodb://localhost/formage-test' + this.test.parent.title.replace(/\s/g,''), function () {
             var AppliesTo = mongoose.model('AppliesTo', new mongoose.Schema({
                 Title: {type: String, limit: 100, required: true},
                 Identifier: {type: String, limit: 100},
@@ -119,7 +119,7 @@ describe("high level REST requests on mongoose", function () {
         });
 
 
-        it.only("test document - post full form", function (done) {
+        it("test document - post full form", function (done) {
             var mock_req = _.defaults({
                 url: "/json/model/Tests/document/new",
                 method: "POST",
@@ -130,7 +130,8 @@ describe("high level REST requests on mongoose", function () {
                 pipe: function (dest) {
                     dest.write(test_post_body_multipart);
                     dest.end();
-                }
+                },
+                unpipe: _.identity
             }, mock_req_proto);
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
