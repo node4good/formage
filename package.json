@@ -1,6 +1,6 @@
 {
   "name": "formage",
-  "description": "Admin GUI addon for mongoose, jugglingdb, or just any project",
+  "description": "Admin GUI addon for mongoose, jugglingdb, or just as a form generator",
   "version": "2.0.13",
   "main": "index.js",
   "author": {
