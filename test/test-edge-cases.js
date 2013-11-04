@@ -38,7 +38,7 @@ describe("edge cases on mongoose", function () {
 
 
         it("ensureExists", function (done) {
-            this.registry.adapter.ensureExists("admin", "admin", function (err) {
+            this.registry.adapter.Users.ensureExists("admin", "admin", function (err) {
                 done(err);
             })
         });

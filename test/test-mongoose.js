@@ -287,7 +287,7 @@ describe("high level REST requests on mongoose", function () {
             });
 
 
-            it("Model view", function (done) {
+            it("document view", function (done) {
                 var userId = this.test.parent._exampleUserID;
                 delete this.test.parent._exampleUserID;
                 var mock_req = _.defaults({

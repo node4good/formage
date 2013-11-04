@@ -25,15 +25,17 @@ describe("high level REST requests on JugglingDB", function () {
             AppliesTo.validatesPresenceOf('Title');
 
             var tests = require('../example/classic/models/tests');
-            var registry = formage.init(app, express, {AppliesTo: AppliesTo, Tests:tests}, {
+            var registry = formage.init(app, express, {AppliesTo: AppliesTo, Tests: tests}, {
                 title: 'Formage Example',
                 default_section: 'Main',
                 admin_users_gui: true,
+                no_user: true,
                 db_layer_type: 'jugglingdb'
             });
             mock_req_proto.app = module.admin_app = app.admin_app;
-
-            schema.automigrate(done);
+            schema.automigrate(function () {
+                registry.adapter.Users.ensureExists('admin', 'admin', done);
+            });
 
         });
     });
@@ -274,25 +276,70 @@ describe("high level REST requests on JugglingDB", function () {
         });
 
 
-        xit("Mock test admin user page post", function (done) {
-            var mock_req = _.defaults({
-                url: "/model/Admin_Users/document/new",
-                body: {username: "admin" + Math.random()},
-                method: "POST",
-                headers: {}
-            }, mock_req_proto);
+        describe("Admin Users", function () {
+            it("Model view", function (done) {
+                var mock_req = _.defaults({
+                    url: "/model/Admin_Users/",
+                    method: "GET"
+                }, mock_req_proto);
 
-            var mock_res = _.defaults({
-                req: mock_req
-            }, mock_res_proto);
+                var mock_res = _.defaults({
+                    req: mock_req
+                }, mock_res_proto);
 
-            mock_res.redirect = function (p) {
-                mock_res.app.route.should.equal(p);
-                should.exist(p);
-                done();
-            };
+                var holder = this.test.parent;
+                mock_res.render = function (view, options) {
+                    view.should.equal("model.jade");
+                    holder._exampleUserID = options.documents["0"]._id.toString();
+                    done();
+                };
 
-            module.admin_app.handle(mock_req, mock_res);
+                module.admin_app.handle(mock_req, mock_res);
+            });
+
+
+            it("document view", function (done) {
+                var userId = this.test.parent._exampleUserID;
+                delete this.test.parent._exampleUserID;
+                var mock_req = _.defaults({
+                    url: "/model/Admin_Users/document/" + userId,
+                    method: "GET"
+                }, mock_req_proto);
+
+                var mock_res = _.defaults({
+                    req: mock_req
+                }, mock_res_proto);
+
+                mock_res.render = function (view, options) {
+                    view.should.equal("document.jade");
+                    Number(0).should.equal(options.errors.length);
+                    done();
+                };
+
+                module.admin_app.handle(mock_req, mock_res);
+            });
+
+
+            it("Mock test admin user page post", function (done) {
+                var mock_req = _.defaults({
+                    url: "/model/Admin_Users/document/new",
+                    body: {username: "admin" + Math.random()},
+                    method: "POST",
+                    headers: {}
+                }, mock_req_proto);
+
+                var mock_res = _.defaults({
+                    req: mock_req
+                }, mock_res_proto);
+
+                mock_res.redirect = function (p) {
+                    '/admin/model/Admin_Users'.should.equal(p);
+                    should.exist(p);
+                    done();
+                };
+
+                module.admin_app.handle(mock_req, mock_res);
+            });
         });
     });
 
