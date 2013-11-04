@@ -1,0 +1,91 @@
+------WebKitFormBoundaryRAMJbJAUpnXaUbFE
+Content-Disposition: form-data; name="string"
+
+
+------WebKitFormBoundaryRAMJbJAUpnXaUbFE
+Content-Disposition: form-data; name="string_req"
+
+123
+------WebKitFormBoundaryRAMJbJAUpnXaUbFE
+Content-Disposition: form-data; name="ref"
+
+
+------WebKitFormBoundaryRAMJbJAUpnXaUbFE
+Content-Disposition: form-data; name="date"
+
+
+------WebKitFormBoundaryRAMJbJAUpnXaUbFE
+Content-Disposition: form-data; name="datetime"
+
+
+------WebKitFormBoundaryRAMJbJAUpnXaUbFE
+Content-Disposition: form-data; name="time"
+
+
+------WebKitFormBoundaryRAMJbJAUpnXaUbFE
+Content-Disposition: form-data; name="enum"
+
+
+------WebKitFormBoundaryRAMJbJAUpnXaUbFE
+Content-Disposition: form-data; name="rich_text"
+
+
+------WebKitFormBoundaryRAMJbJAUpnXaUbFE
+Content-Disposition: form-data; name="text"
+
+
+------WebKitFormBoundaryRAMJbJAUpnXaUbFE
+Content-Disposition: form-data; name="image"
+
+
+------WebKitFormBoundaryRAMJbJAUpnXaUbFE
+Content-Disposition: form-data; name="image_file"; filename=""
+Content-Type: application/octet-stream
+
+
+------WebKitFormBoundaryRAMJbJAUpnXaUbFE
+Content-Disposition: form-data; name="file"; filename=""
+Content-Type: application/octet-stream
+
+
+------WebKitFormBoundaryRAMJbJAUpnXaUbFE
+Content-Disposition: form-data; name="map_address"
+
+
+------WebKitFormBoundaryRAMJbJAUpnXaUbFE
+Content-Disposition: form-data; name="map"
+
+32.066158,34.77781900000002
+------WebKitFormBoundaryRAMJbJAUpnXaUbFE
+Content-Disposition: form-data; name="num"
+
+
+------WebKitFormBoundaryRAMJbJAUpnXaUbFE
+Content-Disposition: form-data; name="num_validated"
+
+
+------WebKitFormBoundaryRAMJbJAUpnXaUbFE
+Content-Disposition: form-data; name="num_with_params"
+
+
+------WebKitFormBoundaryRAMJbJAUpnXaUbFE
+Content-Disposition: form-data; name="bool"
+
+on
+------WebKitFormBoundaryRAMJbJAUpnXaUbFE
+Content-Disposition: form-data; name="list_o_list.inner_list_li0___self__"
+
+list.o.l
+------WebKitFormBoundaryRAMJbJAUpnXaUbFE
+Content-Disposition: form-data; name="object.object.object.nested_string"
+
+
+------WebKitFormBoundaryRAMJbJAUpnXaUbFE
+Content-Disposition: form-data; name="object.object.object.nested_string_req"
+
+object.object.object.nested_string_req
+------WebKitFormBoundaryRAMJbJAUpnXaUbFE
+Content-Disposition: form-data; name="mixed"
+
+
+------WebKitFormBoundaryRAMJbJAUpnXaUbFE--
