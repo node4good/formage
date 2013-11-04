@@ -21,3 +21,6 @@ global.mock_res_proto = {
     output: {push: _.identity},
     outputEncodings: {push: _.identity}
 };
+
+var fs = require('fs');
+global.test_post_body_multipart = fs.readFileSync('test/fixtures/test-post-body.mime', 'utf-8');
