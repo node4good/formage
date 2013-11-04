@@ -14,8 +14,8 @@ describe("high level REST requests on mongoose", function () {
                 Identifier: {type: String, limit: 100},
                 Editable: {type: Number}
             }));
-            var tests = require('../example/models/tests');
-            var pages = require('../example/models/pages');
+            var tests = require('../example/classic/models/tests');
+            var pages = require('../example/classic/models/pages');
             var express = require('express');
             var app = express();
             formage.init(app, express, {pages: pages, AppliesTo: AppliesTo, Tests: tests}, {

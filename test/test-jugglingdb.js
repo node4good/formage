@@ -22,7 +22,7 @@ describe("high level REST requests on JugglingDB", function () {
                 Identifier: {type: String, limit: 100},
                 Editable: {type: Number}
             });
-            var tests = require('../example/models/tests');
+            var tests = require('../example/classic/models/tests');
 
             AppliesTo.validatesPresenceOf('Title');
             formage.init(app, express, {AppliesTo: AppliesTo, Tests:tests}, {
