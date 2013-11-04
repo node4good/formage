@@ -119,7 +119,7 @@ describe("high level REST requests on mongoose", function () {
         });
 
 
-        it("test document - post full form", function (done) {
+        it.only("test document - post full form", function (done) {
             var mock_req = _.defaults({
                 url: "/json/model/Tests/document/new",
                 method: "POST",
@@ -137,7 +137,6 @@ describe("high level REST requests on mongoose", function () {
             mock_res.json = function (status, data) {
                 status.should.equal(200);
                 data.label.should.equal(mock_req.body.string_req);
-                module._create_id = data.id;
                 done();
             };
 
