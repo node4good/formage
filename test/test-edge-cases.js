@@ -5,7 +5,7 @@ describe("edge cases on mongoose", function () {
         this.formage = require('../index');
         this.mongoose = require("mongoose");
         this.express = require('express');
-        this.mongoose.connect('mongodb://localhost/formage-test', function () {
+        this.mongoose.connect('mongodb://localhost/formage-test' + this.test.parent.title.replace(/\s/g,''), function () {
             done()
         }.bind(this));
     });
@@ -188,7 +188,6 @@ describe("edge cases on mongoose", function () {
 describe("no init options, no models, changed ENV for 100% in routes.js", function () {
     before(function () {
         this.formage = require('../index');
-        this.mongoose = require("mongoose");
         this.express = require('express');
 
         this.app = this.express();
@@ -208,7 +207,6 @@ describe("no init options, no models, changed ENV for 100% in routes.js", functi
 
     after(function () {
         delete this.formage;
-        this.mongoose.disconnect();
         delete this.mongoose;
         delete this.express;
 
