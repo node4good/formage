@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="app.js on juggling" type="NodeJSConfigurationType" factoryName="Node.js" singleton="true" path-to-node="c:/node10/node" path-to-js-file="app.js" working-dir="$PROJECT_DIR$/example">
+  <configuration default="false" name="app.js on juggling" type="NodeJSConfigurationType" factoryName="Node.js" singleton="true" path-to-node="c:/node10/node" path-to-js-file="classic/app.js" working-dir="$PROJECT_DIR$/example">
     <envs>
       <env name="CLOUDINARY_URL" value="cloudinary://585968645961973:QKIr5QDRS3mp9F9QYxa3DC7-Omg@ho0xbnxzd" />
       <env name="PORT" value="80" />

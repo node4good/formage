@@ -1,10 +1,11 @@
 <img src="http://i.imgur.com/9vVHCPY.png" align="top" />  Formage [![Build Status](https://travis-ci.org/Empeeric/formage.png?branch=master)](https://travis-ci.org/Empeeric/formage)
 =============
 
-[Bootstraped](http://twitter.github.com/bootstrap/) Admin Forms for MongoDB via [Mongoose](http://mongoosejs.com/),
-originally forked from [mongoose-admin](https://github.com/marccampbell/mongoose-admin).
+[Bootstraped](http://twitter.github.com/bootstrap/) Admin GUI addon for [Mongoose](http://mongoosejs.com/), [JugglingDB](https://github.com/1602/jugglingdb), or just as a form generator.
+Bootstraped Admin GUI addon for mongoose, jugglingdb, or just as a form generator
+Originally forked from [mongoose-admin](https://github.com/marccampbell/mongoose-admin).
 
-Usage
+Example Usage
 -----
 [![npm install formage](https://nodei.co/npm/formage.png?downloads=true)](https://nodei.co/npm/formage/)
 <!-- [![NPM](https://nodei.co/npm-dl/formage.png)](https://nodei.co/npm/formage/) -->
@@ -15,7 +16,7 @@ var express = require('express'),
 require('formage').init(app, express [, models, options]);
 ```
 
-Look at `\example` directory.
+Look at the `\example` directory.
 
 Options
 -------
