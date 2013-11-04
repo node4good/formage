@@ -18,7 +18,7 @@ describe("high level REST requests on mongoose", function () {
             var pages = require('../example/models/pages');
             var express = require('express');
             var app = express();
-            formage.init(app, express, {pages:pages, AppliesTo: AppliesTo, Tests:tests}, {
+            formage.init(app, express, {pages: pages, AppliesTo: AppliesTo, Tests: tests}, {
                 title: 'Formage Example',
                 default_section: 'Main',
                 admin_users_gui: true
@@ -101,10 +101,36 @@ describe("high level REST requests on mongoose", function () {
                     string_req: "gaga",
                     num_with_params: "0",
                     enum: "",
-                    "object.object.object.nested_string_req" : "gigi",
+                    "object.object.object.nested_string_req": "gigi",
                     list_o_numbers_li0___self__: "5"
                 },
                 path: ""
+            }, mock_req_proto);
+            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+
+            mock_res.json = function (status, data) {
+                status.should.equal(200);
+                data.label.should.equal(mock_req.body.string_req);
+                module._create_id = data.id;
+                done();
+            };
+
+            module.admin_app.handle(mock_req, mock_res);
+        });
+
+
+        it("test document - post full form", function (done) {
+            var mock_req = _.defaults({
+                url: "/json/model/Tests/document/new",
+                method: "POST",
+                headers: {
+                    'content-type': 'multipart/form-data; boundary=----WebKitFormBoundaryRAMJbJAUpnXaUbFE',
+                    'content-length': test_post_body_multipart.length
+                },
+                pipe: function (dest) {
+                    dest.write(test_post_body_multipart);
+                    dest.end();
+                }
             }, mock_req_proto);
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
@@ -141,7 +167,7 @@ describe("high level REST requests on mongoose", function () {
 
         it("test document - checkDependencies", function (done) {
             var mock_req = _.defaults({
-                url: "/json/model/Tests/document/" + module._create_id+'/dependencies',
+                url: "/json/model/Tests/document/" + module._create_id + '/dependencies',
                 method: "GET",
                 path: ""
             }, mock_req_proto);
@@ -181,7 +207,7 @@ describe("high level REST requests on mongoose", function () {
         it("Mock test model page with query params", function (done) {
             var mock_req = _.defaults({
                 url: "/model/Tests/",
-                query: {start: "0", order_by:"string_req", limit:"20", populates:"ref"},
+                query: {start: "0", order_by: "string_req", limit: "20", populates: "ref"},
                 method: "GET"
             }, mock_req_proto);
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
@@ -251,3 +277,27 @@ describe("high level REST requests on mongoose", function () {
         });
     });
 });
+
+var fs = require('fs');
+    var test_post_body_multipart = fs.readFileSync('test/fixtures/test-post-body', 'utf-8');
+var test_post_body_urlencoded = {
+    string: '',
+    string_req: '123',
+    ref: '',
+    date: '',
+    datetime: '',
+    time: '',
+    enum: '',
+    rich_text: '',
+    text: '',
+    image: '{}',
+    map_address: '',
+    map: '32.066158,34.77781900000002',
+    num: '',
+    num_validated: '',
+    num_with_params: '',
+    bool: 'on',
+    'object.object.object.nested_string': '',
+    'object.object.object.nested_string_req': '123',
+    mixed: ""
+}
