@@ -279,7 +279,7 @@ describe("high level REST requests on mongoose", function () {
 });
 
 var fs = require('fs');
-    var test_post_body_multipart = fs.readFileSync('test/fixtures/test-post-body', 'utf-8');
+    var test_post_body_multipart = fs.readFileSync('test/fixtures/test-post-body.mime', 'utf-8');
 var test_post_body_urlencoded = {
     string: '',
     string_req: '123',
