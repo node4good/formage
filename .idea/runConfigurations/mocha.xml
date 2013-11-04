@@ -3,9 +3,7 @@
     <working-directory>$PROJECT_DIR$</working-directory>
     <test-directory>$PROJECT_DIR$/test</test-directory>
     <pass-parent-env>true</pass-parent-env>
-    <envs>
-      <env name="MONGOOSE_DISABLE_STABILITY_WARNING" value="1" />
-    </envs>
+    <envs />
     <ui>BDD</ui>
     <require />
     <recursive>false</recursive>
