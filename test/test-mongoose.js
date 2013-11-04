@@ -8,7 +8,7 @@ describe("high level REST requests on mongoose", function () {
         });
         var formage = require('../index');
         var mongoose = module.mongoose = require("mongoose");
-        mongoose.connect('mongodb://localhost/formage-test' + this.test.parent.title.replace(/\s/g,''), function () {
+        mongoose.connect('mongodb://localhost/formage-test' + this.test.parent.title.replace(/\s/g, ''), function () {
             var AppliesTo = mongoose.model('AppliesTo', new mongoose.Schema({
                 Title: {type: String, limit: 100, required: true},
                 Identifier: {type: String, limit: 100},
@@ -93,32 +93,6 @@ describe("high level REST requests on mongoose", function () {
         });
 
 
-        it("test document - post progressive", function (done) {
-            var mock_req = _.defaults({
-                url: "/json/model/Tests/document/new",
-                method: "POST",
-                headers: {},
-                body: {
-                    string_req: "gaga",
-                    num_with_params: "0",
-                    enum: "",
-                    "object.object.object.nested_string_req": "gigi",
-                    list_o_numbers_li0___self__: "5"
-                }
-            }, mock_req_proto);
-            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
-
-            mock_res.json = function (status, data) {
-                status.should.equal(200);
-                data.label.should.equal(mock_req.body.string_req);
-                module._create_id = data.id;
-                done();
-            };
-
-            module.admin_app.handle(mock_req, mock_res);
-        });
-
-
         it("test document - post full form", function (done) {
             var mock_req = _.defaults({
                 url: "/json/model/Tests/document/new",
@@ -145,42 +119,88 @@ describe("high level REST requests on mongoose", function () {
         });
 
 
-        it("test document - delete", function (done) {
-            var mock_req = _.defaults({
-                url: "/json/model/Tests/document/" + module._create_id,
-                method: "DELETE",
-                path: ""
-            }, mock_req_proto);
-            delete module._create_id;
+        describe("document flow", function () {
+            it("post", function (done) {
+                var mock_req = _.defaults({
+                    url: "/json/model/Tests/document/new",
+                    method: "POST",
+                    headers: {},
+                    body: {
+                        string_req: "gaga",
+                        num_with_params: "0",
+                        enum: "",
+                        "object.object.object.nested_string_req": "gigi",
+                        list_o_numbers_li0___self__: "5"
+                    }
+                }, mock_req_proto);
+                var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
-            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+                mock_res.json = function (status, data) {
+                    status.should.equal(200);
+                    data.label.should.equal(mock_req.body.string_req);
+                    module._create_id = data.id;
+                    done();
+                };
 
-            mock_res.json = function (status, data) {
-                status.should.equal(204);
-                data.collection.should.equal("Tests");
-                done();
-            };
-
-            module.admin_app.handle(mock_req, mock_res);
-        });
+                module.admin_app.handle(mock_req, mock_res);
+            });
 
 
-        it("test document - checkDependencies", function (done) {
-            var mock_req = _.defaults({
-                url: "/json/model/Tests/document/" + module._create_id + '/dependencies',
-                method: "GET",
-                path: ""
-            }, mock_req_proto);
+            it("get", function (done) {
+                var mock_req = _.defaults({
+                    url: "/model/Tests/document/" + module._create_id,
+                    method: "GET"
+                }, mock_req_proto);
 
-            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+                var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
-            mock_res.json = function (status, data) {
-                status.should.equal(200);
-                should.exist(data.length);
-                done();
-            };
+                mock_res.render = function (view, options) {
+                    view.should.equal('document.jade');
+                    Number(0).should.equal(options.errors.length);
+                    done();
+                };
 
-            module.admin_app.handle(mock_req, mock_res);
+                module.admin_app.handle(mock_req, mock_res);
+            });
+
+
+            it("checkDependencies", function (done) {
+                var mock_req = _.defaults({
+                    url: "/json/model/Tests/document/" + module._create_id + '/dependencies',
+                    method: "GET",
+                    path: ""
+                }, mock_req_proto);
+
+                var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+
+                mock_res.json = function (status, data) {
+                    status.should.equal(200);
+                    should.exist(data.length);
+                    done();
+                };
+
+                module.admin_app.handle(mock_req, mock_res);
+            });
+
+
+            it("delete", function (done) {
+                var mock_req = _.defaults({
+                    url: "/json/model/Tests/document/" + module._create_id,
+                    method: "DELETE",
+                    path: ""
+                }, mock_req_proto);
+                delete module._create_id;
+
+                var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+
+                mock_res.json = function (status, data) {
+                    status.should.equal(204);
+                    data.collection.should.equal("Tests");
+                    done();
+                };
+
+                module.admin_app.handle(mock_req, mock_res);
+            });
         });
 
 
@@ -245,26 +265,70 @@ describe("high level REST requests on mongoose", function () {
         });
 
 
-        it("Mock test admin user page post", function (done) {
-            this.timeout(2000);
-            var mock_req = _.defaults({
-                url: "/model/Admin_Users/document/new",
-                body: {username: "admin" + Math.random()},
-                method: "POST",
-                headers: {}
-            }, mock_req_proto);
+        describe("Admin Users", function () {
+            it("Model view", function (done) {
+                var mock_req = _.defaults({
+                    url: "/model/Admin_Users/",
+                    method: "GET"
+                }, mock_req_proto);
 
-            var mock_res = _.defaults({
-                req: mock_req
-            }, mock_res_proto);
+                var mock_res = _.defaults({
+                    req: mock_req
+                }, mock_res_proto);
 
-            mock_res.redirect = function (p) {
-                '/admin/model/Admin_Users'.should.equal(p);
-                should.exist(p);
-                done();
-            };
+                var holder = this.test.parent;
+                mock_res.render = function (view, options) {
+                    view.should.equal("model.jade");
+                    holder._exampleUserID = options.documents["0"]._id.toString();
+                    done();
+                };
 
-            module.admin_app.handle(mock_req, mock_res);
+                module.admin_app.handle(mock_req, mock_res);
+            });
+
+
+            it("Model view", function (done) {
+                var userId = this.test.parent._exampleUserID;
+                delete this.test.parent._exampleUserID;
+                var mock_req = _.defaults({
+                    url: "/model/Admin_Users/document/" + userId,
+                    method: "GET"
+                }, mock_req_proto);
+
+                var mock_res = _.defaults({
+                    req: mock_req
+                }, mock_res_proto);
+
+                mock_res.render = function (view, options) {
+                    view.should.equal("document.jade");
+                    Number(0).should.equal(options.errors.length);
+                    done();
+                };
+
+                module.admin_app.handle(mock_req, mock_res);
+            });
+
+
+            it("Mock test admin user page post", function (done) {
+                var mock_req = _.defaults({
+                    url: "/model/Admin_Users/document/new",
+                    body: {username: "admin" + Math.random()},
+                    method: "POST",
+                    headers: {}
+                }, mock_req_proto);
+
+                var mock_res = _.defaults({
+                    req: mock_req
+                }, mock_res_proto);
+
+                mock_res.redirect = function (p) {
+                    '/admin/model/Admin_Users'.should.equal(p);
+                    should.exist(p);
+                    done();
+                };
+
+                module.admin_app.handle(mock_req, mock_res);
+            });
         });
     });
 
@@ -277,27 +341,3 @@ describe("high level REST requests on mongoose", function () {
         });
     });
 });
-
-var fs = require('fs');
-    var test_post_body_multipart = fs.readFileSync('test/fixtures/test-post-body.mime', 'utf-8');
-var test_post_body_urlencoded = {
-    string: '',
-    string_req: '123',
-    ref: '',
-    date: '',
-    datetime: '',
-    time: '',
-    enum: '',
-    rich_text: '',
-    text: '',
-    image: '{}',
-    map_address: '',
-    map: '32.066158,34.77781900000002',
-    num: '',
-    num_validated: '',
-    num_with_params: '',
-    bool: 'on',
-    'object.object.object.nested_string': '',
-    'object.object.object.nested_string_req': '123',
-    mixed: ""
-}

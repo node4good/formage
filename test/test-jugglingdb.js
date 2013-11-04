@@ -22,24 +22,26 @@ describe("high level REST requests on JugglingDB", function () {
                 Identifier: {type: String, limit: 100},
                 Editable: {type: Number}
             });
-            var tests = require('../example/classic/models/tests');
-
             AppliesTo.validatesPresenceOf('Title');
-            formage.init(app, express, {AppliesTo: AppliesTo, Tests:tests}, {
+
+            var tests = require('../example/classic/models/tests');
+            var registry = formage.init(app, express, {AppliesTo: AppliesTo, Tests:tests}, {
                 title: 'Formage Example',
                 default_section: 'Main',
                 admin_users_gui: true,
                 db_layer_type: 'jugglingdb'
             });
             mock_req_proto.app = module.admin_app = app.admin_app;
-            done()
+
+            schema.automigrate(done);
+
         });
     });
 
     describe("pages", function () {
         it("Mock test document page", function (done) {
             var mock_req = _.defaults({
-                url: "/model/AppliesTo/document/new",
+                url: "/model/Tests/document/new",
                 method: "GET"
             }, mock_req_proto);
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
@@ -100,21 +102,24 @@ describe("high level REST requests on JugglingDB", function () {
         });
 
 
-        xit("test document - post progressive", function (done) {
+        it("test document - post full form", function (done) {
             var mock_req = _.defaults({
-                url: "/json/model/AppliesTo/document/new",
+                url: "/json/model/Tests/document/new",
                 method: "POST",
-                headers: {},
-                body: {
-                    string_req: "gaga",
-                    enum: "",
-                    "object.object.object.nested_string_req" : "gigi"
-                }
+                headers: {
+                    'content-type': 'multipart/form-data; boundary=----WebKitFormBoundaryRAMJbJAUpnXaUbFE',
+                    'content-length': test_post_body_multipart.length
+                },
+                pipe: function (dest) {
+                    dest.write(test_post_body_multipart);
+                    dest.end();
+                },
+                unpipe: _.identity
             }, mock_req_proto);
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
             mock_res.json = function (status, data) {
-                status.should.equal(205);
+                status.should.equal(200);
                 data.label.should.equal(mock_req.body.string_req);
                 done();
             };
@@ -123,10 +128,115 @@ describe("high level REST requests on JugglingDB", function () {
         });
 
 
+        describe("document flow", function () {
+            it("post", function (done) {
+                var mock_req = _.defaults({
+                    url: "/json/model/Tests/document/new",
+                    method: "POST",
+                    headers: {},
+                    body: {
+                        string_req: "gaga",
+                        num_with_params: "0",
+                        enum: "",
+                        "object.object.object.nested_string_req": "gigi",
+                        list_o_numbers_li0___self__: "5"
+                    }
+                }, mock_req_proto);
+                var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+
+                mock_res.json = function (status, data) {
+                    status.should.equal(200);
+                    data.label.should.equal(mock_req.body.string_req);
+                    module._create_id = data.id;
+                    done();
+                };
+
+                module.admin_app.handle(mock_req, mock_res);
+            });
+
+
+            it("get", function (done) {
+                var mock_req = _.defaults({
+                    url: "/model/Tests/document/" + module._create_id,
+                    method: "GET"
+                }, mock_req_proto);
+
+                var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+
+                mock_res.render = function (view, options) {
+                    view.should.equal('document.jade');
+                    Number(0).should.equal(options.errors.length);
+                    done();
+                };
+
+                module.admin_app.handle(mock_req, mock_res);
+            });
+
+
+            it("checkDependencies", function (done) {
+                var mock_req = _.defaults({
+                    url: "/json/model/Tests/document/" + module._create_id + '/dependencies',
+                    method: "GET",
+                    path: ""
+                }, mock_req_proto);
+
+                var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+
+                mock_res.json = function (status, data) {
+                    status.should.equal(200);
+                    should.exist(data.length);
+                    done();
+                };
+
+                module.admin_app.handle(mock_req, mock_res);
+            });
+
+
+            it("delete", function (done) {
+                var mock_req = _.defaults({
+                    url: "/json/model/Tests/document/" + module._create_id,
+                    method: "DELETE",
+                    path: ""
+                }, mock_req_proto);
+                delete module._create_id;
+
+                var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+
+                mock_res.json = function (status, data) {
+                    status.should.equal(204);
+                    data.collection.should.equal("Tests");
+                    done();
+                };
+
+                module.admin_app.handle(mock_req, mock_res);
+            });
+        });
+
+
         it("Mock test model page", function (done) {
             var mock_req = _.defaults({
                 url: "/model/AppliesTo/",
-                query: {start: "2"},
+                method: "GET"
+            }, mock_req_proto);
+            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+
+            mock_res.render = function (view, options) {
+                view.should.equal("model.jade");
+                should.exist(options);
+                this.req.app.render(view, options, function (err, doc) {
+                    should.exist(doc);
+                    done(err);
+                });
+            };
+
+            module.admin_app.handle(mock_req, mock_res);
+        });
+
+
+        it("Mock test model page with query params", function (done) {
+            var mock_req = _.defaults({
+                url: "/model/Tests/",
+                query: {start: "0", order_by: "string_req", limit: "20", populates: "ref"},
                 method: "GET"
             }, mock_req_proto);
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
