@@ -51,12 +51,12 @@ describe("high level REST requests on mongoose", function () {
             var mock_req = _.defaults({
                 url: "/model/AppliesTo/document/new",
                 method: "POST",
+                headers: {},
                 body: {
                     Title: "gaga5",
                     Identifier: "asdf",
                     Editable: "1"
-                },
-                path: ""
+                }
             }, mock_req_proto);
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
@@ -74,11 +74,11 @@ describe("high level REST requests on mongoose", function () {
             var mock_req = _.defaults({
                 url: "/model/AppliesTo/document/new",
                 method: "POST",
+                headers: {},
                 body: {
                     Identifier: "asdf",
                     Editable: "1"
-                },
-                path: ""
+                }
             }, mock_req_proto);
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
@@ -97,14 +97,14 @@ describe("high level REST requests on mongoose", function () {
             var mock_req = _.defaults({
                 url: "/json/model/Tests/document/new",
                 method: "POST",
+                headers: {},
                 body: {
                     string_req: "gaga",
                     num_with_params: "0",
                     enum: "",
                     "object.object.object.nested_string_req": "gigi",
                     list_o_numbers_li0___self__: "5"
-                },
-                path: ""
+                }
             }, mock_req_proto);
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
@@ -251,7 +251,7 @@ describe("high level REST requests on mongoose", function () {
                 url: "/model/Admin_Users/document/new",
                 body: {username: "admin" + Math.random()},
                 method: "POST",
-                path: ""
+                headers: {}
             }, mock_req_proto);
 
             var mock_res = _.defaults({
@@ -259,7 +259,7 @@ describe("high level REST requests on mongoose", function () {
             }, mock_res_proto);
 
             mock_res.redirect = function (p) {
-                mock_res.app.route.should.equal(p);
+                '/admin/model/Admin_Users'.should.equal(p);
                 should.exist(p);
                 done();
             };
