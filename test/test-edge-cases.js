@@ -9,9 +9,7 @@ describe("edge cases on mongoose", function () {
         this.formage = require('../index');
         this.mongoose = require("mongoose");
         this.express = require('express');
-        this.mongoose.connect('mongodb://localhost/formage-test' + this.test.parent.title.replace(/\s/g,''), function () {
-            done()
-        }.bind(this));
+        this.mongoose.connect('mongodb://localhost/formage-test' + this.test.parent.title.replace(/\s/g,''), done);
     });
 
     after(function () {
@@ -33,13 +31,6 @@ describe("edge cases on mongoose", function () {
 
         it("works", function () {
             should.exist(this.registry);
-        });
-
-
-        it("ensureExists", function (done) {
-            this.registry.adapter.Users.ensureExists("admin", "admin", function (err) {
-                done(err);
-            })
         });
 
 
@@ -178,6 +169,13 @@ describe("edge cases on mongoose", function () {
             }.bind(this);
 
             this.app.admin_app.handle(mock_req, mock_res);
+        });
+
+
+        it("ensureExists", function (done) {
+            this.registry.adapter.Users.ensureExists("admin", "admin", function (err) {
+                done(err);
+            })
         });
     });
 
