@@ -2,6 +2,10 @@
 describe("edge cases on mongoose", function () {
     this.timeout(2000);
     before(function (done) {
+        _.each(require.cache, function (mod, modName) {
+            if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb'))
+                delete require.cache[modName];
+        });
         this.formage = require('../index');
         this.mongoose = require("mongoose");
         this.express = require('express');
@@ -15,11 +19,6 @@ describe("edge cases on mongoose", function () {
         this.mongoose.disconnect();
         delete this.mongoose;
         delete this.express;
-
-        _.each(require.cache, function (mod, modName) {
-            if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb'))
-                delete require.cache[modName];
-        });
     });
 
 
