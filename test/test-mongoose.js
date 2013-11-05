@@ -33,9 +33,7 @@ describe("high level REST requests on mongoose", function () {
 
     after(function () {
         module.mongoose.disconnect();
-        _.each(require.cache, function (mod, modName) {
-            if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb'))
-                delete require.cache[modName];
-        });
+        delete module.mongoose;
+        delete global.admin_app;
     });
 });

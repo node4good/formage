@@ -186,6 +186,11 @@ describe("edge cases on mongoose", function () {
 
 describe("no init options, no models, changed ENV for 100% in routes.js", function () {
     before(function () {
+        _.each(require.cache, function (mod, modName) {
+            if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb'))
+                delete require.cache[modName];
+        });
+
         this.formage = require('../index');
         this.express = require('express');
 
@@ -208,11 +213,6 @@ describe("no init options, no models, changed ENV for 100% in routes.js", functi
         delete this.formage;
         delete this.mongoose;
         delete this.express;
-
-        _.each(require.cache, function (mod, modName) {
-            if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb'))
-                delete require.cache[modName];
-        });
     });
 
 
