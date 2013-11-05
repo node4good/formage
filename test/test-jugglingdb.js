@@ -40,9 +40,10 @@ describe("high level REST requests on JugglingDB", function () {
         });
     });
 
-    require('./common/core_test')()
+    require('./common/core_test')();
 
     after(function () {
         if (schema.disconnect) schema.disconnect();
+        global.admin_app
     });
 });
