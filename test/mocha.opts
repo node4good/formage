@@ -1,2 +1,2 @@
 -R spec
---require ./utils/tests-common.js
+--require ./test/common/tests-common.js
