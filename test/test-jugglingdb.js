@@ -1,5 +1,6 @@
 'use strict';
 describe("high level REST requests on JugglingDB", function () {
+    var ctx = {};
     var schema;
     before(function (done) {
         _.each(require.cache, function (mod, modName) {
@@ -32,7 +33,7 @@ describe("high level REST requests on JugglingDB", function () {
                 no_user: true,
                 db_layer_type: 'jugglingdb'
             });
-            mock_req_proto.app = global.admin_app = app.admin_app;
+            ctx.app = mock_req_proto.app = app.admin_app;
             schema.automigrate(function () {
                 registry.adapter.Users.ensureExists('admin', 'admin', done);
             });
@@ -40,10 +41,10 @@ describe("high level REST requests on JugglingDB", function () {
         });
     });
 
-    require('./common/core_test')();
+    require('./common/core_test')(ctx);
 
     after(function () {
         if (schema.disconnect) schema.disconnect();
-        global.admin_app
+        delete ctx.app;
     });
 });

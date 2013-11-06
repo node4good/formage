@@ -36,13 +36,15 @@
     "nodestrum": "",
     "node-ckeditor": "",
     "formage-mongoose-types": "",
-    "mpromise": ""
+    "mpromise": "",
+    "connect-multiparty": ""
   },
   "devDependencies": {
     "jade": "",
     "express": "",
     "mongoose": "",
     "jugglingdb": "",
+    "tingodb": "git+https://github.com/Empeeric/tingodb.git",
     "tungus": "",
     "chai": "",
     "mocha": ""
