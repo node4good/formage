@@ -30,14 +30,10 @@ describe("high level REST requests on JugglingDB", function () {
                 title: 'Formage Example',
                 default_section: 'Main',
                 admin_users_gui: true,
-                no_user: true,
                 db_layer_type: 'jugglingdb'
             });
             ctx.app = mock_req_proto.app = app.admin_app;
-            schema.automigrate(function () {
-                registry.adapter.Users.ensureExists('admin', 'admin', done);
-            });
-
+            done();
         });
     });
 
