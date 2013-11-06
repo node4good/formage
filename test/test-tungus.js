@@ -1,14 +1,15 @@
 'use strict';
-describe("high level REST requests on mongoose", function () {
+describe("high level REST requests on tungus", function () {
     var ctx = {};
     before(function (done) {
         _.each(require.cache, function (mod, modName) {
             if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb'))
                 delete require.cache[modName];
         });
+        require('tungus');
         var formage = require('../index');
         var mongoose = ctx.mongoose = require("mongoose");
-        var conn_str = 'mongodb://localhost/formage-test' + this.test.parent.title.replace(/\s/g, '');
+        var conn_str = 'tingodb://./data/' + this.test.parent.title.replace(/\s/g, '');
         mongoose.connect(conn_str, function (err) {
             if (err) done(err);
             var AppliesTo = mongoose.model('AppliesTo', new mongoose.Schema({

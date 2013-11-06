@@ -1,4 +1,4 @@
-module.exports = function () {
+module.exports = function (ctx) {
     describe("pages", function () {
         it("Mock test document page", function (done) {
             var mock_req = _.defaults({
@@ -13,7 +13,7 @@ module.exports = function () {
                 done()
             };
 
-            global.admin_app.handle(mock_req, mock_res);
+            ctx.app.handle(mock_req, mock_res);
         });
 
 
@@ -36,7 +36,7 @@ module.exports = function () {
                 done();
             };
 
-            global.admin_app.handle(mock_req, mock_res);
+            ctx.app.handle(mock_req, mock_res);
         });
 
 
@@ -59,7 +59,7 @@ module.exports = function () {
                 done();
             };
 
-            global.admin_app.handle(mock_req, mock_res);
+            ctx.app.handle(mock_req, mock_res);
         });
 
 
@@ -85,7 +85,7 @@ module.exports = function () {
                 done();
             };
 
-            global.admin_app.handle(mock_req, mock_res);
+            ctx.app.handle(mock_req, mock_res);
         });
 
 
@@ -112,7 +112,7 @@ module.exports = function () {
                     done();
                 };
 
-                global.admin_app.handle(mock_req, mock_res);
+                ctx.app.handle(mock_req, mock_res);
             });
 
 
@@ -130,7 +130,7 @@ module.exports = function () {
                     done();
                 };
 
-                global.admin_app.handle(mock_req, mock_res);
+                ctx.app.handle(mock_req, mock_res);
             });
 
 
@@ -149,7 +149,7 @@ module.exports = function () {
                     done();
                 };
 
-                global.admin_app.handle(mock_req, mock_res);
+                ctx.app.handle(mock_req, mock_res);
             });
 
 
@@ -169,7 +169,7 @@ module.exports = function () {
                     done();
                 };
 
-                global.admin_app.handle(mock_req, mock_res);
+                ctx.app.handle(mock_req, mock_res);
             });
         });
 
@@ -190,7 +190,7 @@ module.exports = function () {
                 });
             };
 
-            global.admin_app.handle(mock_req, mock_res);
+            ctx.app.handle(mock_req, mock_res);
         });
 
 
@@ -211,7 +211,7 @@ module.exports = function () {
                 });
             };
 
-            global.admin_app.handle(mock_req, mock_res);
+            ctx.app.handle(mock_req, mock_res);
         });
 
 
@@ -231,7 +231,7 @@ module.exports = function () {
                 });
             };
 
-            global.admin_app.handle(mock_req, mock_res);
+            ctx.app.handle(mock_req, mock_res);
         });
 
 
@@ -253,7 +253,7 @@ module.exports = function () {
                     done();
                 };
 
-                global.admin_app.handle(mock_req, mock_res);
+                ctx.app.handle(mock_req, mock_res);
             });
 
 
@@ -275,7 +275,7 @@ module.exports = function () {
                     done();
                 };
 
-                global.admin_app.handle(mock_req, mock_res);
+                ctx.app.handle(mock_req, mock_res);
             });
 
 
@@ -297,7 +297,7 @@ module.exports = function () {
                     done();
                 };
 
-                global.admin_app.handle(mock_req, mock_res);
+                ctx.app.handle(mock_req, mock_res);
             });
         });
     });
