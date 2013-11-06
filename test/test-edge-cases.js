@@ -25,7 +25,7 @@ describe("edge cases on mongoose", function () {
     });
 
 
-    describe.only("no init options, no models", function () {
+    describe("no init options, no models", function () {
         before(function () {
             this.app = this.express();
             this.app.use(this.express.cookieParser('magical secret admin'));
