@@ -1,21 +1,21 @@
-input { width: 300px; }
-input[type="checkbox"], input[type="radio"] {
+.nf_fieldset input { width: 300px; }
+.nf_fieldset input[type="checkbox"], input[type="radio"] {
     width: 1em;
 }
-select { min-width: 314px; }
-input[type="file"] {
+.nf_fieldset select { min-width: 314px; }
+.nf_fieldset input[type="file"] {
     width: 200px;
     margin-right: 15px;
 }
-textarea {
+.nf_fieldset textarea {
     width: 400px;
     height: 200px;
 }
-input[type="file"] + input[type=checkbox] {
+.nf_fieldset input[type="file"] + input[type=checkbox] {
     margin: 0 10px;
 }
 
-p.error {
+.nf_fieldset p.error {
     width: 100%;
     margin: 0 auto 10px auto;
 }
