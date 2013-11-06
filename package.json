@@ -35,13 +35,15 @@
     "cloudinary": "",
     "nodestrum": "",
     "node-ckeditor": "",
-    "formage-mongoose-types": ""
+    "formage-mongoose-types": "",
+    "mpromise": ""
   },
   "devDependencies": {
     "jade": "",
     "express": "",
     "mongoose": "",
     "jugglingdb": "",
+    "tungus": "",
     "chai": "",
     "mocha": ""
   },
