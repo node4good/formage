@@ -9,7 +9,7 @@ describe("high level REST requests on tungus", function () {
         require('tungus');
         var formage = require('../index');
         var mongoose = ctx.mongoose = require("mongoose");
-        var conn_str = 'tingodb://./.data/' + this.test.parent.title.replace(/\s/g, '');
+        var conn_str = 'tingodb://./.data/RESTontingodb';
         mongoose.connect(conn_str, function (err) {
             if (err) return done(err);
             return mongoose.connection.db.dropDatabase(function (err, doc) {
