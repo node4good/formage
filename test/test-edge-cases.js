@@ -1,15 +1,20 @@
 "use strict";
 describe("edge cases on mongoose", function () {
-    this.timeout(2000);
     before(function (done) {
         _.each(require.cache, function (mod, modName) {
             if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb'))
                 delete require.cache[modName];
         });
         this.formage = require('../index');
-        this.mongoose = require("mongoose");
+        var mongoose = this.mongoose = require("mongoose");
         this.express = require('express');
-        this.mongoose.connect('mongodb://localhost/formage-test' + this.test.parent.title.replace(/\s/g,''), done);
+        var conn_str = 'mongodb://localhost/formage-test' + this.test.parent.title.replace(/\s/g, '');
+        mongoose.connect(conn_str, function(err) {
+            if (err) return done(err);
+            return mongoose.connection.db.dropDatabase(function (err, doc) {
+                done(err);
+            })
+        });
     });
 
     after(function () {
@@ -20,7 +25,7 @@ describe("edge cases on mongoose", function () {
     });
 
 
-    describe("no init options, no models", function () {
+    describe.only("no init options, no models", function () {
         before(function () {
             this.app = this.express();
             this.app.use(this.express.cookieParser('magical secret admin'));
