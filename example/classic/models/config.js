@@ -25,9 +25,10 @@ var schema = new mongoose.Schema({
     }
 });
 
-var model = module.exports = mongoose.model('config', schema);
-model.label = 'הגדרות';
-model.formage = {
+
+schema.formage = {
+    label: 'הגדרות',
     is_single: true,
     section: 'Configuration'
 };
+var model = module.exports = mongoose.model('config', schema);
