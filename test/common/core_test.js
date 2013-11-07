@@ -155,6 +155,7 @@ module.exports = function (ctx) {
                 should.exist(options.form);
                 this.req.app.render(view, options, function (err, doc) {
                     should.exist(doc);
+                    Boolean('<script src="//maps.googleapis.com').should.equal(true);
                     if (options.form.instance._doc) {
                         Boolean(~doc.indexOf('value="gigi" class="required" type="text" name="object.object.object.nested_string_req"'))
                             .should.equal(true);

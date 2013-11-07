@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
 
 module.exports = new Schema({
     string: { type: String },
-    string_req: { type: String, required: true },
+    string_req: { type: String, required: true, label: 'Name' },
     ref: { type: SchemaTypes.ObjectId, ref: 'pages' },
     date: { type: Date },
     datetime: { type: Date, widget:fWidgets.DateTimeWidget },
@@ -69,7 +69,7 @@ module.exports.methods.toString = function () {return this.string_req};
 
 module.exports.formage = {
     filters: ['ref'],
-    list: ['string_req', 'date', 'image'],
+    list: ['string_req', 'ref', 'image'],
     subCollections: [{label: 'Sub Tests', model: 'pages', field:'ref'}],
     list_populate: ['ref']
 };
