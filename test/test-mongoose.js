@@ -48,8 +48,31 @@ describe("high level REST requests on mongoose", function () {
                 view.should.equal("document.jade");
                 should.exist(options);
                 this.req.app.render(view, options, function (err, doc) {
+                    if (err) return done(err);
                     should.exist(doc);
-                    done(err);
+                    done();
+                });
+            };
+            ctx.app.handle(mock_req, mock_res);
+        });
+
+
+        it('test that there are sections', function (done) {
+            var mock_req = _.defaults({
+                url: "/",
+                method: "GET"
+            }, mock_req_proto);
+
+            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+
+            mock_res.render = function (view, options) {
+                view.should.equal("models.jade");
+                should.exist(options);
+                Number(3).should.equal(options.sections.length);
+                this.req.app.render(view, options, function (err, doc) {
+                    if (err) return done(err);
+                    should.exist(doc);
+                    done();
                 });
             };
 
@@ -67,3 +90,5 @@ describe("high level REST requests on mongoose", function () {
         delete ctx.app;
     });
 });
+
+var section_snippet = '<div class="section"><h2><span>Configuration</span></h2><ul class="models"><li><div class="btn-group pull-right"><a href="/admin/model/config/document/single" class="btn btn-default">Edit</a></div><a href="/admin/model/config/document/single"><h3>הגדרות</h3></a></li></ul></div>';
