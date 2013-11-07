@@ -1,5 +1,6 @@
+'use strict';
 module.exports = function (ctx) {
-    describe("pages", function () {
+    describe("general", function () {
         it("Mock test document page", function (done) {
             var mock_req = _.defaults({
                 url: "/model/Tests/document/new",
@@ -89,101 +90,126 @@ module.exports = function (ctx) {
         });
 
 
-        describe("document flow", function () {
-            it("post", function (done) {
-                var mock_req = _.defaults({
-                    url: "/json/model/Tests/document/new",
-                    method: "POST",
-                    headers: {},
-                    body: {
-                        string_req: "gaga",
-                        num_with_params: "0",
-                        enum: "",
-                        "object.object.object.nested_string_req": "gigi",
-                        list_o_numbers_li0___self__: "5"
-                    }
-                }, mock_req_proto);
-                var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+        it('test that there are sections', function (done) {
+            var mock_req = _.defaults({
+                url: "/",
+                method: "GET"
+            }, mock_req_proto);
 
-                mock_res.json = function (status, data) {
-                    status.should.equal(200);
-                    data.label.should.equal(mock_req.body.string_req);
-                    module._create_id = data.id;
+            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+
+            mock_res.render = function (view, options) {
+                view.should.equal("models.jade");
+                should.exist(options);
+                Boolean(options.sections.length > 0).should.equal(true);
+                this.req.app.render(view, options, function (err, doc) {
+                    if (err) return done(err);
+                    should.exist(doc);
                     done();
-                };
+                });
+            };
 
-                ctx.app.handle(mock_req, mock_res);
-            });
-
-
-            it.skip("get", function (done) {
-                var mock_req = _.defaults({
-                    url: "/model/Tests/document/" + module._create_id,
-                    method: "GET"
-                }, mock_req_proto);
-
-                var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
-
-                mock_res.render = function (view, options) {
-                    view.should.equal('document.jade');
-                    Number(0).should.equal(options.errors.length);
-
-                    String(options.form.instance._doc.list_o_numbers[0])
-                        .should.equal(options.form.fields.list_o_numbers.fields.__self__.value["0"]);
-                    options.form.instance._doc.object.object.object.nested_string_req
-                        .should.equal(options.form.fields["object.object.object.nested_string_req"].value);
-
-                    should.exist(options.form);
-                    this.req.app.render(view, options, function (err, doc) {
-                        should.exist(doc);
-                        done(err);
-                    });
-                };
-
-                ctx.app.handle(mock_req, mock_res);
-            });
+            ctx.app.handle(mock_req, mock_res);
+        });
+    });
 
 
-            it("checkDependencies", function (done) {
-                var mock_req = _.defaults({
-                    url: "/json/model/Tests/document/" + module._create_id + '/dependencies',
-                    method: "GET",
-                    path: ""
-                }, mock_req_proto);
+    describe("document flow", function () {
+        it("post", function (done) {
+            var mock_req = _.defaults({
+                url: "/json/model/Tests/document/new",
+                method: "POST",
+                headers: {},
+                body: {
+                    string_req: "gaga",
+                    num_with_params: "0",
+                    enum: "",
+                    "object.object.object.nested_string_req": "gigi",
+                    list_o_numbers_li0___self__: "5"
+                }
+            }, mock_req_proto);
+            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
-                var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+            mock_res.json = function (status, data) {
+                status.should.equal(200);
+                data.label.should.equal(mock_req.body.string_req);
+                module._create_id = data.id;
+                done();
+            };
 
-                mock_res.json = function (status, data) {
-                    status.should.equal(200);
-                    should.exist(data.length);
-                    done();
-                };
-
-                ctx.app.handle(mock_req, mock_res);
-            });
-
-
-            it("delete", function (done) {
-                var mock_req = _.defaults({
-                    url: "/json/model/Tests/document/" + module._create_id,
-                    method: "DELETE",
-                    path: ""
-                }, mock_req_proto);
-                delete module._create_id;
-
-                var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
-
-                mock_res.json = function (status, data) {
-                    status.should.equal(204);
-                    data.collection.should.equal("Tests");
-                    done();
-                };
-
-                ctx.app.handle(mock_req, mock_res);
-            });
+            ctx.app.handle(mock_req, mock_res);
         });
 
 
+        it("get", function (done) {
+            var mock_req = _.defaults({
+                url: "/model/Tests/document/" + module._create_id,
+                method: "GET"
+            }, mock_req_proto);
+
+            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+
+            mock_res.render = function (view, options) {
+                view.should.equal('document.jade');
+                Number(0).should.equal(options.errors.length);
+                should.exist(options.form);
+                this.req.app.render(view, options, function (err, doc) {
+                    should.exist(doc);
+                    if (options.form.instance._doc) {
+                        Boolean(~doc.indexOf('value="gigi" class="required" type="text" name="object.object.object.nested_string_req"'))
+                            .should.equal(true);
+                        Boolean(~doc.indexOf('value="5" class="optional" min="" max="" step="any" type="number" name="list_o_numbers_li0___self__"'))
+                            .should.equal(true);
+                    }
+                    done(err);
+                });
+            };
+
+            ctx.app.handle(mock_req, mock_res);
+        });
+
+
+        it("checkDependencies", function (done) {
+            var mock_req = _.defaults({
+                url: "/json/model/Tests/document/" + module._create_id + '/dependencies',
+                method: "GET",
+                path: ""
+            }, mock_req_proto);
+
+            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+
+            mock_res.json = function (status, data) {
+                status.should.equal(200);
+                should.exist(data.length);
+                done();
+            };
+
+            ctx.app.handle(mock_req, mock_res);
+        });
+
+
+        it("delete", function (done) {
+            var mock_req = _.defaults({
+                url: "/json/model/Tests/document/" + module._create_id,
+                method: "DELETE",
+                path: ""
+            }, mock_req_proto);
+            delete module._create_id;
+
+            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+
+            mock_res.json = function (status, data) {
+                status.should.equal(204);
+                data.collection.should.equal("Tests");
+                done();
+            };
+
+            ctx.app.handle(mock_req, mock_res);
+        });
+    });
+
+
+    describe("the tests model", function () {
         it("Mock test model page", function (done) {
             var mock_req = _.defaults({
                 url: "/model/AppliesTo/",
@@ -243,72 +269,122 @@ module.exports = function (ctx) {
 
             ctx.app.handle(mock_req, mock_res);
         });
+    });
 
+    describe("play with a single model", function () {
+        it("should get", function (done) {
+            var mock_req = _.defaults({
+                url: "/model/config/document/single",
+                method: "GET"
+            }, mock_req_proto);
 
-        describe("Admin Users", function () {
-            it("Model view", function (done) {
-                var mock_req = _.defaults({
-                    url: "/model/Admin_Users/",
-                    method: "GET"
-                }, mock_req_proto);
+            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
-                var mock_res = _.defaults({
-                    req: mock_req
-                }, mock_res_proto);
-
-                var holder = this.test.parent;
-                mock_res.render = function (view, options) {
-                    view.should.equal("model.jade");
-                    holder._exampleUserID = options.documents["0"]._id.toString();
+            mock_res.render = function (view, options) {
+                view.should.equal("document.jade");
+                should.exist(options);
+                this.req.app.render(view, options, function (err, doc) {
+                    if (err) return done(err);
+                    should.exist(doc);
                     done();
-                };
-
-                ctx.app.handle(mock_req, mock_res);
-            });
-
-
-            it("document view", function (done) {
-                var userId = this.test.parent._exampleUserID;
-                delete this.test.parent._exampleUserID;
-                var mock_req = _.defaults({
-                    url: "/model/Admin_Users/document/" + userId,
-                    method: "GET"
-                }, mock_req_proto);
-
-                var mock_res = _.defaults({
-                    req: mock_req
-                }, mock_res_proto);
-
-                mock_res.render = function (view, options) {
-                    view.should.equal("document.jade");
-                    Number(0).should.equal(options.errors.length);
-                    done();
-                };
-
-                ctx.app.handle(mock_req, mock_res);
-            });
+                });
+            };
+            ctx.app.handle(mock_req, mock_res);
+        });
 
 
-            it("Mock test admin user page post", function (done) {
-                var mock_req = _.defaults({
-                    url: "/model/Admin_Users/document/new",
-                    body: {username: "admin" + Math.random()},
-                    method: "POST",
-                    headers: {}
-                }, mock_req_proto);
+        it("should post", function (done) {
+            var mock_req = _.defaults({
+                url: "/model/config/document/single",
+                method: "POST",
+                body: {
+                    title: 'ref',
+                    email: 'ref',
+                    'footer.links_li0_text': 'tgf',
+                    'footer.links_li0_url': 'yhg',
+                    'mail_sent.title': '',
+                    'mail_sent.text': ''
+                }
+            }, mock_req_proto);
+            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+            mock_res.render = function (view, options) {
+                done(options.form.errors);
+            };
+            mock_res.redirect = function (url) {
+                url.should.equal("/admin/model/config");
+                done();
+            };
 
-                var mock_res = _.defaults({
-                    req: mock_req
-                }, mock_res_proto);
+            ctx.app.handle(mock_req, mock_res);
+        });
 
-                mock_res.redirect = function (p) {
-                    '/admin/model/Admin_Users'.should.equal(p);
-                    should.exist(p);
-                    done();
-                };
 
-                ctx.app.handle(mock_req, mock_res);
-            });
+    });
+
+
+    describe("Admin Users", function () {
+        it("Model view", function (done) {
+            var mock_req = _.defaults({
+                url: "/model/Admin_Users/",
+                method: "GET"
+            }, mock_req_proto);
+
+            var mock_res = _.defaults({
+                req: mock_req
+            }, mock_res_proto);
+
+            var holder = this.test.parent;
+            mock_res.render = function (view, options) {
+                view.should.equal("model.jade");
+                holder._exampleUserID = options.documents["0"]._id.toString();
+                done();
+            };
+
+            ctx.app.handle(mock_req, mock_res);
+        });
+
+
+        it("document view", function (done) {
+            var userId = this.test.parent._exampleUserID;
+            delete this.test.parent._exampleUserID;
+            var mock_req = _.defaults({
+                url: "/model/Admin_Users/document/" + userId,
+                method: "GET"
+            }, mock_req_proto);
+
+            var mock_res = _.defaults({
+                req: mock_req
+            }, mock_res_proto);
+
+            mock_res.render = function (view, options) {
+                view.should.equal("document.jade");
+                Number(0).should.equal(options.errors.length);
+                done();
+            };
+
+            ctx.app.handle(mock_req, mock_res);
+        });
+
+
+        it("Mock test admin user page post", function (done) {
+            var mock_req = _.defaults({
+                url: "/model/Admin_Users/document/new",
+                body: {username: "admin" + Math.random()},
+                method: "POST",
+                headers: {}
+            }, mock_req_proto);
+
+            var mock_res = _.defaults({
+                req: mock_req
+            }, mock_res_proto);
+
+            mock_res.redirect = function (p) {
+                '/admin/model/Admin_Users'.should.equal(p);
+                should.exist(p);
+                done();
+            };
+
+            ctx.app.handle(mock_req, mock_res);
         });
     });
 };

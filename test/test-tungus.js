@@ -13,17 +13,18 @@ describe("high level REST requests on tungus", function () {
         var conn_str = 'tingodb://./.data/RESTontingodb';
         mongoose.connect(conn_str, function (err) {
             if (err) return done(err);
-            return mongoose.connection.db.dropDatabase(function (err, doc) {
+            return mongoose.connection.db.dropDatabase(function (err) {
                 var AppliesTo = mongoose.model('AppliesTo', new mongoose.Schema({
                     Title: {type: String, limit: 100, required: true},
                     Identifier: {type: String, limit: 100},
                     Editable: {type: Number}
                 }));
-                var tests = require('../example/classic/models/tests');
-                var pages = require('../example/classic/models/pages');
                 var express = require('express');
                 var app = express();
-                formage.init(app, express, {pages: pages, AppliesTo: AppliesTo, Tests: tests}, {
+                var tests = require('../example/classic/models/tests');
+                var pages = require('../example/classic/models/pages');
+                var config = require('../example/classic/models/config');
+                ctx.registry = formage.init(app, express, {pages: pages, AppliesTo: AppliesTo, Tests: tests, config: config}, {
                     title: 'Formage Example',
                     default_section: 'Main',
                     admin_users_gui: true
