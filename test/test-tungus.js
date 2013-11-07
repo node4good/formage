@@ -1,5 +1,6 @@
 'use strict';
 describe("high level REST requests on tungus", function () {
+    if (process.version.indexOf('v0.8') === 0) return;
     var ctx = {};
     before(function (done) {
         _.each(require.cache, function (mod, modName) {
