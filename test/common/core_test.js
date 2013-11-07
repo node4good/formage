@@ -116,7 +116,7 @@ module.exports = function (ctx) {
             });
 
 
-            it("get", function (done) {
+            it.skip("get", function (done) {
                 var mock_req = _.defaults({
                     url: "/model/Tests/document/" + module._create_id,
                     method: "GET"
@@ -127,7 +127,17 @@ module.exports = function (ctx) {
                 mock_res.render = function (view, options) {
                     view.should.equal('document.jade');
                     Number(0).should.equal(options.errors.length);
-                    done();
+
+                    String(options.form.instance._doc.list_o_numbers[0])
+                        .should.equal(options.form.fields.list_o_numbers.fields.__self__.value["0"]);
+                    options.form.instance._doc.object.object.object.nested_string_req
+                        .should.equal(options.form.fields["object.object.object.nested_string_req"].value);
+
+                    should.exist(options.form);
+                    this.req.app.render(view, options, function (err, doc) {
+                        should.exist(doc);
+                        done(err);
+                    });
                 };
 
                 ctx.app.handle(mock_req, mock_res);
