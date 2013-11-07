@@ -1,6 +1,5 @@
 'use strict';
 describe("high level REST requests on mongoose", function () {
-    this.timeout(2000);
     var ctx = {};
     before(function (done) {
         _.each(require.cache, function (mod, modName) {
@@ -12,7 +11,7 @@ describe("high level REST requests on mongoose", function () {
         var conn_str = 'mongodb://localhost/formage-test' + this.test.parent.title.replace(/\s/g, '');
         mongoose.connect(conn_str, function (err) {
             if (err) return done(err);
-            return mongoose.connection.db.dropDatabase(function (err, doc) {
+            return mongoose.connection.db.dropDatabase(function (err) {
                 var AppliesTo = mongoose.model('AppliesTo', new mongoose.Schema({
                     Title: {type: String, limit: 100, required: true},
                     Identifier: {type: String, limit: 100},
@@ -34,55 +33,54 @@ describe("high level REST requests on mongoose", function () {
         });
     });
 
-
-    describe('just bugs', function () {
-        it('test that a single model works', function (done) {
+    describe("nested & embeded", function () {
+        it("should get updated", function (done) {
             var mock_req = _.defaults({
                 url: "/model/config/document/single",
-                method: "GET"
+                method: "POST",
+                body: {
+                    title: 'ref1',
+                    email: 'ref1',
+                    'footer.links_li0_text': 'tgf2',
+                    'footer.links_li0_url': 'yhg2',
+                    'mail_sent.title': '',
+                    'mail_sent.text': ''
+                }
             }, mock_req_proto);
-
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
-
             mock_res.render = function (view, options) {
-                view.should.equal("document.jade");
-                should.exist(options);
-                this.req.app.render(view, options, function (err, doc) {
-                    if (err) return done(err);
-                    should.exist(doc);
-                    done();
-                });
+                done(options.form.errors);
             };
-            ctx.app.handle(mock_req, mock_res);
-        });
+            mock_res.redirect = function (url) {
+                url.should.equal("/admin/model/config");
+                var mock_req = _.defaults({
+                    url: "/model/config/document/single",
+                    method: "GET"
+                }, mock_req_proto);
 
+                var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
-        it('test that there are sections', function (done) {
-            var mock_req = _.defaults({
-                url: "/",
-                method: "GET"
-            }, mock_req_proto);
-
-            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
-
-            mock_res.render = function (view, options) {
-                view.should.equal("models.jade");
-                should.exist(options);
-                Number(3).should.equal(options.sections.length);
-                this.req.app.render(view, options, function (err, doc) {
-                    if (err) return done(err);
-                    should.exist(doc);
-                    done();
-                });
+                mock_res.render = function (view, options) {
+                    view.should.equal("document.jade");
+                    should.exist(options);
+                    this.req.app.render(view, options, function (err, doc) {
+                        if (err) return done(err);
+                        should.exist(doc);
+                        Boolean(~doc.indexOf(' value="tgf2" class="optional" type="text" name="footer.links_li0_text"'))
+                            .should.equal(true);
+                        return done();
+                    });
+                };
+                ctx.app.handle(mock_req, mock_res);
             };
 
             ctx.app.handle(mock_req, mock_res);
         });
     });
 
-
-    require('./common/core_test')(ctx);
-
+    describe('core screens', function () {
+        require('./common/core_test')(ctx);
+    });
 
     after(function () {
         ctx.mongoose.disconnect();
