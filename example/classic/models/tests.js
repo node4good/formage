@@ -17,9 +17,10 @@ module.exports = new Schema({
     text: { type: SchemaTypes.Text },
     image: { type: SchemaTypes.Picture },
     file: { type: SchemaTypes.File },
+    file_picker: { type: SchemaTypes.Filepicker, widget: 'AviaryWidget', FILEPICKER_API_KEY:process.env.FILEPICKER_API_KEY, AVIARY_API_KEY:process.env.AVIARY_API_KEY },
     map: { type: SchemaTypes.GeoPoint, widget_options: {lang: 'nl'} },
     num: { type: SchemaTypes.Integer },
-    num_validated: { type: SchemaTypes.Integer, validate: [function (val) {return true;}, "boo"] },
+    num_validated: { type: SchemaTypes.Integer, validate: [function () {return true;}, "boo"] },
     num_with_params: { type: SchemaTypes.Integer, min: 0, max: 10, step: 2 },
     order: { type: Number, editable: false },
     bool: { type: Boolean, 'default': true },
@@ -41,29 +42,7 @@ module.exports = new Schema({
             }
         }
     },
-    mixed: SchemaTypes.Mixed,
-    spilon_steps: [
-        {
-            rewards: {
-                xp: {type: SchemaTypes.Integer, 'default': 0},
-                cash: {min: {type: SchemaTypes.Integer, min: 0, 'default': 0}, max: {type: SchemaTypes.Integer, min: 0, 'default': 0}},
-                tokens: {min: {type: SchemaTypes.Integer, min: 0, 'default': 0}, max: {type: SchemaTypes.Integer, min: 0, 'default': 0}},
-                morale: {min: {type: SchemaTypes.Integer, min: 0, 'default': 0}, max: {type: SchemaTypes.Integer, min: 0, 'default': 0}},
-                reputation: {min: {type: SchemaTypes.Integer, min: 0, 'default': 0}, max: {type: SchemaTypes.Integer, min: 0, 'default': 0}},
-                intimidation: {min: {type: SchemaTypes.Integer, min: 0, 'default': 0}, max: {type: SchemaTypes.Integer, min: 0, 'default': 0}},
-                members: {min: {type: SchemaTypes.Integer, min: 0, 'default': 0}, max: {type: SchemaTypes.Integer, min: 0, 'default': 0}}
-            },
-            loot: {
-                items: [
-                    {item_id: {type: SchemaTypes.ObjectId, ref: 'pages', required: true},
-                        amount: {type: SchemaTypes.Integer, min: 0, 'default': 0},
-                        percent: {type: SchemaTypes.Integer, min: 0, max: 100, 'default': 0},
-                        is_mandatory: {type: Boolean, 'default': false}}
-                ]
-            },
-            action_word: String
-        }
-    ]
+    mixed: SchemaTypes.Mixed
 });
 module.exports.methods.toString = function () {return this.string_req};
 
