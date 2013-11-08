@@ -244,7 +244,6 @@ function deleteDocument(callback) {
                 },
                 error: function (xhr, textStatus) {
                     $('#deleteButton').button('reset');
-                    alert('Unable to delete');
                     console.error('Deleting error', arguments);
                 }
             });
