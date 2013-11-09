@@ -1,4 +1,5 @@
 'use strict';
+/*global makeRes */
 module.exports = function (ctx) {
     describe("general", function () {
         it("Mock test document page", function (done) {
@@ -105,7 +106,7 @@ module.exports = function (ctx) {
                 this.req.app.render(view, options, function (err, doc) {
                     if (err) return done(err);
                     should.exist(doc);
-                    done();
+                    return done();
                 });
             };
 
@@ -147,7 +148,7 @@ module.exports = function (ctx) {
                 method: "GET"
             }, mock_req_proto);
 
-            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+            var mock_res = makeRes(mock_req, done);
 
             mock_res.render = function (view, options) {
                 view.should.equal('document.jade');
@@ -177,7 +178,7 @@ module.exports = function (ctx) {
                 path: ""
             }, mock_req_proto);
 
-            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+            var mock_res = makeRes(mock_req, done);
 
             mock_res.json = function (status, data) {
                 status.should.equal(200);
@@ -197,7 +198,7 @@ module.exports = function (ctx) {
             }, mock_req_proto);
             delete module._create_id;
 
-            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+            var mock_res = makeRes(mock_req, done);
 
             mock_res.json = function (status, data) {
                 status.should.equal(204);
@@ -287,7 +288,7 @@ module.exports = function (ctx) {
                 this.req.app.render(view, options, function (err, doc) {
                     if (err) return done(err);
                     should.exist(doc);
-                    done();
+                    return done();
                 });
             };
             ctx.app.handle(mock_req, mock_res);
