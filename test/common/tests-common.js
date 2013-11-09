@@ -8,12 +8,13 @@ chai.Assertion.includeStack = true;
 process.env.FORMAGE_DISABLE_DOMAINS = true;
 process.env.MONGOOSE_DISABLE_STABILITY_WARNING = true;
 
+//noinspection JSUnusedLocalSymbols
 global.mock_req_proto = {
     params: {},
     query: {},
     headers: {},
     connection: {},
-    admin_user: {hasPermissions: function () {return true}}
+    admin_user: {hasPermissions: function (model, action) {return true}}
 };
 
 
