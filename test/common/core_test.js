@@ -82,8 +82,8 @@ module.exports = function (ctx) {
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
             mock_res.json = function (status, data) {
-                status.should.equal(200);
-                data.label.should.equal(mock_req.body.string_req);
+                status.should.equal(200, data);
+                mock_req.body.string_req.should.equal(data.string_req);
                 done();
             };
 
@@ -122,18 +122,27 @@ module.exports = function (ctx) {
                 method: "POST",
                 headers: {},
                 body: {
+                    'list_o_numbers_li0___self__': "0",
+                    'list_o_numbers_li1___self__': "1",
+                    'list_o_numbers_li2___self__': "2",
+                    'list_li0_name': 'ggg',
+                    'list_li0_list_li0_name': 'hhh',
+                    'list_li0_list_li1_name': 'jjj',
+                    'object.object.object.nested_string_req': "gigi",
                     string_req: "gaga",
                     num_with_params: "0",
-                    enum: "",
-                    "object.object.object.nested_string_req": "gigi",
-                    list_o_numbers_li0___self__: "5"
+                    enum: ""
                 }
             }, mock_req_proto);
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
             mock_res.json = function (status, data) {
                 status.should.equal(200);
-                data.label.should.equal(mock_req.body.string_req);
+                data.string_req.should.equal("gaga");
+                Number(data.num_with_params).should.equal(0);
+                should.not.exist(data.enum);
+                data.object.object.object.nested_string_req.should.equal("gigi");
+                Number(data.list_o_numbers[0]).should.equal(5);
                 module._create_id = data.id;
                 done();
             };
