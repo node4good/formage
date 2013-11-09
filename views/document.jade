@@ -1,12 +1,4 @@
 extends layout.jade
-block head
-    - if (model.static)
-        - if (model.static.js)
-            - each f in model.static.js
-                script(src=f)
-        - if (model.static.css)
-            - each f in model.static.css
-                link(rel='stylesheet', href=f)
 
 block breadcrumb
     span.divider /

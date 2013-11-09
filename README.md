@@ -39,10 +39,10 @@ model.label = 'My Songs';
 model.singular = 'Song';
 
 // external files specific to this model
-model.static = {
-   js: [ '/js/songs.js' ],
-   css: ['/css/songs.css' ]
-};
+model.header_lines = [
+   '<script src="/js/songs.js"></script>',
+   '<style href="/css/songs.css"></style>'
+];
 
 model.formage = {
     // one-document models
