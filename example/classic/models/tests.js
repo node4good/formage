@@ -16,7 +16,7 @@ module.exports = new Schema({
     rich_text: { type: SchemaTypes.Html },
     text: { type: SchemaTypes.Text },
     image: { type: SchemaTypes.Picture },
-    file: { type: SchemaTypes.File },
+    file: { type: SchemaTypes.File, upload_to: 'assets/cdn'},
     file_picker: { type: SchemaTypes.Filepicker, widget: 'AviaryWidget', FILEPICKER_API_KEY:process.env.FILEPICKER_API_KEY, AVIARY_API_KEY:process.env.AVIARY_API_KEY },
     map: { type: SchemaTypes.GeoPoint, widget_options: {lang: 'nl'} },
     num: { type: SchemaTypes.Integer },
