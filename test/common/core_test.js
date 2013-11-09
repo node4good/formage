@@ -379,6 +379,8 @@ module.exports = function (ctx) {
                 req: mock_req
             }, mock_res_proto);
 
+            mock_res.render = done;
+
             mock_res.redirect = function (p) {
                 '/admin/model/Admin_Users'.should.equal(p);
                 should.exist(p);
