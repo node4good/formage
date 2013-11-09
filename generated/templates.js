@@ -55,61 +55,7 @@ var locals_ = (locals || {}),data = locals_.data;buf.push("<!DOCTYPE html><html 
 
 module.exports.document = function anonymous(locals) {
 var buf = [];
-var locals_ = (locals || {}),pageTitle = locals_.pageTitle,rootPath = locals_.rootPath,renderedHead = locals_.renderedHead,model = locals_.model,global_head = locals_.global_head,dialog = locals_.dialog,adminTitle = locals_.adminTitle,model_name = locals_.model_name,model_label = locals_.model_label,isDialog = locals_.isDialog,errors = locals_.errors,form = locals_.form,subCollections = locals_.subCollections,allow_delete = locals_.allow_delete,actions = locals_.actions,userPanel = locals_.userPanel,version = locals_.version,global_script = locals_.global_script;buf.push("<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>" + (null == (jade.interp = pageTitle) ? "" : jade.interp) + "</title><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/css/ui-lightness/jquery-ui-1.10.2.custom.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/bootstrap/css/bootstrap.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/css/main.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/css/forms.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/datepicker/datepicker.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/timepicker/timepicker.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/vendor/bootstrap-datetimepicker.min.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/css/maps.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/select2/select2.css') }, {"rel":true,"href":true})) + "><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/js/lib/jquery-1.9.1.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/js/lib/jquery-ui-1.10.2.custom.min.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/bootstrap/js/bootstrap.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/timepicker/bootstrap-timepicker.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/vendor/bootstrap-datetimepicker.min.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/ckeditor/ckeditor.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/datepicker/bootstrap-datepicker.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/js/maps.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/js/fpav.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/select2/select2.js') }, {"src":true})) + "></script><script>var root = '" + (jade.escape((jade.interp = rootPath) == null ? '' : jade.interp)) + "';</script>" + (null == (jade.interp = renderedHead) ? "" : jade.interp));
-if (model.static)
-{
-if (model.static.js)
-{
-// iterate model.static.js
-;(function(){
-  var $$obj = model.static.js;
-  if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var f = $$obj[$index];
-
-buf.push("<script" + (jade.attrs({ terse: true, 'src':(f) }, {"src":true})) + "></script>");
-    }
-
-  } else {
-    var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var f = $$obj[$index];
-
-buf.push("<script" + (jade.attrs({ terse: true, 'src':(f) }, {"src":true})) + "></script>");
-    }
-
-  }
-}).call(this);
-
-}
-if (model.static.css)
-{
-// iterate model.static.css
-;(function(){
-  var $$obj = model.static.css;
-  if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var f = $$obj[$index];
-
-buf.push("<link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':(f) }, {"rel":true,"href":true})) + ">");
-    }
-
-  } else {
-    var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var f = $$obj[$index];
-
-buf.push("<link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':(f) }, {"rel":true,"href":true})) + ">");
-    }
-
-  }
-}).call(this);
-
-}
-}
-buf.push("" + (((jade.interp = global_head) == null ? '' : jade.interp)) + "</head><body>");
+var locals_ = (locals || {}),pageTitle = locals_.pageTitle,rootPath = locals_.rootPath,renderedHead = locals_.renderedHead,global_head = locals_.global_head,dialog = locals_.dialog,adminTitle = locals_.adminTitle,model_name = locals_.model_name,model_label = locals_.model_label,isDialog = locals_.isDialog,errors = locals_.errors,form = locals_.form,subCollections = locals_.subCollections,allow_delete = locals_.allow_delete,actions = locals_.actions,userPanel = locals_.userPanel,version = locals_.version,global_script = locals_.global_script;buf.push("<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>" + (null == (jade.interp = pageTitle) ? "" : jade.interp) + "</title><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/css/ui-lightness/jquery-ui-1.10.2.custom.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/bootstrap/css/bootstrap.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/css/main.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/css/forms.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/datepicker/datepicker.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/timepicker/timepicker.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/vendor/bootstrap-datetimepicker.min.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/css/maps.css') }, {"rel":true,"href":true})) + "><link" + (jade.attrs({ terse: true, 'rel':('stylesheet'), 'href':('' + (rootPath) + '/select2/select2.css') }, {"rel":true,"href":true})) + "><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/js/lib/jquery-1.9.1.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/js/lib/jquery-ui-1.10.2.custom.min.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/bootstrap/js/bootstrap.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/timepicker/bootstrap-timepicker.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/vendor/bootstrap-datetimepicker.min.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/ckeditor/ckeditor.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/datepicker/bootstrap-datepicker.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/js/maps.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/js/fpav.js') }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/select2/select2.js') }, {"src":true})) + "></script><script>var root = '" + (jade.escape((jade.interp = rootPath) == null ? '' : jade.interp)) + "';</script>" + (null == (jade.interp = renderedHead) ? "" : jade.interp) + "" + (((jade.interp = global_head) == null ? '' : jade.interp)) + "</head><body>");
 if (!dialog)
 {
 buf.push("<header class=\"navbar navbar-static-top\"><div class=\"navbar-inner\"><div class=\"container\"><div class=\"btn-group pull-right\"><a" + (jade.attrs({ terse: true, 'href':('' + (rootPath) + '/'), "class": [('btn'),('btn-inverse')] }, {"href":true})) + "><i class=\"icon-home icon-white\"></i> Admin</a><a href=\"/\" class=\"btn\"><i class=\"icon-share\"></i> Site</a><a" + (jade.attrs({ terse: true, 'href':('' + (rootPath) + '/logout'), "class": [('btn')] }, {"href":true})) + "><div class=\"icon-lock\"></div> Logout</a></div><h1><a" + (jade.attrs({ terse: true, 'href':('' + (rootPath) + '/') }, {"href":true})) + ">" + (jade.escape((jade.interp = adminTitle) == null ? '' : jade.interp)) + "</a><span class=\"divider\">/</span><a" + (jade.attrs({ terse: true, 'href':("" + (rootPath) + "/model/" + (model_name) + "") }, {"href":true})) + ">" + (jade.escape((jade.interp = model_label) == null ? '' : jade.interp)) + "</a><span class=\"divider\">/</span>editor</h1></div></div></header>");
