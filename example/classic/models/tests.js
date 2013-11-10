@@ -30,7 +30,7 @@ module.exports = new Schema({
             name: String
         }]
     }],
-    list_o_list: {
+    object_with_list: {
         inner_list: [String]
     },
     list_o_numbers: [Number],
