@@ -125,22 +125,51 @@ describe("high level REST requests on mongoose", function () {
             method: "POST",
             headers: {},
             body: {
-                string_req: "gaga",
-                num_with_params: "0",
-                enum: "",
-                'list_o_numbers_li0___self__': "0",
-                'list_o_numbers_li1___self__': "1",
-                'list_o_numbers_li2___self__': "2",
-                'list_li0_name': 'ggg',
-                'list_li0_list_li0_name': 'hhh',
-                'list_li0_list_li1_name': 'jjj',
-                'object.object.object.nested_string_req': "gigi"
+                string: '',
+                string_req: '123',
+                ref: '',
+                date: '',
+                datetime: '',
+                time: '',
+                enum: '',
+                rich_text: '',
+                text: '',
+                'undefined': '[object Object]',
+                file_picker: '{"isWriteable":true,"size":222783,"mimetype":"image/jpeg","filename":"Birthday_mail.jpg","url":"http://featherfiles.aviary.com/2013-11-08/lqe7dik7cphyefe9/bdb746685c6c408b988e91403c81e59f.png"}',
+                map_address: '',
+                map: '32.066158,34.77781900000002',
+                num: '',
+                num_validated: '',
+                num_with_params: '',
+                bool: 'on',
+                list_li0_name: 'hhh',
+                list_li0_list_li0_name: 'ttt',
+                list_li0_list_li1_name: 'yyyy',
+                list_li0_list_li2_name: 'uuuuu',
+                'object_with_list.inner_list_li0___self__': 'ggg',
+                'object_with_list.inner_list_li1___self__': 'hhh',
+                list_o_numbers_li0___self__: '1',
+                list_o_numbers_li1___self__: '2',
+                list_o_numbers_li2___self__: '3',
+                list_o_numbers_li3___self__: '4',
+                'object.object.object.nested_string': '',
+                'object.object.object.nested_string_req': '123',
+                mixed: ''
             }
         }, mock_req_proto);
         var mock_res = makeRes(mock_req, done);
 
         mock_res.redirect = function (url) {
             var doc = this._debug_document;
+            expect(doc).to.have.property('string_req').equal("123");
+            expect(doc).to.not.have.property('enum');
+            expect(doc.object.object.object).to.have.property('nested_string_req').equal("123");
+            expect(doc).to.have.property('list_o_numbers').with.length(4);
+            expect(doc.list_o_numbers[0]).to.equal(1);
+            expect(doc.list_o_numbers[1]).to.equal(2);
+            expect(doc.list_o_numbers[2]).to.equal(3);
+            expect(doc.list_o_numbers[3]).to.equal(4);
+
             Number(0).should.equal(url.indexOf("/admin/model/Test"));
             var mock_req = _.defaults({
                 url: '/model/Tests/document/' + doc.id,
@@ -153,11 +182,14 @@ describe("high level REST requests on mongoose", function () {
                 expect(view).to.equal("document.jade");
                 expect(options).to.have.property("form").to.have.property("instance");
                 var instance = options.form.instance;
-                expect(instance).to.have.property('string_req').equal("gaga");
-                expect(instance).to.have.property('num_with_params').equal(0);
+                expect(instance).to.have.property('string_req').equal("123");
                 expect(instance).to.not.have.property('enum');
-                expect(instance.object.object.object).to.have.property('nested_string_req').equal("gigi");
-//                Number(instance.list_o_numbers[0]).should.equal(0);
+                expect(instance.object.object.object).to.have.property('nested_string_req').equal("123");
+                expect(doc).to.have.property('list_o_numbers').with.length(4);
+                expect(instance.list_o_numbers[0]).to.equal(1);
+                expect(instance.list_o_numbers[1]).to.equal(2);
+                expect(instance.list_o_numbers[2]).to.equal(3);
+                expect(instance.list_o_numbers[3]).to.equal(4);
 
                 this.req.app.render(view, options, function (err, doc) {
                     if (err) return done(err);
