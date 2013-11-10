@@ -2,6 +2,7 @@
 global._ = require('lodash');
 global.chai = require('chai');
 global.should = chai.should();
+global.expect = require('chai').expect
 require('nodestrum');
 Error.stackTraceLimit = 100;
 chai.Assertion.includeStack = true;

@@ -1,5 +1,5 @@
 'use strict';
-/*global makeRes */
+/*global makeRes,mock_req_proto */
 describe("high level REST requests on mongoose", function () {
     var ctx = {};
     before(function (done) {
@@ -150,20 +150,19 @@ describe("high level REST requests on mongoose", function () {
             var mock_res = makeRes(mock_req, done);
 
             mock_res.render = function (view, options) {
-                view.should.equal("document.jade");
-                should.exist(options);
-
+                expect(view).to.equal("document.jade");
+                expect(options).to.have.property("form").to.have.property("instance");
                 var instance = options.form.instance;
-                instance.string_req.should.equal("gaga");
-                Number(instance.num_with_params).should.equal(0);
-                should.not.exist(instance.enum);
-                instance.object.object.object.nested_string_req.should.equal("gigi");
-                //Number(instance.list_o_numbers[0]).should.equal(0);
+                expect(instance).to.have.property('string_req').equal("gaga");
+                expect(instance).to.have.property('num_with_params').equal(0);
+                expect(instance).to.not.have.property('enum');
+                expect(instance.object.object.object).to.have.property('nested_string_req').equal("gigi");
+//                Number(instance.list_o_numbers[0]).should.equal(0);
 
                 this.req.app.render(view, options, function (err, doc) {
                     if (err) return done(err);
                     should.exist(doc);
-                    doc.replace(/\r|\n/g, '').replace(/pages\?ref=.+"/, '').should.equal(renderedDoc);
+                    doc.replace(/\r/g, '').replace(/pages\?ref=.+"/, '').should.equal(renderedDoc);
                     return done();
                 });
             };
@@ -192,4 +191,4 @@ describe("high level REST requests on mongoose", function () {
 ;
 
 var section_snippet = '<div class="section"><h2><span>Configuration</span></h2><ul class="models"><li><div class="btn-group pull-right"><a href="/admin/model/config/document/single" class="btn btn-default">Edit</a></div><a href="/admin/model/config/document/single"><h3>הגדרות</h3></a></li></ul></div>';
-var renderedDoc = require('fs').readFileSync('test/fixtures/rendered_doc.text', 'utf-8').replace(/\r|\n/g, '').replace(/pages\?ref=.+"/, '');
+var renderedDoc = require('fs').readFileSync('test/fixtures/rendered_doc.text', 'utf-8').replace(/\r/g, '').replace(/pages\?ref=.+"/, '');
