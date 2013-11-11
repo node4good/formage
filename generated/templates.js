@@ -65,9 +65,13 @@ if (!isDialog)
 {
 buf.push("<div class=\"page-header\"><h2>" + (jade.escape((jade.interp = model_label) == null ? '' : jade.interp)) + " editor</h2></div>");
 }
-if (errors.length)
+if (Object.keys(errors).length)
 {
 buf.push("<p class=\"alert alert-error\">Saving failed, fix the following errors and try again.</p>");
+}
+if (errors.exception)
+{
+buf.push("<p class=\"alert alert-error\">" + (jade.escape((jade.interp = errors.exception) == null ? '' : jade.interp)) + "</p>");
 }
 buf.push("<form id=\"document\" enctype=\"multipart/form-data\" method=\"post\" class=\"clearfix\">" + (null == (jade.interp = form.to_html()) ? "" : jade.interp));
 if(subCollections && subCollections.length)
