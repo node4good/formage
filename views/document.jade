@@ -11,8 +11,11 @@ block body
         .page-header
             h2 #{model_label} editor
 
-    - if (errors.length)
+    - if (Object.keys(errors).length)
         p.alert.alert-error Saving failed, fix the following errors and try again.
+    - if (errors.exception)
+        p.alert.alert-error #{errors.exception}
+
     form#document(enctype="multipart/form-data",method="post").clearfix
         != form.to_html()
         - if(subCollections && subCollections.length)
