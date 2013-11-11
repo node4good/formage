@@ -141,9 +141,9 @@ module.exports = function (ctx) {
                 data.string_req.should.equal("gaga");
                 Number(data.num_with_params).should.equal(0);
                 should.not.exist(data.enum);
-                if (false) {
+                if (data._doc) {
                     data.object.object.object.nested_string_req.should.equal("gigi");
-                    Number(data.list_o_numbers[0]).should.equal(5);
+                    Number(data.list_o_numbers[0]).should.equal(0);
                 }
                 module._create_id = data.id;
                 done();
@@ -163,7 +163,7 @@ module.exports = function (ctx) {
 
             mock_res.render = function (view, options) {
                 view.should.equal('document.jade');
-                Number(0).should.equal(options.errors.length);
+                Number(0).should.equal(Object.keys(options.errors).length);
                 should.exist(options.form);
                 this.req.app.render(view, options, function (err, doc) {
                     should.exist(doc);
@@ -371,7 +371,7 @@ module.exports = function (ctx) {
 
             mock_res.render = function (view, options) {
                 view.should.equal("document.jade");
-                Number(0).should.equal(options.errors.length);
+                Number(0).should.equal(Object.keys(options.errors).length);
                 done();
             };
 
