@@ -66,8 +66,8 @@ describe("high level REST requests on mongoose", function () {
         mock_res.render = function (view, options) {
             view.should.equal("document.jade");
             should.exist(options);
-            options.form.fields["footer.links"].fields.text.value.should.eqaul("tgf2");
-            options.form.fields["footer.links"].fields.url.value.should.equal("yhg2");
+            options.form.instance.footer.links[0].text.should.equal("tgf2");
+            options.form.instance.footer.links[0].url.should.equal("yhg2");
             this.req.app.render(view, options, function (err, doc) {
                 if (err) throw err;
                 should.exist(doc);
@@ -119,7 +119,7 @@ describe("high level REST requests on mongoose", function () {
         ctx.app.handle(mock_req, mock_res);
     }
 
-    it.only("post", function (done) {
+    it("post", function (done) {
         var mock_req = _.defaults({
             url: "/model/Tests/document/new",
             method: "POST",
@@ -205,7 +205,7 @@ describe("high level REST requests on mongoose", function () {
 
 
     describe("nested & embeded", function () {
-        it.skip("should get updated", function (done) {
+        it("should get updated", function (done) {
             step1(done);
         });
     });
