@@ -73,7 +73,7 @@ if (errors.exception)
 {
 buf.push("<p class=\"alert alert-error\">" + (jade.escape((jade.interp = errors.exception) == null ? '' : jade.interp)) + "</p>");
 }
-buf.push("<form id=\"document\" enctype=\"multipart/form-data\" method=\"post\" class=\"clearfix\">" + (null == (jade.interp = form.to_html()) ? "" : jade.interp));
+buf.push("<form id=\"document\" enctype=\"multipart/form-data\" method=\"post\" class=\"clearfix\">" + (null == (jade.interp = form) ? "" : jade.interp));
 if(subCollections && subCollections.length)
 {
 // iterate subCollections

@@ -115,7 +115,7 @@ describe("high level REST requests on mongoose", function () {
                 expect(instance.list_o_numbers[3]).to.equal(4);
 
                 // fragile
-                expect(options.form.to_html()).to.equal(renderedForm);
+                expect(String(options.form)).to.equal(renderedForm);
 
                 this.req.app.render(view, options, function (err, doc) {
                     if (err) return done(err);
