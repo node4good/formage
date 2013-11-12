@@ -385,7 +385,11 @@ module.exports = function (ctx) {
         it("Mock test admin user page post", function (done) {
             var mock_req = _.defaults({
                 url: "/model/Admin_Users/document/new",
-                body: {username: "admin" + Math.random()},
+                body: {
+                    username: "admin" + Math.random(),
+                    password: 'gimli',
+                    password_again: 'gimli'
+                },
                 method: "POST",
                 headers: {}
             }, mock_req_proto);
