@@ -42,6 +42,17 @@ module.exports = new Schema({
             }
         }
     },
+    embeded: {
+        list: [{
+            embeded: {
+                list:[{
+                    nested_string: { type: String },
+                    nested_string_req: { type: String, required: true },
+                    list:[String]
+                }]
+            }
+        }]
+    },
     mixed: SchemaTypes.Mixed
 });
 module.exports.methods.toString = function () {return this.string_req};

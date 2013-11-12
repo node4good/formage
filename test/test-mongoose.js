@@ -152,6 +152,10 @@ describe("high level REST requests on mongoose", function () {
                 list_o_numbers_li1___self__: '2',
                 list_o_numbers_li2___self__: '3',
                 list_o_numbers_li3___self__: '4',
+                'embeded.list_li0_embeded.list_li0_nested_string': '',
+                'embeded.list_li0_embeded.list_li0_nested_string_req': 'nested',
+                'embeded.list_li0_embeded.list_li0_list_li0___self__': 'bab',
+                'embeded.list_li0_embeded.list_li0_list_li1___self__': 'aga',
                 'object.object.object.nested_string': '',
                 'object.object.object.nested_string_req': '123',
                 mixed: ''
@@ -164,11 +168,14 @@ describe("high level REST requests on mongoose", function () {
             expect(doc).to.have.property('string_req').equal("123");
             expect(doc).to.not.have.property('enum');
             expect(doc.object.object.object).to.have.property('nested_string_req').equal("123");
-            expect(doc).to.have.property('list_o_numbers').with.length(4);
+            expect(doc).to.have.property('list_o_numbers').with.property('length').equal(4);
             expect(doc.list_o_numbers[0]).to.equal(1);
             expect(doc.list_o_numbers[1]).to.equal(2);
             expect(doc.list_o_numbers[2]).to.equal(3);
             expect(doc.list_o_numbers[3]).to.equal(4);
+            expect(doc.embeded.list[0].embeded.list[0].nested_string_req).to.equal('nested');
+            expect(doc.embeded.list[0].embeded.list[0].list[0]).to.equal('bab');
+            expect(doc.embeded.list[0].embeded.list[0].list[1]).to.equal('aga');
 
             Number(0).should.equal(url.indexOf("/admin/model/Test"));
             var mock_req = _.defaults({
@@ -185,7 +192,7 @@ describe("high level REST requests on mongoose", function () {
                 expect(instance).to.have.property('string_req').equal("123");
                 expect(instance).to.not.have.property('enum');
                 expect(instance.object.object.object).to.have.property('nested_string_req').equal("123");
-                expect(doc).to.have.property('list_o_numbers').with.length(4);
+                expect(doc).to.have.property('list_o_numbers').with.property('length').equal(4);
                 expect(instance.list_o_numbers[0]).to.equal(1);
                 expect(instance.list_o_numbers[1]).to.equal(2);
                 expect(instance.list_o_numbers[2]).to.equal(3);
