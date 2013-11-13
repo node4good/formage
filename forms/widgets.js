@@ -79,7 +79,8 @@ exports.InputWidget = Widget.extend({
         this._super(options);
     },
     render: function (res) {
-        res.write('\n<input' + (this.value ? ' value="' + escape(this.value) + '"' : '') );
+
+        res.write('\n<input' + (typeof(this.value) != 'undefined' ? ' value="' + escape(this.value) + '"' : '') );
         this.render_attributes(res);
         res.write(' />\n');
         return this;
