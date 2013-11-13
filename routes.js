@@ -619,8 +619,10 @@ module.exports = function (admin, outer_app, root) {
     app.set('views', __dirname + '/views');
 
     app.use(function(req,res,next){
-        if(req.files || req.body || !/multipart/i.test(req.header('content-type')))
-            return next();
+        if(req.body || !/multipart/i.test(req.header('content-type'))){
+			req.files = req.files || {};			
+			return next();
+		}
 
         var form = new formidable.IncomingForm();
 
