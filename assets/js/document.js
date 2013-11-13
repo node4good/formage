@@ -44,7 +44,7 @@ function initFieldSet(ctx) {
             div = $('> div', t),
             i = $('<i class="icon-chevron-right" />').prependTo(t);
 
-        t.find('h2,i,label').off('click').on('click', function (e) {
+        t.find('label').add(i).add(h2).off('click').on('click', function (e) {
             e.stopPropagation();
             var is_open = div.is(':visible');
             var divs = isTopLevel ? t.find('div') : div;
