@@ -5,7 +5,6 @@ var Url = require('url'),
     _ = require('lodash'),
     forms = require('./forms').forms,
     permissions = require('./models/permissions'),
-    formidable = require('formidable'),
     AdminForm = require('./AdminForm').AdminForm;
 
 var MongooseAdmin;
@@ -618,20 +617,7 @@ module.exports = function (admin, outer_app, root) {
     app.engine('jade', require('jade').__express);
     app.set('views', __dirname + '/views');
 
-    app.use(function(req,res,next){
-        if(req.body || !/multipart/i.test(req.header('content-type'))){
-			req.files = req.files || {};			
-			return next();
-		}
-
-        var form = new formidable.IncomingForm();
-
-        form.parse(req,function(err,fields,files){
-            req.files = files;
-            req.body = fields;
-            next();
-        });
-    });
+    app.use(multipartMiddleware);
 
     app.get('/', auth(),userPanel, routes.index);
     app.get('/login', routes.login);
@@ -671,3 +657,61 @@ module.exports = function (admin, outer_app, root) {
     }
     return app;
 };
+
+
+var multiparty = require('multiparty')
+    , qs = require('qs');
+
+function multipartMiddleware(req,res,next){
+
+    if(req.files)
+        return next();
+    // ignore GET
+    if ('GET' == req.method || 'HEAD' == req.method) return next();
+    // check Content-Type
+    if (!/multipart/i.test(req.header('content-type'))) return next();
+
+    var form = new multiparty.Form({})
+        , data = {}
+        , files = {}
+        , done;
+
+    function ondata(name, val, data){
+        if (Array.isArray(data[name])) {
+            data[name].push(val);
+        } else if (data[name]) {
+            data[name] = [data[name], val];
+        } else {
+            data[name] = val;
+        }
+    }
+
+    form.on('field', function(name, val){
+        ondata(name, val, data);
+    });
+
+    form.on('file', function(name, val){
+        val.name = val.originalFilename;
+        val.type = val.headers['content-type'] || null;
+        ondata(name, val, files);
+    });
+
+    form.on('error', function(err){
+        err.status = 400;
+        next(err);
+    });
+
+    form.on('close', function(){
+        if (done) return;
+        try {
+            req.body = qs.parse(data);
+            req.files = qs.parse(files);
+        } catch (err) {
+            form.emit('error', err);
+            return;
+        }
+        next();
+    });
+
+    form.parse(req);
+}
