@@ -2,8 +2,8 @@
   <configuration default="false" name="app.js" type="NodeJSConfigurationType" factoryName="Node.js" singleton="true" path-to-node="c:/node10/node" path-to-js-file="classic/app.js" working-dir="$PROJECT_DIR$/example">
     <envs>
       <env name="CLOUDINARY_URL" value="cloudinary://585968645961973:QKIr5QDRS3mp9F9QYxa3DC7-Omg@ho0xbnxzd" />
-      <env name="MONGOOSE_DISABLE_STABILITY_WARNING" value="1" />
       <env name="PORT" value="80" />
+      <env name="MONGOOSE_DISABLE_STABILITY_WARNING" value="1" />
       <env name="FILEPICKER_API_KEY" value="AcEDKhuboQQCmFYm99XJez" />
       <env name="AVIARY_API_KEY" value="lqe7dik7cphyefe9" />
       <env name="NODE_ENV" value="development" />
