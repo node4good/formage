@@ -24,6 +24,7 @@ module.exports = new Schema({
     num_with_params: { type: SchemaTypes.Integer, min: 0, max: 10, step: 2 },
     order: { type: Number, editable: false },
     bool: { type: Boolean, 'default': true },
+    bool2: { type: Boolean, 'default': false },
     list: [{
         name: { type: String, required: true },
         list: [{
