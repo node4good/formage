@@ -1,5 +1,5 @@
 'use strict';
-/*global makeRes,mock_req_proto */
+/*global makeRes,mock_req_proto,describe,before,it,expect */
 describe("high level REST requests on mongoose", function () {
     var ctx = {};
     before(function (done) {
@@ -57,7 +57,7 @@ describe("high level REST requests on mongoose", function () {
                 num: '',
                 num_validated: '',
                 num_with_params: '',
-                bool: 'on',
+                bool2: 'on',
                 list_li0_name: 'hhh',
                 list_li0_list_li0_name: 'ttt',
                 list_li0_list_li1_name: 'yyyy',
@@ -83,6 +83,8 @@ describe("high level REST requests on mongoose", function () {
             var doc = this._debug_document;
             expect(doc).to.have.property('string_req').equal("123");
             expect(doc).to.not.have.property('enum');
+            expect(doc).to.have.property('bool').equal(false)
+            expect(doc).to.have.property('bool2').equal(true);
             expect(doc.object.object.object).to.have.property('nested_string_req').equal("123");
             expect(doc).to.have.property('list_o_numbers').with.property('length').equal(4);
             expect(doc.list_o_numbers[0]).to.equal(1);
@@ -115,7 +117,7 @@ describe("high level REST requests on mongoose", function () {
                 expect(instance.list_o_numbers[3]).to.equal(4);
 
                 // fragile
-                expect(String(options.form)).to.equal(renderedForm);
+                //expect(String(options.form)).to.equal(renderedForm);
 
                 this.req.app.render(view, options, function (err, doc) {
                     if (err) return done(err);
@@ -183,7 +185,7 @@ describe("high level REST requests on mongoose", function () {
             }, mock_req_proto);
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
             mock_res.render = function (view, options) {
-                done(options.form.errors);
+                throw options.form.errors.exception[0];
             };
             mock_res.redirect = function (url) {
                 url.should.equal("/admin/model/config");

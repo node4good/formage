@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
     Types = mongoose.Schema.Types;
 
 var schema = new mongoose.Schema({
-    title: { type: String, required: true, label: 'כותרת'},
+    title: { type: String, label: 'כותרת'},
     footer: {
         links: [
             {
