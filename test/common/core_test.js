@@ -82,10 +82,7 @@ module.exports = function (ctx) {
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
             mock_res.json = function (status, data) {
-                var res = [];
-                res.write = res.push;
-                if (mock_res._debug_form) mock_res._debug_form.render_error(res);
-                expect(status).to.equal(200, data + res.join(''));
+                expect(status).to.equal(200, data + JSON.stringify(mock_res._debug_form.errors));
                 expect(data).to.have.property('string_req').equal(mock_req.body.string_req, data + mock_res._debug_form);
                 done();
             };
