@@ -112,9 +112,9 @@ buf.push("<button id=\"deleteButton\" type=\"button\" data-loading-text=\"Deleti
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var action = $$obj[$index];
 
-if (action.value != 'delete')
+if (action.id != 'delete')
 {
-buf.push("<button" + (jade.attrs({ terse: true, 'value':('' + (action.value) + ''), "class": [('action'),('btn'),('btn-large')] }, {"value":true})) + ">" + (jade.escape((jade.interp = action.label) == null ? '' : jade.interp)) + "</button>");
+buf.push("<button" + (jade.attrs({ terse: true, 'value':('' + (action.id) + ''), "class": [('action'),('btn'),('btn-large')] }, {"value":true})) + ">" + (jade.escape((jade.interp = action.label) == null ? '' : jade.interp)) + "</button>");
 }
     }
 
@@ -123,9 +123,9 @@ buf.push("<button" + (jade.attrs({ terse: true, 'value':('' + (action.value) + '
     for (var $index in $$obj) {
       $$l++;      var action = $$obj[$index];
 
-if (action.value != 'delete')
+if (action.id != 'delete')
 {
-buf.push("<button" + (jade.attrs({ terse: true, 'value':('' + (action.value) + ''), "class": [('action'),('btn'),('btn-large')] }, {"value":true})) + ">" + (jade.escape((jade.interp = action.label) == null ? '' : jade.interp)) + "</button>");
+buf.push("<button" + (jade.attrs({ terse: true, 'value':('' + (action.id) + ''), "class": [('action'),('btn'),('btn-large')] }, {"value":true})) + ">" + (jade.escape((jade.interp = action.label) == null ? '' : jade.interp)) + "</button>");
 }
     }
 
@@ -265,13 +265,13 @@ buf.push("<div id=\"actions\" class=\"input-prepend hide\"><span class=\"add-on\
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var action = $$obj[$index];
 
-if ( (action.value == 'delete'))
+if ( (action.id == 'delete'))
 {
-buf.push("<button" + (jade.attrs({ terse: true, 'value':('' + (action.value) + ''), "class": [('btn'),('btn-danger')] }, {"value":true})) + "><i class=\"icon-trash icon-white\"></i> " + (jade.escape((jade.interp = action.label) == null ? '' : jade.interp)) + "</button>");
+buf.push("<button" + (jade.attrs({ terse: true, 'value':('' + (action.id) + ''), "class": [('btn'),('btn-danger')] }, {"value":true})) + "><i class=\"icon-trash icon-white\"></i> " + (jade.escape((jade.interp = action.label) == null ? '' : jade.interp)) + "</button>");
 }
 else
 {
-buf.push("<button" + (jade.attrs({ terse: true, 'value':('' + (action.value) + ''), "class": [('btn')] }, {"value":true})) + ">" + (jade.escape((jade.interp = action.label) == null ? '' : jade.interp)) + "</button>");
+buf.push("<button" + (jade.attrs({ terse: true, 'value':('' + (action.id) + ''), "class": [('btn')] }, {"value":true})) + ">" + (jade.escape((jade.interp = action.label) == null ? '' : jade.interp)) + "</button>");
 }
     }
 
@@ -280,13 +280,13 @@ buf.push("<button" + (jade.attrs({ terse: true, 'value':('' + (action.value) + '
     for (var $index in $$obj) {
       $$l++;      var action = $$obj[$index];
 
-if ( (action.value == 'delete'))
+if ( (action.id == 'delete'))
 {
-buf.push("<button" + (jade.attrs({ terse: true, 'value':('' + (action.value) + ''), "class": [('btn'),('btn-danger')] }, {"value":true})) + "><i class=\"icon-trash icon-white\"></i> " + (jade.escape((jade.interp = action.label) == null ? '' : jade.interp)) + "</button>");
+buf.push("<button" + (jade.attrs({ terse: true, 'value':('' + (action.id) + ''), "class": [('btn'),('btn-danger')] }, {"value":true})) + "><i class=\"icon-trash icon-white\"></i> " + (jade.escape((jade.interp = action.label) == null ? '' : jade.interp)) + "</button>");
 }
 else
 {
-buf.push("<button" + (jade.attrs({ terse: true, 'value':('' + (action.value) + ''), "class": [('btn')] }, {"value":true})) + ">" + (jade.escape((jade.interp = action.label) == null ? '' : jade.interp)) + "</button>");
+buf.push("<button" + (jade.attrs({ terse: true, 'value':('' + (action.id) + ''), "class": [('btn')] }, {"value":true})) + ">" + (jade.escape((jade.interp = action.label) == null ? '' : jade.interp)) + "</button>");
 }
     }
 
