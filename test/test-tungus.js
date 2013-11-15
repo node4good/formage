@@ -1,5 +1,4 @@
 'use strict';
-require('longjohn');
 describe("high level REST requests on tungus", function () {
     if (process.version.indexOf('v0.8') === 0) return;
     var ctx = {};
