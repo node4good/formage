@@ -1,4 +1,5 @@
 'use strict';
+require('longjohn');
 describe("high level REST requests on tungus", function () {
     if (process.version.indexOf('v0.8') === 0) return;
     var ctx = {};
@@ -22,6 +23,7 @@ describe("high level REST requests on tungus", function () {
                 var express = require('express');
                 var app = express();
                 var tests = require('../example/classic/models/tests');
+                delete tests.formage.subCollections;
                 var pages = require('../example/classic/models/pages');
                 var config = require('../example/classic/models/config');
                 ctx.registry = formage.init(app, express, {pages: pages, AppliesTo: AppliesTo, Tests: tests, config: config}, {
