@@ -202,18 +202,19 @@ module.exports = function (ctx) {
 
 
         it("delete", function (done) {
-            var mock_req = _.defaults({
-                url: "/json/model/Tests/document/" + module._create_id,
-                method: "DELETE",
-                path: ""
-            }, mock_req_proto);
+            var test_doc_id = module._create_id;
             delete module._create_id;
+            var mock_req = _.defaults({
+                url: "/json/model/Tests/action/delete",
+                body: {ids:[test_doc_id]},
+                method: "POST"
+            }, mock_req_proto);
 
             var mock_res = makeRes(mock_req, done);
 
-            mock_res.json = function (status, data) {
-                status.should.equal(204);
-                data.collection.should.equal("Tests");
+            mock_res.json = function (lines) {
+                expect(lines).to.have.length(2);
+                expect(lines[0]).to.have.string(test_doc_id);
                 done();
             };
 
