@@ -28,8 +28,8 @@ block body
             - if (allow_delete)
                 button#deleteButton.btn.btn-large.btn-danger(type='button',data-loading-text='Deleting...') Delete
             - each action in actions
-                - if (action.value != 'delete')
-                    button.action.btn.btn-large(value='#{action.value}') #{action.label}
+                - if (action.id != 'delete')
+                    button.action.btn.btn-large(value='#{action.id}') #{action.label}
 
     - if (!isDialog)
         #myModal.modal.hide.fade(tabindex='-1', role='dialog', style='width:1060px;height:624px')
