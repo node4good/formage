@@ -1,5 +1,5 @@
 'use strict';
-/*global dialogCallback,_dialog_response,isDialog,root,$ */
+/*global dialogCallback,_dialog_response,isDialog,root,$,window,location */
 var MINIMUM_ITEM_COUNT_TO_EXPAND = 1;
 
 
@@ -237,15 +237,16 @@ function deleteDocument(callback) {
         bootbox.confirm(msg, function (res) {
             if (!res) return $('#deleteButton').button('reset');
             return $.ajax({
-                type: 'DELETE',
-                url: root + '/json/model/' + model + '/document/' + docId,
+                type: 'POST',
+                url: root + '/json/model/' + model + '/action/delete',
+                data: {ids: [docId]},
                 success: function () {
                     $('#deleteButton').button('reset');
-                    if (callback) return callback();
-                    return location.href = location.href.split('/document/')[0];
+                    if (callback) callback();
                 },
                 error: function (xhr, textStatus) {
                     $('#deleteButton').button('reset');
+                    bootbox.alert(textStatus);
                     console.error('Deleting error', arguments);
                 }
             });
@@ -369,6 +370,8 @@ $(function () {
         deleteDocument(function () {
             if (isDialog) {
                 window.parent.hideDialog({delete: true})
+            } else {
+                location.href = location.href.split('/document/')[0];
             }
         });
     });
