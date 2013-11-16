@@ -88,7 +88,7 @@ describe("high level REST requests on mongoose", function () {
         var mock_res = makeRes(mock_req, done);
 
         mock_res.redirect = function (url) {
-            var doc = this._debug_document;
+            var doc = this._debug_form.instance;
             var test_doc_id = doc.id;
             expect(doc).to.have.property('string_req').equal("123");
             expect(doc).to.not.have.property('enum');
@@ -112,10 +112,10 @@ describe("high level REST requests on mongoose", function () {
 
             var mock_res = makeRes(mock_req, done);
 
-            mock_res.render = function (view, options) {
+            mock_res.render = function (view, locals) {
                 expect(view).to.equal("document.jade");
-                expect(options).to.have.property("form").to.have.property("instance");
-                var instance = options.form.instance;
+                expect(locals).to.have.property("form").to.have.property("instance");
+                var instance = locals.form.instance;
                 expect(instance).to.have.property('string_req').equal("123");
                 expect(instance).to.not.have.property('enum');
                 expect(instance.object.object.object).to.have.property('nested_string_req').equal("123");
@@ -126,9 +126,9 @@ describe("high level REST requests on mongoose", function () {
                 expect(instance.list_o_numbers[3]).to.equal(4);
 
                 // fragile
-                //expect(String(options.form)).to.equal(renderedForm);
+                //expect(String(locals.form)).to.equal(renderedForm);
 
-                this.req.app.render(view, options, function (err, doc) {
+                this.req.app.render(view, locals, function (err, doc) {
                     if (err) return done(err);
                     should.exist(doc);
 
