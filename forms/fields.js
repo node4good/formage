@@ -110,7 +110,7 @@ var BaseField = exports.BaseField = Class.extend({
         return this;
     },
     clean_value: function (req, callback) {
-        if (String(this.value) === '')
+        if (String(this.value) === '' && !Array.isArray(this.value))
             this.value = null;
         if ((this.value === null || this.value === []) && this.required)
             this.errors.push('this field is required');
