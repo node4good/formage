@@ -287,7 +287,8 @@ var parseFilters = function (model_settings, filters, search) {
     if (search) {
         var search_query = getSearchQuery(model_settings,search);
         if(search_query){
-            new_filters['$where'] = search_query;
+            for(var key in search_query)
+                new_filters[key] = search_query[key];
         }
     }
     return new_filters;
@@ -299,15 +300,22 @@ function getSearchQuery(model,searchValue){
     var searchRule = model && model.options && model.options.search;
     if(!searchRule)
         return null;
-    var valueRegex = '/' + escapeRegExp(searchValue) + '/i';
-    console.log(searchRule);
+    var valueEscaped = escapeRegExp(searchValue);
+    var query;
     if(Array.isArray(searchRule)){
-        return searchRule.map(function(field){
-            return valueRegex + '.test(this.' + field + ')';
+        query = searchRule.map(function(field){
+            return '/__value__/i.test(this.' + field + ')';
         }).join('||');
     }
     else{
-        return searchRule.replace('__value__',valueRegex);
+        query = searchRule;
+    }
+    if(query.indexOf('__value__') > -1)
+        return {$where:query.replace('__value__',valueEscaped)};
+    else {
+        var obj = {};
+        obj[query] = RegExp('^' + valueEscaped,'i');
+        return obj;
     }
 }
 
