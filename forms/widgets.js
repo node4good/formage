@@ -80,7 +80,7 @@ exports.InputWidget = Widget.extend({
     },
     render: function (res) {
 
-        res.write('\n<input' + (typeof(this.value) != 'undefined' ? ' value="' + escape(this.value) + '"' : '') );
+        res.write('\n<input' + (typeof(this.value) != 'undefined' && this.value !== null ? ' value="' + escape(this.value) + '"' : '') );
         this.render_attributes(res);
         res.write(' />\n');
         return this;
