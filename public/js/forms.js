@@ -341,6 +341,12 @@
         initWidgets();
 
         $('form#document').submit(function () {
+
+            $('.date input').each(function(){
+                var val = $(this).val();
+                if(val)
+                    $(this).val(new Date(val));
+            });
             $('p.submit button').prop('disabled', true);
         });
         if(dialog){
