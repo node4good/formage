@@ -45,12 +45,18 @@ module.exports = new Schema({
         }
     },
     embeded: {
-        list: [{
-            embeded: {
-                list:[{
-                    nested_string: { type: String },
-                    nested_string_req: { type: String, required: true },
-                    list:[String]
+        name1: String,
+        list1: [{
+            name2: String,
+            embeded2: {
+                name3: String,
+                list3:[{
+                    name4: String,
+                    embeded4: {
+                        nested_string5: { type: String },
+                        nested_string_req5: { type: String, required: true },
+                        list5:[String]
+                    }
                 }]
             }
         }]

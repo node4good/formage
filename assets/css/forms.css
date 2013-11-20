@@ -96,9 +96,11 @@
     border: 1px solid #ddd;
     border-radius: 3px;
     box-shadow: #eee 0 0 5px 0;
+    min-width: 550px;
 }
 .nf_listfield_container {
     min-height: 30px;
+    background: white;
 }
 
 .nf_fieldset {

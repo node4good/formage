@@ -11,6 +11,7 @@ var schema = new mongoose.Schema({
     },
     mother: [Number],
     number: Number,
+    area: [SchemaTypes.GeoPoint],
     spilon_steps: [
         {
             rewards: {
