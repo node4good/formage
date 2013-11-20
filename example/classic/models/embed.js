@@ -5,34 +5,23 @@ var mongoose = require('mongoose'),
 
 
 var schema = new mongoose.Schema({
-    parent: {
-        child: String,
-        child2: String
-    },
-    mother: [Number],
-    number: Number,
-    area: [SchemaTypes.GeoPoint],
-    spilon_steps: [
-        {
-            rewards: {
-                xp: {type: SchemaTypes.Integer, 'default': 0},
-                cash: {min: {type: SchemaTypes.Integer, min: 0, 'default': 0}, max: {type: SchemaTypes.Integer, min: 0, 'default': 0}},
-                tokens: {min: {type: SchemaTypes.Integer, min: 0, 'default': 0}, max: {type: SchemaTypes.Integer, min: 0, 'default': 0}},
-                morale: {min: {type: SchemaTypes.Integer, min: 0, 'default': 0}, max: {type: SchemaTypes.Integer, min: 0, 'default': 0}},
-                reputation: {min: {type: SchemaTypes.Integer, min: 0, 'default': 0}, max: {type: SchemaTypes.Integer, min: 0, 'default': 0}},
-                intimidation: {min: {type: SchemaTypes.Integer, min: 0, 'default': 0}, max: {type: SchemaTypes.Integer, min: 0, 'default': 0}},
-                members: {min: {type: SchemaTypes.Integer, min: 0, 'default': 0}, max: {type: SchemaTypes.Integer, min: 0, 'default': 0}}
-            },
-            loot: {
-                items: [
-                    {item_id: {type: SchemaTypes.ObjectId, ref: 'pages', required: true},
-                        amount: {type: SchemaTypes.Integer, min: 0, 'default': 0},
-                        percent: {type: SchemaTypes.Integer, min: 0, max: 100, 'default': 0},
-                        is_mandatory: {type: Boolean, 'default': false}}
-                ]
-            },
-            action_word: String
-        }
-    ]
+    embeded: {
+        name1: String,
+        list1: [{
+            name2: String,
+            embeded2: {
+                name3: String,
+                list3:[{
+                    name4: String,
+                    embeded4: {
+                        nested_string5: { type: String },
+                        nested_string_req5: { type: String, required: true },
+                        list5:[Number],
+                        pic: SchemaTypes.Picture
+                    }
+                }]
+            }
+        }]
+    }
 });
 var model = module.exports = mongoose.model('embed', schema);
