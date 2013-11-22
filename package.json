@@ -49,7 +49,7 @@
     "chai": "",
     "mocha": ""
   },
-  "optionalDependencies": {
+  "optionalDevDependencies": {
     "msnodesql": "",
     "jugglingdb-mssql": ""
   },
