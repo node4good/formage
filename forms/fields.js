@@ -292,6 +292,13 @@ var DateField = exports.DateField = BaseField.extend({
         var schema = this._super();
         schema['type'] = Date;
         return schema;
+    },
+    clean_value:function(req,callback){
+        if(this.value){
+            var ts = Date.parse(this.value);
+            this.value = isNaN(ts) ? null : new Date(ts);
+        }
+        return this._super(req,callback);
     }
 });
 
