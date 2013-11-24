@@ -1,6 +1,5 @@
 'use strict';
 /*global makeRes,mock_req_proto,mock_res_proto,should */
-require('longjohn');
 describe("high level REST requests on mongoose", function () {
     var ctx = {};
     before(function (done) {
