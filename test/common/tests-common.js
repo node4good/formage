@@ -2,7 +2,7 @@
 global._ = require('lodash');
 global.chai = require('chai');
 global.should = chai.should();
-global.expect = require('chai').expect
+global.expect = require('chai').expect;
 require('nodestrum');
 Error.stackTraceLimit = 100;
 chai.Assertion.includeStack = true;
@@ -19,13 +19,21 @@ global.mock_req_proto = {
 };
 
 
+function magic_throw() {
+    var arg_str = JSON.stringify(arguments, null, 2);
+    process.nextTick(function () {
+        throw new Error(arg_str);
+    });
+}
+
+
 global.mock_res_proto = {
     setHeader: function () {},
     status: function (val) {this._status = val;},
     output: {push: _.identity},
     outputEncodings: {push: _.identity},
-    render: function () {throw new Error(arguments);},
-    redirect: function () {throw new Error(arguments);}
+    render: magic_throw,
+    redirect: magic_throw
 };
 
 
