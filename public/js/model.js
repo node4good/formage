@@ -69,7 +69,14 @@ $(function() {
                         "callback": function() {
                             location.reload();
                         }}]);
-                } else location.reload();
+                } else {
+                    if(data.result)
+                        bootbox.alert(data.result,function(){
+                            location.reload();
+                        });
+                    else
+                        location.reload()
+                };
             });
         }
 

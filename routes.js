@@ -130,9 +130,9 @@ var json_routes = {
         if (!admin_user) return res.send(401);
 
         /** @namespace req.params.actionId */
-        return MongooseAdmin.singleton.actionDocuments(admin_user, req.params.collectionName, req.params.actionId, req.body, function (err) {
+        return MongooseAdmin.singleton.actionDocuments(admin_user, req.params.collectionName, req.params.actionId, req.body, function (err,result) {
             if (err) return res.json(422, {error: err.message});
-            return res.json({"collection": req.params.collectionName});
+            return res.json({"collection": req.params.collectionName,result:result});
         });
     },
 
