@@ -6,7 +6,7 @@ describe("high level REST requests on JugglingDB", function () {
             if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb'))
                 delete require.cache[modName];
         });
-        var formage = require('../index');
+        var formage = require('../../index');
         var jugglingdb = require("jugglingdb");
         var Schema = jugglingdb.Schema;
         ctx.schema = new Schema("mssql", {host: "(LocalDB)\\v11.0", database: "maskar"});
@@ -24,9 +24,9 @@ describe("high level REST requests on JugglingDB", function () {
             });
             AppliesTo.validatesPresenceOf('Title');
 
-            var tests = require('../example/classic/models/tests');
-            var pages = require('../example/classic/models/pages');
-            var config = require('../example/classic/models/config');
+            var tests = require('../../example/classic/models/tests');
+            var pages = require('../../example/classic/models/pages');
+            var config = require('../../example/classic/models/config');
             ctx.registry = formage.init(app, express, {pages: pages, AppliesTo: AppliesTo, Tests: tests, config: config}, {
                 title: 'Formage Example',
                 default_section: 'Main',
@@ -40,7 +40,7 @@ describe("high level REST requests on JugglingDB", function () {
         });
     });
 
-    require('./common/core_test')(ctx);
+    require('./core_test')(ctx);
 
     after(function () {
         if (ctx.schema.disconnect) ctx.schema.disconnect();
