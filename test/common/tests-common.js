@@ -46,3 +46,4 @@ global.makeRes = function makeRes(req, done) {
 
 var fs = require('fs');
 global.test_post_body_multipart = fs.readFileSync('test/fixtures/test-post-body.mime', 'utf-8');
+global.renderedEmbeded = fs.readFileSync('test/fixtures/rendered-embed-form.txt', 'utf-8');

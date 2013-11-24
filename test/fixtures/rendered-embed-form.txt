@@ -1,0 +1,193 @@
+<div>
+<div class="nf_fieldset toplevel closed">
+<h2>embeded</h2>
+<div>
+<div class="field">
+<label for="id_embeded.name1" class="field_label optional_label">Name1</label>
+<input  value="1" class="optional" type="text" name="embeded.name1" id="id_embeded.name1" />
+</div>
+<div class="field">
+<label for="id_embeded.list1" class="field_label optional_label">List1</label>
+<div class="nf_listfield" name="embeded.list1">
+<div class="nf_hidden_template">
+<div class="field">
+<label for="id_embeded.list1_tmpl_name2" class="field_label optional_label">Name2</label>
+<input  value="" class="optional" type="text" name="embeded.list1_tmpl_name2" id="id_embeded.list1_tmpl_name2" />
+</div>
+<div class="nf_fieldset">
+<h2>embeded2</h2>
+<div class="field">
+<label for="id_embeded.list1_tmpl_embeded2.name3" class="field_label optional_label">Name3</label>
+<input  value="" class="optional" type="text" name="embeded.list1_tmpl_embeded2.name3" id="id_embeded.list1_tmpl_embeded2.name3" />
+</div>
+<div class="field">
+<label for="id_embeded.list1_tmpl_embeded2.list3" class="field_label optional_label">List3</label>
+<div class="nf_listfield" name="embeded.list1_tmpl_embeded2.list3">
+<div class="nf_hidden_template">
+<div class="field">
+<label for="id_embeded.list1_tmpl_embeded2.list3_tmpl_name4" class="field_label optional_label">Name4</label>
+<input  value="" class="optional" type="text" name="embeded.list1_tmpl_embeded2.list3_tmpl_name4" id="id_embeded.list1_tmpl_embeded2.list3_tmpl_name4" />
+</div>
+<div class="nf_fieldset">
+<h2>embeded4</h2>
+<div class="field">
+<label for="id_embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.nested_string5" class="field_label optional_label">Nested String5</label>
+<input  value="" class="optional" type="text" name="embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.nested_string5" id="id_embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.nested_string5" />
+</div>
+<div class="field">
+<label for="id_embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.nested_string_req5" class="field_label required_label">Nested String Req5</label>
+<input  value="" class="required" type="text" name="embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.nested_string_req5" id="id_embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.nested_string_req5" />
+</div>
+<div class="field">
+<label for="id_embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.list5" class="field_label optional_label">List5</label>
+<div class="nf_listfield" name="embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.list5">
+<div class="nf_hidden_template">
+<input  value="" class="optional" min="" max="" step="any" type="number" name="embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.list5_tmpl___self__" id="id_embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.list5_tmpl___self__" />
+</div>
+<ul>
+</ul>
+</div>
+</div>
+<div class="field">
+<label for="id_embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.pic" class="field_label optional_label">Pic</label>
+<input type="hidden" name="embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.pic" value="" />
+<input  value="" class="optional" type="file" name="embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.pic_file" id="id_embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.pic_file" />
+</div>
+<div class="field">
+<label for="id_embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.pics" class="field_label optional_label">Pics</label>
+<div class="nf_listfield" name="embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.pics">
+<div class="nf_hidden_template">
+<input type="hidden" name="embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.pics_tmpl___self__" value="" />
+<input  value="" class="optional" type="file" name="embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.pics_tmpl___self___file" id="id_embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.pics_tmpl___self___file" />
+</div>
+<ul>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<ul>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>
+<div class="field">
+<label for="id_embeded.list1_li0_name2" class="field_label optional_label">Name2</label>
+<input  value="2" class="optional" type="text" name="embeded.list1_li0_name2" id="id_embeded.list1_li0_name2" />
+</div>
+<div class="nf_fieldset">
+<h2>embeded2</h2>
+<div class="field">
+<label for="id_embeded.list1_li0_embeded2.name3" class="field_label optional_label">Name3</label>
+<input  value="3" class="optional" type="text" name="embeded.list1_li0_embeded2.name3" id="id_embeded.list1_li0_embeded2.name3" />
+</div>
+<div class="field">
+<label for="id_embeded.list1_li0_embeded2.list3" class="field_label optional_label">List3</label>
+<div class="nf_listfield" name="embeded.list1_li0_embeded2.list3">
+<div class="nf_hidden_template">
+<div class="field">
+<label for="id_embeded.list1_li0_embeded2.list3_tmpl_name4" class="field_label optional_label">Name4</label>
+<input  value="" class="optional" type="text" name="embeded.list1_li0_embeded2.list3_tmpl_name4" id="id_embeded.list1_li0_embeded2.list3_tmpl_name4" />
+</div>
+<div class="nf_fieldset">
+<h2>embeded4</h2>
+<div class="field">
+<label for="id_embeded.list1_li0_embeded2.list3_tmpl_embeded4.nested_string5" class="field_label optional_label">Nested String5</label>
+<input  value="" class="optional" type="text" name="embeded.list1_li0_embeded2.list3_tmpl_embeded4.nested_string5" id="id_embeded.list1_li0_embeded2.list3_tmpl_embeded4.nested_string5" />
+</div>
+<div class="field">
+<label for="id_embeded.list1_li0_embeded2.list3_tmpl_embeded4.nested_string_req5" class="field_label required_label">Nested String Req5</label>
+<input  value="" class="required" type="text" name="embeded.list1_li0_embeded2.list3_tmpl_embeded4.nested_string_req5" id="id_embeded.list1_li0_embeded2.list3_tmpl_embeded4.nested_string_req5" />
+</div>
+<div class="field">
+<label for="id_embeded.list1_li0_embeded2.list3_tmpl_embeded4.list5" class="field_label optional_label">List5</label>
+<div class="nf_listfield" name="embeded.list1_li0_embeded2.list3_tmpl_embeded4.list5">
+<div class="nf_hidden_template">
+<input  value="" class="optional" min="" max="" step="any" type="number" name="embeded.list1_li0_embeded2.list3_tmpl_embeded4.list5_tmpl___self__" id="id_embeded.list1_li0_embeded2.list3_tmpl_embeded4.list5_tmpl___self__" />
+</div>
+<ul>
+</ul>
+</div>
+</div>
+<div class="field">
+<label for="id_embeded.list1_li0_embeded2.list3_tmpl_embeded4.pic" class="field_label optional_label">Pic</label>
+<input type="hidden" name="embeded.list1_li0_embeded2.list3_tmpl_embeded4.pic" value="" />
+<input  value="" class="optional" type="file" name="embeded.list1_li0_embeded2.list3_tmpl_embeded4.pic_file" id="id_embeded.list1_li0_embeded2.list3_tmpl_embeded4.pic_file" />
+</div>
+<div class="field">
+<label for="id_embeded.list1_li0_embeded2.list3_tmpl_embeded4.pics" class="field_label optional_label">Pics</label>
+<div class="nf_listfield" name="embeded.list1_li0_embeded2.list3_tmpl_embeded4.pics">
+<div class="nf_hidden_template">
+<input type="hidden" name="embeded.list1_li0_embeded2.list3_tmpl_embeded4.pics_tmpl___self__" value="" />
+<input  value="" class="optional" type="file" name="embeded.list1_li0_embeded2.list3_tmpl_embeded4.pics_tmpl___self___file" id="id_embeded.list1_li0_embeded2.list3_tmpl_embeded4.pics_tmpl___self___file" />
+</div>
+<ul>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>
+<div class="field">
+<label for="id_embeded.list1_li0_embeded2.list3_li0_name4" class="field_label optional_label">Name4</label>
+<input  value="4" class="optional" type="text" name="embeded.list1_li0_embeded2.list3_li0_name4" id="id_embeded.list1_li0_embeded2.list3_li0_name4" />
+</div>
+<div class="nf_fieldset">
+<h2>embeded4</h2>
+<div class="field">
+<label for="id_embeded.list1_li0_embeded2.list3_li0_embeded4.nested_string5" class="field_label optional_label">Nested String5</label>
+<input  value="5s" class="optional" type="text" name="embeded.list1_li0_embeded2.list3_li0_embeded4.nested_string5" id="id_embeded.list1_li0_embeded2.list3_li0_embeded4.nested_string5" />
+</div>
+<div class="field">
+<label for="id_embeded.list1_li0_embeded2.list3_li0_embeded4.nested_string_req5" class="field_label required_label">Nested String Req5</label>
+<input  value="5sr" class="required" type="text" name="embeded.list1_li0_embeded2.list3_li0_embeded4.nested_string_req5" id="id_embeded.list1_li0_embeded2.list3_li0_embeded4.nested_string_req5" />
+</div>
+<div class="field">
+<label for="id_embeded.list1_li0_embeded2.list3_li0_embeded4.list5" class="field_label optional_label">List5</label>
+<div class="nf_listfield" name="embeded.list1_li0_embeded2.list3_li0_embeded4.list5">
+<div class="nf_hidden_template">
+<input  value="" class="optional" min="" max="" step="any" type="number" name="embeded.list1_li0_embeded2.list3_li0_embeded4.list5_tmpl___self__" id="id_embeded.list1_li0_embeded2.list3_li0_embeded4.list5_tmpl___self__" />
+</div>
+<ul>
+<li>
+<input  value="6" class="optional" min="" max="" step="any" type="number" name="embeded.list1_li0_embeded2.list3_li0_embeded4.list5_li0___self__" id="id_embeded.list1_li0_embeded2.list3_li0_embeded4.list5_li0___self__" />
+</li>
+<li>
+<input  value="6" class="optional" min="" max="" step="any" type="number" name="embeded.list1_li0_embeded2.list3_li0_embeded4.list5_li1___self__" id="id_embeded.list1_li0_embeded2.list3_li0_embeded4.list5_li1___self__" />
+</li>
+</ul>
+</div>
+</div>
+<div class="field">
+<label for="id_embeded.list1_li0_embeded2.list3_li0_embeded4.pic" class="field_label optional_label">Pic</label>
+<input type="hidden" name="embeded.list1_li0_embeded2.list3_li0_embeded4.pic" value="" />
+<input  value="" class="optional" type="file" name="embeded.list1_li0_embeded2.list3_li0_embeded4.pic_file" id="id_embeded.list1_li0_embeded2.list3_li0_embeded4.pic_file" />
+</div>
+<div class="field">
+<label for="id_embeded.list1_li0_embeded2.list3_li0_embeded4.pics" class="field_label optional_label">Pics</label>
+<div class="nf_listfield" name="embeded.list1_li0_embeded2.list3_li0_embeded4.pics">
+<div class="nf_hidden_template">
+<input type="hidden" name="embeded.list1_li0_embeded2.list3_li0_embeded4.pics_tmpl___self__" value="" />
+<input  value="" class="optional" type="file" name="embeded.list1_li0_embeded2.list3_li0_embeded4.pics_tmpl___self___file" id="id_embeded.list1_li0_embeded2.list3_li0_embeded4.pics_tmpl___self___file" />
+</div>
+<ul>
+</ul>
+</div>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>

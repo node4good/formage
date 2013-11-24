@@ -1,2 +1,2 @@
 templates.js            merge=mine
-test/fixtures/*.mime    eol=crlf
+test/fixtures/*.*       eol=crlf
