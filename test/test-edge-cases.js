@@ -1,4 +1,5 @@
 "use strict";
+/*global makeRes,mock_req_proto,mock_res_proto,should */
 describe("edge cases on mongoose", function () {
     before(function (done) {
         _.each(require.cache, function (mod, modName) {
@@ -11,7 +12,7 @@ describe("edge cases on mongoose", function () {
         var conn_str = 'mongodb://localhost/formage-test' + this.test.parent.title.replace(/\s/g, '');
         mongoose.connect(conn_str, function(err) {
             if (err) return done(err);
-            return mongoose.connection.db.dropDatabase(function (err, doc) {
+            return mongoose.connection.db.dropDatabase(function (err) {
                 done(err);
             })
         });
@@ -35,7 +36,7 @@ describe("edge cases on mongoose", function () {
 
 
         it("works", function () {
-            should.exist(this.registry);
+            expect(this.registry).to.be.an('object');
         });
 
 
@@ -220,7 +221,7 @@ describe("no init options, no models, changed ENV for 100% in routes.js", functi
 
 
     it("works", function () {
-        should.exist(this.registry);
+        expect(this.registry).to.be.an('object');
     });
 
     it("try to get a 500", function (done) {
@@ -237,7 +238,7 @@ describe("no init options, no models, changed ENV for 100% in routes.js", functi
         };
         mock_res.send = function (status, err) {
             should.not.exist(mock_res._status);
-            should.exist(err);
+            expect(err).to.exist;
             Number(500).should.equal(status);
             console.error = function silenceSecondError(err) {
                 Boolean(~err.indexOf("ooff")).should.equal(true);

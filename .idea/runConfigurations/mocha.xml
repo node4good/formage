@@ -3,7 +3,9 @@
     <working-directory>$PROJECT_DIR$</working-directory>
     <test-directory>$PROJECT_DIR$/test</test-directory>
     <pass-parent-env>true</pass-parent-env>
-    <envs />
+    <envs>
+      <env name="CLOUDINARY_URL" value="cloudinary://585968645961973:QKIr5QDRS3mp9F9QYxa3DC7-Omg@ho0xbnxzd" />
+    </envs>
     <ui>BDD</ui>
     <require />
     <recursive>false</recursive>
