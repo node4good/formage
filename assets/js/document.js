@@ -174,8 +174,9 @@ function ListField(el) {
     tpl.remove();
 
     self.list = $('> ul', el);
-    self.el.after('<label class="list_summary" />')
-        .append(btn.add().click(self.add));
+    self.el
+        .append(btn.add().click(self.add))
+        .append('<label class="list_summary" />');
 
     self.length = $('> li', self.list)
         .append(btn.drag())
