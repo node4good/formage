@@ -1,5 +1,5 @@
 'use strict';
-/*global dialogCallback,_dialog_response,isDialog,root,$ */
+/*global dialogCallback,_dialog_response,isDialog,root,$,window,location */
 var MINIMUM_ITEM_COUNT_TO_EXPAND = 1;
 
 
@@ -29,10 +29,7 @@ var btn = {
 function initFieldSet(ctx) {
     // On first run, close all field-sets, open only those with errors
     if (!ctx) {
-        $('.nf_fieldset,.nf_listfield_container').addClass('closed');
-        $('.error')
-            .closest('.nf_fieldset > div,.nf_listfield_container > div').show()
-            .closest('.nf_fieldset, .nf_listfield_container').removeClass('closed');
+        $('.error').closest('.nf_fieldset > div, .nf_listfield_container > div').show();
     }
 
     $('.nf_fieldset, .nf_listfield_container', ctx).each(function () {
@@ -42,20 +39,25 @@ function initFieldSet(ctx) {
         $(this).data('nf_fieldset', true);
 
         var t = $(this),
+            isTopLevel = t.is('.toplevel'),
             h2 = $('> h2, > label', t),
             div = $('> div', t),
             i = $('<i class="icon-chevron-right" />').prependTo(t);
 
-        t.off('click').click(function (e) {
-            var is_closed = t.is('.closed');
-            if (!(is_closed || $(e.target).is(h2) || $(e.target).is(i))) {
-                return;
+        t.find('label').add(i).add(h2).off('click').on('click', function (e) {
+            e.stopPropagation();
+            var is_open = div.is(':visible');
+            var divs = isTopLevel ? t.find('div') : div;
+            var im = isTopLevel ? t.find('i.icon-chevron-down, i.icon-chevron-right') : i;
+            if (is_open) {
+                im.removeClass('icon-chevron-down').addClass('icon-chevron-right');
+                divs.stop(1, 1).slideUp('fast');
+                t.addClass('closed');
+            } else {
+                im.removeClass('icon-chevron-right').addClass('icon-chevron-down');
+                divs.stop(1, 1).slideDown('fast');
+                t.removeClass('closed');
             }
-
-            i.toggleClass('icon-chevron-right icon-chevron-down');
-
-            t.toggleClass('closed');
-            div.stop(1, 1).slideToggle('fast');
         });
 
         // Only list-view
@@ -147,7 +149,7 @@ function ListField(el) {
         // load nested widgets
         initWidgets(li);
 
-        li.find('.nf_fieldset').toggleClass('closed');
+        li.find('.nf_fieldset');
         li.find('> .nf_fieldset').click();
 
         li.find('> ul').sortable({
@@ -167,13 +169,14 @@ function ListField(el) {
     self.name = self.el.attr('name');
 
     var tpl = $('> .nf_hidden_template', el);
-    tpl.find('.nf_listfield').addClass('closed');
+    tpl.find('.nf_listfield');
     self.template = tpl.html();
     tpl.remove();
 
     self.list = $('> ul', el);
-    self.el.after('<label class="list_summary" />')
-        .after(btn.add().click(self.add));
+    self.el
+        .append(btn.add().click(self.add))
+        .append('<label class="list_summary" />');
 
     self.length = $('> li', self.list)
         .append(btn.drag())
@@ -235,16 +238,16 @@ function deleteDocument(callback) {
         bootbox.confirm(msg, function (res) {
             if (!res) return $('#deleteButton').button('reset');
             return $.ajax({
-                type: 'DELETE',
-                url: root + '/json/model/' + model + '/document/' + docId,
+                type: 'POST',
+                url: root + '/json/model/' + model + '/action/delete',
+                data: {ids: [docId]},
                 success: function () {
                     $('#deleteButton').button('reset');
-                    if (callback) return callback();
-                    return location.href = location.href.split('/document/')[0];
+                    if (callback) callback();
                 },
                 error: function (xhr, textStatus) {
                     $('#deleteButton').button('reset');
-                    alert('Unable to delete');
+                    bootbox.alert(textStatus);
                     console.error('Deleting error', arguments);
                 }
             });
@@ -368,6 +371,8 @@ $(function () {
         deleteDocument(function () {
             if (isDialog) {
                 window.parent.hideDialog({delete: true})
+            } else {
+                location.href = location.href.split('/document/')[0];
             }
         });
     });

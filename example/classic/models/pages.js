@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
 var schema = new mongoose.Schema({
     title: { type: String, required: true },
     picture: { type: Types.Picture },
-    author: { type: Types.ObjectId, ref: 'tests', required: true }
+    author: { type: Types.ObjectId, ref: 'pages' }
 });
 
 schema.methods.toString = function() {

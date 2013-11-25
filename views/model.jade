@@ -10,11 +10,11 @@ mixin fielddesc(value, type)
 
 block breadcrumb
     span.divider /
-    | #{modelConfig.label}
+    | #{label}
 
 block body
     .page-header
-        h2 #{modelConfig.label}
+        h2 #{label}
 
     #content.row
         div(class='span#{filters.length ? 9 : 12}')
@@ -23,8 +23,8 @@ block body
                     a.btn.pull-right.btn-warning(href="#{rootPath}/model/#{model_name}/document/new#{makeLink()}")
                         i.icon-plus.icon-white
                         |  New&nbsp;
-                        - if (modelConfig.singular)
-                            strong #{modelConfig.singular}
+                        - if (singular)
+                            strong #{singular}
                         - else
                             strong #{model_name}
                             |  item
@@ -50,12 +50,12 @@ block body
                         span.add-on With selected: &nbsp;
                         div.btn-group
                             - each action in actions
-                                if (action.value == 'delete')
-                                    button.btn.btn-danger(value='#{action.value}')
+                                if (action.id == 'delete')
+                                    button.btn.btn-danger(value='#{action.id}')
                                         i.icon-trash.icon-white
                                         |  #{action.label}
                                 else
-                                    button.btn(value='#{action.value}') #{action.label}
+                                    button.btn(value='#{action.id}') #{action.label}
 
             - if (!documents.length)
                 p.center No documents yet
@@ -84,8 +84,8 @@ block body
                                         span.list-drag: i.icon-resize-vertical
 
                                 - each field in list_fields
-                                    - var type = modelConfig.model.schema.paths[field].options.type.name
-                                    - var value = doc[field]
+                                    - var type = getTypeName(field);
+                                    - var value = doc[field];
                                     td.span3.center(class=(type == 'Picture') ? 'picture' : '')
                                         if (editable)
                                             a(href=url): +fielddesc(value, type)

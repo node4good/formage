@@ -1,12 +1,4 @@
 extends layout.jade
-block head
-    - if (model.static)
-        - if (model.static.js)
-            - each f in model.static.js
-                script(src=f)
-        - if (model.static.css)
-            - each f in model.static.css
-                link(rel='stylesheet', href=f)
 
 block breadcrumb
     span.divider /
@@ -19,10 +11,13 @@ block body
         .page-header
             h2 #{model_label} editor
 
-    - if (errors)
+    - if (Object.keys(errors).length)
         p.alert.alert-error Saving failed, fix the following errors and try again.
+    - if (errors.exception)
+        p.alert.alert-error #{errors.exception}
+
     form#document(enctype="multipart/form-data",method="post").clearfix
-        != renderedDocument
+        != form
         - if(subCollections && subCollections.length)
             - each sub in subCollections
                 a.subCollection(href="#{rootPath}/model/#{sub.model}?#{sub.field}=#{sub.value}") #{sub.label} - #{sub.count? sub.count + ' Items' : 'No items'}
@@ -33,8 +28,8 @@ block body
             - if (allow_delete)
                 button#deleteButton.btn.btn-large.btn-danger(type='button',data-loading-text='Deleting...') Delete
             - each action in actions
-                - if (action.value != 'delete')
-                    button.action.btn.btn-large(value='#{action.value}') #{action.label}
+                - if (action.id != 'delete')
+                    button.action.btn.btn-large(value='#{action.id}') #{action.label}
 
     - if (!isDialog)
         #myModal.modal.hide.fade(tabindex='-1', role='dialog', style='width:1060px;height:624px')
