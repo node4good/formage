@@ -258,6 +258,47 @@ describe("high level REST requests on mongoose", function () {
     });
 
 
+   it.only("post to update `embed`", function (done) {
+        var test = this;
+        var embed = ctx.registry.models['embed'].model;
+        var old_embed_findbyid = embed.findById;
+        embed.findById = function (_, cb) { cb(null, new embed(embedMockObj)) };
+        var pages = ctx.registry.models['pages'].model;
+        var old_pages_find = pages.find;
+        pages.find = function () { return {limit : function () {return {exec: function (cb) {return cb(null, [new pages({_id: '529321b430de15681b00000b', title:'gaga'})]) }}}}};
+        test.rest_models = function () {embed.findById = old_embed_findbyid; pages.find = old_pages_find;};
+
+        var mock_req = _.defaults({
+            url: '/model/embed/document/mockmockmock',
+            method: "POST",
+            headers: {},
+            body: {
+                'embeded.name1': '1',
+                'embeded.list1_li0_name2': '2',
+                'embeded.list1_li0_embeded2.name3': '3',
+                'embeded.list1_li0_embeded2.list3_li0_name4': '4',
+                'embeded.list1_li0_embeded2.list3_li0_embeded4.nested_string5': '5s',
+                'embeded.list1_li0_embeded2.list3_li0_embeded4.nested_string_req5': '5sr',
+                'embeded.list1_li0_embeded2.list3_li0_embeded4.list5_li1___self__': '2',
+                'embeded.list1_li0_embeded2.list3_li0_embeded4.list5_li0___self__': '1'
+            }
+        }, mock_req_proto);
+
+        var mock_res = makeRes(mock_req, done);
+        mock_res.redirect = function (url) {
+            test.rest_models();
+            delete test.rest_models;
+            expect(url).to.have.string("/admin/model/embed");
+
+            var instance = this._debug_form.instance;
+            expect(instance.embeded.list1[0].embeded2.list3[0].embeded4.list5[0]).to.equal(2);
+            expect(instance.embeded.list1[0].embeded2.list3[0].embeded4.list5[1]).to.equal(1);
+            done();
+        };
+        ctx.app.handle(mock_req, mock_res);
+    });
+
+
     describe("nested & embeded", function () {
         function step1(done) {
             var mock_req = _.defaults({
@@ -425,6 +466,7 @@ describe("high level REST requests on mongoose", function () {
     });
 });
 
+
 var embedMockObj = {
     "_id" : "528d07cb6bb142ac2200001c",
     "embeded" : {
@@ -440,7 +482,7 @@ var embedMockObj = {
                         "nested_string5" : "5s",
                         "nested_string_req5" : "5sr",
                         "pic" : null,
-                        "list5" : [6, 6]
+                        "list5" : [1, 2]
                     }
                 }]
             }
