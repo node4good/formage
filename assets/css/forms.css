@@ -84,7 +84,7 @@
 .input-append {
     float: left;
 }
-.input-append + span.error {list_summery
+.input-append + span.error {
     top: 6px;
 }
 .nf_widget + span.error,
