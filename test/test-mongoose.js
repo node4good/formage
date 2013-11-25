@@ -199,7 +199,7 @@ describe("high level REST requests on mongoose", function () {
             mock_res.render = function (view, locals) {
                 // fragile
                 var actual = String(locals.form);
-                var expected = renderedEmbeded;
+                var expected = global.renderedEmbeded;
                 expect(actual).to.equal(expected);
 
                 this.req.app.render(view, locals, function (err, doc) {
