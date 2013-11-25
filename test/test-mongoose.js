@@ -169,8 +169,8 @@ describe("high level REST requests on mongoose", function () {
                 'embeded.list1_li0_embeded2.list3_li0_name4': '4',
                 'embeded.list1_li0_embeded2.list3_li0_embeded4.nested_string5': '5s',
                 'embeded.list1_li0_embeded2.list3_li0_embeded4.nested_string_req5': '5sr',
-                'embeded.list1_li0_embeded2.list3_li0_embeded4.list5_li0___self__': '6',
-                'embeded.list1_li0_embeded2.list3_li0_embeded4.list5_li1___self__': '6'
+                'embeded.list1_li0_embeded2.list3_li0_embeded4.list5_li1___self__': '6',
+                'embeded.list1_li0_embeded2.list3_li0_embeded4.list5_li0___self__': '6'
             }
         }, mock_req_proto);
         var mock_res = makeRes(mock_req, done);
@@ -257,8 +257,7 @@ describe("high level REST requests on mongoose", function () {
         ctx.app.handle(mock_req, mock_res);
     });
 
-
-   it.only("post to update `embed`", function (done) {
+    it("update `embed`", function (done) {
         var test = this;
         var embed = ctx.registry.models['embed'].model;
         var old_embed_findbyid = embed.findById;
@@ -273,14 +272,8 @@ describe("high level REST requests on mongoose", function () {
             method: "POST",
             headers: {},
             body: {
-                'embeded.name1': '1',
-                'embeded.list1_li0_name2': '2',
-                'embeded.list1_li0_embeded2.name3': '3',
-                'embeded.list1_li0_embeded2.list3_li0_name4': '4',
-                'embeded.list1_li0_embeded2.list3_li0_embeded4.nested_string5': '5s',
-                'embeded.list1_li0_embeded2.list3_li0_embeded4.nested_string_req5': '5sr',
-                'embeded.list1_li0_embeded2.list3_li0_embeded4.list5_li1___self__': '2',
-                'embeded.list1_li0_embeded2.list3_li0_embeded4.list5_li0___self__': '1'
+//                'embeded.list1_li0_name2': 'a',
+                'embeded.list1_li1_name2': 'updated'
             }
         }, mock_req_proto);
 
@@ -291,8 +284,8 @@ describe("high level REST requests on mongoose", function () {
             expect(url).to.have.string("/admin/model/embed");
 
             var instance = this._debug_form.instance;
-            expect(instance.embeded.list1[0].embeded2.list3[0].embeded4.list5[0]).to.equal(2);
-            expect(instance.embeded.list1[0].embeded2.list3[0].embeded4.list5[1]).to.equal(1);
+            expect(instance.embeded.list1[0].name2).to.equal('updated');
+            expect(instance.embeded.list1).to.have.length(1);
             done();
         };
         ctx.app.handle(mock_req, mock_res);
@@ -482,7 +475,7 @@ var embedMockObj = {
                         "nested_string5" : "5s",
                         "nested_string_req5" : "5sr",
                         "pic" : null,
-                        "list5" : [1, 2]
+                        "list5" : [6, 6]
                     }
                 }]
             }
