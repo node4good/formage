@@ -64,6 +64,18 @@
 </ul>
 </div>
 </div>
+<div class="field">
+<label for="id_embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.refs" class="field_label optional_label">Refs</label>
+<div class="nf_listfield" name="embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.refs">
+<div class="nf_hidden_template">
+<select  value="" class="optional" data-ref="Pages" name="embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.refs_tmpl___self__" id="id_embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.refs_tmpl___self__" />
+<option selected="selected" value=""> ... </option>
+</select>
+</div>
+<ul>
+</ul>
+</div>
+</div>
 </div>
 </div>
 <ul>
@@ -128,6 +140,18 @@
 </ul>
 </div>
 </div>
+<div class="field">
+<label for="id_embeded.list1_li0_embeded2.list3_tmpl_embeded4.refs" class="field_label optional_label">Refs</label>
+<div class="nf_listfield" name="embeded.list1_li0_embeded2.list3_tmpl_embeded4.refs">
+<div class="nf_hidden_template">
+<select  value="" class="optional" data-ref="Pages" name="embeded.list1_li0_embeded2.list3_tmpl_embeded4.refs_tmpl___self__" id="id_embeded.list1_li0_embeded2.list3_tmpl_embeded4.refs_tmpl___self__" />
+<option selected="selected" value=""> ... </option>
+</select>
+</div>
+<ul>
+</ul>
+</div>
+</div>
 </div>
 </div>
 <ul>
@@ -173,6 +197,18 @@
 <div class="nf_hidden_template">
 <input type="hidden" name="embeded.list1_li0_embeded2.list3_li0_embeded4.pics_tmpl___self__" value="" />
 <input  value="" class="optional" type="file" name="embeded.list1_li0_embeded2.list3_li0_embeded4.pics_tmpl___self___file" id="id_embeded.list1_li0_embeded2.list3_li0_embeded4.pics_tmpl___self___file" />
+</div>
+<ul>
+</ul>
+</div>
+</div>
+<div class="field">
+<label for="id_embeded.list1_li0_embeded2.list3_li0_embeded4.refs" class="field_label optional_label">Refs</label>
+<div class="nf_listfield" name="embeded.list1_li0_embeded2.list3_li0_embeded4.refs">
+<div class="nf_hidden_template">
+<select  value="" class="optional" data-ref="Pages" name="embeded.list1_li0_embeded2.list3_li0_embeded4.refs_tmpl___self__" id="id_embeded.list1_li0_embeded2.list3_li0_embeded4.refs_tmpl___self__" />
+<option selected="selected" value=""> ... </option>
+</select>
 </div>
 <ul>
 </ul>

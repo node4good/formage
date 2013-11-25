@@ -20,6 +20,7 @@ global.mock_req_proto = {
 
 
 function magic_throw() {
+    if (process.domain) process.domain.dispose();
     var arg_str = JSON.stringify(arguments, null, 2);
     process.nextTick(function () {
         throw new Error(arg_str);

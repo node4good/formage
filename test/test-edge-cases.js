@@ -204,16 +204,18 @@ describe("no init options, no models, changed ENV for 100% in routes.js", functi
 
         var old_node_debug = process.env.NODE_DEBUG;
         process.env.NODE_DEBUG += " views";
+        var old_domain_value = process.env.FORMAGE_DISABLE_DOMAINS;
         delete process.env.FORMAGE_DISABLE_DOMAINS;
 
         this.registry = this.formage.init(this.app, this.express);
 
-        process.env.FORMAGE_DISABLE_DOMAINS = true;
+        process.env.FORMAGE_DISABLE_DOMAINS = old_domain_value;
         process.env.NODE_DEBUG = old_node_debug;
     });
 
 
     after(function () {
+        process.domain.dispose();
         delete this.formage;
         delete this.mongoose;
         delete this.express;
