@@ -36,7 +36,7 @@
     "nodestrum": "",
     "node-ckeditor": "",
     "formage-mongoose-types": "",
-    "mpromise": "",
+    "mpromise": "0.4.1",
     "connect-multiparty": ""
   },
   "devDependencies": {
