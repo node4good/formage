@@ -184,6 +184,11 @@ describe("high level REST requests on mongoose", function () {
             expect(instance.embeded.list1[0].embeded2.list3[0].embeded4.list5[0]).to.equal(6);
             expect(instance.embeded.list1[0].embeded2.list3[0].embeded4.list5[1]).to.equal(6);
 
+            var test = this;
+            var pages = ctx.registry.models['pages'].model;
+            var old_pages_find = pages.find;
+            pages.find = function () { return {limit : function () {return {exec: function (cb) {return cb(null, [new pages({_id: '529321b430de15681b00000b', title:'gaga'})]) }}}}};
+            test.rest_models = function () { pages.find = old_pages_find; };
             var mock_req = _.defaults({
                 url: '/model/embed/document/' + test_doc_id,
                 method: "GET"
@@ -193,9 +198,13 @@ describe("high level REST requests on mongoose", function () {
 
             mock_res.render = function (view, locals) {
                 // fragile
-                expect(String(locals.form)).to.equal(global.renderedEmbeded);
+                var actual = String(locals.form);
+                var expected = renderedEmbeded;
+                expect(actual).to.equal(expected);
 
                 this.req.app.render(view, locals, function (err, doc) {
+                    test.rest_models();
+                    delete test.rest_models;
                     if (err) {
                         done(err);
                         return;
@@ -210,11 +219,16 @@ describe("high level REST requests on mongoose", function () {
     });
 
 
-    it.only("get `embed`", function (done) {
+    it("get `embed`", function (done) {
+        var test = this;
         var embed = ctx.registry.models['embed'].model;
+        var old_embed_findbyid = embed.findById;
         embed.findById = function (_, cb) { cb(null, new embed(embedMockObj)) };
         var pages = ctx.registry.models['pages'].model;
-        pages.find = function (_, __, cb) { cb(null, [new pages({_id: '529321b430de15681b00000b', title:'gaga'})]) };
+        var old_pages_find = pages.find;
+        pages.find = function () { return {limit : function () {return {exec: function (cb) {return cb(null, [new pages({_id: '529321b430de15681b00000b', title:'gaga'})]) }}}}};
+        test.rest_models = function () {embed.findById = old_embed_findbyid; pages.find = old_pages_find; };
+
         var mock_req = _.defaults({
             url: '/model/embed/document/mockmockmock',
             method: "GET"
@@ -223,6 +237,9 @@ describe("high level REST requests on mongoose", function () {
         var mock_res = makeRes(mock_req, done);
 
         mock_res.render = function (view, locals) {
+            test.rest_models();
+            delete test.rest_models;
+
             // fragile
             var actual = String(locals.form);
             var expected = renderedEmbeded;
