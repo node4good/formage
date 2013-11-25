@@ -3,3 +3,5 @@
 *.tgz
 /node_modules
 !/node_modules/sji
+/coverage
+/.data/

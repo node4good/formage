@@ -1,10 +1,10 @@
 <img src="http://i.imgur.com/9vVHCPY.png" align="top" />  Formage [![Build Status](https://travis-ci.org/Empeeric/formage.png?branch=master)](https://travis-ci.org/Empeeric/formage)
 =============
 
-[Bootstraped](http://twitter.github.com/bootstrap/) Admin Forms for MongoDB via [Mongoose](http://mongoosejs.com/),
-originally forked from [mongoose-admin](https://github.com/marccampbell/mongoose-admin).
+[Bootstraped](http://twitter.github.com/bootstrap/) Admin GUI addon for [Mongoose](http://mongoosejs.com/), [JugglingDB](https://github.com/1602/jugglingdb), or just as a form generator.
+Originally forked from [mongoose-admin](https://github.com/marccampbell/mongoose-admin).
 
-Usage
+Example Usage
 -----
 [![npm install formage](https://nodei.co/npm/formage.png?downloads=true)](https://nodei.co/npm/formage/)
 <!-- [![NPM](https://nodei.co/npm-dl/formage.png)](https://nodei.co/npm/formage/) -->
@@ -15,7 +15,7 @@ var express = require('express'),
 require('formage').init(app, express [, models, options]);
 ```
 
-Look at `\example` directory.
+Look at the `\example` directory.
 
 Options
 -------
@@ -27,7 +27,7 @@ require('formage').init(app, express, models, {
     default_section: 'main',
     username: 'admin',
     password: 'admin',
-    admin_users_gui: ture
+    admin_users_gui: true
 );
 ```
 
@@ -39,10 +39,10 @@ model.label = 'My Songs';
 model.singular = 'Song';
 
 // external files specific to this model
-model.static = {
-   js: [ '/js/songs.js' ],
-   css: ['/css/songs.css' ]
-};
+model.header_lines = [
+   '<script src="/js/songs.js"></script>',
+   '<style href="/css/songs.css"></style>'
+];
 
 model.formage = {
     // one-document models
@@ -141,12 +141,6 @@ var TwoDField = formage.fields.StringField.extend({
         options = options || {};
         options.widget = TwoDWidget;
         this._super(options);
-    },
-    to_schema: function () {
-        return {
-            lat: Number,
-            lng: Number
-        };
     },
     clean_value: function (req, callback) {
         var lat = Number(req.body[this.name + '_lat']);

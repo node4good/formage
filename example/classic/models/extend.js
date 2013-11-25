@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
     MongooseSchema = mongoose.Schema,
     MongooseTypes = mongoose.Types,
     util = require('util'),
-    formage = require('../../');
+    formage = require('../../../.');
 
 
 var ReversedWidget = formage.widgets.TextWidget.extend({
@@ -49,12 +49,6 @@ var TwoDField = formage.fields.StringField.extend({
         options = options || {};
         options.widget = TwoDWidget;
         this._super(options);
-    },
-    to_schema: function () {
-        return {
-            lat: Number,
-            lng: Number
-        };
     },
     clean_value: function (req, callback) {
         var lat = Number(req.body[this.name + '_lat']);

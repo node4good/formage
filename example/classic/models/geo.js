@@ -2,7 +2,7 @@
 var mongoose = require('mongoose'),
     Types = mongoose.Schema.Types,
     Schema = mongoose.Schema,
-    formage = require('../../');
+    formage = require('../../../.');
 
 
 var schema = new Schema({

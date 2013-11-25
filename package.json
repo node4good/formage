@@ -1,8 +1,8 @@
 {
   "name": "formage",
-  "description": "Admin GUI addon for mongoose and non mongoose projects on Express.js",
-  "version": "2.0.8",
-  "main": "lib/index.js",
+  "description": "Admin GUI addon for mongoose, jugglingdb, or just as a form generator",
+  "version": "2.2.13",
+  "main": "index.js",
   "author": {
     "name": "Etai Peretz",
     "email": "etai@empeeric.com",
@@ -35,12 +35,23 @@
     "cloudinary": "",
     "nodestrum": "",
     "node-ckeditor": "",
-    "formage-mongoose-types": ""
+    "formage-mongoose-types": "",
+    "mpromise": "0.4.1",
+    "connect-multiparty": ""
   },
   "devDependencies": {
     "jade": "",
     "express": "",
-    "mongoose": ""
+    "mongoose": "",
+    "jugglingdb": "",
+    "tingodb": "git+https://github.com/Empeeric/tingodb.git",
+    "tungus": "",
+    "chai": "",
+    "mocha": ""
+  },
+  "optionalDevDependencies": {
+    "msnodesql": "",
+    "jugglingdb-mssql": ""
   },
   "bundleDependencies": [
     "sji"
@@ -48,15 +59,22 @@
   "keywords": [
     "admin",
     "forms",
+    "cross-database",
     "mongoose",
-    "mongoose-gui"
+    "mongoose-gui",
+    "juggling",
+    "jugglingdb",
+    "backoffice",
+    "cms"
   ],
   "repository": {
     "type": "git",
     "url": "https://github.com/Empeeric/formage.git"
   },
   "scripts": {
-    "start": "./examplerun"
+    "start": "node example/classic/app",
+    "test": "node ./node_modules/mocha/bin/_mocha",
+    "cover": "istanbul cover ./node_modules/mocha/bin/_mocha -x generated/**"
   },
   "bugs": {
     "url": "https://github.com/Empeeric/formage/issues"
@@ -65,7 +83,7 @@
     "example": "./example"
   },
   "engines": {
-    "node": "0.11.x"
+    "node": "0.10.x"
   },
   "license": "MIT"
 }

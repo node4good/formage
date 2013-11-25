@@ -1,0 +1,322 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Admin - Tests</title><link rel="stylesheet" href="/admin/css/ui-lightness/jquery-ui-1.10.2.custom.css"><link rel="stylesheet" href="/admin/bootstrap/css/bootstrap.css"><link rel="stylesheet" href="/admin/css/main.css"><link rel="stylesheet" href="/admin/css/forms.css"><link rel="stylesheet" href="/admin/datepicker/datepicker.css"><link rel="stylesheet" href="/admin/timepicker/timepicker.css"><link rel="stylesheet" href="/admin/vendor/bootstrap-datetimepicker.min.css"><link rel="stylesheet" href="/admin/css/maps.css"><link rel="stylesheet" href="/admin/select2/select2.css"><script src="/admin/js/lib/jquery-1.9.1.js"></script><script src="/admin/js/lib/jquery-ui-1.10.2.custom.min.js"></script><script src="/admin/bootstrap/js/bootstrap.js"></script><script src="/admin/timepicker/bootstrap-timepicker.js"></script><script src="/admin/vendor/bootstrap-datetimepicker.min.js"></script><script src="/admin/ckeditor/ckeditor.js"></script><script src="/admin/datepicker/bootstrap-datepicker.js"></script><script src="/admin/js/maps.js"></script><script src="/admin/js/fpav.js"></script><script src="/admin/select2/select2.js"></script><script>var root = '/admin';</script><script src="//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&language=en&libraries=places&key=AIzaSyDa0sb1zqO-uJyE0ZMgSE0vYD8ugFTc32E"></script></head><body><header class="navbar navbar-static-top"><div class="navbar-inner"><div class="container"><div class="btn-group pull-right"><a href="/admin/" class="btn btn-inverse"><i class="icon-home icon-white"></i> Admin</a><a href="/" class="btn"><i class="icon-share"></i> Site</a><a href="/admin/logout" class="btn"><div class="icon-lock"></div> Logout</a></div><h1><a href="/admin/">Formage Example</a><span class="divider">/</span><a href="/admin/model/Tests">Tests</a><span class="divider">/</span>editor</h1></div></div></header><div class="container"><div id="old-version" style="position: fixed;bottom: 1em;right: 1em;width: 30em;height: 4em;border-radius: 10px;display: block;opacity: 0.8;display:none" class="alert alert-error"><button type="button" data-dismiss="alert" class="close">&times;</button><strong>Warning;</strong> There is a newer version of formage.</div><div id="content"><div class="page-header"><h2>Tests editor</h2></div><form id="document" enctype="multipart/form-data" method="post" class="clearfix"><div class="field">
+<label for="id_string" class="field_label optional_label">String</label>
+<input class="optional" type="text" name="string" id="id_string" />
+</div>
+<div class="field">
+<label for="id_string_req" class="field_label required_label">Name</label>
+<input  value="gaga" class="required" type="text" name="string_req" id="id_string_req" />
+</div>
+<div class="field">
+<label for="id_ref" class="field_label optional_label">Ref</label>
+<select class="optional" data-ref="Pages" name="ref" id="id_ref" />
+<option selected="selected" value=""> ... </option>
+</select>
+</div>
+<div class="field">
+<label for="id_date" class="field_label optional_label">Date</label>
+<div class="input-append date">
+<input class="optional nf_datepicker" type="text" name="date" id="id_date" />
+<span class="add-on"><i class="icon-calendar"></i></span>
+</div>
+</div>
+<div class="field">
+<label for="id_datetime" class="field_label optional_label">Datetime</label>
+<div class="input-append date" id="datetimepickerdatetime">
+<input class="optional" type="text" data-format="yyyy-MM-dd hh:mm" name="datetime" id="id_datetime" />
+<span class="add-on">
+<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+</span>
+</div>
+<script>$('#datetimepickerdatetime').datetimepicker();</script></div>
+<div class="field">
+<label for="id_time" class="field_label optional_label">Time</label>
+<div class="input-append bootstrap-timepicker-component">
+<input class="optional nf_timepicker" type="time" name="time" id="id_time" />
+<span class="add-on"><i class="icon-time"></i></span>
+</div>
+</div>
+<div class="field">
+<label for="id_enum" class="field_label optional_label">Enum</label>
+<select class="optional nf_comb" name="enum" id="id_enum" />
+<option selected="selected" value=""> ... </option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+</select>
+</div>
+<div class="field">
+<label for="id_rich_text" class="field_label optional_label">Rich Text</label>
+<div class="nf_widget">
+<textarea class="optional ckeditor" name="rich_text" id="id_rich_text" >
+</textarea>
+</div>
+</div>
+<div class="field">
+<label for="id_text" class="field_label optional_label">Text</label>
+<textarea class="optional" name="text" id="id_text" >
+</textarea>
+</div>
+<div class="field">
+<label for="id_image" class="field_label optional_label">Image</label>
+<input type="hidden" name="undefined" value="" />
+<input  value="" class="optional" type="file" name="image_file" id="id_image_file" />
+</div>
+<div class="field">
+<label for="id_file" class="field_label optional_label">File</label>
+<input  value="[object Object]" class="optional" type="file" name="file" id="id_file" />
+</div>
+<div class="field">
+<label for="id_map" class="field_label optional_label">Map</label>
+<div class="nf_widget">
+<input type="text" name="map_address" id="id_map_address" value="" />
+<input  value="," class="optional nf_mapview" type="hidden" address_field="id_map_address" name="map" id="id_map" />
+</div>
+</div>
+<div class="field">
+<label for="id_num" class="field_label optional_label">Num</label>
+<input  value="" class="optional" min="" max="" step="any" type="number" name="num" id="id_num" />
+</div>
+<div class="field">
+<label for="id_num_validated" class="field_label optional_label">Num Validated</label>
+<input  value="" class="optional" min="" max="" step="any" type="number" name="num_validated" id="id_num_validated" />
+</div>
+<div class="field">
+<label for="id_num_with_params" class="field_label optional_label">Num With Params</label>
+<input  value="0" class="optional" min="" max="" step="any" type="number" name="num_with_params" id="id_num_with_params" />
+</div>
+<div class="field">
+<label for="id_bool" class="field_label optional_label">Bool</label>
+<input  value="on" class="optional" type="checkbox" checked="checked" name="bool" id="id_bool" />
+</div>
+<div class="field">
+<label for="id_list" class="field_label optional_label">List</label>
+<div class="nf_listfield" name="list">
+<div class="nf_hidden_template">
+<div class="field">
+<label for="id_list_tmpl_name" class="field_label required_label">Name</label>
+<input  value="" class="required" type="text" name="list_tmpl_name" id="id_list_tmpl_name" />
+</div>
+<div class="field">
+<label for="id_list_tmpl_list" class="field_label optional_label">List</label>
+<div class="nf_listfield" name="list_tmpl_list">
+<div class="nf_hidden_template">
+<div class="field">
+<label for="id_list_tmpl_list_tmpl_name" class="field_label optional_label">Name</label>
+<input  value="" class="optional" type="text" name="list_tmpl_list_tmpl_name" id="id_list_tmpl_list_tmpl_name" />
+</div>
+</div>
+<ul>
+</ul>
+</div>
+</div>
+</div>
+<ul>
+<li><div class="field">
+<label for="id_list_li0_name" class="field_label required_label">Name</label>
+<input  value="ggg" class="required" type="text" name="list_li0_name" id="id_list_li0_name" />
+</div>
+<div class="field">
+<label for="id_list_li0_list" class="field_label optional_label">List</label>
+<div class="nf_listfield" name="list_li0_list">
+<div class="nf_hidden_template">
+<div class="field">
+<label for="id_list_li0_list_tmpl_name" class="field_label optional_label">Name</label>
+<input  value="" class="optional" type="text" name="list_li0_list_tmpl_name" id="id_list_li0_list_tmpl_name" />
+</div>
+</div>
+<ul>
+<li><div class="field">
+<label for="id_list_li0_list_li0_name" class="field_label optional_label">Name</label>
+<input  value="hhh" class="optional" type="text" name="list_li0_list_li0_name" id="id_list_li0_list_li0_name" />
+</div>
+</li>
+<li><div class="field">
+<label for="id_list_li0_list_li1_name" class="field_label optional_label">Name</label>
+<input  value="jjj" class="optional" type="text" name="list_li0_list_li1_name" id="id_list_li0_list_li1_name" />
+</div>
+</li>
+</ul>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="nf_fieldset closed">
+<h2>list_o_list</h2>
+<div>
+<div class="field">
+<label for="id_list_o_list.inner_list" class="field_label optional_label">Inner List</label>
+<div class="nf_listfield" name="list_o_list.inner_list">
+<div class="nf_hidden_template">
+<input class="optional" type="text" name="list_o_list.inner_list_tmpl___self__" id="id_list_o_list.inner_list_tmpl___self__" />
+</div>
+<ul>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="field">
+<label for="id_list_o_numbers" class="field_label optional_label">List O Numbers</label>
+<div class="nf_listfield" name="list_o_numbers">
+<div class="nf_hidden_template">
+<input class="optional" min="" max="" step="any" type="number" name="list_o_numbers_tmpl___self__" id="id_list_o_numbers_tmpl___self__" />
+</div>
+<ul>
+<li><input  value="0" class="optional" min="" max="" step="any" type="number" name="list_o_numbers_li0___self__" id="id_list_o_numbers_li0___self__" />
+</li>
+<li><input  value="1" class="optional" min="" max="" step="any" type="number" name="list_o_numbers_li1___self__" id="id_list_o_numbers_li1___self__" />
+</li>
+<li><input  value="2" class="optional" min="" max="" step="any" type="number" name="list_o_numbers_li2___self__" id="id_list_o_numbers_li2___self__" />
+</li>
+</ul>
+</div>
+</div>
+<div class="nf_fieldset closed">
+<h2>object</h2>
+<div>
+<div class="nf_fieldset closed">
+<h2>object</h2>
+<div>
+<div class="nf_fieldset closed">
+<h2>object</h2>
+<div>
+<div class="field">
+<label for="id_object.object.object.nested_string" class="field_label optional_label">Nested String</label>
+<input class="optional" type="text" name="object.object.object.nested_string" id="id_object.object.object.nested_string" />
+</div>
+<div class="field">
+<label for="id_object.object.object.nested_string_req" class="field_label required_label">Nested String Req</label>
+<input  value="gigi" class="required" type="text" name="object.object.object.nested_string_req" id="id_object.object.object.nested_string_req" />
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="field">
+<label for="id_mixed" class="field_label optional_label">Mixed</label>
+<textarea class="optional" name="mixed" id="id_mixed" >
+</textarea>
+</div>
+<div class="field">
+<label for="id_spilon_steps" class="field_label optional_label">Spilon Steps</label>
+<div class="nf_listfield" name="spilon_steps">
+<div class="nf_hidden_template">
+<div class="nf_fieldset">
+<h2>rewards</h2>
+<div class="field">
+<label for="id_spilon_steps_tmpl_rewards.xp" class="field_label optional_label">Xp</label>
+<input  value="" class="optional" min="" max="" step="any" type="number" name="spilon_steps_tmpl_rewards.xp" id="id_spilon_steps_tmpl_rewards.xp" />
+</div>
+<div class="nf_fieldset">
+<h2>cash</h2>
+<div class="field">
+<label for="id_spilon_steps_tmpl_rewards.cash.min" class="field_label optional_label">Min</label>
+<input  value="" class="optional" min="" max="" step="any" type="number" name="spilon_steps_tmpl_rewards.cash.min" id="id_spilon_steps_tmpl_rewards.cash.min" />
+</div>
+<div class="field">
+<label for="id_spilon_steps_tmpl_rewards.cash.max" class="field_label optional_label">Max</label>
+<input  value="" class="optional" min="" max="" step="any" type="number" name="spilon_steps_tmpl_rewards.cash.max" id="id_spilon_steps_tmpl_rewards.cash.max" />
+</div>
+</div>
+<div class="nf_fieldset">
+<h2>tokens</h2>
+<div class="field">
+<label for="id_spilon_steps_tmpl_rewards.tokens.min" class="field_label optional_label">Min</label>
+<input  value="" class="optional" min="" max="" step="any" type="number" name="spilon_steps_tmpl_rewards.tokens.min" id="id_spilon_steps_tmpl_rewards.tokens.min" />
+</div>
+<div class="field">
+<label for="id_spilon_steps_tmpl_rewards.tokens.max" class="field_label optional_label">Max</label>
+<input  value="" class="optional" min="" max="" step="any" type="number" name="spilon_steps_tmpl_rewards.tokens.max" id="id_spilon_steps_tmpl_rewards.tokens.max" />
+</div>
+</div>
+<div class="nf_fieldset">
+<h2>morale</h2>
+<div class="field">
+<label for="id_spilon_steps_tmpl_rewards.morale.min" class="field_label optional_label">Min</label>
+<input  value="" class="optional" min="" max="" step="any" type="number" name="spilon_steps_tmpl_rewards.morale.min" id="id_spilon_steps_tmpl_rewards.morale.min" />
+</div>
+<div class="field">
+<label for="id_spilon_steps_tmpl_rewards.morale.max" class="field_label optional_label">Max</label>
+<input  value="" class="optional" min="" max="" step="any" type="number" name="spilon_steps_tmpl_rewards.morale.max" id="id_spilon_steps_tmpl_rewards.morale.max" />
+</div>
+</div>
+<div class="nf_fieldset">
+<h2>reputation</h2>
+<div class="field">
+<label for="id_spilon_steps_tmpl_rewards.reputation.min" class="field_label optional_label">Min</label>
+<input  value="" class="optional" min="" max="" step="any" type="number" name="spilon_steps_tmpl_rewards.reputation.min" id="id_spilon_steps_tmpl_rewards.reputation.min" />
+</div>
+<div class="field">
+<label for="id_spilon_steps_tmpl_rewards.reputation.max" class="field_label optional_label">Max</label>
+<input  value="" class="optional" min="" max="" step="any" type="number" name="spilon_steps_tmpl_rewards.reputation.max" id="id_spilon_steps_tmpl_rewards.reputation.max" />
+</div>
+</div>
+<div class="nf_fieldset">
+<h2>intimidation</h2>
+<div class="field">
+<label for="id_spilon_steps_tmpl_rewards.intimidation.min" class="field_label optional_label">Min</label>
+<input  value="" class="optional" min="" max="" step="any" type="number" name="spilon_steps_tmpl_rewards.intimidation.min" id="id_spilon_steps_tmpl_rewards.intimidation.min" />
+</div>
+<div class="field">
+<label for="id_spilon_steps_tmpl_rewards.intimidation.max" class="field_label optional_label">Max</label>
+<input  value="" class="optional" min="" max="" step="any" type="number" name="spilon_steps_tmpl_rewards.intimidation.max" id="id_spilon_steps_tmpl_rewards.intimidation.max" />
+</div>
+</div>
+<div class="nf_fieldset">
+<h2>members</h2>
+<div class="field">
+<label for="id_spilon_steps_tmpl_rewards.members.min" class="field_label optional_label">Min</label>
+<input  value="" class="optional" min="" max="" step="any" type="number" name="spilon_steps_tmpl_rewards.members.min" id="id_spilon_steps_tmpl_rewards.members.min" />
+</div>
+<div class="field">
+<label for="id_spilon_steps_tmpl_rewards.members.max" class="field_label optional_label">Max</label>
+<input  value="" class="optional" min="" max="" step="any" type="number" name="spilon_steps_tmpl_rewards.members.max" id="id_spilon_steps_tmpl_rewards.members.max" />
+</div>
+</div>
+</div>
+<div class="nf_fieldset">
+<h2>loot</h2>
+<div class="field">
+<label for="id_spilon_steps_tmpl_loot.items" class="field_label optional_label">Items</label>
+<div class="nf_listfield" name="spilon_steps_tmpl_loot.items">
+<div class="nf_hidden_template">
+<div class="field">
+<label for="id_spilon_steps_tmpl_loot.items_tmpl_item_id" class="field_label required_label">Item Id</label>
+<select  value="" class="required" data-ref="Pages" name="spilon_steps_tmpl_loot.items_tmpl_item_id" id="id_spilon_steps_tmpl_loot.items_tmpl_item_id" />
+<option selected="selected" value=""> ... </option>
+</select>
+</div>
+<div class="field">
+<label for="id_spilon_steps_tmpl_loot.items_tmpl_amount" class="field_label optional_label">Amount</label>
+<input  value="" class="optional" min="" max="" step="any" type="number" name="spilon_steps_tmpl_loot.items_tmpl_amount" id="id_spilon_steps_tmpl_loot.items_tmpl_amount" />
+</div>
+<div class="field">
+<label for="id_spilon_steps_tmpl_loot.items_tmpl_percent" class="field_label optional_label">Percent</label>
+<input  value="" class="optional" min="" max="" step="any" type="number" name="spilon_steps_tmpl_loot.items_tmpl_percent" id="id_spilon_steps_tmpl_loot.items_tmpl_percent" />
+</div>
+<div class="field">
+<label for="id_spilon_steps_tmpl_loot.items_tmpl_is_mandatory" class="field_label optional_label">Is Mandatory</label>
+<input  value="on" class="optional" type="checkbox" name="spilon_steps_tmpl_loot.items_tmpl_is_mandatory" id="id_spilon_steps_tmpl_loot.items_tmpl_is_mandatory" />
+</div>
+</div>
+<ul>
+</ul>
+</div>
+</div>
+</div>
+<div class="field">
+<label for="id_spilon_steps_tmpl_action_word" class="field_label optional_label">Action Word</label>
+<input  value="" class="optional" type="text" name="spilon_steps_tmpl_action_word" id="id_spilon_steps_tmpl_action_word" />
+</div>
+</div>
+<ul>
+</ul>
+</div>
+</div>
+<a href="/admin/model/pages?ref=527f44c0b298515823000009" class="subCollection">Sub Tests - No items</a><p class="submit btn-group"><button id="saveButton" type="submit" data-saving-text="Saving..." class="btn btn-large btn-primary">Save</button><a id="cancelButton" href="/admin/model/Tests" class="btn btn-large">Cancel</a><button id="deleteButton" type="button" data-loading-text="Deleting..." class="btn btn-large btn-danger">Delete</button></p></form><div id="myModal" tabindex="-1" role="dialog" style="width:1060px;height:624px" class="modal hide fade"><div class="modal-header"><button type="button" data-dismiss="modal" class="close">×</button><h3 id="myModalLabel">&nbsp;</h3></div><div style="max-height:inherit" class="modal-body"><iframe src="" style="zoom: 0.60;" width="99.6%" height="800" frameborder="0"></iframe></div></div></div><footer class="footer"><p><a href="http://github.com/Empeeric/formage">Formage</a> 2.2.3, from&nbsp;<a href="http://empeeric.com">Empeeric</a></p><a href="http://github.com/Empeeric/formage"><img src="/admin/images/logo-40.png"></a></footer></div><script>var model = 'Tests';
+var isDialog = false;
+</script><script src="/admin/js/lib/bootbox.min.js"></script><script src="/admin/js/document.js"></script></body></html>

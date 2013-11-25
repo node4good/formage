@@ -1,6 +1,6 @@
 'use strict';
 
-var dep = require('../lib/dependencies');
+var dep = require('../../lib/dependencies');
 
 module.exports = {
     "0": function (test) {
