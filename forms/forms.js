@@ -507,10 +507,17 @@ var MongooseForm = exports.MongooseForm = BaseForm.extend({
                     else
                         newArray.push(obj);
                 });
-                model[field_name] = newArray;
+                if(typeof(model.set) == 'function')
+                    model.set(field_name,newArray);
+                else
+                    model[field_name] = newArray;
             }
-            else
-                model[field_name] = value;
+            else {
+                if(typeof(model.set) == 'function')
+                    model.set(field_name,value);
+                else
+                    model[field_name] = value;
+            }
         }
     },
 
