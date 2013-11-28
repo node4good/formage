@@ -424,7 +424,7 @@ describe("high level REST requests on mongoose", function () {
     });
 
 
-    it.only("test document - post mime form with picture array", function (done) {
+    it("test document - post mime form with picture array", function (done) {
         var gallery_post = require('fs').readFileSync('test/fixtures/gallery-post-picture-array.mime', 'binary');
         var mock_req = _.defaults({
             url: "/json/model/gallery/document/new",
