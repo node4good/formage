@@ -424,6 +424,41 @@ describe("high level REST requests on mongoose", function () {
     });
 
 
+    it.only("test document - post mime form with picture array", function (done) {
+        var gallery_post = require('fs').readFileSync('test/fixtures/gallery-post-picture-array.mime', 'binary');
+        var mock_req = _.defaults({
+            url: "/json/model/gallery/document/new",
+            method: "POST",
+            headers: {
+                'content-type': 'multipart/form-data; boundary=----WebKitFormBoundaryjnXlxYPhkdwEOBWZ',
+                'content-length': gallery_post.length
+            },
+            pipe: function (dest) {
+                dest.write(gallery_post);
+                dest.end();
+            },
+            unpipe: _.identity
+        }, mock_req_proto);
+        var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+
+        var uploadSentinal = 0;
+        require('cloudinary').uploader.upload = function (path, callback) {
+            uploadSentinal++;
+            expect(path).to.exist;
+            callback({});
+        };
+
+        mock_res.json = function (status, data) {
+            expect(status).to.equal(200, data);
+            expect(uploadSentinal).to.be.equal(3);
+            expect(data).to.have.property('title').equal(mock_req.body.title, data + mock_res._debug_form);
+            done();
+        };
+
+        ctx.app.handle(mock_req, mock_res);
+    });
+
+
     it("post mime form with picture to embed", function (done) {
         var gallery_post = require('fs').readFileSync('test/fixtures/embed-post.mime', 'binary');
         var mock_req = _.defaults({
