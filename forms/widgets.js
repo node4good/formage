@@ -216,9 +216,10 @@ exports.CheckboxWidget = exports.InputWidget.extend({
     },
     render: function (res) {
         var old_value = this.value;
-        if (this.value) {
+        if (this.value)
             this.attrs['checked'] = 'checked';
-        }
+        else
+            delete this.attrs['checked'];
         this.value = 'on';
         var ret = this._super(res);
         this.value = old_value;
