@@ -23,11 +23,31 @@ $(function() {
     });
 
     var $actions = $('#actions');
+    var shownCount = 0;
     $('.select-row').on('change', function() {
-        if ($('.select-row:checked').length)
-            $actions.fadeIn('fast');
-        else
-            $actions.fadeOut('fast');
+        var selectCount = $('.select-row:checked').length;
+        var shownButtons = $('#actions button' + (selectCount > 1 ? '[data-multi="true"]' : ''));
+        var newShownCount = selectCount ? shownButtons.length : 0;
+        if(newShownCount != shownCount){
+            if(!shownCount){
+                shownButtons.show();
+                $('#actions button').not(shownButtons).hide();
+                $actions.fadeIn('fast');
+
+            }
+            else {
+                if(newShownCount){
+                    $actions.fadeOut('fast',function(){
+                        shownButtons.show();
+                        $('#actions button').not(shownButtons).hide();
+                        $actions.fadeIn('fast');
+                    });
+                }
+                else
+                    $actions.fadeOut('fast');
+            }
+        }
+        shownCount = newShownCount;
     });
 
     $actions.find('button').click(function(e) {
@@ -69,14 +89,7 @@ $(function() {
                         "callback": function() {
                             location.reload();
                         }}]);
-                } else {
-                    if(data.result)
-                        bootbox.alert(data.result,function(){
-                            location.reload();
-                        });
-                    else
-                        location.reload()
-                };
+                } else location.reload();
             });
         }
 

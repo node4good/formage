@@ -295,6 +295,11 @@
         $('button.action').click(function(e) {
             e.preventDefault();
 
+            var action_id = $(this).val();
+            if (!action_id) return;
+
+            var ids = [$('#document_id').val()];
+
             var isPreview = $(this).hasClass('preview');
             if(isPreview){
                 var $action = $('<input type="hidden" name="_preview" value="true">').appendTo('form');
@@ -305,6 +310,55 @@
                 },1000);
                 return;
             }
+
+            var dialogs = $(this).data('dialogs');
+
+            if(dialogs){
+                dialogs = dialogs.split(',');
+                var i=0;
+                var allData = {};
+                var cbk = function(data){
+                    $.extend(allData,data);
+                    if(i < dialogs.length)
+                        formageDialog(dialogs[i++],cbk);
+                    else
+                        fireAction(allData);
+                }
+                return cbk();
+            }
+            var msg = 'Are you sure you want to ' + $(this).text().toLowerCase() + ' this document?';
+
+            function fireAction(data){
+                $.post(root + '/json/model/' + model + '/action/' + action_id, { ids: ids,data:data }).always(function(data) {
+                    if (data.responseText) data = JSON.parse(data.responseText);
+                    if (data.error) {
+                        bootbox.dialog("Some documents failed: " + data.error, [{
+                            "label" : "Error",
+                            "class" : "btn-danger",
+                            "callback": function() {
+                                if(dialog){
+                                    dialogCallback({});
+                                }
+                                else
+                                    location.href = location.href.split('/document/')[0];
+                            }}]);
+                    } else {
+                        if(dialog){
+                            dialogCallback({});
+                        }
+                        else
+                            location.href = location.href.split('/document/')[0];
+                    };
+                });
+            }
+
+            bootbox.confirm(msg, function(result) {
+                if (!result) return;
+                fireAction();
+            });
+
+            return;
+
             var action_id = $(this).val();
             if (!action_id) return;
 

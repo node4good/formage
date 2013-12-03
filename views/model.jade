@@ -43,11 +43,11 @@ block body
                         div.btn-group
                             - each action in actions
                                 - if (action.value == 'delete')
-                                    button.btn.btn-danger(value='#{action.value}')
+                                    button.btn.btn-danger(value='#{action.value}',data-multi='true')
                                         i.icon-trash.icon-white
                                         |  #{action.label}
                                 - else
-                                    button.btn(value='#{action.value}',data-dialogs='#{(action.dialogs || []).join("")}') #{action.label}
+                                    button.btn(value='#{action.value}',data-dialogs='#{(action.dialogs || []).join("")}',data-multi='#{action.multi === false ? "false" : "true"}') #{action.label}
 
             - if (!documents.length)
                 p.center No documents yet
