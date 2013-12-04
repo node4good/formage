@@ -23,9 +23,10 @@ describe("high level REST requests on mongoose", function () {
                 var config = require('../example/classic/models/config');
                 var gallery = require('../example/classic/models/gallery');
                 var embed = require('../example/classic/models/embed');
+                var bugs = require('../example/classic/models/bugs');
                 var express = require('express');
                 var app = express();
-                ctx.registry = formage.init(app, express, {pages: pages, AppliesTo: AppliesTo, Tests: tests, config: config, gallery: gallery, embed:embed}, {
+                ctx.registry = formage.init(app, express, {pages: pages, AppliesTo: AppliesTo, Tests: tests, config: config, gallery: gallery, embed:embed, bugs:bugs}, {
                     title: 'Formage Example',
                     default_section: 'Main',
                     admin_users_gui: true
@@ -487,6 +488,33 @@ describe("high level REST requests on mongoose", function () {
             expect(status).to.equal(200, data);
             expect(uploadSentinel).to.be.true;
             expect(data).to.have.property('embeded');
+            done();
+        };
+
+        ctx.app.handle(mock_req, mock_res);
+    });
+
+
+    it("post mime form to bugs", function (done) {
+        var gallery_post = require('fs').readFileSync('test/fixtures/bugs_ref.mime');
+        var mock_req = _.defaults({
+            url: "/json/model/bugs/document/new",
+            method: "POST",
+            headers: {
+                'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary0jsAEhhbswVyo6BB',
+                'content-length': gallery_post.length
+            },
+            pipe: function (dest) {
+                dest.write(gallery_post);
+                dest.end();
+            },
+            unpipe: _.identity
+        }, mock_req_proto);
+        var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+
+        mock_res.json = function (status, data) {
+            expect(status).to.equal(200, data);
+            expect(data).to.have.property('refs');
             done();
         };
 

@@ -7,8 +7,9 @@ var mongoose = require('mongoose'),
 
 module.exports = new Schema({
     contact: {
-        text: { en: Types.Html , he: Types.Html }
-    }
+        text: { en: SchemaTypes.Html , he: SchemaTypes.Html }
+    },
+    refs: [{ type: SchemaTypes.ObjectId, ref: 'pages' }]
 });
 module.exports.methods.toString = function () {return this.string_req};
 
