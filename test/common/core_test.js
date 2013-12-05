@@ -229,7 +229,7 @@ module.exports = function (ctx) {
                 url: "/model/AppliesTo/",
                 method: "GET"
             }, mock_req_proto);
-            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+            var mock_res = makeRes(mock_req, done);
 
             mock_res.render = function (view, options) {
                 view.should.equal("model.jade");
@@ -343,14 +343,12 @@ module.exports = function (ctx) {
                 method: "GET"
             }, mock_req_proto);
 
-            var mock_res = _.defaults({
-                req: mock_req
-            }, mock_res_proto);
+            var mock_res = makeRes(mock_req, done);
 
             var holder = this.test.parent;
             mock_res.render = function (view, options) {
                 view.should.equal("model.jade");
-                holder._exampleUserID = options.documents["0"]._id.toString();
+                holder._exampleUserID = options.dataTable.data[0].id.toString();
                 done();
             };
 

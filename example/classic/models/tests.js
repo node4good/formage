@@ -67,7 +67,7 @@ module.exports.methods.toString = function () {return this.string_req};
 
 module.exports.formage = {
     filters: ['ref'],
-    list: ['string_req', 'ref', 'image'],
+    list: ['embeded.name1', 'ref', 'image'],
     subCollections: [{label: 'Sub Tests', model: 'pages', field:'ref'}],
     list_populate: ['ref']
 };

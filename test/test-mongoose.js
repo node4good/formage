@@ -385,11 +385,6 @@ describe("high level REST requests on mongoose", function () {
     });
 
 
-    describe('core screens', function () {
-        require('./common/core_test')(ctx);
-    });
-
-
     it("test document - post mime form with picture", function (done) {
         var gallery_post = require('fs').readFileSync('test/fixtures/gallery-post.mime', 'binary');
         var mock_req = _.defaults({
@@ -519,6 +514,32 @@ describe("high level REST requests on mongoose", function () {
         };
 
         ctx.app.handle(mock_req, mock_res);
+    });
+
+
+    it("Mock test model page", function (done) {
+        var mock_req = _.defaults({
+            url: "/model/AppliesTo/",
+            method: "GET"
+        }, mock_req_proto);
+        var mock_res = makeRes(mock_req, done);
+
+        mock_res.render = function (view, options) {
+            expect(view).to.equal("model.jade");
+            expect(options).to.have.property('actions').with.length(1);
+            expect(options).to.have.property('dataTable').with.property('header').with.length(3);
+            this.req.app.render(view, options, function (err, doc) {
+                done(err);
+            });
+        };
+
+        ctx.app.handle(mock_req, mock_res);
+    });
+
+
+
+    describe('core screens', function () {
+        require('./common/core_test')(ctx);
     });
 });
 
