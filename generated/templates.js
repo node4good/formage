@@ -197,9 +197,9 @@ buf.push("</div>" + (((jade.interp = global_script) == null ? '' : jade.interp))
 
 module.exports.model = function anonymous(locals) {
 var buf = [];
-var locals_ = (locals || {}),cloudinary = locals_.cloudinary,pageTitle = locals_.pageTitle,rootPath = locals_.rootPath,renderedHead = locals_.renderedHead,global_head = locals_.global_head,dialog = locals_.dialog,adminTitle = locals_.adminTitle,label = locals_.label,filters = locals_.filters,creatable = locals_.creatable,model_name = locals_.model_name,makeLink = locals_.makeLink,singular = locals_.singular,search = locals_.search,search_value = locals_.search_value,current_filters = locals_.current_filters,sortable = locals_.sortable,actions = locals_.actions,documents = locals_.documents,start = locals_.start,total_count = locals_.total_count,list_fields = locals_.list_fields,orderLink = locals_.orderLink,fieldLabel = locals_.fieldLabel,cloneable = locals_.cloneable,getTypeName = locals_.getTypeName,editable = locals_.editable,count = locals_.count,userPanel = locals_.userPanel,version = locals_.version,global_script = locals_.global_script;var fielddesc_mixin = function(value, type){
+var locals_ = (locals || {}),pageTitle = locals_.pageTitle,rootPath = locals_.rootPath,renderedHead = locals_.renderedHead,global_head = locals_.global_head,dialog = locals_.dialog,adminTitle = locals_.adminTitle,label = locals_.label,filters = locals_.filters,creatable = locals_.creatable,model_name = locals_.model_name,makeLink = locals_.makeLink,singular = locals_.singular,search = locals_.search,search_value = locals_.search_value,current_filters = locals_.current_filters,sortable = locals_.sortable,actions = locals_.actions,dataTable = locals_.dataTable,start = locals_.start,total_count = locals_.total_count,cloneable = locals_.cloneable,type = locals_.type,editable = locals_.editable,count = locals_.count,userPanel = locals_.userPanel,version = locals_.version,global_script = locals_.global_script;var fielddesc_mixin = function(value, type){
 var block = this.block, attributes = this.attributes || {}, escaped = this.escaped || {};
-var cloudinary_url = value && value.public_id && cloudinary.url(value.public_id + '.png', { width: 80, height: 80, crop: 'fill' })
+var cloudinary_url = value && value.url && value.url.split('/upload/')[0] + '/upload/c_fill,h_80,w_80/' + value.public_id + '.png';
 switch (type){
 case 'Picture':
 buf.push("<img" + (jade.attrs({ 'src':(cloudinary_url) }, {"src":true})) + "/>");
@@ -254,7 +254,7 @@ if (sortable)
 {
 buf.push("<button id=\"reorder\" data-loading-text=\"Saving...\" data-saved-text=\"Saved!\" class=\"btn btn-success pull-left hide\"><i class=\"icon-ok icon-white\"></i> Save Order</button>");
 }
-if (actions.length && documents.length)
+if (actions.length && dataTable.data.length)
 {
 buf.push("<div id=\"actions\" class=\"input-prepend hide\"><span class=\"add-on\">With selected: &nbsp;</span><div class=\"btn-group\">");
 // iterate actions
@@ -296,22 +296,22 @@ buf.push("<button" + (jade.attrs({ terse: true, 'value':('' + (action.id) + ''),
 buf.push("</div></div>");
 }
 buf.push("</div>");
-if (!documents.length)
+if (!dataTable.data.length)
 {
 buf.push("<p class=\"center\">No documents yet</p>");
 }
 else
 {
-buf.push("<p class=\"counter\">Viewing " + (jade.escape((jade.interp = start+1) == null ? '' : jade.interp)) + "–" + (jade.escape((jade.interp = start + documents.length) == null ? '' : jade.interp)) + " of " + (jade.escape((jade.interp = total_count) == null ? '' : jade.interp)) + " documents</p><table class=\"table table-bordered table-hover\"><thead><tr><th class=\"center\"><input type=\"checkbox\" class=\"select-all-rows\"></th>");
-// iterate list_fields
+buf.push("<p class=\"counter\">Viewing " + (jade.escape((jade.interp = start+1) == null ? '' : jade.interp)) + "–" + (jade.escape((jade.interp = start + dataTable.data.length) == null ? '' : jade.interp)) + " of " + (jade.escape((jade.interp = total_count) == null ? '' : jade.interp)) + " documents</p><table class=\"table table-bordered table-hover\"><thead><tr><th class=\"center\"><input type=\"checkbox\" class=\"select-all-rows\"></th>");
+// iterate dataTable.header
 ;(function(){
-  var $$obj = list_fields;
+  var $$obj = dataTable.header;
   if ('number' == typeof $$obj.length) {
 
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var field = $$obj[$index];
 
-buf.push("<th class=\"table-header-repeat line-left minwidth-1 center\"><a" + (jade.attrs({ terse: true, 'href':('' + (orderLink(field)) + '') }, {"href":true})) + ">" + (jade.escape((jade.interp = fieldLabel(field)) == null ? '' : jade.interp)) + "</a></th>");
+buf.push("<th class=\"table-header-repeat line-left minwidth-1 center\"><a href=\"#{field.href)}\">" + (jade.escape((jade.interp = field.label) == null ? '' : jade.interp)) + "</a></th>");
     }
 
   } else {
@@ -319,7 +319,7 @@ buf.push("<th class=\"table-header-repeat line-left minwidth-1 center\"><a" + (j
     for (var $index in $$obj) {
       $$l++;      var field = $$obj[$index];
 
-buf.push("<th class=\"table-header-repeat line-left minwidth-1 center\"><a" + (jade.attrs({ terse: true, 'href':('' + (orderLink(field)) + '') }, {"href":true})) + ">" + (jade.escape((jade.interp = fieldLabel(field)) == null ? '' : jade.interp)) + "</a></th>");
+buf.push("<th class=\"table-header-repeat line-left minwidth-1 center\"><a href=\"#{field.href)}\">" + (jade.escape((jade.interp = field.label) == null ? '' : jade.interp)) + "</a></th>");
     }
 
   }
@@ -330,41 +330,39 @@ if ( cloneable)
 buf.push("<th>&nbsp;</th>");
 }
 buf.push("</tr></thead><tbody" + (jade.attrs({ terse: true, "class": [(sortable?'sortable':'')] }, {"class":true})) + ">");
-// iterate documents
+// iterate dataTable.data
 ;(function(){
-  var $$obj = documents;
+  var $$obj = dataTable.data;
   if ('number' == typeof $$obj.length) {
 
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var doc = $$obj[$index];
+      var row = $$obj[$index];
 
-var url = rootPath + '/model/' + model_name + '/document/' + doc._id
-buf.push("<tr" + (jade.attrs({ terse: true, 'id':(doc._id) }, {"id":true})) + "><td class=\"span1 center\"><input type=\"checkbox\" class=\"select-row\">");
+var url = rootPath + '/model/' + model_name + '/document/' + row.id
+buf.push("<tr" + (jade.attrs({ terse: true, 'id':(row.id) }, {"id":true})) + "><td class=\"span1 center\"><input type=\"checkbox\" class=\"select-row\">");
 if ( sortable)
 {
 buf.push("<span class=\"list-drag\"><i class=\"icon-resize-vertical\"></i></span>");
 }
 buf.push("</td>");
-// iterate list_fields
+// iterate row.data
 ;(function(){
-  var $$obj = list_fields;
+  var $$obj = row.data;
   if ('number' == typeof $$obj.length) {
 
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var field = $$obj[$index];
 
-var type = getTypeName(field);
-var value = doc[field];
 buf.push("<td" + (jade.attrs({ terse: true, "class": [('span3'),('center'),((type == 'Picture') ? 'picture' : '')] }, {"class":true})) + ">");
 if ( (editable))
 {
 buf.push("<a" + (jade.attrs({ terse: true, 'href':(url) }, {"href":true})) + ">");
-fielddesc_mixin(value, type);
+fielddesc_mixin(field.value, field.type);
 buf.push("</a>");
 }
 else
 {
-fielddesc_mixin(value, type);
+fielddesc_mixin(field.value, field.type);
 }
 buf.push("</td>");
     }
@@ -374,18 +372,16 @@ buf.push("</td>");
     for (var $index in $$obj) {
       $$l++;      var field = $$obj[$index];
 
-var type = getTypeName(field);
-var value = doc[field];
 buf.push("<td" + (jade.attrs({ terse: true, "class": [('span3'),('center'),((type == 'Picture') ? 'picture' : '')] }, {"class":true})) + ">");
 if ( (editable))
 {
 buf.push("<a" + (jade.attrs({ terse: true, 'href':(url) }, {"href":true})) + ">");
-fielddesc_mixin(value, type);
+fielddesc_mixin(field.value, field.type);
 buf.push("</a>");
 }
 else
 {
-fielddesc_mixin(value, type);
+fielddesc_mixin(field.value, field.type);
 }
 buf.push("</td>");
     }
@@ -396,7 +392,7 @@ buf.push("</td>");
 buf.push("<td class=\"span2 center\"><div class=\"btn-group\"><a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-primary')] }, {"href":true})) + ">Edit</a>");
 if ( cloneable)
 {
-buf.push("<a" + (jade.attrs({ terse: true, 'href':("" + (rootPath) + "/model/" + (model_name) + "/document/new?orig=" + (doc._id) + ""), "class": [('btn'),('btn-default')] }, {"href":true})) + ">Duplicate</a>");
+buf.push("<a" + (jade.attrs({ terse: true, 'href':("" + (rootPath) + "/model/" + (model_name) + "/document/new?orig=" + (row.id) + ""), "class": [('btn'),('btn-default')] }, {"href":true})) + ">Duplicate</a>");
 }
 buf.push("</div></td></tr>");
     }
@@ -404,35 +400,33 @@ buf.push("</div></td></tr>");
   } else {
     var $$l = 0;
     for (var $index in $$obj) {
-      $$l++;      var doc = $$obj[$index];
+      $$l++;      var row = $$obj[$index];
 
-var url = rootPath + '/model/' + model_name + '/document/' + doc._id
-buf.push("<tr" + (jade.attrs({ terse: true, 'id':(doc._id) }, {"id":true})) + "><td class=\"span1 center\"><input type=\"checkbox\" class=\"select-row\">");
+var url = rootPath + '/model/' + model_name + '/document/' + row.id
+buf.push("<tr" + (jade.attrs({ terse: true, 'id':(row.id) }, {"id":true})) + "><td class=\"span1 center\"><input type=\"checkbox\" class=\"select-row\">");
 if ( sortable)
 {
 buf.push("<span class=\"list-drag\"><i class=\"icon-resize-vertical\"></i></span>");
 }
 buf.push("</td>");
-// iterate list_fields
+// iterate row.data
 ;(function(){
-  var $$obj = list_fields;
+  var $$obj = row.data;
   if ('number' == typeof $$obj.length) {
 
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var field = $$obj[$index];
 
-var type = getTypeName(field);
-var value = doc[field];
 buf.push("<td" + (jade.attrs({ terse: true, "class": [('span3'),('center'),((type == 'Picture') ? 'picture' : '')] }, {"class":true})) + ">");
 if ( (editable))
 {
 buf.push("<a" + (jade.attrs({ terse: true, 'href':(url) }, {"href":true})) + ">");
-fielddesc_mixin(value, type);
+fielddesc_mixin(field.value, field.type);
 buf.push("</a>");
 }
 else
 {
-fielddesc_mixin(value, type);
+fielddesc_mixin(field.value, field.type);
 }
 buf.push("</td>");
     }
@@ -442,18 +436,16 @@ buf.push("</td>");
     for (var $index in $$obj) {
       $$l++;      var field = $$obj[$index];
 
-var type = getTypeName(field);
-var value = doc[field];
 buf.push("<td" + (jade.attrs({ terse: true, "class": [('span3'),('center'),((type == 'Picture') ? 'picture' : '')] }, {"class":true})) + ">");
 if ( (editable))
 {
 buf.push("<a" + (jade.attrs({ terse: true, 'href':(url) }, {"href":true})) + ">");
-fielddesc_mixin(value, type);
+fielddesc_mixin(field.value, field.type);
 buf.push("</a>");
 }
 else
 {
-fielddesc_mixin(value, type);
+fielddesc_mixin(field.value, field.type);
 }
 buf.push("</td>");
     }
@@ -464,7 +456,7 @@ buf.push("</td>");
 buf.push("<td class=\"span2 center\"><div class=\"btn-group\"><a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-primary')] }, {"href":true})) + ">Edit</a>");
 if ( cloneable)
 {
-buf.push("<a" + (jade.attrs({ terse: true, 'href':("" + (rootPath) + "/model/" + (model_name) + "/document/new?orig=" + (doc._id) + ""), "class": [('btn'),('btn-default')] }, {"href":true})) + ">Duplicate</a>");
+buf.push("<a" + (jade.attrs({ terse: true, 'href':("" + (rootPath) + "/model/" + (model_name) + "/document/new?orig=" + (row.id) + ""), "class": [('btn'),('btn-default')] }, {"href":true})) + ">Duplicate</a>");
 }
 buf.push("</div></td></tr>");
     }
@@ -472,7 +464,7 @@ buf.push("</div></td></tr>");
   }
 }).call(this);
 
-buf.push("</tbody></table><p class=\"counter\">Viewing " + (jade.escape((jade.interp = start+1) == null ? '' : jade.interp)) + "–" + (jade.escape((jade.interp = start + documents.length) == null ? '' : jade.interp)) + " of " + (jade.escape((jade.interp = total_count) == null ? '' : jade.interp)) + " documents</p>");
+buf.push("</tbody></table><p class=\"counter\">Viewing " + (jade.escape((jade.interp = start+1) == null ? '' : jade.interp)) + "–" + (jade.escape((jade.interp = start + dataTable.data.length) == null ? '' : jade.interp)) + " of " + (jade.escape((jade.interp = total_count) == null ? '' : jade.interp)) + " documents</p>");
 if (total_count > count)
 {
 buf.push("<div class=\"pagination\"><ul>");

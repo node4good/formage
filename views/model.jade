@@ -1,7 +1,7 @@
 extends layout.jade
 
 mixin fielddesc(value, type)
-    - var cloudinary_url = value && value.public_id && cloudinary.url(value.public_id + '.png', { width: 80, height: 80, crop: 'fill' })
+    - var cloudinary_url = value && value.url && value.url.split('/upload/')[0] + '/upload/c_fill,h_80,w_80/' + value.public_id + '.png';
     case type
         when 'Picture': img(src=cloudinary_url)
         when 'File': span #{value ? value.filename : ''}
@@ -45,7 +45,7 @@ block body
                         i.icon-ok.icon-white
                         |  Save Order
 
-                - if (actions.length && documents.length)
+                - if (actions.length && dataTable.data.length)
                     #actions.input-prepend.hide
                         span.add-on With selected: &nbsp;
                         div.btn-group
@@ -57,48 +57,46 @@ block body
                                 else
                                     button.btn(value='#{action.id}') #{action.label}
 
-            - if (!documents.length)
+            - if (!dataTable.data.length)
                 p.center No documents yet
 
             - else
-                p.counter Viewing #{start+1}–#{start + documents.length} of #{total_count} documents
+                p.counter Viewing #{start+1}–#{start + dataTable.data.length} of #{total_count} documents
 
                 table.table.table-bordered.table-hover
                     thead
                         tr
                             th.center
                                 input.select-all-rows(type='checkbox')
-                            - each field in list_fields
+                            - each field in dataTable.header
                                 th.table-header-repeat.line-left.minwidth-1.center
-                                    a(href='#{orderLink(field)}') #{fieldLabel(field)}
+                                    a(href='#{field.href)}') #{field.label)
                             if cloneable
                                 th &nbsp;
 
                     tbody(class=sortable?'sortable':'')
-                        - each doc in documents
-                            - var url = rootPath + '/model/' + model_name + '/document/' + doc._id
-                            tr(id=doc._id)
+                        - each row in dataTable.data
+                            - var url = rootPath + '/model/' + model_name + '/document/' + row.id
+                            tr(id=row.id)
                                 td.span1.center
                                     input.select-row(type='checkbox')
                                     if sortable
                                         span.list-drag: i.icon-resize-vertical
 
-                                - each field in list_fields
-                                    - var type = getTypeName(field);
-                                    - var value = doc[field];
+                                - each field in row.data
                                     td.span3.center(class=(type == 'Picture') ? 'picture' : '')
                                         if (editable)
-                                            a(href=url): +fielddesc(value, type)
+                                            a(href=url): +fielddesc(field.value, field.type)
                                         else
-                                            +fielddesc(value, type)
+                                            +fielddesc(field.value, field.type)
 
                                 td.span2.center
                                     div.btn-group
                                         a.btn.btn-primary(href=url) Edit
                                         if cloneable
-                                            a.btn.btn-default(href="#{rootPath}/model/#{model_name}/document/new?orig=#{doc._id}") Duplicate
+                                            a.btn.btn-default(href="#{rootPath}/model/#{model_name}/document/new?orig=#{row.id}") Duplicate
 
-                p.counter Viewing #{start+1}–#{start + documents.length} of #{total_count} documents
+                p.counter Viewing #{start+1}–#{start + dataTable.data.length} of #{total_count} documents
                 - if (total_count > count)
                     .pagination
                         ul
