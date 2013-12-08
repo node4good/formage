@@ -147,7 +147,7 @@ buf.push("<p class=\"user-panel\">" + (((jade.interp = userPanel) == null ? '' :
 }
 buf.push("<p><a href=\"http://github.com/Empeeric/formage\">Formage</a> " + (jade.escape((jade.interp = version) == null ? '' : jade.interp)) + ", from&nbsp;<a href=\"http://empeeric.com\">Empeeric</a></p><a href=\"http://github.com/Empeeric/formage\"><img" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/images/logo-40.png') }, {"src":true})) + "></a></footer>");
 }
-buf.push("</div><script>var model = '" + (jade.escape((jade.interp = model_name) == null ? '' : jade.interp)) + "';\nvar isDialog = " + (((jade.interp = JSON.stringify(Boolean(isDialog))) == null ? '' : jade.interp)) + ";\n</script><script" + (jade.attrs({ terse: true, 'src':("" + (rootPath) + "/js/lib/bootbox.min.js") }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':("" + (rootPath) + "/js/document.js") }, {"src":true})) + "></script>" + (((jade.interp = global_script) == null ? '' : jade.interp)) + "</body></html>");;return buf.join("");
+buf.push("</div><script src=\"//api.filepicker.io/v1/filepicker.js\"></script><script>var model = '" + (jade.escape((jade.interp = model_name) == null ? '' : jade.interp)) + "';\nvar isDialog = " + (((jade.interp = JSON.stringify(Boolean(isDialog))) == null ? '' : jade.interp)) + ";\n</script><script" + (jade.attrs({ terse: true, 'src':("" + (rootPath) + "/js/lib/bootbox.min.js") }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':("" + (rootPath) + "/js/document.js") }, {"src":true})) + "></script>" + (((jade.interp = global_script) == null ? '' : jade.interp)) + "</body></html>");;return buf.join("");
 }; 
 
 module.exports.layout = function anonymous(locals) {
@@ -167,7 +167,7 @@ buf.push("<p class=\"user-panel\">" + (((jade.interp = userPanel) == null ? '' :
 }
 buf.push("<p><a href=\"http://github.com/Empeeric/formage\">Formage</a> " + (jade.escape((jade.interp = version) == null ? '' : jade.interp)) + ", from&nbsp;<a href=\"http://empeeric.com\">Empeeric</a></p><a href=\"http://github.com/Empeeric/formage\"><img" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/images/logo-40.png') }, {"src":true})) + "></a></footer>");
 }
-buf.push("</div>" + (((jade.interp = global_script) == null ? '' : jade.interp)) + "</body></html>");;return buf.join("");
+buf.push("</div><script src=\"//api.filepicker.io/v1/filepicker.js\"></script>" + (((jade.interp = global_script) == null ? '' : jade.interp)) + "</body></html>");;return buf.join("");
 }; 
 
 module.exports.login = function anonymous(locals) {
@@ -192,7 +192,7 @@ buf.push("<p class=\"user-panel\">" + (((jade.interp = userPanel) == null ? '' :
 }
 buf.push("<p><a href=\"http://github.com/Empeeric/formage\">Formage</a> " + (jade.escape((jade.interp = version) == null ? '' : jade.interp)) + ", from&nbsp;<a href=\"http://empeeric.com\">Empeeric</a></p><a href=\"http://github.com/Empeeric/formage\"><img" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/images/logo-40.png') }, {"src":true})) + "></a></footer>");
 }
-buf.push("</div>" + (((jade.interp = global_script) == null ? '' : jade.interp)) + "</body></html>");;return buf.join("");
+buf.push("</div><script src=\"//api.filepicker.io/v1/filepicker.js\"></script>" + (((jade.interp = global_script) == null ? '' : jade.interp)) + "</body></html>");;return buf.join("");
 }; 
 
 module.exports.model = function anonymous(locals) {
@@ -636,7 +636,7 @@ buf.push("<p class=\"user-panel\">" + (((jade.interp = userPanel) == null ? '' :
 }
 buf.push("<p><a href=\"http://github.com/Empeeric/formage\">Formage</a> " + (jade.escape((jade.interp = version) == null ? '' : jade.interp)) + ", from&nbsp;<a href=\"http://empeeric.com\">Empeeric</a></p><a href=\"http://github.com/Empeeric/formage\"><img" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/images/logo-40.png') }, {"src":true})) + "></a></footer>");
 }
-buf.push("</div><script>var startIndex = " + (jade.escape((jade.interp = start) == null ? '' : jade.interp)) + ",\n    model = '" + (jade.escape((jade.interp = model_name) == null ? '' : jade.interp)) + "';\n    </script><script" + (jade.attrs({ terse: true, 'src':("" + (rootPath) + "/js/lib/bootbox.min.js") }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':("" + (rootPath) + "/js/model.js") }, {"src":true})) + "></script>" + (((jade.interp = global_script) == null ? '' : jade.interp)) + "</body></html>");;return buf.join("");
+buf.push("</div><script src=\"//api.filepicker.io/v1/filepicker.js\"></script><script>var startIndex = " + (jade.escape((jade.interp = start) == null ? '' : jade.interp)) + ",\n    model = '" + (jade.escape((jade.interp = model_name) == null ? '' : jade.interp)) + "';\n    </script><script" + (jade.attrs({ terse: true, 'src':("" + (rootPath) + "/js/lib/bootbox.min.js") }, {"src":true})) + "></script><script" + (jade.attrs({ terse: true, 'src':("" + (rootPath) + "/js/model.js") }, {"src":true})) + "></script>" + (((jade.interp = global_script) == null ? '' : jade.interp)) + "</body></html>");;return buf.join("");
 }; 
 
 module.exports.models = function anonymous(locals) {
@@ -775,6 +775,6 @@ buf.push("<p class=\"user-panel\">" + (((jade.interp = userPanel) == null ? '' :
 }
 buf.push("<p><a href=\"http://github.com/Empeeric/formage\">Formage</a> " + (jade.escape((jade.interp = version) == null ? '' : jade.interp)) + ", from&nbsp;<a href=\"http://empeeric.com\">Empeeric</a></p><a href=\"http://github.com/Empeeric/formage\"><img" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/images/logo-40.png') }, {"src":true})) + "></a></footer>");
 }
-buf.push("</div><script" + (jade.attrs({ terse: true, 'src':("" + (rootPath) + "/js/models.js") }, {"src":true})) + "></script><script type=\"text/javascript\">$.getJSON('http://registry.npmjs.org/formage/latest?jsonp=?').done(function (pack) {\n    var version = '" + (jade.escape((jade.interp = version) == null ? '' : jade.interp)) + "';\n    var latest = pack.version;\n    if (latest > version)\n        $('#old-version').show('slow');\n});</script>" + (((jade.interp = global_script) == null ? '' : jade.interp)) + "</body></html>");;return buf.join("");
+buf.push("</div><script src=\"//api.filepicker.io/v1/filepicker.js\"></script><script" + (jade.attrs({ terse: true, 'src':("" + (rootPath) + "/js/models.js") }, {"src":true})) + "></script><script type=\"text/javascript\">$.getJSON('http://registry.npmjs.org/formage/latest?jsonp=?').done(function (pack) {\n    var version = '" + (jade.escape((jade.interp = version) == null ? '' : jade.interp)) + "';\n    var latest = pack.version;\n    if (latest > version)\n        $('#old-version').show('slow');\n});</script>" + (((jade.interp = global_script) == null ? '' : jade.interp)) + "</body></html>");;return buf.join("");
 }; 
 
