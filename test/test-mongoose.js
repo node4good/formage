@@ -170,7 +170,7 @@ describe("high level REST requests on mongoose", function () {
                 'embeded.list1_li0_embeded2.list3_li0_name4': '4',
                 'embeded.list1_li0_embeded2.list3_li0_embeded4.nested_string5': '5s',
                 'embeded.list1_li0_embeded2.list3_li0_embeded4.nested_string_req5': '5sr',
-                'embeded.list1_li0_embeded2.list3_li0_embeded4.list5_li1___self__': '6',
+                'embeded.list1_li0_embeded2.list3_li0_embeded4.list5_li1___self__': '5',
                 'embeded.list1_li0_embeded2.list3_li0_embeded4.list5_li0___self__': '6'
             }
         }, mock_req_proto);
@@ -182,7 +182,7 @@ describe("high level REST requests on mongoose", function () {
             var instance = this._debug_form.instance;
             var test_doc_id = instance.id;
             expect(instance.embeded.list1[0].embeded2.list3[0].embeded4.nested_string_req5).to.equal('5sr');
-            expect(instance.embeded.list1[0].embeded2.list3[0].embeded4.list5[0]).to.equal(6);
+            expect(instance.embeded.list1[0].embeded2.list3[0].embeded4.list5[0]).to.equal(5);
             expect(instance.embeded.list1[0].embeded2.list3[0].embeded4.list5[1]).to.equal(6);
 
             var test = this;
@@ -559,7 +559,7 @@ var embedMockObj = {
                         "nested_string5" : "5s",
                         "nested_string_req5" : "5sr",
                         "pic" : null,
-                        "list5" : [6, 6]
+                        "list5" : [5, 6]
                     }
                 }]
             }
