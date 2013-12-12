@@ -180,7 +180,7 @@
 </div>
 <ul>
 <li>
-<input  value="6" class="optional" min="" max="" step="any" type="number" name="embeded.list1_li0_embeded2.list3_li0_embeded4.list5_li0___self__" id="id_embeded.list1_li0_embeded2.list3_li0_embeded4.list5_li0___self__" />
+<input  value="5" class="optional" min="" max="" step="any" type="number" name="embeded.list1_li0_embeded2.list3_li0_embeded4.list5_li0___self__" id="id_embeded.list1_li0_embeded2.list3_li0_embeded4.list5_li0___self__" />
 </li>
 <li>
 <input  value="6" class="optional" min="" max="" step="any" type="number" name="embeded.list1_li0_embeded2.list3_li0_embeded4.list5_li1___self__" id="id_embeded.list1_li0_embeded2.list3_li0_embeded4.list5_li1___self__" />
