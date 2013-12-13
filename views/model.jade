@@ -30,15 +30,15 @@ block body
                             |  item
 
                 - if (search)
-                    p
-                        form
-                            input(type="text",name="_search",value="#{search_value}",style="width:300px")
+                    div
+                        form(class="form-inline")
+                            input(type="text",name="_search",value="#{search_value}",class="span5")
                             - for(var key in current_filters)
                                 - if(key != "_search")
                                     input(type="hidden",name="#{key}",value="#{current_filters[key]}")
                             - if(dialog)
                                 input(type="hidden",name="_dialog",value="yes")
-                            button(type="submit") Search
+                            button(type="submit",class="btn") Search
 
                 - if (sortable)
                     button#reorder.btn.btn-success.pull-left.hide(data-loading-text='Saving...', data-saved-text='Saved!')
