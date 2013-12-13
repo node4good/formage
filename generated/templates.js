@@ -236,7 +236,7 @@ buf.push("</a>");
 }
 if (search)
 {
-buf.push("<p><form><input" + (jade.attrs({ terse: true, 'type':("text"), 'name':("_search"), 'value':("" + (search_value) + ""), 'style':("width:300px") }, {"type":true,"name":true,"value":true,"style":true})) + ">");
+buf.push("<div><form class=\"form-inline\"><input" + (jade.attrs({ terse: true, 'type':("text"), 'name':("_search"), 'value':("" + (search_value) + ""), "class": [("span5")] }, {"type":true,"name":true,"value":true,"class":true})) + ">");
 for(var key in current_filters)
 {
 if(key != "_search")
@@ -248,7 +248,7 @@ if(dialog)
 {
 buf.push("<input type=\"hidden\" name=\"_dialog\" value=\"yes\">");
 }
-buf.push("<button type=\"submit\">Search</button></form></p>");
+buf.push("<button type=\"submit\" class=\"btn\">Search</button></form></div>");
 }
 if (sortable)
 {
