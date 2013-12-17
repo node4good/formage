@@ -31,7 +31,7 @@
   ],
   "dependencies": {
     "lodash": "> 2.4.0",
-    "lodash-contrib": "> 2.4.0",
+    "lodash-contrib": "~241.2.0",
     "async": ">= 0.2.6",
     "cloudinary": "",
     "nodestrum": "",
