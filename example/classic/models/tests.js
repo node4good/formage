@@ -66,7 +66,7 @@ var schema = module.exports = new Schema({
 schema.methods.toString = function () {return this.string_req};
 
 schema.formage = {
-    filters: ['ref'],
+    filters: ['ref', 'string_req'],
     list: ['embeded.name1', 'ref', 'image', 'swizzle'],
     subCollections: [{label: 'Sub Tests', model: 'pages', field:'ref'}],
     list_populate: ['ref']
