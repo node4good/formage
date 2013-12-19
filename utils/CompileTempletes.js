@@ -22,6 +22,7 @@ jadeFiles.forEach(function(file) {
     try {
         var compiled = jade.compile(src, {
             'debug': false,
+            'pretty': true,
             'compileDebug': false,
             'client': true,
             'filename': filePath
