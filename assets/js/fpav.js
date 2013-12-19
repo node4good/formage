@@ -7,7 +7,7 @@ window.featherEditor = new Aviary.Feather({
     onSave: function (imageID, newURL) {
         var preview = document.getElementById(imageID);
         var OrigInkBlob = preview.InkBlob;
-        window.filepicker.write(OrigInkBlob, newURL, function (NewInkBlob) {
+        window.filepicker.writeUrl(OrigInkBlob, newURL, function (NewInkBlob) {
             preview.src = NewInkBlob.url;
             var inputID = imageID.replace('_thumb', '');
             var $input = $('#'+inputID);
