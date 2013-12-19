@@ -3,7 +3,7 @@
     <envs>
       <env name="CLOUDINARY_URL" value="cloudinary://585968645961973:QKIr5QDRS3mp9F9QYxa3DC7-Omg@ho0xbnxzd" />
       <env name="PORT" value="80" />
-      <env name="FILEPICKER_API_KEY" value="AcEDKhuboQQCmFYm99XJez" />
+      <env name="FILEPICKER_API_KEY" value="AmvMlokejTHVU4WYtGhyKz" />
       <env name="AVIARY_API_KEY" value="lqe7dik7cphyefe9" />
       <env name="NODE_ENV" value="development" />
       <env name="ADMIN_TITLE" value="abcd" />
