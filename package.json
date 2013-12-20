@@ -1,7 +1,7 @@
 {
   "name": "formage",
   "description": "Admin GUI addon for mongoose, jugglingdb, or just as a form generator",
-  "version": "2.2.26",
+  "version": "2.4.0",
   "main": "index.js",
   "author": {
     "name": "Etai Peretz",
@@ -30,14 +30,14 @@
     }
   ],
   "dependencies": {
-    "lodash": "> 2.4.0",
-    "lodash-contrib": "~241.2.0",
-    "async": ">= 0.2.6",
+    "lodash": "",
+    "lodash-contrib": "",
+    "async": "",
     "cloudinary": "",
     "nodestrum": "",
     "node-ckeditor": "",
     "formage-mongoose-types": "",
-    "mpromise": "~0.5.0",
+    "mpromise": ">= 0.5.0",
     "connect-multiparty": ""
   },
   "devDependencies": {
@@ -54,9 +54,6 @@
     "msnodesql": "",
     "jugglingdb-mssql": ""
   },
-  "bundleDependencies": [
-    "sji"
-  ],
   "keywords": [
     "admin",
     "forms",

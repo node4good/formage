@@ -1,0 +1,88 @@
+{
+  "name": "formage",
+  "version": "2.4.0",
+  "dependencies": {
+    "lodash": {
+      "version": "2.4.1",
+      "from": "lodash@"
+    },
+    "lodash-contrib": {
+      "version": "241.2.0",
+      "from": "lodash-contrib@"
+    },
+    "async": {
+      "version": "0.2.9",
+      "from": "async@"
+    },
+    "cloudinary": {
+      "version": "1.0.6",
+      "from": "cloudinary@",
+      "dependencies": {
+        "coffee-script": {
+          "version": "1.4.0",
+          "from": "coffee-script@1.4.0"
+        },
+        "underscore": {
+          "version": "1.4.4",
+          "from": "underscore@1.4.4"
+        }
+      }
+    },
+    "nodestrum": {
+      "version": "0.6.1",
+      "from": "nodestrum@"
+    },
+    "node-ckeditor": {
+      "version": "4.2.561",
+      "from": "node-ckeditor@"
+    },
+    "formage-mongoose-types": {
+      "version": "1.0.1",
+      "from": "formage-mongoose-types@",
+      "dependencies": {
+        "lodash": {
+          "version": "2.0.0",
+          "from": "lodash@2.0.0"
+        }
+      }
+    },
+    "mpromise": {
+      "version": "0.5.0",
+      "from": "mpromise@>= 0.5.0"
+    },
+    "connect-multiparty": {
+      "version": "1.0.1",
+      "from": "connect-multiparty@",
+      "dependencies": {
+        "multiparty": {
+          "version": "3.0.0",
+          "from": "multiparty@3.0.0",
+          "dependencies": {
+            "readable-stream": {
+              "version": "1.1.9",
+              "from": "readable-stream@~1.1.9",
+              "dependencies": {
+                "core-util-is": {
+                  "version": "1.0.0",
+                  "from": "core-util-is@~1.0.0"
+                },
+                "debuglog": {
+                  "version": "0.0.2",
+                  "from": "debuglog@0.0.2"
+                }
+              }
+            },
+            "stream-counter": {
+              "version": "0.2.0",
+              "from": "stream-counter@~0.2.0"
+            }
+          }
+        },
+        "qs": {
+          "version": "0.6.6",
+          "from": "qs@~0.6.5"
+        }
+      }
+    }
+  }
+}
