@@ -201,22 +201,44 @@ buf.push("\n    </div>" + (((jade.interp = global_script) == null ? '' : jade.in
 
 module.exports.model = function anonymous(locals) {
 var buf = [];
-var locals_ = (locals || {}),pageTitle = locals_.pageTitle,rootPath = locals_.rootPath,renderedHead = locals_.renderedHead,global_head = locals_.global_head,dialog = locals_.dialog,adminTitle = locals_.adminTitle,label = locals_.label,filters = locals_.filters,creatable = locals_.creatable,model_name = locals_.model_name,makeLink = locals_.makeLink,singular = locals_.singular,search = locals_.search,search_value = locals_.search_value,current_filters = locals_.current_filters,sortable = locals_.sortable,actions = locals_.actions,dataTable = locals_.dataTable,start = locals_.start,total_count = locals_.total_count,cloneable = locals_.cloneable,type = locals_.type,editable = locals_.editable,count = locals_.count,userPanel = locals_.userPanel,version = locals_.version,global_script = locals_.global_script;jade.indent = [];
-var fielddesc_mixin = function(value, type){
+var locals_ = (locals || {}),pageTitle = locals_.pageTitle,rootPath = locals_.rootPath,renderedHead = locals_.renderedHead,global_head = locals_.global_head,dialog = locals_.dialog,adminTitle = locals_.adminTitle,label = locals_.label,creatable = locals_.creatable,model_name = locals_.model_name,makeLink = locals_.makeLink,singular = locals_.singular,search = locals_.search,search_value = locals_.search_value,current_filters = locals_.current_filters,sortable = locals_.sortable,actions = locals_.actions,dataTable = locals_.dataTable,start = locals_.start,total_count = locals_.total_count,cloneable = locals_.cloneable,type = locals_.type,count = locals_.count,filters = locals_.filters,userPanel = locals_.userPanel,version = locals_.version,global_script = locals_.global_script;jade.indent = [];
+var fielddesc_mixin = function(value, type, document_url){
 var block = this.block, attributes = this.attributes || {}, escaped = this.escaped || {};
-var cloudinary_url = value && value.url && value.url.split('/upload/')[0] + '/upload/c_fill,h_80,w_80/' + value.public_id + '.png';
+var value_url = value && value.url;
+var cloudinary_url = value_url && value.url.split('/upload/')[0] + '/upload/c_fill,h_80,w_80/' + value.public_id + '.png';
+var geomery = value && value.geometry && value.geometry.lat + ',' + value.geometry.lng;
+var maps_url = geomery && 'https://maps.google.com/?q=' + geomery;
+var filename = value && value.filename;
 switch (type){
 case 'Picture':
-buf.push("<img" + (jade.attrs({ 'src':(cloudinary_url) }, {"src":true})) + "/>");
+buf.push("<a" + (jade.attrs({ 'href':(value_url), 'target':('_blank') }, {"href":true,"target":true})) + "><img" + (jade.attrs({ 'src':(cloudinary_url) }, {"src":true})) + "/></a>");
   break;
-case 'File':
-buf.push("<span>" + (jade.escape((jade.interp = value ? value.filename : '') == null ? '' : jade.interp)) + "</span>");
+case 'Html':
+buf.push(null == (jade.interp = value) ? "" : jade.interp);
   break;
 case 'Filepicker':
-buf.push("<span>" + (jade.escape((jade.interp = value ? value.filename : '') == null ? '' : jade.interp)) + "</span>");
+if (value)
+{
+buf.push("<a" + (jade.attrs({ 'href':(value_url), 'target':('_blank') }, {"href":true,"target":true})) + ">");
+if (value.isWriteable)
+{
+buf.push(jade.escape(null == (jade.interp = filename) ? "" : jade.interp));
+}
+else
+{
+buf.push("<img" + (jade.attrs({ 'src':(value_url) }, {"src":true})) + "/>");
+}
+buf.push("</a>");
+}
+  break;
+case 'File':
+buf.push("<a" + (jade.attrs({ 'href':(value_url), 'target':('_blank') }, {"href":true,"target":true})) + ">" + (jade.escape(null == (jade.interp = filename) ? "" : jade.interp)) + "</a>");
+  break;
+case 'GeoPoint':
+buf.push("<a" + (jade.attrs({ 'href':(maps_url), 'target':('_blank') }, {"href":true,"target":true})) + ">" + (jade.escape(null == (jade.interp = geomery) ? "" : jade.interp)) + "</a>");
   break;
 default:
-buf.push("<span>" + (jade.escape((jade.interp = value) == null ? '' : jade.interp)) + "</span>");
+buf.push("<a" + (jade.attrs({ 'href':(document_url) }, {"href":true})) + ">" + (jade.escape(null == (jade.interp = value) ? "" : jade.interp)) + "</a>");
   break;
 }
 };
@@ -225,7 +247,7 @@ if (!dialog)
 {
 buf.push("\n    <header class=\"navbar navbar-static-top\">\n      <div class=\"navbar-inner\">\n        <div class=\"container\">\n          <div class=\"btn-group pull-right\"><a" + (jade.attrs({ terse: true, 'href':('' + (rootPath) + '/'), "class": [('btn'),('btn-inverse')] }, {"href":true})) + "><i class=\"icon-home icon-white\"></i> Admin</a><a href=\"/\" class=\"btn\"><i class=\"icon-share\"></i> Site</a><a" + (jade.attrs({ terse: true, 'href':('' + (rootPath) + '/logout'), "class": [('btn')] }, {"href":true})) + ">\n              <div class=\"icon-lock\"></div> Logout</a></div>\n          <h1><a" + (jade.attrs({ terse: true, 'href':('' + (rootPath) + '/') }, {"href":true})) + ">" + (jade.escape((jade.interp = adminTitle) == null ? '' : jade.interp)) + "</a><span class=\"divider\">/</span>" + (jade.escape((jade.interp = label) == null ? '' : jade.interp)) + "</h1>\n        </div>\n      </div>\n    </header>");
 }
-buf.push("\n    <div class=\"container\">\n      <div id=\"old-version\" style=\"position: fixed;bottom: 1em;right: 1em;width: 30em;height: 4em;border-radius: 10px;display: block;opacity: 0.8;display:none\" class=\"alert alert-error\">\n        <button type=\"button\" data-dismiss=\"alert\" class=\"close\">&times;</button><strong>Warning;</strong> There is a newer version of formage.\n      </div>\n      <div id=\"content\">\n        <div class=\"page-header\">\n          <h2>" + (jade.escape((jade.interp = label) == null ? '' : jade.interp)) + "</h2>\n        </div>\n        <div id=\"content\" class=\"row\">\n          <div" + (jade.attrs({ terse: true, "class": [('span' + (filters.length ? 9 : 12) + '')] }, {"class":true})) + ">\n            <div class=\"btn-toolbar clearfix\">");
+buf.push("\n    <div class=\"container\">\n      <div id=\"old-version\" style=\"position: fixed;bottom: 1em;right: 1em;width: 30em;height: 4em;border-radius: 10px;display: block;opacity: 0.8;display:none\" class=\"alert alert-error\">\n        <button type=\"button\" data-dismiss=\"alert\" class=\"close\">&times;</button><strong>Warning;</strong> There is a newer version of formage.\n      </div>\n      <div id=\"content\">\n        <div class=\"page-header\">\n          <h2>" + (jade.escape((jade.interp = label) == null ? '' : jade.interp)) + "</h2>\n        </div>\n        <div id=\"content\" class=\"row\">\n          <div class=\"span12\">\n            <div class=\"btn-toolbar clearfix\">");
 if (creatable)
 {
 buf.push("<a" + (jade.attrs({ terse: true, 'href':("" + (rootPath) + "/model/" + (model_name) + "/document/new" + (makeLink()) + ""), "class": [('btn'),('pull-right'),('btn-warning')] }, {"href":true})) + "><i class=\"icon-plus icon-white\"></i> New&nbsp;");
@@ -343,7 +365,7 @@ buf.push("\n                </tr>\n              </thead>\n              <tbody"
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var row = $$obj[$index];
 
-var url = rootPath + '/model/' + model_name + '/document/' + row.id
+var document_url = rootPath + '/model/' + model_name + '/document/' + row.id
 buf.push("\n                <tr" + (jade.attrs({ terse: true, 'id':(row.id) }, {"id":true})) + ">\n                  <td class=\"span1 center\">\n                    <input type=\"checkbox\" class=\"select-row\">");
 if ( sortable)
 {
@@ -359,20 +381,9 @@ buf.push("\n                  </td>");
       var field = $$obj[$index];
 
 buf.push("\n                  <td" + (jade.attrs({ terse: true, "class": [('span3'),('center'),((type == 'Picture') ? 'picture' : '')] }, {"class":true})) + ">");
-if ( (editable))
-{
-buf.push("<a" + (jade.attrs({ terse: true, 'href':(url) }, {"href":true})) + ">");
-jade.indent.push('                      ');
-fielddesc_mixin(field.value, field.type);
-jade.indent.pop();
-buf.push("</a>");
-}
-else
-{
 jade.indent.push('                    ');
-fielddesc_mixin(field.value, field.type);
+fielddesc_mixin(field.value, field.type, document_url);
 jade.indent.pop();
-}
 buf.push("\n                  </td>");
     }
 
@@ -382,27 +393,16 @@ buf.push("\n                  </td>");
       $$l++;      var field = $$obj[$index];
 
 buf.push("\n                  <td" + (jade.attrs({ terse: true, "class": [('span3'),('center'),((type == 'Picture') ? 'picture' : '')] }, {"class":true})) + ">");
-if ( (editable))
-{
-buf.push("<a" + (jade.attrs({ terse: true, 'href':(url) }, {"href":true})) + ">");
-jade.indent.push('                      ');
-fielddesc_mixin(field.value, field.type);
-jade.indent.pop();
-buf.push("</a>");
-}
-else
-{
 jade.indent.push('                    ');
-fielddesc_mixin(field.value, field.type);
+fielddesc_mixin(field.value, field.type, document_url);
 jade.indent.pop();
-}
 buf.push("\n                  </td>");
     }
 
   }
 }).call(this);
 
-buf.push("\n                  <td class=\"span2 center\">\n                    <div class=\"btn-group\"><a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-primary')] }, {"href":true})) + ">Edit</a>");
+buf.push("\n                  <td class=\"span2 center\">\n                    <div class=\"btn-group\"><a" + (jade.attrs({ terse: true, 'href':(document_url), "class": [('btn'),('btn-primary')] }, {"href":true})) + ">Edit</a>");
 if ( cloneable)
 {
 buf.push("<a" + (jade.attrs({ terse: true, 'href':("" + (rootPath) + "/model/" + (model_name) + "/document/new?orig=" + (row.id) + ""), "class": [('btn'),('btn-default')] }, {"href":true})) + ">Duplicate</a>");
@@ -415,7 +415,7 @@ buf.push("\n                    </div>\n                  </td>\n               
     for (var $index in $$obj) {
       $$l++;      var row = $$obj[$index];
 
-var url = rootPath + '/model/' + model_name + '/document/' + row.id
+var document_url = rootPath + '/model/' + model_name + '/document/' + row.id
 buf.push("\n                <tr" + (jade.attrs({ terse: true, 'id':(row.id) }, {"id":true})) + ">\n                  <td class=\"span1 center\">\n                    <input type=\"checkbox\" class=\"select-row\">");
 if ( sortable)
 {
@@ -431,20 +431,9 @@ buf.push("\n                  </td>");
       var field = $$obj[$index];
 
 buf.push("\n                  <td" + (jade.attrs({ terse: true, "class": [('span3'),('center'),((type == 'Picture') ? 'picture' : '')] }, {"class":true})) + ">");
-if ( (editable))
-{
-buf.push("<a" + (jade.attrs({ terse: true, 'href':(url) }, {"href":true})) + ">");
-jade.indent.push('                      ');
-fielddesc_mixin(field.value, field.type);
-jade.indent.pop();
-buf.push("</a>");
-}
-else
-{
 jade.indent.push('                    ');
-fielddesc_mixin(field.value, field.type);
+fielddesc_mixin(field.value, field.type, document_url);
 jade.indent.pop();
-}
 buf.push("\n                  </td>");
     }
 
@@ -454,27 +443,16 @@ buf.push("\n                  </td>");
       $$l++;      var field = $$obj[$index];
 
 buf.push("\n                  <td" + (jade.attrs({ terse: true, "class": [('span3'),('center'),((type == 'Picture') ? 'picture' : '')] }, {"class":true})) + ">");
-if ( (editable))
-{
-buf.push("<a" + (jade.attrs({ terse: true, 'href':(url) }, {"href":true})) + ">");
-jade.indent.push('                      ');
-fielddesc_mixin(field.value, field.type);
-jade.indent.pop();
-buf.push("</a>");
-}
-else
-{
 jade.indent.push('                    ');
-fielddesc_mixin(field.value, field.type);
+fielddesc_mixin(field.value, field.type, document_url);
 jade.indent.pop();
-}
 buf.push("\n                  </td>");
     }
 
   }
 }).call(this);
 
-buf.push("\n                  <td class=\"span2 center\">\n                    <div class=\"btn-group\"><a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-primary')] }, {"href":true})) + ">Edit</a>");
+buf.push("\n                  <td class=\"span2 center\">\n                    <div class=\"btn-group\"><a" + (jade.attrs({ terse: true, 'href':(document_url), "class": [('btn'),('btn-primary')] }, {"href":true})) + ">Edit</a>");
 if ( cloneable)
 {
 buf.push("<a" + (jade.attrs({ terse: true, 'href':("" + (rootPath) + "/model/" + (model_name) + "/document/new?orig=" + (row.id) + ""), "class": [('btn'),('btn-default')] }, {"href":true})) + ">Duplicate</a>");

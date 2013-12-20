@@ -1,12 +1,35 @@
 extends layout.jade
 
-mixin fielddesc(value, type)
-    - var cloudinary_url = value && value.url && value.url.split('/upload/')[0] + '/upload/c_fill,h_80,w_80/' + value.public_id + '.png';
+mixin fielddesc(value, type, document_url)
+    - var value_url = value && value.url;
+    - var cloudinary_url = value_url && value.url.split('/upload/')[0] + '/upload/c_fill,h_80,w_80/' + value.public_id + '.png';
+    - var geomery = value && value.geometry && value.geometry.lat + ',' + value.geometry.lng;
+    - var maps_url = geomery && 'https://maps.google.com/?q=' + geomery;
+    - var filename = value && value.filename;
     case type
-        when 'Picture': img(src=cloudinary_url)
-        when 'File': span #{value ? value.filename : ''}
-        when 'Filepicker': span #{value ? value.filename : ''}
-        default: span #{value}
+        when 'Picture'
+            a(href=value_url, target='_blank'): img(src=cloudinary_url)
+
+        when 'Html'
+            !=value
+
+        when 'Filepicker'
+            - if (value)
+                a(href=value_url, target='_blank')
+                    - if (value.isWriteable)
+                        =filename
+                    - else
+                        img(src=value_url)
+
+        when 'File'
+            a(href=value_url, target='_blank'): =filename
+
+        when 'GeoPoint'
+            a(href=maps_url, target='_blank'): =geomery
+
+        default
+            a(href=document_url): =value
+
 
 block breadcrumb
     span.divider /
@@ -76,7 +99,7 @@ block body
 
                     tbody(class=sortable?'sortable':'')
                         - each row in dataTable.data
-                            - var url = rootPath + '/model/' + model_name + '/document/' + row.id
+                            - var document_url = rootPath + '/model/' + model_name + '/document/' + row.id
                             tr(id=row.id)
                                 td.span1.center
                                     input.select-row(type='checkbox')
@@ -85,14 +108,11 @@ block body
 
                                 - each field in row.data
                                     td.span3.center(class=(type == 'Picture') ? 'picture' : '')
-                                        if (editable)
-                                            a(href=url): +fielddesc(field.value, field.type)
-                                        else
-                                            +fielddesc(field.value, field.type)
+                                        +fielddesc(field.value, field.type, document_url)
 
                                 td.span2.center
                                     div.btn-group
-                                        a.btn.btn-primary(href=url) Edit
+                                        a.btn.btn-primary(href=document_url) Edit
                                         if cloneable
                                             a.btn.btn-default(href="#{rootPath}/model/#{model_name}/document/new?orig=#{row.id}") Duplicate
 

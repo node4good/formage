@@ -264,3 +264,8 @@
     width: 372px;
     min-height: 6px;
 }
+
+/* indicates a link to a new window */
+a[target='_blank'] {
+    color: forestgreen;
+}
