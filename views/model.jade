@@ -17,7 +17,7 @@ block body
         h2 #{label}
 
     #content.row
-        div(class='span#{filters.length ? 9 : 12}')
+        div(class='span12')
             .btn-toolbar.clearfix
                 - if (creatable)
                     a.btn.pull-right.btn-warning(href="#{rootPath}/model/#{model_name}/document/new#{makeLink()}")
