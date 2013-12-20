@@ -18,7 +18,7 @@ var schema = module.exports = new Schema({
     text: { type: SchemaTypes.Text },
     image: { type: SchemaTypes.Picture },
     file: { type: SchemaTypes.File, upload_to: 'assets/cdn'},
-    filepickerer: { type: SchemaTypes.Filepicker },
+    filepicker: { type: SchemaTypes.Filepicker },
     filepicker_aviary: { type: SchemaTypes.Filepicker, widget: 'AviaryWidget'},
     map: { type: SchemaTypes.GeoPoint, widget_options: {lang: 'nl'} },
     num: { type: SchemaTypes.Integer },
@@ -68,7 +68,7 @@ schema.methods.toString = function () {return this.string_req};
 
 schema.formage = {
     filters: ['ref', 'string_req'],
-    list: ['embeded.name1', 'ref', 'image', 'swizzle'],
+    list: ['embeded.name1', 'ref', 'filepicker', 'filepicker_aviary', 'swizzle'],
     subCollections: [{label: 'Sub Tests', model: 'pages', field:'ref'}],
     list_populate: ['ref']
 };
