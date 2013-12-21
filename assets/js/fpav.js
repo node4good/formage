@@ -1,4 +1,4 @@
-window.featherEditor = new Aviary.Feather({
+if (Aviary) window.featherEditor = new Aviary.Feather({
     apiKey: window.AVIARY_API_KEY,
     apiVersion: 3,
     theme: 'dark', // Check out our new 'light' and 'dark' themes!
@@ -10,7 +10,7 @@ window.featherEditor = new Aviary.Feather({
         window.filepicker.writeUrl(OrigInkBlob, newURL, function (NewInkBlob) {
             preview.src = NewInkBlob.url;
             var inputID = imageID.replace('_thumb', '');
-            var $input = $('#'+inputID);
+            var $input = $('#' + inputID);
             $input.val(JSON.stringify(NewInkBlob));
             $input.parent().find('a').attr('href', NewInkBlob.url).text(NewInkBlob.filename);
             featherEditor.close();
