@@ -10,7 +10,7 @@ $(function () {
         var name = $input.attr('name');
         var q = $.parseQueryString();
         q[name] = value;
-        location.search = '?' + $.param(q);
+        location.search =  '?' + $.param(q);
     });
 
 

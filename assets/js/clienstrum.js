@@ -8,7 +8,6 @@
             if (!pair[0].length) continue;
             ret[pair[0]] = pair[1];
         }
-        ret.toParam = function () {return '?' + $.param(this);}
         return ret;
     }
 }(jQuery);
