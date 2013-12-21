@@ -87,7 +87,6 @@ function initWidgets(ctx) {
         $('select', ctx).select2();
     }
     if ($.fn.datepicker) $('.nf_datepicker', ctx).datepicker({format: 'yyyy-mm-dd'});
-    if ($.fn.timepicker) $('.nf_timepicker', ctx).timepicker();
     $('[data-ref]', ctx).each(refLink);
 
     // Wire FilePicker widget. FieldBinding is done automagicly by type="filepicker"
