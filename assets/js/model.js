@@ -4,8 +4,13 @@ $(function () {
     var url = root + '/json/model/' + model;
 
     $('.free_search').click(function () {
-        var value = $(this).siblings('input').val();
-        location.href = $(this).data('href').replace('__replace__', encodeURIComponent(value));
+        var $this = $(this);
+        var $input = $this.parent().siblings('input');
+        var value = encodeURIComponent($input.val());
+        var name = $input.attr('name');
+        var q = $.parseQueryString();
+        q[name] = value;
+        location.search = '?' + $.param(q);
     });
 
 

@@ -1,14 +1,15 @@
 {
   "name": "formage",
-  "version": "2.4.0",
+  "version": "2.4.2",
   "dependencies": {
     "lodash": {
       "version": "2.4.1",
       "from": "lodash@"
     },
     "lodash-contrib": {
-      "version": "241.2.0",
-      "from": "lodash-contrib@"
+      "version": "241.2.1",
+      "from": "lodash-contrib@241.2.1",
+      "resolved": "https://registry.npmjs.org/lodash-contrib/-/lodash-contrib-241.2.1.tgz"
     },
     "async": {
       "version": "0.2.9",

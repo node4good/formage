@@ -30,18 +30,6 @@ var schema = new mongoose.Schema({
         }
       }
     ]
-  },
-  available: [
-    {
-      date: Date,
-      hours: [
-        {
-          start: SchemaTypes.Time,
-          end: SchemaTypes.Time,
-          location: SchemaTypes.GeoPoint
-        }
-      ]
-    }
-  ]
+  }
 });
 var model = module.exports = mongoose.model('embed', schema);

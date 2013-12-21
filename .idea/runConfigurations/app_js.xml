@@ -11,13 +11,11 @@
       <env name="FORMAGE_DB_LAYER" value="mongoose" />
       <env name="NODE_DEBUG" value="formage" />
     </envs>
-    <browser start="false" url="" with-js-debugger="false" />
+    <browser start="true" name="Chrome" url="http://dev.empeeric.com/admin/model/tests" with-js-debugger="true" />
     <RunnerSettings RunnerId="NodeJS.debug" />
     <RunnerSettings RunnerId="NodeJS.run" />
     <ConfigurationWrapper RunnerId="NodeJS.debug" />
     <ConfigurationWrapper RunnerId="NodeJS.run" />
-    <method>
-      <option name="ToolBeforeRunTask" enabled="true" actionId="Tool_scripts_compile templates" />
-    </method>
+    <method />
   </configuration>
 </component>
