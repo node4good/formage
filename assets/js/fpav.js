@@ -1,4 +1,4 @@
-if (Aviary) window.featherEditor = new Aviary.Feather({
+if (window.Aviary) window.featherEditor = new Aviary.Feather({
     apiKey: window.AVIARY_API_KEY,
     apiVersion: 3,
     theme: 'dark', // Check out our new 'light' and 'dark' themes!
