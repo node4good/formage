@@ -266,3 +266,12 @@
 a[target='_blank'] {
     color: forestgreen;
 }
+
+#filters ul.nav-list {
+    padding: 0;
+}
+
+
+#filters input.literal {
+    width:140px;
+}

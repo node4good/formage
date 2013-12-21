@@ -20,6 +20,7 @@ html(lang='en')
         script(src='#{rootPath}/vendor/ckeditor/ckeditor.js')
         script(src='#{rootPath}/vendor/select2/select2.js')
         script(src="#{rootPath}/vendor/bootbox.min.js")
+        script(src='#{rootPath}/js/clienstrum.js')
 
         script var root = '#{rootPath}';
 
@@ -41,13 +42,13 @@ html(lang='en')
                             .btn-group.pull-right
                                 a.btn.btn-inverse(href='#{rootPath}/')
                                     i.icon-home.icon-white
-                                    |  Admin
+                                    | Admin
                                 a.btn(href="/")
                                     i.icon-share
-                                    |  Site
+                                    | Site
                                 a.btn(href='#{rootPath}/logout')
                                     .icon-lock
-                                    |  Logout
+                                    | Logout
                         h1
                             block title
                                 a(href='#{rootPath}/') #{adminTitle}
@@ -57,7 +58,7 @@ html(lang='en')
             #old-version.alert.alert-error(style='position: fixed;bottom: 1em;right: 1em;width: 30em;height: 4em;border-radius: 10px;display: block;opacity: 0.8;display:none')
                 button.close(type='button',data-dismiss='alert') &times;
                 strong Warning;
-                |  There is a newer version of formage.
+                | There is a newer version of formage.
 
             #content
                 block body
@@ -69,7 +70,7 @@ html(lang='en')
                             !{userPanel}
                     p
                         a(href='http://github.com/Empeeric/formage') Formage
-                        |  #{version}, from&nbsp;
+                        | #{version}, from&nbsp;
                         a(href='http://empeeric.com') Empeeric
                     a(href='http://github.com/Empeeric/formage')
                         img(src='#{rootPath}/images/logo-40.png')

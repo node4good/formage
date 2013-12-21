@@ -156,9 +156,9 @@ block body
                                             strong #{value.text}
 
                             - if (filter.isString)
-                                div
-                                    input(type='text',style='width:217px; !important ',name='#{filter.key}',value='#{current_filters[filter.key] || ""}')
-                                    button.free_search(data-href='#{makeLink(filter.key, "__replace__")}') search
+                                div.input-append
+                                    input.literal(type='text', name='#{filter.key}', value='#{current_filters[filter.key] || ""}')
+                                    span.add-on: button.icon-calendar.free_search(data-href='#{makeLink(filter.key, "__replace__")}')
 
 block scripts
     script.
