@@ -44,10 +44,7 @@ $(function () {
         var action_id = $(this).val();
         if (!action_id) return;
 
-        var ids = [];
-        $('.select-row:checked').each(function () {
-            ids.push($(this).closest('tr').attr('id'));
-        });
+        var ids = $('.select-row:checked').closest('tr').map(function () {return this.id;}).get();
         if (!ids.length) return;
 
         var msg = 'Are you sure you want to ' + $(this).text().toLowerCase() + ' ' + ids.length + ' documents?';
