@@ -275,3 +275,13 @@ a[target='_blank'] {
 #filters input.literal {
     width:140px;
 }
+
+.file-link {
+    margin: 0 5px;
+}
+
+.thumb-picker {
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    box-shadow: #eee 0 0 2px 0;
+}
