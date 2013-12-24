@@ -1,7 +1,7 @@
 {
   "name": "formage",
   "description": "Admin GUI addon for mongoose, jugglingdb, or just as a form generator",
-  "version": "2.4.6",
+  "version": "2.4.7",
   "main": "index.js",
   "author": {
     "name": "Etai Peretz",
@@ -85,8 +85,8 @@
   },
   "licenses": [
     {
-      "type" : "MIT",
-      "url" : "https://raw.github.com/Empeeric/formage/master/LICENSE"
+      "type": "MIT",
+      "url": "https://raw.github.com/Empeeric/formage/master/LICENSE"
     }
   ]
 }
