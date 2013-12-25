@@ -27,6 +27,9 @@ mixin fielddesc(value, type, document_url)
         when 'GeoPoint'
             a(href=maps_url, target='_blank'): =geomery
 
+        when 'Boolean'
+            input(type='checkbox', disabled, checked=(value ? 'checked' : null))
+
         default
             a(href=document_url): =value
 
@@ -40,7 +43,7 @@ block body
         h2 #{label}
 
     #content.row
-        div(class='span12')
+        div(class=(filters.length?'span12':''))
             .btn-toolbar.clearfix
                 - if (creatable)
                     a.btn.pull-right.btn-warning(href="#{rootPath}/model/#{model_name}/document/new#{makeLink()}")
@@ -89,28 +92,28 @@ block body
                 table.table.table-bordered.table-hover
                     thead
                         tr
-                            th.center
+                            th.center(width='50')
                                 input.select-all-rows(type='checkbox')
                             - each field in dataTable.header
-                                th.table-header-repeat.line-left.minwidth-1.center
+                                th.table-header-repeat.line-left.minwidth-1
                                     a(href='#{field.href)}') #{field.label)
                             if cloneable
-                                th &nbsp;
+                                th(width='130') &nbsp;
 
                     tbody(class=sortable?'sortable':'')
                         - each row in dataTable.data
                             - var document_url = rootPath + '/model/' + model_name + '/document/' + row.id
                             tr(id=row.id)
-                                td.span1.center
+                                td.center
                                     input.select-row(type='checkbox')
                                     if sortable
                                         span.list-drag: i.icon-resize-vertical
 
                                 - each field in row.data
-                                    td.span3.center(class=(type == 'Picture') ? 'picture' : '')
+                                    td(class=(type == 'Picture') ? 'picture' : (field.type == 'Boolean' ? 'center' : ''))
                                         +fielddesc(field.value, field.type, document_url)
 
-                                td.span2.center
+                                td.center
                                     div.btn-group
                                         a.btn.btn-primary(href=document_url) Edit
                                         if cloneable
