@@ -28,7 +28,7 @@ mixin fielddesc(value, type, document_url)
             a(href=maps_url, target='_blank'): =geomery
 
         when 'Boolean'
-            input(type='checkbox', disabled, checked=(value ? 'checked' : null))
+            i(class=(value ? 'icon-ok' : 'icon-remove'))
 
         default
             a(href=document_url): =value
