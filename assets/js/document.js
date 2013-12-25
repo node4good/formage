@@ -96,7 +96,11 @@ function initWidgets(ctx) {
         var file = e.originalEvent.fpfile;
         $(this).val(JSON.stringify(file));
         var a = $(this).parent().find('a').text(file.filename).attr('href', file.url);
-    })
+    });
+
+    $('button.picker').on('click', trigger_filepicker);
+    $('button.editor').on('click', trigger_refilepicker);
+    $('button.clearer').on('click', trigger_clearpicker);
 }
 
 
@@ -377,5 +381,5 @@ $(function () {
     });
 
     initActions();
-})
-;
+});
+
