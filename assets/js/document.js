@@ -44,7 +44,7 @@ function initFieldSet(ctx) {
             div = $('> div', t),
             i = $('<i class="icon-chevron-right" />').prependTo(t);
 
-        t.find('label').add(i).add(h2).off('click').on('click', function (e) {
+        t.find('label').add(i).add(h2).off('click').on('click', function chevronToggle(e) {
             e.stopPropagation();
             var is_open = div.is(':visible');
             var divs = isTopLevel ? t.find('div') : div;
@@ -124,14 +124,15 @@ function ListField(el) {
     self.el = $(el);
 
     self.add = function (e) {
-        //        e.stopPropagation();
         e.preventDefault();
 
+        var appendFunc = (self.list.data('stack-dir') === 'top') ? 'prependTo' : 'appendTo';
+        var $ul = $(this).prev();
         var li = $('<li />').hide()
             .append(self.template)
             .append(btn.delete())
             .append(btn.drag())
-            .appendTo($(this).prev())
+            [appendFunc]($ul)
             .slideDown(function () {
                 $('input:first', li).focus();
             });

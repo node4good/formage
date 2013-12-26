@@ -35,7 +35,7 @@ var schema = module.exports = new Schema({
         }]
     }],
     object_with_list: {
-        inner_list: [String]
+        inner_list: { type: [String], stackDir: 'top' }
     },
     list_o_numbers: [Number],
     object: {
