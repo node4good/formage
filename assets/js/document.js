@@ -126,13 +126,11 @@ function ListField(el) {
     self.add = function (e) {
         e.preventDefault();
 
-        var appendFunc = (self.list.data('stack-dir') === 'top') ? 'prependTo' : 'appendTo';
-        var $ul = $(this).prev();
         var li = $('<li />').hide()
             .append(self.template)
             .append(btn.delete())
             .append(btn.drag())
-            [appendFunc]($ul)
+            [appendToFunc](self.list)
             .slideDown(function () {
                 $('input:first', li).focus();
             });
@@ -174,8 +172,11 @@ function ListField(el) {
     tpl.remove();
 
     self.list = $('> ul', el);
+    var appendFunc = (self.list.data('stack-dir') === 'top') ? 'prepend' : 'append';
+    var appendToFunc = (self.list.data('stack-dir') === 'top') ? 'prependTo' : 'appendTo';
+
     self.el
-        .append(btn.add().click(self.add))
+        [appendFunc](btn.add().click(self.add))
         .append('<label class="list_summary" />');
 
     self.length = $('> li', self.list)
