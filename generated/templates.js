@@ -201,7 +201,7 @@ buf.push("\n    </div>" + (((jade.interp = global_script) == null ? '' : jade.in
 
 module.exports.model = function anonymous(locals) {
 var buf = [];
-var locals_ = (locals || {}),pageTitle = locals_.pageTitle,rootPath = locals_.rootPath,renderedHead = locals_.renderedHead,global_head = locals_.global_head,dialog = locals_.dialog,adminTitle = locals_.adminTitle,label = locals_.label,filters = locals_.filters,creatable = locals_.creatable,model_name = locals_.model_name,makeLink = locals_.makeLink,singular = locals_.singular,search = locals_.search,search_value = locals_.search_value,current_filters = locals_.current_filters,sortable = locals_.sortable,actions = locals_.actions,dataTable = locals_.dataTable,start = locals_.start,total_count = locals_.total_count,cloneable = locals_.cloneable,type = locals_.type,count = locals_.count,userPanel = locals_.userPanel,version = locals_.version,global_script = locals_.global_script;jade.indent = [];
+var locals_ = (locals || {}),pageTitle = locals_.pageTitle,rootPath = locals_.rootPath,renderedHead = locals_.renderedHead,global_head = locals_.global_head,dialog = locals_.dialog,adminTitle = locals_.adminTitle,label = locals_.label,filters = locals_.filters,creatable = locals_.creatable,model_name = locals_.model_name,makeLink = locals_.makeLink,singular = locals_.singular,search = locals_.search,search_value = locals_.search_value,current_filters = locals_.current_filters,sortable = locals_.sortable,actions = locals_.actions,dataTable = locals_.dataTable,start = locals_.start,total_count = locals_.total_count,cloneable = locals_.cloneable,count = locals_.count,userPanel = locals_.userPanel,version = locals_.version,global_script = locals_.global_script;jade.indent = [];
 var fielddesc_mixin = function(value, type, document_url){
 var block = this.block, attributes = this.attributes || {}, escaped = this.escaped || {};
 var value_url = value && value.url;
@@ -226,7 +226,7 @@ buf.push(jade.escape(null == (jade.interp = filename) ? "" : jade.interp));
 }
 else
 {
-buf.push("<img" + (jade.attrs({ 'src':(value_url) }, {"src":true})) + "/>");
+buf.push("<img" + (jade.attrs({ 'src':(value_url+'/convert?fit=crop&w=80&h=80') }, {"src":true})) + "/>");
 }
 buf.push("</a>");
 }
@@ -383,7 +383,18 @@ buf.push("\n                  </td>");
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var field = $$obj[$index];
 
-buf.push("\n                  <td" + (jade.attrs({ terse: true, "class": [((type == 'Picture') ? 'picture' : (field.type == 'Boolean' ? 'center' : ''))] }, {"class":true})) + ">");
+var cls = ''
+var width = ''
+switch (field.type){
+case 'Boolean':
+var cls = (['center']);
+  break;
+case 'Filepicker':
+var cls = (['center']);
+var width = ('85');
+  break;
+}
+buf.push("\n                  <td" + (jade.attrs({ terse: true, 'width':(width), "class": [(cls)] }, {"class":true,"width":true})) + ">");
 jade.indent.push('                    ');
 fielddesc_mixin(field.value, field.type, document_url);
 jade.indent.pop();
@@ -395,7 +406,18 @@ buf.push("\n                  </td>");
     for (var $index in $$obj) {
       $$l++;      var field = $$obj[$index];
 
-buf.push("\n                  <td" + (jade.attrs({ terse: true, "class": [((type == 'Picture') ? 'picture' : (field.type == 'Boolean' ? 'center' : ''))] }, {"class":true})) + ">");
+var cls = ''
+var width = ''
+switch (field.type){
+case 'Boolean':
+var cls = (['center']);
+  break;
+case 'Filepicker':
+var cls = (['center']);
+var width = ('85');
+  break;
+}
+buf.push("\n                  <td" + (jade.attrs({ terse: true, 'width':(width), "class": [(cls)] }, {"class":true,"width":true})) + ">");
 jade.indent.push('                    ');
 fielddesc_mixin(field.value, field.type, document_url);
 jade.indent.pop();
@@ -433,7 +455,18 @@ buf.push("\n                  </td>");
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var field = $$obj[$index];
 
-buf.push("\n                  <td" + (jade.attrs({ terse: true, "class": [((type == 'Picture') ? 'picture' : (field.type == 'Boolean' ? 'center' : ''))] }, {"class":true})) + ">");
+var cls = ''
+var width = ''
+switch (field.type){
+case 'Boolean':
+var cls = (['center']);
+  break;
+case 'Filepicker':
+var cls = (['center']);
+var width = ('85');
+  break;
+}
+buf.push("\n                  <td" + (jade.attrs({ terse: true, 'width':(width), "class": [(cls)] }, {"class":true,"width":true})) + ">");
 jade.indent.push('                    ');
 fielddesc_mixin(field.value, field.type, document_url);
 jade.indent.pop();
@@ -445,7 +478,18 @@ buf.push("\n                  </td>");
     for (var $index in $$obj) {
       $$l++;      var field = $$obj[$index];
 
-buf.push("\n                  <td" + (jade.attrs({ terse: true, "class": [((type == 'Picture') ? 'picture' : (field.type == 'Boolean' ? 'center' : ''))] }, {"class":true})) + ">");
+var cls = ''
+var width = ''
+switch (field.type){
+case 'Boolean':
+var cls = (['center']);
+  break;
+case 'Filepicker':
+var cls = (['center']);
+var width = ('85');
+  break;
+}
+buf.push("\n                  <td" + (jade.attrs({ terse: true, 'width':(width), "class": [(cls)] }, {"class":true,"width":true})) + ">");
 jade.indent.push('                    ');
 fielddesc_mixin(field.value, field.type, document_url);
 jade.indent.pop();

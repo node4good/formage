@@ -19,7 +19,7 @@ mixin fielddesc(value, type, document_url)
                     - if (value.isWriteable)
                         =filename
                     - else
-                        img(src=value_url)
+                        img(src=value_url+'/convert?fit=crop&w=80&h=80')
 
         when 'File'
             a(href=value_url, target='_blank'): =filename
@@ -110,7 +110,17 @@ block body
                                         span.list-drag: i.icon-resize-vertical
 
                                 - each field in row.data
-                                    td(class=(type == 'Picture') ? 'picture' : (field.type == 'Boolean' ? 'center' : ''))
+                                    - var cls = ''
+                                    - var width = ''
+
+                                    case field.type
+                                        when 'Boolean'
+                                            cls = ['center']
+                                        when 'Filepicker'
+                                            cls = ['center']
+                                            width = '85'
+
+                                    td(class=cls, width=width)
                                         +fielddesc(field.value, field.type, document_url)
 
                                 td.center
