@@ -1,12 +1,12 @@
 var mongoose = require('mongoose');
-var SchemaTypes = mongoose.Schema.Types;
+var Types = mongoose.Schema.Types;
 
 var schema = new mongoose.Schema({
     title: { type: String, required: true },
-    picture: SchemaTypes.Picture,
-    pictures: [{ type: SchemaTypes.Filepicker, widget: 'FilepickerPictureWidget' }],
+    picture: Types.Picture,
+    pictures: [Types.Picture],
     tags: [String],
-    file: SchemaTypes.Filepicker,
+    file: Types.Filepicker,
     fieldset: {
         name: String,
         age: Number
