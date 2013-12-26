@@ -44,7 +44,7 @@
 <div class="nf_hidden_template">
 <input  value="" class="optional" min="" max="" step="any" type="number" name="embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.list5_tmpl___self__" id="id_embeded_list1_tmpl_embeded2_list3_tmpl_embeded4_list5_tmpl___self__" />
 </div>
-<ul>
+<ul data-stack-dir="bottom">
 </ul>
 </div>
 </div>
@@ -60,7 +60,7 @@
 <input type="hidden" name="embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.pics_tmpl___self__" value="" />
 <input  value="" class="optional" type="file" name="embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.pics_tmpl___self___file" id="id_embeded_list1_tmpl_embeded2_list3_tmpl_embeded4_pics_tmpl___self___file" />
 </div>
-<ul>
+<ul data-stack-dir="bottom">
 </ul>
 </div>
 </div>
@@ -73,19 +73,19 @@
 <option value="529321b430de15681b00000b">gaga</option>
 </select>
 </div>
-<ul>
+<ul data-stack-dir="bottom">
 </ul>
 </div>
 </div>
 </div>
 </div>
-<ul>
+<ul data-stack-dir="bottom">
 </ul>
 </div>
 </div>
 </div>
 </div>
-<ul>
+<ul data-stack-dir="bottom">
 <li>
 <div class="field">
 <label for="id_embeded.list1_li0_name2" class="field_label optional_label">Name2</label>
@@ -121,7 +121,7 @@
 <div class="nf_hidden_template">
 <input  value="" class="optional" min="" max="" step="any" type="number" name="embeded.list1_li0_embeded2.list3_tmpl_embeded4.list5_tmpl___self__" id="id_embeded_list1_li0_embeded2_list3_tmpl_embeded4_list5_tmpl___self__" />
 </div>
-<ul>
+<ul data-stack-dir="bottom">
 </ul>
 </div>
 </div>
@@ -137,7 +137,7 @@
 <input type="hidden" name="embeded.list1_li0_embeded2.list3_tmpl_embeded4.pics_tmpl___self__" value="" />
 <input  value="" class="optional" type="file" name="embeded.list1_li0_embeded2.list3_tmpl_embeded4.pics_tmpl___self___file" id="id_embeded_list1_li0_embeded2_list3_tmpl_embeded4_pics_tmpl___self___file" />
 </div>
-<ul>
+<ul data-stack-dir="bottom">
 </ul>
 </div>
 </div>
@@ -150,13 +150,13 @@
 <option value="529321b430de15681b00000b">gaga</option>
 </select>
 </div>
-<ul>
+<ul data-stack-dir="bottom">
 </ul>
 </div>
 </div>
 </div>
 </div>
-<ul>
+<ul data-stack-dir="bottom">
 <li>
 <div class="field">
 <label for="id_embeded.list1_li0_embeded2.list3_li0_name4" class="field_label optional_label">Name4</label>
@@ -178,7 +178,7 @@
 <div class="nf_hidden_template">
 <input  value="" class="optional" min="" max="" step="any" type="number" name="embeded.list1_li0_embeded2.list3_li0_embeded4.list5_tmpl___self__" id="id_embeded_list1_li0_embeded2_list3_li0_embeded4_list5_tmpl___self__" />
 </div>
-<ul>
+<ul data-stack-dir="bottom">
 <li>
 <input  value="5" class="optional" min="" max="" step="any" type="number" name="embeded.list1_li0_embeded2.list3_li0_embeded4.list5_li0___self__" id="id_embeded_list1_li0_embeded2_list3_li0_embeded4_list5_li0___self__" />
 </li>
@@ -200,7 +200,7 @@
 <input type="hidden" name="embeded.list1_li0_embeded2.list3_li0_embeded4.pics_tmpl___self__" value="" />
 <input  value="" class="optional" type="file" name="embeded.list1_li0_embeded2.list3_li0_embeded4.pics_tmpl___self___file" id="id_embeded_list1_li0_embeded2_list3_li0_embeded4_pics_tmpl___self___file" />
 </div>
-<ul>
+<ul data-stack-dir="bottom">
 </ul>
 </div>
 </div>
@@ -213,7 +213,7 @@
 <option value="529321b430de15681b00000b">gaga</option>
 </select>
 </div>
-<ul>
+<ul data-stack-dir="bottom">
 </ul>
 </div>
 </div>
