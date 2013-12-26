@@ -433,13 +433,19 @@ $(function () {
                 window.parent.hideDialog({id: docInfo.id, label: docInfo.label});
             });
         }
-    });
+    })
+        .on('click', 'button.picker', trigger_picturepicker)
+        .on('click', 'button.aviary-picker', trigger_aviarypicker)
+        .on('click', 'button.editor', trigger_refilepicker)
+        .on('click', 'button.clearer', trigger_clearpicker);
+
     if (isDialog) {
         $('#cancelButton').click(function (e) {
             e.preventDefault();
             window.parent.hideDialog({cancel: true});
         });
     }
+
     $('#deleteButton').click(function () {
         deleteDocument(function () {
             if (isDialog) {
@@ -449,11 +455,6 @@ $(function () {
             }
         });
     });
-
-    $('button.picker').on('click', trigger_picturepicker);
-    $('button.aviary-picker').on('click', trigger_aviarypicker);
-    $('button.editor').on('click', trigger_refilepicker);
-    $('button.clearer').on('click', trigger_clearpicker);
 
     initActions();
 });
