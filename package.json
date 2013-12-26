@@ -72,7 +72,8 @@
   "scripts": {
     "start": "node example/classic/app",
     "test": "node ./node_modules/mocha/bin/_mocha",
-    "cover": "istanbul cover ./node_modules/mocha/bin/_mocha -x generated/**"
+    "cover": "istanbul cover ./node_modules/mocha/bin/_mocha -x generated/**",
+    "publish": "git push"
   },
   "bugs": {
     "url": "https://github.com/Empeeric/formage/issues"
