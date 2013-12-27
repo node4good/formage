@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<review xmlns="http://plugins.intellij.net/revu" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://plugins.intellij.net/revu http://plugins.intellij.net/revu/ns/revu_1_0.xsd" name="width" status="reviewing" shared="true">
+  <history createdBy="Refael" lastUpdatedBy="Refael" createdOn="2013-12-27 14:47:21 +0200" lastUpdatedOn="2013-12-27 14:48:14 +0200"/>
+  <goal></goal>
+  <referential>
+    <priorities>
+      <priority order="0" name="minor"/>
+      <priority order="1" name="normal"/>
+      <priority order="2" name="major"/>
+      <priority order="3" name="critical"/>
+    </priorities>
+    <tags>
+      <tag name="correctness"/>
+      <tag name="cosmetic"/>
+      <tag name="documentation"/>
+      <tag name="duplication"/>
+      <tag name="maintenability"/>
+      <tag name="optimization"/>
+      <tag name="portability"/>
+      <tag name="question"/>
+      <tag name="standard"/>
+    </tags>
+    <users>
+      <user displayName="Refael" login="Refael" roles="admin,reviewer,author"/>
+    </users>
+  </referential>
+  <filescope pathPattern="file[*]:*//*||file:lib/*"/>
+  <issues/>
+</review>
