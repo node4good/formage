@@ -394,6 +394,10 @@ case 'Filepicker':
 var cls = (['center']);
 var width = ('85');
   break;
+case 'Picture':
+var cls = (['center']);
+var width = ('85');
+  break;
 }
 buf.push("\n                  <td" + (jade.attrs({ terse: true, 'width':(width), "class": [(cls)] }, {"class":true,"width":true})) + ">");
 jade.indent.push('                    ');
@@ -415,6 +419,10 @@ var cls = (['center']);
 var width = ('60');
   break;
 case 'Filepicker':
+var cls = (['center']);
+var width = ('85');
+  break;
+case 'Picture':
 var cls = (['center']);
 var width = ('85');
   break;
@@ -468,6 +476,10 @@ case 'Filepicker':
 var cls = (['center']);
 var width = ('85');
   break;
+case 'Picture':
+var cls = (['center']);
+var width = ('85');
+  break;
 }
 buf.push("\n                  <td" + (jade.attrs({ terse: true, 'width':(width), "class": [(cls)] }, {"class":true,"width":true})) + ">");
 jade.indent.push('                    ');
@@ -489,6 +501,10 @@ var cls = (['center']);
 var width = ('60');
   break;
 case 'Filepicker':
+var cls = (['center']);
+var width = ('85');
+  break;
+case 'Picture':
 var cls = (['center']);
 var width = ('85');
   break;
