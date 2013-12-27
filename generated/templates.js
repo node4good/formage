@@ -388,6 +388,7 @@ var width = ''
 switch (field.type){
 case 'Boolean':
 var cls = (['center']);
+var width = ('60');
   break;
 case 'Filepicker':
 var cls = (['center']);
@@ -411,6 +412,7 @@ var width = ''
 switch (field.type){
 case 'Boolean':
 var cls = (['center']);
+var width = ('60');
   break;
 case 'Filepicker':
 var cls = (['center']);
@@ -460,6 +462,7 @@ var width = ''
 switch (field.type){
 case 'Boolean':
 var cls = (['center']);
+var width = ('60');
   break;
 case 'Filepicker':
 var cls = (['center']);
@@ -483,6 +486,7 @@ var width = ''
 switch (field.type){
 case 'Boolean':
 var cls = (['center']);
+var width = ('60');
   break;
 case 'Filepicker':
 var cls = (['center']);
