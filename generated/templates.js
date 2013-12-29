@@ -446,7 +446,7 @@ buf.push("\n              <div id=\"actions\" class=\"input-prepend hide\"><span
 
 if ( (action.id == 'delete'))
 {
-buf.push("\n                  <button" + (jade.attrs({ terse: true, 'value':('' + (action.id) + ''), "class": [('btn'),('btn-danger')] }, {"value":true})) + "><i class=\"icon-trash icon-white\"></i>" + (jade.escape((jade.interp = action.label) == null ? '' : jade.interp)) + "</button>");
+buf.push("\n                  <button" + (jade.attrs({ terse: true, 'value':('' + (action.id) + ''), "class": [('btn'),('btn-danger')] }, {"value":true})) + "><i class=\"icon-trash icon-white\"></i>&nbsp;" + (jade.escape((jade.interp = action.label) == null ? '' : jade.interp)) + "</button>");
 }
 else
 {
@@ -461,7 +461,7 @@ buf.push("\n                  <button" + (jade.attrs({ terse: true, 'value':('' 
 
 if ( (action.id == 'delete'))
 {
-buf.push("\n                  <button" + (jade.attrs({ terse: true, 'value':('' + (action.id) + ''), "class": [('btn'),('btn-danger')] }, {"value":true})) + "><i class=\"icon-trash icon-white\"></i>" + (jade.escape((jade.interp = action.label) == null ? '' : jade.interp)) + "</button>");
+buf.push("\n                  <button" + (jade.attrs({ terse: true, 'value':('' + (action.id) + ''), "class": [('btn'),('btn-danger')] }, {"value":true})) + "><i class=\"icon-trash icon-white\"></i>&nbsp;" + (jade.escape((jade.interp = action.label) == null ? '' : jade.interp)) + "</button>");
 }
 else
 {
