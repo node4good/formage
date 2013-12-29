@@ -30,6 +30,9 @@ mixin fielddesc(value, type, document_url)
         when 'Boolean'
             i(class=(value ? 'icon-ok' : 'icon-remove'))
 
+        when 'Date'
+            a(href=document_url): =value.toISOString().split('T')[0]
+
         default
             a(href=document_url): =value
 
@@ -43,17 +46,17 @@ block body
         h2 #{label}
 
     #content.row
-        div(class=(filters.length?'span12':''))
+        div(class=(filters.length ? 'span12' : ''))
             .btn-toolbar.clearfix
                 - if (creatable)
                     a.btn.pull-right.btn-warning(href="#{rootPath}/model/#{model_name}/document/new#{makeLink()}")
                         i.icon-plus.icon-white
-                        |  New&nbsp;
+                        | New&nbsp;
                         - if (singular)
                             strong #{singular}
                         - else
                             strong #{model_name}
-                            |  item
+                            | item
 
                 - if (search)
                     div
@@ -69,7 +72,7 @@ block body
                 - if (sortable)
                     button#reorder.btn.btn-success.pull-left.hide(data-loading-text='Saving...', data-saved-text='Saved!')
                         i.icon-ok.icon-white
-                        |  Save Order
+                        | Save Order
 
                 - if (actions.length && dataTable.data.length)
                     #actions.input-prepend.hide
@@ -79,7 +82,7 @@ block body
                                 if (action.id == 'delete')
                                     button.btn.btn-danger(value='#{action.id}')
                                         i.icon-trash.icon-white
-                                        |  #{action.label}
+                                        | #{action.label}
                                 else
                                     button.btn(value='#{action.id}') #{action.label}
 
@@ -90,44 +93,37 @@ block body
                 p.counter Viewing #{start+1}–#{start + dataTable.data.length} of #{total_count} documents
 
                 table.table.table-bordered.table-hover
+                    colgroup.selectors: col.center(width='60')
+                    colgroup
+                        - each field in dataTable.header
+                            col(class=field.thClass)
+                    if cloneable
+                        colgroup.buttons: col(width='130')
+
                     thead
                         tr
-                            th.center(width='50')
+                            th
                                 input.select-all-rows(type='checkbox')
                             - each field in dataTable.header
-                                th.table-header-repeat.line-left.minwidth-1
-                                    a(href='#{field.href)}') #{field.label)
+                                th
+                                    a(href=field.href) #{field.label)
                             if cloneable
-                                th(width='130') &nbsp;
+                                th &nbsp;
 
                     tbody(class=sortable?'sortable':'')
                         - each row in dataTable.data
                             - var document_url = rootPath + '/model/' + model_name + '/document/' + row.id
                             tr(id=row.id)
-                                td.center
+                                td
                                     input.select-row(type='checkbox')
                                     if sortable
                                         span.list-drag: i.icon-resize-vertical
 
                                 - each field in row.data
-                                    - var cls = ''
-                                    - var width = ''
-
-                                    case field.type
-                                        when 'Boolean'
-                                            cls = ['center']
-                                            width = '60'
-                                        when 'Filepicker'
-                                            cls = ['center']
-                                            width = '85'
-                                        when 'Picture'
-                                            cls = ['center']
-                                            width = '85'
-
-                                    td(class=cls, width=width)
+                                    td
                                         +fielddesc(field.value, field.type, document_url)
 
-                                td.center
+                                td
                                     div.btn-group
                                         a.btn.btn-primary(href=document_url) Edit
                                         if cloneable
@@ -180,6 +176,6 @@ block body
 block scripts
     script.
         var startIndex = #{start},
-            model = '#{model_name}';
+        model = '#{model_name}';
 
     script(src="#{rootPath}/js/model.js")

@@ -240,6 +240,9 @@ buf.push("<a" + (jade.attrs({ 'href':(maps_url), 'target':('_blank') }, {"href":
 case 'Boolean':
 buf.push("<i" + (jade.attrs({ "class": [((value ? 'icon-ok' : 'icon-remove'))] }, {"class":true})) + "></i>");
   break;
+case 'Date':
+buf.push("<a" + (jade.attrs({ 'href':(document_url) }, {"href":true})) + ">" + (jade.escape(null == (jade.interp = value.toISOString().split('T')[0]) ? "" : jade.interp)) + "</a>");
+  break;
 default:
 buf.push("<a" + (jade.attrs({ 'href':(document_url) }, {"href":true})) + ">" + (jade.escape(null == (jade.interp = value) ? "" : jade.interp)) + "</a>");
   break;
@@ -250,17 +253,17 @@ if (!dialog)
 {
 buf.push("\n    <header class=\"navbar navbar-static-top\">\n      <div class=\"navbar-inner\">\n        <div class=\"container\">\n          <div class=\"btn-group pull-right\"><a" + (jade.attrs({ terse: true, 'href':('' + (rootPath) + '/'), "class": [('btn'),('btn-inverse')] }, {"href":true})) + "><i class=\"icon-home icon-white\"></i>Admin</a><a href=\"/\" class=\"btn\"><i class=\"icon-share\"></i>Site</a><a" + (jade.attrs({ terse: true, 'href':('' + (rootPath) + '/logout'), "class": [('btn')] }, {"href":true})) + ">\n              <div class=\"icon-lock\"></div>Logout</a></div>\n          <h1><a" + (jade.attrs({ terse: true, 'href':('' + (rootPath) + '/') }, {"href":true})) + ">" + (jade.escape((jade.interp = adminTitle) == null ? '' : jade.interp)) + "</a><span class=\"divider\">/</span>" + (jade.escape((jade.interp = label) == null ? '' : jade.interp)) + "</h1>\n        </div>\n      </div>\n    </header>");
 }
-buf.push("\n    <div class=\"container\">\n      <div id=\"old-version\" style=\"position: fixed;bottom: 1em;right: 1em;width: 30em;height: 4em;border-radius: 10px;display: block;opacity: 0.8;display:none\" class=\"alert alert-error\">\n        <button type=\"button\" data-dismiss=\"alert\" class=\"close\">&times;</button><strong>Warning;</strong>There is a newer version of formage.\n      </div>\n      <div id=\"content\">\n        <div class=\"page-header\">\n          <h2>" + (jade.escape((jade.interp = label) == null ? '' : jade.interp)) + "</h2>\n        </div>\n        <div id=\"content\" class=\"row\">\n          <div" + (jade.attrs({ terse: true, "class": [((filters.length?'span12':''))] }, {"class":true})) + ">\n            <div class=\"btn-toolbar clearfix\">");
+buf.push("\n    <div class=\"container\">\n      <div id=\"old-version\" style=\"position: fixed;bottom: 1em;right: 1em;width: 30em;height: 4em;border-radius: 10px;display: block;opacity: 0.8;display:none\" class=\"alert alert-error\">\n        <button type=\"button\" data-dismiss=\"alert\" class=\"close\">&times;</button><strong>Warning;</strong>There is a newer version of formage.\n      </div>\n      <div id=\"content\">\n        <div class=\"page-header\">\n          <h2>" + (jade.escape((jade.interp = label) == null ? '' : jade.interp)) + "</h2>\n        </div>\n        <div id=\"content\" class=\"row\">\n          <div" + (jade.attrs({ terse: true, "class": [((filters.length ? 'span12' : ''))] }, {"class":true})) + ">\n            <div class=\"btn-toolbar clearfix\">");
 if (creatable)
 {
-buf.push("<a" + (jade.attrs({ terse: true, 'href':("" + (rootPath) + "/model/" + (model_name) + "/document/new" + (makeLink()) + ""), "class": [('btn'),('pull-right'),('btn-warning')] }, {"href":true})) + "><i class=\"icon-plus icon-white\"></i> New&nbsp;");
+buf.push("<a" + (jade.attrs({ terse: true, 'href':("" + (rootPath) + "/model/" + (model_name) + "/document/new" + (makeLink()) + ""), "class": [('btn'),('pull-right'),('btn-warning')] }, {"href":true})) + "><i class=\"icon-plus icon-white\"></i>New&nbsp;");
 if (singular)
 {
 buf.push("<strong>" + (jade.escape((jade.interp = singular) == null ? '' : jade.interp)) + "</strong>");
 }
 else
 {
-buf.push("<strong>" + (jade.escape((jade.interp = model_name) == null ? '' : jade.interp)) + "</strong> item");
+buf.push("<strong>" + (jade.escape((jade.interp = model_name) == null ? '' : jade.interp)) + "</strong>item");
 }
 buf.push("</a>");
 }
@@ -282,7 +285,7 @@ buf.push("\n                  <button type=\"submit\" class=\"btn\">Search</butt
 }
 if (sortable)
 {
-buf.push("\n              <button id=\"reorder\" data-loading-text=\"Saving...\" data-saved-text=\"Saved!\" class=\"btn btn-success pull-left hide\"><i class=\"icon-ok icon-white\"></i> Save Order</button>");
+buf.push("\n              <button id=\"reorder\" data-loading-text=\"Saving...\" data-saved-text=\"Saved!\" class=\"btn btn-success pull-left hide\"><i class=\"icon-ok icon-white\"></i>Save Order</button>");
 }
 if (actions.length && dataTable.data.length)
 {
@@ -297,7 +300,7 @@ buf.push("\n              <div id=\"actions\" class=\"input-prepend hide\"><span
 
 if ( (action.id == 'delete'))
 {
-buf.push("\n                  <button" + (jade.attrs({ terse: true, 'value':('' + (action.id) + ''), "class": [('btn'),('btn-danger')] }, {"value":true})) + "><i class=\"icon-trash icon-white\"></i> " + (jade.escape((jade.interp = action.label) == null ? '' : jade.interp)) + "</button>");
+buf.push("\n                  <button" + (jade.attrs({ terse: true, 'value':('' + (action.id) + ''), "class": [('btn'),('btn-danger')] }, {"value":true})) + "><i class=\"icon-trash icon-white\"></i>" + (jade.escape((jade.interp = action.label) == null ? '' : jade.interp)) + "</button>");
 }
 else
 {
@@ -312,7 +315,7 @@ buf.push("\n                  <button" + (jade.attrs({ terse: true, 'value':('' 
 
 if ( (action.id == 'delete'))
 {
-buf.push("\n                  <button" + (jade.attrs({ terse: true, 'value':('' + (action.id) + ''), "class": [('btn'),('btn-danger')] }, {"value":true})) + "><i class=\"icon-trash icon-white\"></i> " + (jade.escape((jade.interp = action.label) == null ? '' : jade.interp)) + "</button>");
+buf.push("\n                  <button" + (jade.attrs({ terse: true, 'value':('' + (action.id) + ''), "class": [('btn'),('btn-danger')] }, {"value":true})) + "><i class=\"icon-trash icon-white\"></i>" + (jade.escape((jade.interp = action.label) == null ? '' : jade.interp)) + "</button>");
 }
 else
 {
@@ -332,7 +335,7 @@ buf.push("\n            <p class=\"center\">No documents yet</p>");
 }
 else
 {
-buf.push("\n            <p class=\"counter\">Viewing " + (jade.escape((jade.interp = start+1) == null ? '' : jade.interp)) + "–" + (jade.escape((jade.interp = start + dataTable.data.length) == null ? '' : jade.interp)) + " of " + (jade.escape((jade.interp = total_count) == null ? '' : jade.interp)) + " documents</p>\n            <table class=\"table table-bordered table-hover\">\n              <thead>\n                <tr>\n                  <th width=\"50\" class=\"center\">\n                    <input type=\"checkbox\" class=\"select-all-rows\">\n                  </th>");
+buf.push("\n            <p class=\"counter\">Viewing " + (jade.escape((jade.interp = start+1) == null ? '' : jade.interp)) + "–" + (jade.escape((jade.interp = start + dataTable.data.length) == null ? '' : jade.interp)) + " of " + (jade.escape((jade.interp = total_count) == null ? '' : jade.interp)) + " documents</p>\n            <table class=\"table table-bordered table-hover\">\n              <colgroup class=\"selectors\">\n                <col width=\"60\" class=\"center\">\n              </colgroup>\n              <colgroup>");
 // iterate dataTable.header
 ;(function(){
   var $$obj = dataTable.header;
@@ -341,7 +344,7 @@ buf.push("\n            <p class=\"counter\">Viewing " + (jade.escape((jade.inte
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var field = $$obj[$index];
 
-buf.push("\n                  <th class=\"table-header-repeat line-left minwidth-1\"><a href=\"#{field.href)}\">" + (jade.escape((jade.interp = field.label) == null ? '' : jade.interp)) + "</a></th>");
+buf.push("\n                <col" + (jade.attrs({ terse: true, "class": [(field.thClass)] }, {"class":true})) + ">");
     }
 
   } else {
@@ -349,7 +352,35 @@ buf.push("\n                  <th class=\"table-header-repeat line-left minwidth
     for (var $index in $$obj) {
       $$l++;      var field = $$obj[$index];
 
-buf.push("\n                  <th class=\"table-header-repeat line-left minwidth-1\"><a href=\"#{field.href)}\">" + (jade.escape((jade.interp = field.label) == null ? '' : jade.interp)) + "</a></th>");
+buf.push("\n                <col" + (jade.attrs({ terse: true, "class": [(field.thClass)] }, {"class":true})) + ">");
+    }
+
+  }
+}).call(this);
+
+buf.push("\n              </colgroup>");
+if ( cloneable)
+{
+buf.push("\n              <colgroup class=\"buttons\">\n                <col width=\"130\">\n              </colgroup>");
+}
+buf.push("\n              <thead>\n                <tr>\n                  <th>\n                    <input type=\"checkbox\" class=\"select-all-rows\">\n                  </th>");
+// iterate dataTable.header
+;(function(){
+  var $$obj = dataTable.header;
+  if ('number' == typeof $$obj.length) {
+
+    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
+      var field = $$obj[$index];
+
+buf.push("\n                  <th><a" + (jade.attrs({ terse: true, 'href':(field.href) }, {"href":true})) + ">" + (jade.escape((jade.interp = field.label) == null ? '' : jade.interp)) + "</a></th>");
+    }
+
+  } else {
+    var $$l = 0;
+    for (var $index in $$obj) {
+      $$l++;      var field = $$obj[$index];
+
+buf.push("\n                  <th><a" + (jade.attrs({ terse: true, 'href':(field.href) }, {"href":true})) + ">" + (jade.escape((jade.interp = field.label) == null ? '' : jade.interp)) + "</a></th>");
     }
 
   }
@@ -357,7 +388,7 @@ buf.push("\n                  <th class=\"table-header-repeat line-left minwidth
 
 if ( cloneable)
 {
-buf.push("\n                  <th width=\"130\">&nbsp;</th>");
+buf.push("\n                  <th>&nbsp;</th>");
 }
 buf.push("\n                </tr>\n              </thead>\n              <tbody" + (jade.attrs({ terse: true, "class": [(sortable?'sortable':'')] }, {"class":true})) + ">");
 // iterate dataTable.data
@@ -369,7 +400,7 @@ buf.push("\n                </tr>\n              </thead>\n              <tbody"
       var row = $$obj[$index];
 
 var document_url = rootPath + '/model/' + model_name + '/document/' + row.id
-buf.push("\n                <tr" + (jade.attrs({ terse: true, 'id':(row.id) }, {"id":true})) + ">\n                  <td class=\"center\">\n                    <input type=\"checkbox\" class=\"select-row\">");
+buf.push("\n                <tr" + (jade.attrs({ terse: true, 'id':(row.id) }, {"id":true})) + ">\n                  <td>\n                    <input type=\"checkbox\" class=\"select-row\">");
 if ( sortable)
 {
 buf.push("<span class=\"list-drag\"><i class=\"icon-resize-vertical\"></i></span>");
@@ -383,23 +414,7 @@ buf.push("\n                  </td>");
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var field = $$obj[$index];
 
-var cls = ''
-var width = ''
-switch (field.type){
-case 'Boolean':
-var cls = (['center']);
-var width = ('60');
-  break;
-case 'Filepicker':
-var cls = (['center']);
-var width = ('85');
-  break;
-case 'Picture':
-var cls = (['center']);
-var width = ('85');
-  break;
-}
-buf.push("\n                  <td" + (jade.attrs({ terse: true, 'width':(width), "class": [(cls)] }, {"class":true,"width":true})) + ">");
+buf.push("\n                  <td>");
 jade.indent.push('                    ');
 fielddesc_mixin(field.value, field.type, document_url);
 jade.indent.pop();
@@ -411,23 +426,7 @@ buf.push("\n                  </td>");
     for (var $index in $$obj) {
       $$l++;      var field = $$obj[$index];
 
-var cls = ''
-var width = ''
-switch (field.type){
-case 'Boolean':
-var cls = (['center']);
-var width = ('60');
-  break;
-case 'Filepicker':
-var cls = (['center']);
-var width = ('85');
-  break;
-case 'Picture':
-var cls = (['center']);
-var width = ('85');
-  break;
-}
-buf.push("\n                  <td" + (jade.attrs({ terse: true, 'width':(width), "class": [(cls)] }, {"class":true,"width":true})) + ">");
+buf.push("\n                  <td>");
 jade.indent.push('                    ');
 fielddesc_mixin(field.value, field.type, document_url);
 jade.indent.pop();
@@ -437,7 +436,7 @@ buf.push("\n                  </td>");
   }
 }).call(this);
 
-buf.push("\n                  <td class=\"center\">\n                    <div class=\"btn-group\"><a" + (jade.attrs({ terse: true, 'href':(document_url), "class": [('btn'),('btn-primary')] }, {"href":true})) + ">Edit</a>");
+buf.push("\n                  <td>\n                    <div class=\"btn-group\"><a" + (jade.attrs({ terse: true, 'href':(document_url), "class": [('btn'),('btn-primary')] }, {"href":true})) + ">Edit</a>");
 if ( cloneable)
 {
 buf.push("<a" + (jade.attrs({ terse: true, 'href':("" + (rootPath) + "/model/" + (model_name) + "/document/new?orig=" + (row.id) + ""), "class": [('btn'),('btn-default')] }, {"href":true})) + ">Duplicate</a>");
@@ -451,7 +450,7 @@ buf.push("\n                    </div>\n                  </td>\n               
       $$l++;      var row = $$obj[$index];
 
 var document_url = rootPath + '/model/' + model_name + '/document/' + row.id
-buf.push("\n                <tr" + (jade.attrs({ terse: true, 'id':(row.id) }, {"id":true})) + ">\n                  <td class=\"center\">\n                    <input type=\"checkbox\" class=\"select-row\">");
+buf.push("\n                <tr" + (jade.attrs({ terse: true, 'id':(row.id) }, {"id":true})) + ">\n                  <td>\n                    <input type=\"checkbox\" class=\"select-row\">");
 if ( sortable)
 {
 buf.push("<span class=\"list-drag\"><i class=\"icon-resize-vertical\"></i></span>");
@@ -465,23 +464,7 @@ buf.push("\n                  </td>");
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var field = $$obj[$index];
 
-var cls = ''
-var width = ''
-switch (field.type){
-case 'Boolean':
-var cls = (['center']);
-var width = ('60');
-  break;
-case 'Filepicker':
-var cls = (['center']);
-var width = ('85');
-  break;
-case 'Picture':
-var cls = (['center']);
-var width = ('85');
-  break;
-}
-buf.push("\n                  <td" + (jade.attrs({ terse: true, 'width':(width), "class": [(cls)] }, {"class":true,"width":true})) + ">");
+buf.push("\n                  <td>");
 jade.indent.push('                    ');
 fielddesc_mixin(field.value, field.type, document_url);
 jade.indent.pop();
@@ -493,23 +476,7 @@ buf.push("\n                  </td>");
     for (var $index in $$obj) {
       $$l++;      var field = $$obj[$index];
 
-var cls = ''
-var width = ''
-switch (field.type){
-case 'Boolean':
-var cls = (['center']);
-var width = ('60');
-  break;
-case 'Filepicker':
-var cls = (['center']);
-var width = ('85');
-  break;
-case 'Picture':
-var cls = (['center']);
-var width = ('85');
-  break;
-}
-buf.push("\n                  <td" + (jade.attrs({ terse: true, 'width':(width), "class": [(cls)] }, {"class":true,"width":true})) + ">");
+buf.push("\n                  <td>");
 jade.indent.push('                    ');
 fielddesc_mixin(field.value, field.type, document_url);
 jade.indent.pop();
@@ -519,7 +486,7 @@ buf.push("\n                  </td>");
   }
 }).call(this);
 
-buf.push("\n                  <td class=\"center\">\n                    <div class=\"btn-group\"><a" + (jade.attrs({ terse: true, 'href':(document_url), "class": [('btn'),('btn-primary')] }, {"href":true})) + ">Edit</a>");
+buf.push("\n                  <td>\n                    <div class=\"btn-group\"><a" + (jade.attrs({ terse: true, 'href':(document_url), "class": [('btn'),('btn-primary')] }, {"href":true})) + ">Edit</a>");
 if ( cloneable)
 {
 buf.push("<a" + (jade.attrs({ terse: true, 'href':("" + (rootPath) + "/model/" + (model_name) + "/document/new?orig=" + (row.id) + ""), "class": [('btn'),('btn-default')] }, {"href":true})) + ">Duplicate</a>");
@@ -702,7 +669,7 @@ buf.push("\n        <p class=\"user-panel\">" + (((jade.interp = userPanel) == n
 }
 buf.push("\n        <p><a href=\"http://github.com/Empeeric/formage\">Formage</a>" + (jade.escape((jade.interp = version) == null ? '' : jade.interp)) + ", from&nbsp;<a href=\"http://empeeric.com\">Empeeric</a></p><a href=\"http://github.com/Empeeric/formage\"><img" + (jade.attrs({ terse: true, 'src':('' + (rootPath) + '/images/logo-40.png') }, {"src":true})) + "></a>\n      </footer>");
 }
-buf.push("\n    </div>\n    <script>\n      var startIndex = " + (jade.escape((jade.interp = start) == null ? '' : jade.interp)) + ",\n          model = '" + (jade.escape((jade.interp = model_name) == null ? '' : jade.interp)) + "';\n          \n    </script>\n    <script" + (jade.attrs({ terse: true, 'src':("" + (rootPath) + "/js/model.js") }, {"src":true})) + "></script>" + (((jade.interp = global_script) == null ? '' : jade.interp)) + "\n  </body>\n</html>");;return buf.join("");
+buf.push("\n    </div>\n    <script>\n      var startIndex = " + (jade.escape((jade.interp = start) == null ? '' : jade.interp)) + ",\n      model = '" + (jade.escape((jade.interp = model_name) == null ? '' : jade.interp)) + "';\n      \n    </script>\n    <script" + (jade.attrs({ terse: true, 'src':("" + (rootPath) + "/js/model.js") }, {"src":true})) + "></script>" + (((jade.interp = global_script) == null ? '' : jade.interp)) + "\n  </body>\n</html>");;return buf.join("");
 }; 
 
 module.exports.models = function anonymous(locals) {
