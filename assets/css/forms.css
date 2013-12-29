@@ -285,3 +285,18 @@ a[target='_blank'] {
     border-radius: 2px;
     box-shadow: #eee 0 0 2px 0;
 }
+
+
+.th-medium {
+    width: 100px;
+}
+
+.th-slim {
+    width: 85px;
+    text-align: center;
+}
+
+.th-superslim {
+    width: 60px;
+    text-align: center;
+}
