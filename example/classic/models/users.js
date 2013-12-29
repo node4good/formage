@@ -18,7 +18,7 @@ schema.formage = {
     order_by: ['order'],
     actions: [
         {
-            value: 'approve',
+            id: 'approve',
             label: 'Approve',
             func: function (user, ids, cb) {
                 console.log('these should be approved ' + ids);
