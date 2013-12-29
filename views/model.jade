@@ -28,7 +28,8 @@ mixin fielddesc(value, type, document_url)
             a(href=maps_url, target='_blank'): =geomery
 
         when 'Boolean'
-            i(class=(value ? 'icon-ok' : 'icon-remove'))
+            .bool
+                i(class=(value ? 'icon-ok' : 'icon-remove'))
 
         when 'Date'
             a(href=document_url): =value.toISOString().split('T')[0]
@@ -45,8 +46,40 @@ block body
     .page-header
         h2 #{label}
 
-    #content.row
-        div(class=(filters.length ? 'span12' : ''))
+    #content.clearfix
+        - if (filters.length)
+            #filters
+                .well
+                    h3
+                        i.icon-filter
+                        | Filters
+                        small.pull-right
+                            a(href='#{rootPath}/model/#{model_name}') Clear
+
+                    ul.nav.nav-list
+                        - each filter in filters
+                            li.nav-header
+                                strong #{filter.key}:
+                            - if (current_filters[filter.key])
+                                li
+                                    a(href='#{makeLink(filter.key,"")}') All
+                            - else
+                                li.active
+                                    strong All
+                            - each value in filter.values
+                                - if (value)
+                                    li
+                                        - if (current_filters[filter.key] !== String(value.value) )
+                                            a(href='#{makeLink(filter.key, value.value)}') #{value.text}
+                                        - else
+                                            strong #{value.text}
+
+                            - if (filter.isString)
+                                div.input-append
+                                    input.literal(type='text', name='#{filter.key}', value='#{current_filters[filter.key] || ""}')
+                                    span.add-on: button.icon-calendar.free_search(data-href='#{makeLink(filter.key, "__replace__")}')
+
+        div
             .btn-toolbar.clearfix
                 - if (creatable)
                     a.btn.pull-right.btn-warning(href="#{rootPath}/model/#{model_name}/document/new#{makeLink()}")
@@ -102,7 +135,7 @@ block body
 
                     thead
                         tr
-                            th
+                            th.center
                                 input.select-all-rows(type='checkbox')
                             - each field in dataTable.header
                                 th
@@ -114,7 +147,7 @@ block body
                         - each row in dataTable.data
                             - var document_url = rootPath + '/model/' + model_name + '/document/' + row.id
                             tr(id=row.id)
-                                td
+                                td.center
                                     input.select-row(type='checkbox')
                                     if sortable
                                         span.list-drag: i.icon-resize-vertical
@@ -140,38 +173,6 @@ block body
                                 - else if (start/count <= page+5 && start/count >= page-5 || i == 0 || i+count >= total_count)
                                     li
                                         a(href='#{makeLink("start",i)}') #{page}
-
-        - if (filters.length)
-            #filters.span3
-                .well
-                    h3
-                        i.icon-filter
-                        | Filters
-                        small.pull-right
-                            a(href='#{rootPath}/model/#{model_name}') Clear
-
-                    ul.nav.nav-list
-                        - each filter in filters
-                            li.nav-header
-                                strong #{filter.key}:
-                            - if (current_filters[filter.key])
-                                li
-                                    a(href='#{makeLink(filter.key,"")}') All
-                            - else
-                                li.active
-                                    strong All
-                            - each value in filter.values
-                                - if (value)
-                                    li
-                                        - if (current_filters[filter.key] !== String(value.value) )
-                                            a(href='#{makeLink(filter.key, value.value)}') #{value.text}
-                                        - else
-                                            strong #{value.text}
-
-                            - if (filter.isString)
-                                div.input-append
-                                    input.literal(type='text', name='#{filter.key}', value='#{current_filters[filter.key] || ""}')
-                                    span.add-on: button.icon-calendar.free_search(data-href='#{makeLink(filter.key, "__replace__")}')
 
 block scripts
     script.

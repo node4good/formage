@@ -14,7 +14,18 @@ schema.methods.toString = function() {
 };
 
 schema.formage = {
-    singular: 'user'
+    singular: 'user',
+    order_by: ['order'],
+    actions: [
+        {
+            value: 'approve',
+            label: 'Approve',
+            func: function (user, ids, cb) {
+                console.log('these should be approved ' + ids);
+                cb();
+            }
+        }
+    ]
 };
 
 var users = module.exports = mongoose.model('users', schema);
