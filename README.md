@@ -35,9 +35,6 @@ require('formage').init(app, express, models, {
 ```js
 var model = new mongoose.model('songs', schema);
 
-model.label = 'My Songs';
-model.singular = 'Song';
-
 // external files specific to this model
 model.header_lines = [
    '<script src="/js/songs.js"></script>',
@@ -47,6 +44,10 @@ model.header_lines = [
 model.formage = {
     // one-document models
     is_single: true,
+
+    // labels
+    label: 'My Songs',
+    singular: 'Song',
 
     filters: ['artist', 'year'],
 
