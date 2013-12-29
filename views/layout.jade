@@ -41,13 +41,13 @@ html(lang='en')
                             .btn-group.pull-right
                                 a.btn.btn-inverse(href='#{rootPath}/')
                                     i.icon-home.icon-white
-                                    | Admin
+                                    | &nbsp;Admin
                                 a.btn(href="/")
                                     i.icon-share
-                                    | Site
+                                    | &nbsp;Site
                                 a.btn(href='#{rootPath}/logout')
                                     .icon-lock
-                                    | Logout
+                                    | &nbsp;Logout
                         h1
                             block title
                                 a(href='#{rootPath}/') #{adminTitle}
@@ -69,7 +69,7 @@ html(lang='en')
                             !{userPanel}
                     p
                         a(href='http://github.com/Empeeric/formage') Formage
-                        | #{version}, from&nbsp;
+                        | &nbsp;#{version}, from&nbsp;
                         a(href='http://empeeric.com') Empeeric
                     a(href='http://github.com/Empeeric/formage')
                         img(src='#{rootPath}/images/logo-40.png')
