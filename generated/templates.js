@@ -201,7 +201,7 @@ buf.push("\n    </div>" + (((jade.interp = global_script) == null ? '' : jade.in
 
 module.exports.model = function anonymous(locals) {
 var buf = [];
-var locals_ = (locals || {}),pageTitle = locals_.pageTitle,rootPath = locals_.rootPath,renderedHead = locals_.renderedHead,global_head = locals_.global_head,dialog = locals_.dialog,adminTitle = locals_.adminTitle,label = locals_.label,filters = locals_.filters,creatable = locals_.creatable,model_name = locals_.model_name,makeLink = locals_.makeLink,singular = locals_.singular,search = locals_.search,search_value = locals_.search_value,current_filters = locals_.current_filters,sortable = locals_.sortable,actions = locals_.actions,dataTable = locals_.dataTable,start = locals_.start,total_count = locals_.total_count,cloneable = locals_.cloneable,count = locals_.count,userPanel = locals_.userPanel,version = locals_.version,global_script = locals_.global_script;jade.indent = [];
+var locals_ = (locals || {}),pageTitle = locals_.pageTitle,rootPath = locals_.rootPath,renderedHead = locals_.renderedHead,global_head = locals_.global_head,dialog = locals_.dialog,adminTitle = locals_.adminTitle,label = locals_.label,filters = locals_.filters,model_name = locals_.model_name,current_filters = locals_.current_filters,makeLink = locals_.makeLink,creatable = locals_.creatable,singular = locals_.singular,search = locals_.search,search_value = locals_.search_value,sortable = locals_.sortable,actions = locals_.actions,dataTable = locals_.dataTable,start = locals_.start,total_count = locals_.total_count,cloneable = locals_.cloneable,count = locals_.count,userPanel = locals_.userPanel,version = locals_.version,global_script = locals_.global_script;jade.indent = [];
 var fielddesc_mixin = function(value, type, document_url){
 var block = this.block, attributes = this.attributes || {}, escaped = this.escaped || {};
 var value_url = value && value.url;
@@ -238,7 +238,9 @@ case 'GeoPoint':
 buf.push("<a" + (jade.attrs({ 'href':(maps_url), 'target':('_blank') }, {"href":true,"target":true})) + ">" + (jade.escape(null == (jade.interp = geomery) ? "" : jade.interp)) + "</a>");
   break;
 case 'Boolean':
-buf.push("<i" + (jade.attrs({ "class": [((value ? 'icon-ok' : 'icon-remove'))] }, {"class":true})) + "></i>");
+buf.push("\n");
+buf.push.apply(buf, jade.indent);
+buf.push("<div class=\"bool\"><i" + (jade.attrs({ "class": [((value ? 'icon-ok' : 'icon-remove'))] }, {"class":true})) + "></i></div>");
   break;
 case 'Date':
 buf.push("<a" + (jade.attrs({ 'href':(document_url) }, {"href":true})) + ">" + (jade.escape(null == (jade.interp = value.toISOString().split('T')[0]) ? "" : jade.interp)) + "</a>");
@@ -253,272 +255,10 @@ if (!dialog)
 {
 buf.push("\n    <header class=\"navbar navbar-static-top\">\n      <div class=\"navbar-inner\">\n        <div class=\"container\">\n          <div class=\"btn-group pull-right\"><a" + (jade.attrs({ terse: true, 'href':('' + (rootPath) + '/'), "class": [('btn'),('btn-inverse')] }, {"href":true})) + "><i class=\"icon-home icon-white\"></i>Admin</a><a href=\"/\" class=\"btn\"><i class=\"icon-share\"></i>Site</a><a" + (jade.attrs({ terse: true, 'href':('' + (rootPath) + '/logout'), "class": [('btn')] }, {"href":true})) + ">\n              <div class=\"icon-lock\"></div>Logout</a></div>\n          <h1><a" + (jade.attrs({ terse: true, 'href':('' + (rootPath) + '/') }, {"href":true})) + ">" + (jade.escape((jade.interp = adminTitle) == null ? '' : jade.interp)) + "</a><span class=\"divider\">/</span>" + (jade.escape((jade.interp = label) == null ? '' : jade.interp)) + "</h1>\n        </div>\n      </div>\n    </header>");
 }
-buf.push("\n    <div class=\"container\">\n      <div id=\"old-version\" style=\"position: fixed;bottom: 1em;right: 1em;width: 30em;height: 4em;border-radius: 10px;display: block;opacity: 0.8;display:none\" class=\"alert alert-error\">\n        <button type=\"button\" data-dismiss=\"alert\" class=\"close\">&times;</button><strong>Warning;</strong>There is a newer version of formage.\n      </div>\n      <div id=\"content\">\n        <div class=\"page-header\">\n          <h2>" + (jade.escape((jade.interp = label) == null ? '' : jade.interp)) + "</h2>\n        </div>\n        <div id=\"content\" class=\"row\">\n          <div" + (jade.attrs({ terse: true, "class": [((filters.length ? 'span12' : ''))] }, {"class":true})) + ">\n            <div class=\"btn-toolbar clearfix\">");
-if (creatable)
-{
-buf.push("<a" + (jade.attrs({ terse: true, 'href':("" + (rootPath) + "/model/" + (model_name) + "/document/new" + (makeLink()) + ""), "class": [('btn'),('pull-right'),('btn-warning')] }, {"href":true})) + "><i class=\"icon-plus icon-white\"></i>New&nbsp;");
-if (singular)
-{
-buf.push("<strong>" + (jade.escape((jade.interp = singular) == null ? '' : jade.interp)) + "</strong>");
-}
-else
-{
-buf.push("<strong>" + (jade.escape((jade.interp = model_name) == null ? '' : jade.interp)) + "</strong>item");
-}
-buf.push("</a>");
-}
-if (search)
-{
-buf.push("\n              <div>\n                <form class=\"form-inline\">\n                  <input" + (jade.attrs({ terse: true, 'type':("text"), 'name':("_search"), 'value':("" + (search_value) + ""), "class": [("span5")] }, {"type":true,"name":true,"value":true,"class":true})) + ">");
-for(var key in current_filters)
-{
-if(key != "_search")
-{
-buf.push("\n                  <input" + (jade.attrs({ terse: true, 'type':("hidden"), 'name':("" + (key) + ""), 'value':("" + (current_filters[key]) + "") }, {"type":true,"name":true,"value":true})) + ">");
-}
-}
-if(dialog)
-{
-buf.push("\n                  <input type=\"hidden\" name=\"_dialog\" value=\"yes\">");
-}
-buf.push("\n                  <button type=\"submit\" class=\"btn\">Search</button>\n                </form>\n              </div>");
-}
-if (sortable)
-{
-buf.push("\n              <button id=\"reorder\" data-loading-text=\"Saving...\" data-saved-text=\"Saved!\" class=\"btn btn-success pull-left hide\"><i class=\"icon-ok icon-white\"></i>Save Order</button>");
-}
-if (actions.length && dataTable.data.length)
-{
-buf.push("\n              <div id=\"actions\" class=\"input-prepend hide\"><span class=\"add-on\">With selected: &nbsp;</span>\n                <div class=\"btn-group\">");
-// iterate actions
-;(function(){
-  var $$obj = actions;
-  if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var action = $$obj[$index];
-
-if ( (action.id == 'delete'))
-{
-buf.push("\n                  <button" + (jade.attrs({ terse: true, 'value':('' + (action.id) + ''), "class": [('btn'),('btn-danger')] }, {"value":true})) + "><i class=\"icon-trash icon-white\"></i>" + (jade.escape((jade.interp = action.label) == null ? '' : jade.interp)) + "</button>");
-}
-else
-{
-buf.push("\n                  <button" + (jade.attrs({ terse: true, 'value':('' + (action.id) + ''), "class": [('btn')] }, {"value":true})) + ">" + (jade.escape((jade.interp = action.label) == null ? '' : jade.interp)) + "</button>");
-}
-    }
-
-  } else {
-    var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var action = $$obj[$index];
-
-if ( (action.id == 'delete'))
-{
-buf.push("\n                  <button" + (jade.attrs({ terse: true, 'value':('' + (action.id) + ''), "class": [('btn'),('btn-danger')] }, {"value":true})) + "><i class=\"icon-trash icon-white\"></i>" + (jade.escape((jade.interp = action.label) == null ? '' : jade.interp)) + "</button>");
-}
-else
-{
-buf.push("\n                  <button" + (jade.attrs({ terse: true, 'value':('' + (action.id) + ''), "class": [('btn')] }, {"value":true})) + ">" + (jade.escape((jade.interp = action.label) == null ? '' : jade.interp)) + "</button>");
-}
-    }
-
-  }
-}).call(this);
-
-buf.push("\n                </div>\n              </div>");
-}
-buf.push("\n            </div>");
-if (!dataTable.data.length)
-{
-buf.push("\n            <p class=\"center\">No documents yet</p>");
-}
-else
-{
-buf.push("\n            <p class=\"counter\">Viewing " + (jade.escape((jade.interp = start+1) == null ? '' : jade.interp)) + "–" + (jade.escape((jade.interp = start + dataTable.data.length) == null ? '' : jade.interp)) + " of " + (jade.escape((jade.interp = total_count) == null ? '' : jade.interp)) + " documents</p>\n            <table class=\"table table-bordered table-hover\">\n              <colgroup class=\"selectors\">\n                <col width=\"60\" class=\"center\">\n              </colgroup>\n              <colgroup>");
-// iterate dataTable.header
-;(function(){
-  var $$obj = dataTable.header;
-  if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var field = $$obj[$index];
-
-buf.push("\n                <col" + (jade.attrs({ terse: true, "class": [(field.thClass)] }, {"class":true})) + ">");
-    }
-
-  } else {
-    var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var field = $$obj[$index];
-
-buf.push("\n                <col" + (jade.attrs({ terse: true, "class": [(field.thClass)] }, {"class":true})) + ">");
-    }
-
-  }
-}).call(this);
-
-buf.push("\n              </colgroup>");
-if ( cloneable)
-{
-buf.push("\n              <colgroup class=\"buttons\">\n                <col width=\"130\">\n              </colgroup>");
-}
-buf.push("\n              <thead>\n                <tr>\n                  <th>\n                    <input type=\"checkbox\" class=\"select-all-rows\">\n                  </th>");
-// iterate dataTable.header
-;(function(){
-  var $$obj = dataTable.header;
-  if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var field = $$obj[$index];
-
-buf.push("\n                  <th><a" + (jade.attrs({ terse: true, 'href':(field.href) }, {"href":true})) + ">" + (jade.escape((jade.interp = field.label) == null ? '' : jade.interp)) + "</a></th>");
-    }
-
-  } else {
-    var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var field = $$obj[$index];
-
-buf.push("\n                  <th><a" + (jade.attrs({ terse: true, 'href':(field.href) }, {"href":true})) + ">" + (jade.escape((jade.interp = field.label) == null ? '' : jade.interp)) + "</a></th>");
-    }
-
-  }
-}).call(this);
-
-if ( cloneable)
-{
-buf.push("\n                  <th>&nbsp;</th>");
-}
-buf.push("\n                </tr>\n              </thead>\n              <tbody" + (jade.attrs({ terse: true, "class": [(sortable?'sortable':'')] }, {"class":true})) + ">");
-// iterate dataTable.data
-;(function(){
-  var $$obj = dataTable.data;
-  if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var row = $$obj[$index];
-
-var document_url = rootPath + '/model/' + model_name + '/document/' + row.id
-buf.push("\n                <tr" + (jade.attrs({ terse: true, 'id':(row.id) }, {"id":true})) + ">\n                  <td>\n                    <input type=\"checkbox\" class=\"select-row\">");
-if ( sortable)
-{
-buf.push("<span class=\"list-drag\"><i class=\"icon-resize-vertical\"></i></span>");
-}
-buf.push("\n                  </td>");
-// iterate row.data
-;(function(){
-  var $$obj = row.data;
-  if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var field = $$obj[$index];
-
-buf.push("\n                  <td>");
-jade.indent.push('                    ');
-fielddesc_mixin(field.value, field.type, document_url);
-jade.indent.pop();
-buf.push("\n                  </td>");
-    }
-
-  } else {
-    var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var field = $$obj[$index];
-
-buf.push("\n                  <td>");
-jade.indent.push('                    ');
-fielddesc_mixin(field.value, field.type, document_url);
-jade.indent.pop();
-buf.push("\n                  </td>");
-    }
-
-  }
-}).call(this);
-
-buf.push("\n                  <td>\n                    <div class=\"btn-group\"><a" + (jade.attrs({ terse: true, 'href':(document_url), "class": [('btn'),('btn-primary')] }, {"href":true})) + ">Edit</a>");
-if ( cloneable)
-{
-buf.push("<a" + (jade.attrs({ terse: true, 'href':("" + (rootPath) + "/model/" + (model_name) + "/document/new?orig=" + (row.id) + ""), "class": [('btn'),('btn-default')] }, {"href":true})) + ">Duplicate</a>");
-}
-buf.push("\n                    </div>\n                  </td>\n                </tr>");
-    }
-
-  } else {
-    var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var row = $$obj[$index];
-
-var document_url = rootPath + '/model/' + model_name + '/document/' + row.id
-buf.push("\n                <tr" + (jade.attrs({ terse: true, 'id':(row.id) }, {"id":true})) + ">\n                  <td>\n                    <input type=\"checkbox\" class=\"select-row\">");
-if ( sortable)
-{
-buf.push("<span class=\"list-drag\"><i class=\"icon-resize-vertical\"></i></span>");
-}
-buf.push("\n                  </td>");
-// iterate row.data
-;(function(){
-  var $$obj = row.data;
-  if ('number' == typeof $$obj.length) {
-
-    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
-      var field = $$obj[$index];
-
-buf.push("\n                  <td>");
-jade.indent.push('                    ');
-fielddesc_mixin(field.value, field.type, document_url);
-jade.indent.pop();
-buf.push("\n                  </td>");
-    }
-
-  } else {
-    var $$l = 0;
-    for (var $index in $$obj) {
-      $$l++;      var field = $$obj[$index];
-
-buf.push("\n                  <td>");
-jade.indent.push('                    ');
-fielddesc_mixin(field.value, field.type, document_url);
-jade.indent.pop();
-buf.push("\n                  </td>");
-    }
-
-  }
-}).call(this);
-
-buf.push("\n                  <td>\n                    <div class=\"btn-group\"><a" + (jade.attrs({ terse: true, 'href':(document_url), "class": [('btn'),('btn-primary')] }, {"href":true})) + ">Edit</a>");
-if ( cloneable)
-{
-buf.push("<a" + (jade.attrs({ terse: true, 'href':("" + (rootPath) + "/model/" + (model_name) + "/document/new?orig=" + (row.id) + ""), "class": [('btn'),('btn-default')] }, {"href":true})) + ">Duplicate</a>");
-}
-buf.push("\n                    </div>\n                  </td>\n                </tr>");
-    }
-
-  }
-}).call(this);
-
-buf.push("\n              </tbody>\n            </table>\n            <p class=\"counter\">Viewing " + (jade.escape((jade.interp = start+1) == null ? '' : jade.interp)) + "–" + (jade.escape((jade.interp = start + dataTable.data.length) == null ? '' : jade.interp)) + " of " + (jade.escape((jade.interp = total_count) == null ? '' : jade.interp)) + " documents</p>");
-if (total_count > count)
-{
-buf.push("\n            <div class=\"pagination\">\n              <ul>");
-for (var i = 0, page = 1; i < total_count; i += count, page++)
-{
-if (start == i)
-{
-buf.push("\n                <li class=\"active\"><span>" + (jade.escape((jade.interp = page) == null ? '' : jade.interp)) + "</span></li>");
-}
-else if (start/count <= page+5 && start/count >= page-5 || i == 0 || i+count >= total_count)
-{
-buf.push("\n                <li><a" + (jade.attrs({ terse: true, 'href':('' + (makeLink("start",i)) + '') }, {"href":true})) + ">" + (jade.escape((jade.interp = page) == null ? '' : jade.interp)) + "</a></li>");
-}
-}
-buf.push("\n              </ul>\n            </div>");
-}
-}
-buf.push("\n          </div>");
+buf.push("\n    <div class=\"container\">\n      <div id=\"old-version\" style=\"position: fixed;bottom: 1em;right: 1em;width: 30em;height: 4em;border-radius: 10px;display: block;opacity: 0.8;display:none\" class=\"alert alert-error\">\n        <button type=\"button\" data-dismiss=\"alert\" class=\"close\">&times;</button><strong>Warning;</strong>There is a newer version of formage.\n      </div>\n      <div id=\"content\">\n        <div class=\"page-header\">\n          <h2>" + (jade.escape((jade.interp = label) == null ? '' : jade.interp)) + "</h2>\n        </div>\n        <div id=\"content\" class=\"clearfix\">");
 if (filters.length)
 {
-buf.push("\n          <div id=\"filters\" class=\"span3\">\n            <div class=\"well\">\n              <h3><i class=\"icon-filter\"></i>Filters<small class=\"pull-right\"><a" + (jade.attrs({ terse: true, 'href':('' + (rootPath) + '/model/' + (model_name) + '') }, {"href":true})) + ">Clear</a></small></h3>\n              <ul class=\"nav nav-list\">");
+buf.push("\n          <div id=\"filters\">\n            <div class=\"well\">\n              <h3><i class=\"icon-filter\"></i>Filters<small class=\"pull-right\"><a" + (jade.attrs({ terse: true, 'href':('' + (rootPath) + '/model/' + (model_name) + '') }, {"href":true})) + ">Clear</a></small></h3>\n              <ul class=\"nav nav-list\">");
 // iterate filters
 ;(function(){
   var $$obj = filters;
@@ -659,7 +399,269 @@ buf.push("\n                <div class=\"input-append\">\n                  <inp
 
 buf.push("\n              </ul>\n            </div>\n          </div>");
 }
-buf.push("\n        </div>\n      </div>");
+buf.push("\n          <div>\n            <div class=\"btn-toolbar clearfix\">");
+if (creatable)
+{
+buf.push("<a" + (jade.attrs({ terse: true, 'href':("" + (rootPath) + "/model/" + (model_name) + "/document/new" + (makeLink()) + ""), "class": [('btn'),('pull-right'),('btn-warning')] }, {"href":true})) + "><i class=\"icon-plus icon-white\"></i>New&nbsp;");
+if (singular)
+{
+buf.push("<strong>" + (jade.escape((jade.interp = singular) == null ? '' : jade.interp)) + "</strong>");
+}
+else
+{
+buf.push("<strong>" + (jade.escape((jade.interp = model_name) == null ? '' : jade.interp)) + "</strong>item");
+}
+buf.push("</a>");
+}
+if (search)
+{
+buf.push("\n              <div>\n                <form class=\"form-inline\">\n                  <input" + (jade.attrs({ terse: true, 'type':("text"), 'name':("_search"), 'value':("" + (search_value) + ""), "class": [("span5")] }, {"type":true,"name":true,"value":true,"class":true})) + ">");
+for(var key in current_filters)
+{
+if(key != "_search")
+{
+buf.push("\n                  <input" + (jade.attrs({ terse: true, 'type':("hidden"), 'name':("" + (key) + ""), 'value':("" + (current_filters[key]) + "") }, {"type":true,"name":true,"value":true})) + ">");
+}
+}
+if(dialog)
+{
+buf.push("\n                  <input type=\"hidden\" name=\"_dialog\" value=\"yes\">");
+}
+buf.push("\n                  <button type=\"submit\" class=\"btn\">Search</button>\n                </form>\n              </div>");
+}
+if (sortable)
+{
+buf.push("\n              <button id=\"reorder\" data-loading-text=\"Saving...\" data-saved-text=\"Saved!\" class=\"btn btn-success pull-left hide\"><i class=\"icon-ok icon-white\"></i>Save Order</button>");
+}
+if (actions.length && dataTable.data.length)
+{
+buf.push("\n              <div id=\"actions\" class=\"input-prepend hide\"><span class=\"add-on\">With selected: &nbsp;</span>\n                <div class=\"btn-group\">");
+// iterate actions
+;(function(){
+  var $$obj = actions;
+  if ('number' == typeof $$obj.length) {
+
+    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
+      var action = $$obj[$index];
+
+if ( (action.id == 'delete'))
+{
+buf.push("\n                  <button" + (jade.attrs({ terse: true, 'value':('' + (action.id) + ''), "class": [('btn'),('btn-danger')] }, {"value":true})) + "><i class=\"icon-trash icon-white\"></i>" + (jade.escape((jade.interp = action.label) == null ? '' : jade.interp)) + "</button>");
+}
+else
+{
+buf.push("\n                  <button" + (jade.attrs({ terse: true, 'value':('' + (action.id) + ''), "class": [('btn')] }, {"value":true})) + ">" + (jade.escape((jade.interp = action.label) == null ? '' : jade.interp)) + "</button>");
+}
+    }
+
+  } else {
+    var $$l = 0;
+    for (var $index in $$obj) {
+      $$l++;      var action = $$obj[$index];
+
+if ( (action.id == 'delete'))
+{
+buf.push("\n                  <button" + (jade.attrs({ terse: true, 'value':('' + (action.id) + ''), "class": [('btn'),('btn-danger')] }, {"value":true})) + "><i class=\"icon-trash icon-white\"></i>" + (jade.escape((jade.interp = action.label) == null ? '' : jade.interp)) + "</button>");
+}
+else
+{
+buf.push("\n                  <button" + (jade.attrs({ terse: true, 'value':('' + (action.id) + ''), "class": [('btn')] }, {"value":true})) + ">" + (jade.escape((jade.interp = action.label) == null ? '' : jade.interp)) + "</button>");
+}
+    }
+
+  }
+}).call(this);
+
+buf.push("\n                </div>\n              </div>");
+}
+buf.push("\n            </div>");
+if (!dataTable.data.length)
+{
+buf.push("\n            <p class=\"center\">No documents yet</p>");
+}
+else
+{
+buf.push("\n            <p class=\"counter\">Viewing " + (jade.escape((jade.interp = start+1) == null ? '' : jade.interp)) + "–" + (jade.escape((jade.interp = start + dataTable.data.length) == null ? '' : jade.interp)) + " of " + (jade.escape((jade.interp = total_count) == null ? '' : jade.interp)) + " documents</p>\n            <table class=\"table table-bordered table-hover\">\n              <colgroup class=\"selectors\">\n                <col width=\"60\" class=\"center\">\n              </colgroup>\n              <colgroup>");
+// iterate dataTable.header
+;(function(){
+  var $$obj = dataTable.header;
+  if ('number' == typeof $$obj.length) {
+
+    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
+      var field = $$obj[$index];
+
+buf.push("\n                <col" + (jade.attrs({ terse: true, "class": [(field.thClass)] }, {"class":true})) + ">");
+    }
+
+  } else {
+    var $$l = 0;
+    for (var $index in $$obj) {
+      $$l++;      var field = $$obj[$index];
+
+buf.push("\n                <col" + (jade.attrs({ terse: true, "class": [(field.thClass)] }, {"class":true})) + ">");
+    }
+
+  }
+}).call(this);
+
+buf.push("\n              </colgroup>");
+if ( cloneable)
+{
+buf.push("\n              <colgroup class=\"buttons\">\n                <col width=\"130\">\n              </colgroup>");
+}
+buf.push("\n              <thead>\n                <tr>\n                  <th class=\"center\">\n                    <input type=\"checkbox\" class=\"select-all-rows\">\n                  </th>");
+// iterate dataTable.header
+;(function(){
+  var $$obj = dataTable.header;
+  if ('number' == typeof $$obj.length) {
+
+    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
+      var field = $$obj[$index];
+
+buf.push("\n                  <th><a" + (jade.attrs({ terse: true, 'href':(field.href) }, {"href":true})) + ">" + (jade.escape((jade.interp = field.label) == null ? '' : jade.interp)) + "</a></th>");
+    }
+
+  } else {
+    var $$l = 0;
+    for (var $index in $$obj) {
+      $$l++;      var field = $$obj[$index];
+
+buf.push("\n                  <th><a" + (jade.attrs({ terse: true, 'href':(field.href) }, {"href":true})) + ">" + (jade.escape((jade.interp = field.label) == null ? '' : jade.interp)) + "</a></th>");
+    }
+
+  }
+}).call(this);
+
+if ( cloneable)
+{
+buf.push("\n                  <th>&nbsp;</th>");
+}
+buf.push("\n                </tr>\n              </thead>\n              <tbody" + (jade.attrs({ terse: true, "class": [(sortable?'sortable':'')] }, {"class":true})) + ">");
+// iterate dataTable.data
+;(function(){
+  var $$obj = dataTable.data;
+  if ('number' == typeof $$obj.length) {
+
+    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
+      var row = $$obj[$index];
+
+var document_url = rootPath + '/model/' + model_name + '/document/' + row.id
+buf.push("\n                <tr" + (jade.attrs({ terse: true, 'id':(row.id) }, {"id":true})) + ">\n                  <td class=\"center\">\n                    <input type=\"checkbox\" class=\"select-row\">");
+if ( sortable)
+{
+buf.push("<span class=\"list-drag\"><i class=\"icon-resize-vertical\"></i></span>");
+}
+buf.push("\n                  </td>");
+// iterate row.data
+;(function(){
+  var $$obj = row.data;
+  if ('number' == typeof $$obj.length) {
+
+    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
+      var field = $$obj[$index];
+
+buf.push("\n                  <td>");
+jade.indent.push('                    ');
+fielddesc_mixin(field.value, field.type, document_url);
+jade.indent.pop();
+buf.push("\n                  </td>");
+    }
+
+  } else {
+    var $$l = 0;
+    for (var $index in $$obj) {
+      $$l++;      var field = $$obj[$index];
+
+buf.push("\n                  <td>");
+jade.indent.push('                    ');
+fielddesc_mixin(field.value, field.type, document_url);
+jade.indent.pop();
+buf.push("\n                  </td>");
+    }
+
+  }
+}).call(this);
+
+buf.push("\n                  <td>\n                    <div class=\"btn-group\"><a" + (jade.attrs({ terse: true, 'href':(document_url), "class": [('btn'),('btn-primary')] }, {"href":true})) + ">Edit</a>");
+if ( cloneable)
+{
+buf.push("<a" + (jade.attrs({ terse: true, 'href':("" + (rootPath) + "/model/" + (model_name) + "/document/new?orig=" + (row.id) + ""), "class": [('btn'),('btn-default')] }, {"href":true})) + ">Duplicate</a>");
+}
+buf.push("\n                    </div>\n                  </td>\n                </tr>");
+    }
+
+  } else {
+    var $$l = 0;
+    for (var $index in $$obj) {
+      $$l++;      var row = $$obj[$index];
+
+var document_url = rootPath + '/model/' + model_name + '/document/' + row.id
+buf.push("\n                <tr" + (jade.attrs({ terse: true, 'id':(row.id) }, {"id":true})) + ">\n                  <td class=\"center\">\n                    <input type=\"checkbox\" class=\"select-row\">");
+if ( sortable)
+{
+buf.push("<span class=\"list-drag\"><i class=\"icon-resize-vertical\"></i></span>");
+}
+buf.push("\n                  </td>");
+// iterate row.data
+;(function(){
+  var $$obj = row.data;
+  if ('number' == typeof $$obj.length) {
+
+    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
+      var field = $$obj[$index];
+
+buf.push("\n                  <td>");
+jade.indent.push('                    ');
+fielddesc_mixin(field.value, field.type, document_url);
+jade.indent.pop();
+buf.push("\n                  </td>");
+    }
+
+  } else {
+    var $$l = 0;
+    for (var $index in $$obj) {
+      $$l++;      var field = $$obj[$index];
+
+buf.push("\n                  <td>");
+jade.indent.push('                    ');
+fielddesc_mixin(field.value, field.type, document_url);
+jade.indent.pop();
+buf.push("\n                  </td>");
+    }
+
+  }
+}).call(this);
+
+buf.push("\n                  <td>\n                    <div class=\"btn-group\"><a" + (jade.attrs({ terse: true, 'href':(document_url), "class": [('btn'),('btn-primary')] }, {"href":true})) + ">Edit</a>");
+if ( cloneable)
+{
+buf.push("<a" + (jade.attrs({ terse: true, 'href':("" + (rootPath) + "/model/" + (model_name) + "/document/new?orig=" + (row.id) + ""), "class": [('btn'),('btn-default')] }, {"href":true})) + ">Duplicate</a>");
+}
+buf.push("\n                    </div>\n                  </td>\n                </tr>");
+    }
+
+  }
+}).call(this);
+
+buf.push("\n              </tbody>\n            </table>\n            <p class=\"counter\">Viewing " + (jade.escape((jade.interp = start+1) == null ? '' : jade.interp)) + "–" + (jade.escape((jade.interp = start + dataTable.data.length) == null ? '' : jade.interp)) + " of " + (jade.escape((jade.interp = total_count) == null ? '' : jade.interp)) + " documents</p>");
+if (total_count > count)
+{
+buf.push("\n            <div class=\"pagination\">\n              <ul>");
+for (var i = 0, page = 1; i < total_count; i += count, page++)
+{
+if (start == i)
+{
+buf.push("\n                <li class=\"active\"><span>" + (jade.escape((jade.interp = page) == null ? '' : jade.interp)) + "</span></li>");
+}
+else if (start/count <= page+5 && start/count >= page-5 || i == 0 || i+count >= total_count)
+{
+buf.push("\n                <li><a" + (jade.attrs({ terse: true, 'href':('' + (makeLink("start",i)) + '') }, {"href":true})) + ">" + (jade.escape((jade.interp = page) == null ? '' : jade.interp)) + "</a></li>");
+}
+}
+buf.push("\n              </ul>\n            </div>");
+}
+}
+buf.push("\n          </div>\n        </div>\n      </div>");
 if (!dialog)
 {
 buf.push("\n      <footer class=\"footer\">");

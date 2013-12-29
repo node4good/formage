@@ -96,6 +96,9 @@ a h3 { color: black; font-weight: normal; }
     text-align: center !important;
 }
 #filters {
+    width: 20%;
+    float: right;
+    margin-left: 3%;
     box-sizing: border-box;
 }
 #filters h3 {
@@ -105,6 +108,14 @@ a h3 { color: black; font-weight: normal; }
     list-style: none;
 }
 td.picture {
+    text-align: center;
+}
+#filters + div {
+    width: 77%;
+    float: left;
+}
+
+.bool {
     text-align: center;
 }
 
