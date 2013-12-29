@@ -84,12 +84,12 @@ block body
                 - if (creatable)
                     a.btn.pull-right.btn-warning(href="#{rootPath}/model/#{model_name}/document/new#{makeLink()}")
                         i.icon-plus.icon-white
-                        | New&nbsp;
+                        | &nbsp;New&nbsp;
                         - if (singular)
                             strong #{singular}
                         - else
                             strong #{model_name}
-                            | item
+                            | &nbsp;item
 
                 - if (search)
                     div
