@@ -54,7 +54,7 @@ model.formage = {
     // additional actions on this model
     actions: [
        {
-          value: 'release',
+          id: 'release',
           label: 'Release',
           func: function (user, ids, callback) {
              console.log('You just released songs ' + ids);
