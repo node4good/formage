@@ -5,13 +5,14 @@ var _ = require('lodash-contrib'),
 
 _(fs.readdirSync(__dirname))
     .map(function (file) { return path.basename(file, '.js'); })
-    .reject('index')
+    .without('index')
     .forEach(function (name) {
         var mod = require('./' + name);
-        if (mod.model)
+        if (mod.prototype instanceof mongoose.Model)
             module.exports[name] = mod;
+        else if (mod instanceof mongoose.Schema)
+            module.exports[name] = mongoose.model(name, mod);
         else if (_.isObject(mod))
             _.assign(module.exports, mod);
-        else
-            module.exports[name] = mongoose.model(name, mod);
+
     });
