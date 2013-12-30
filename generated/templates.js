@@ -220,7 +220,7 @@ case 'Filepicker':
 if (value)
 {
 buf.push("<a" + (jade.attrs({ 'href':(value_url), 'target':('_blank') }, {"href":true,"target":true})) + ">");
-if (value.isWriteable)
+if (value.isWriteable && value.mimetype.indexOf('image') != 0)
 {
 buf.push(jade.escape(null == (jade.interp = filename) ? "" : jade.interp));
 }

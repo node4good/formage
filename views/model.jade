@@ -16,7 +16,7 @@ mixin fielddesc(value, type, document_url)
         when 'Filepicker'
             - if (value)
                 a(href=value_url, target='_blank')
-                    - if (value.isWriteable)
+                    - if (value.isWriteable && value.mimetype.indexOf('image') != 0)
                         =filename
                     - else
                         img(src=value_url+'/convert?fit=crop&w=80&h=80')

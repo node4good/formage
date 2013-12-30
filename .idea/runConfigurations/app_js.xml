@@ -16,8 +16,6 @@
     <RunnerSettings RunnerId="NodeJS.run" />
     <ConfigurationWrapper RunnerId="NodeJS.debug" />
     <ConfigurationWrapper RunnerId="NodeJS.run" />
-    <method>
-      <option name="ToolBeforeRunTask" enabled="true" actionId="Tool_scripts_compile templates" />
-    </method>
+    <method />
   </configuration>
 </component>
