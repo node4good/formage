@@ -201,7 +201,7 @@ buf.push("\n    </div>" + (((jade.interp = global_script) == null ? '' : jade.in
 
 module.exports.model = function anonymous(locals) {
 var buf = [];
-var locals_ = (locals || {}),pageTitle = locals_.pageTitle,rootPath = locals_.rootPath,renderedHead = locals_.renderedHead,global_head = locals_.global_head,dialog = locals_.dialog,adminTitle = locals_.adminTitle,label = locals_.label,filters = locals_.filters,model_name = locals_.model_name,current_filters = locals_.current_filters,makeLink = locals_.makeLink,creatable = locals_.creatable,singular = locals_.singular,search = locals_.search,search_value = locals_.search_value,sortable = locals_.sortable,actions = locals_.actions,dataTable = locals_.dataTable,start = locals_.start,total_count = locals_.total_count,cloneable = locals_.cloneable,count = locals_.count,userPanel = locals_.userPanel,version = locals_.version,global_script = locals_.global_script;jade.indent = [];
+var locals_ = (locals || {}),pageTitle = locals_.pageTitle,rootPath = locals_.rootPath,renderedHead = locals_.renderedHead,global_head = locals_.global_head,dialog = locals_.dialog,adminTitle = locals_.adminTitle,label = locals_.label,filters = locals_.filters,model_name = locals_.model_name,current_filters = locals_.current_filters,makeLink = locals_.makeLink,creatable = locals_.creatable,newTypes = locals_.newTypes,search = locals_.search,search_value = locals_.search_value,sortable = locals_.sortable,actions = locals_.actions,dataTable = locals_.dataTable,start = locals_.start,total_count = locals_.total_count,cloneable = locals_.cloneable,count = locals_.count,userPanel = locals_.userPanel,version = locals_.version,global_script = locals_.global_script;jade.indent = [];
 var fielddesc_mixin = function(value, type, document_url){
 var block = this.block, attributes = this.attributes || {}, escaped = this.escaped || {};
 var value_url = value && value.url;
@@ -402,16 +402,35 @@ buf.push("\n              </ul>\n            </div>\n          </div>");
 buf.push("\n          <div>\n            <div class=\"btn-toolbar clearfix\">");
 if (creatable)
 {
-buf.push("<a" + (jade.attrs({ terse: true, 'href':("" + (rootPath) + "/model/" + (model_name) + "/document/new" + (makeLink()) + ""), "class": [('btn'),('pull-right'),('btn-warning')] }, {"href":true})) + "><i class=\"icon-plus icon-white\"></i>&nbsp;New&nbsp;");
-if (singular)
-{
-buf.push("<strong>" + (jade.escape((jade.interp = singular) == null ? '' : jade.interp)) + "</strong>");
-}
+if (newTypes.length === 0)
+buf.push("<a" + (jade.attrs({ terse: true, 'href':("" + (rootPath) + "/model/" + (model_name) + "/document/new" + (makeLink()) + ""), "class": [('btn'),('pull-right'),('btn-warning')] }, {"href":true})) + "><i class=\"icon-plus icon-white\"></i>&nbsp;New Item&nbsp;</a>");
 else
 {
-buf.push("<strong>" + (jade.escape((jade.interp = model_name) == null ? '' : jade.interp)) + "</strong>&nbsp;item");
+buf.push("\n              <div class=\"btn-group pull-right\">\n                <button type=\"button\" data-toggle=\"dropdown\" class=\"btn btn-warning dropdown-toggle\"><i class=\"icon-plus icon-white\"></i>&nbsp;New Item&nbsp;</button>\n                <ul class=\"dropdown-menu\">");
+// iterate newTypes
+;(function(){
+  var $$obj = newTypes;
+  if ('number' == typeof $$obj.length) {
+
+    for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
+      var type = $$obj[$index];
+
+buf.push("\n                  <li><a" + (jade.attrs({ terse: true, 'href':("" + (rootPath) + "/model/" + (type) + "/document/new" + (makeLink()) + "") }, {"href":true})) + ">" + (jade.escape((jade.interp = type) == null ? '' : jade.interp)) + "</a></li>");
+    }
+
+  } else {
+    var $$l = 0;
+    for (var $index in $$obj) {
+      $$l++;      var type = $$obj[$index];
+
+buf.push("\n                  <li><a" + (jade.attrs({ terse: true, 'href':("" + (rootPath) + "/model/" + (type) + "/document/new" + (makeLink()) + "") }, {"href":true})) + ">" + (jade.escape((jade.interp = type) == null ? '' : jade.interp)) + "</a></li>");
+    }
+
+  }
+}).call(this);
+
+buf.push("\n                </ul>\n              </div>");
 }
-buf.push("</a>");
 }
 if (search)
 {
@@ -713,7 +732,11 @@ buf.push("<a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/singl
 }
 else
 {
-buf.push("<a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-info')] }, {"href":true})) + "><span" + (jade.attrs({ terse: true, 'id':('viewAll_' + (modelConfig.modelName) + '') }, {"id":true})) + ">View All</span></a><a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/new'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">New</a>");
+buf.push("<a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-info')] }, {"href":true})) + "><span" + (jade.attrs({ terse: true, 'id':('viewAll_' + (modelConfig.modelName) + '') }, {"id":true})) + ">View All</span></a>");
+if (!modelConfig.model.discriminators || modelConfig.model.discriminators.length == 0)
+{
+buf.push("<a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/new'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">New</a>");
+}
 }
 buf.push("\n              </div><a" + (jade.attrs({ terse: true, 'href':(url + (modelConfig.is_single ? '/document/single' : '')) }, {"href":true})) + ">\n                <h3>" + (jade.escape((jade.interp = modelConfig.label) == null ? '' : jade.interp)) + "</h3></a>\n            </li>");
     }
@@ -731,7 +754,11 @@ buf.push("<a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/singl
 }
 else
 {
-buf.push("<a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-info')] }, {"href":true})) + "><span" + (jade.attrs({ terse: true, 'id':('viewAll_' + (modelConfig.modelName) + '') }, {"id":true})) + ">View All</span></a><a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/new'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">New</a>");
+buf.push("<a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-info')] }, {"href":true})) + "><span" + (jade.attrs({ terse: true, 'id':('viewAll_' + (modelConfig.modelName) + '') }, {"id":true})) + ">View All</span></a>");
+if (!modelConfig.model.discriminators || modelConfig.model.discriminators.length == 0)
+{
+buf.push("<a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/new'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">New</a>");
+}
 }
 buf.push("\n              </div><a" + (jade.attrs({ terse: true, 'href':(url + (modelConfig.is_single ? '/document/single' : '')) }, {"href":true})) + ">\n                <h3>" + (jade.escape((jade.interp = modelConfig.label) == null ? '' : jade.interp)) + "</h3></a>\n            </li>");
     }
@@ -769,7 +796,11 @@ buf.push("<a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/singl
 }
 else
 {
-buf.push("<a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-info')] }, {"href":true})) + "><span" + (jade.attrs({ terse: true, 'id':('viewAll_' + (modelConfig.modelName) + '') }, {"id":true})) + ">View All</span></a><a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/new'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">New</a>");
+buf.push("<a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-info')] }, {"href":true})) + "><span" + (jade.attrs({ terse: true, 'id':('viewAll_' + (modelConfig.modelName) + '') }, {"id":true})) + ">View All</span></a>");
+if (!modelConfig.model.discriminators || modelConfig.model.discriminators.length == 0)
+{
+buf.push("<a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/new'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">New</a>");
+}
 }
 buf.push("\n              </div><a" + (jade.attrs({ terse: true, 'href':(url + (modelConfig.is_single ? '/document/single' : '')) }, {"href":true})) + ">\n                <h3>" + (jade.escape((jade.interp = modelConfig.label) == null ? '' : jade.interp)) + "</h3></a>\n            </li>");
     }
@@ -787,7 +818,11 @@ buf.push("<a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/singl
 }
 else
 {
-buf.push("<a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-info')] }, {"href":true})) + "><span" + (jade.attrs({ terse: true, 'id':('viewAll_' + (modelConfig.modelName) + '') }, {"id":true})) + ">View All</span></a><a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/new'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">New</a>");
+buf.push("<a" + (jade.attrs({ terse: true, 'href':(url), "class": [('btn'),('btn-info')] }, {"href":true})) + "><span" + (jade.attrs({ terse: true, 'id':('viewAll_' + (modelConfig.modelName) + '') }, {"id":true})) + ">View All</span></a>");
+if (!modelConfig.model.discriminators || modelConfig.model.discriminators.length == 0)
+{
+buf.push("<a" + (jade.attrs({ terse: true, 'href':('' + (url) + '/document/new'), "class": [('btn'),('btn-default')] }, {"href":true})) + ">New</a>");
+}
 }
 buf.push("\n              </div><a" + (jade.attrs({ terse: true, 'href':(url + (modelConfig.is_single ? '/document/single' : '')) }, {"href":true})) + ">\n                <h3>" + (jade.escape((jade.interp = modelConfig.label) == null ? '' : jade.interp)) + "</h3></a>\n            </li>");
     }

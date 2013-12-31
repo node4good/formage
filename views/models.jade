@@ -16,7 +16,8 @@ block body
                             - else
                                 a.btn.btn-info(href=url)
                                     span(id='viewAll_#{modelConfig.modelName}') View All
-                                a.btn.btn-default(href='#{url}/document/new') New
+                                - if (!modelConfig.model.discriminators || modelConfig.model.discriminators.length == 0)
+                                    a.btn.btn-default(href='#{url}/document/new') New
                         a(href=url + (modelConfig.is_single ? '/document/single' : ''))
                             h3 #{modelConfig.label}
 
