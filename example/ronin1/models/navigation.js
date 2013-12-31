@@ -7,7 +7,7 @@ var util = require('util'),
 
 var VehicleSchema = new Schema({
     title: { type: String, required: true, trim: true },
-    parent: { type: ObjectId, ref: 'vehicle' },
+    parent: { type: ObjectId, ref: 'navigation' },
     url: { type: String, trim: true, lowercase: true, unique: true },
     order: { type: Number, editable: false },
     menu: { type: Boolean, 'default': true },
@@ -32,20 +32,16 @@ VehicleSchema.methods.toString = function() {
 };
 
 var CarSchema = Schema({
-    year : Number
+    CarSpecific: {year : Number, cc: Number}
 });
 
 var BusSchema = Schema({
-    route : Number
+    bus_specific: {route : Number, company: String}
 });
 
 
-var vehicle = mongoose.model('vehicle', VehicleSchema);
+var vehicle = mongoose.model('navigation', VehicleSchema);
 var car = vehicle.discriminator('car', CarSchema);
 var bus = vehicle.discriminator('bus', BusSchema);
 
-module.exports = {
-    vehicle: vehicle,
-    car: car,
-    bus: bus
-};
+module.exports = vehicle;
