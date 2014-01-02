@@ -1,15 +1,15 @@
 {
   "name": "formage",
-  "version": "2.4.6",
+  "version": "2.5.0",
   "dependencies": {
     "lodash": {
       "version": "2.4.1",
       "from": "lodash@"
     },
     "lodash-contrib": {
-      "version": "241.2.1",
-      "from": "lodash-contrib@241.2.1",
-      "resolved": "https://registry.npmjs.org/lodash-contrib/-/lodash-contrib-241.2.1.tgz"
+      "version": "241.3.1",
+      "from": "lodash-contrib@241.3.1",
+      "resolved": "https://registry.npmjs.org/lodash-contrib/-/lodash-contrib-241.3.1.tgz"
     },
     "async": {
       "version": "0.2.9",
@@ -21,7 +21,8 @@
       "dependencies": {
         "coffee-script": {
           "version": "1.4.0",
-          "from": "coffee-script@1.4.0"
+          "from": "coffee-script@1.4.0",
+          "resolved": "https://registry.npmjs.org/coffee-script/-/coffee-script-1.4.0.tgz"
         },
         "underscore": {
           "version": "1.4.4",
@@ -43,7 +44,8 @@
       "dependencies": {
         "lodash": {
           "version": "2.0.0",
-          "from": "lodash@2.0.0"
+          "from": "lodash@2.0.0",
+          "resolved": "https://registry.npmjs.org/lodash/-/lodash-2.0.0.tgz"
         }
       }
     },
