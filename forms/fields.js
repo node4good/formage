@@ -580,7 +580,7 @@ var FileField_ = exports.FileField = BaseField.extend({
         options = options || {};
         options.widget = options.widget || widgets.FileWidget;
         //noinspection JSUnresolvedVariable
-        this.directory = options.upload_to || path.join(__dirname, '..', '..', 'public', 'cdn');
+        this.directory = options.upload_to || path.join(__dirname, '..','..', '..', 'public', 'cdn') + '/';
         this._super(options);
     },
     to_schema: function () {
@@ -613,7 +613,11 @@ var FileField_ = exports.FileField = BaseField.extend({
                     cbk();
             }
             else
-                fs.unlink(self.directory + self.value.path, cbk);
+                fs.unlink(self.directory + self.value.path, function(err){
+                    if(err)
+                        console.error('unlink failed',err.stack);
+                    cbk();
+                });
             self.value = null;
         }
 
@@ -655,10 +659,10 @@ var FileField_ = exports.FileField = BaseField.extend({
                 });
             } else {
                 var input_stream = fs.createReadStream(uploaded_file.path);
-                var filename = self.create_filename(uploaded_file);
+                var filename = self.create_filename(uploaded_file.path);
                 var output_stream = fs.createWriteStream(path.join(self.directory, filename));
                 input_stream.pipe(output_stream);
-                output_stream.on("end", function (err) {
+                input_stream.on("close", function (err) {
                     if (err) console.trace(err);
                     fs.unlink(uploaded_file.path, function (err) {
                         if (err) console.trace(err);
