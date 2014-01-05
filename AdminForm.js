@@ -102,7 +102,7 @@ var _JestAdminResource = jest.Resource.extend({
         }
         else {
             var qry;
-            var escaped_filters = filters.query.replace(_escaper, "\\$&");
+            var escaped_filters = filters.query.replace(_escaper, "\\$&") || '.';
             if(data.query.indexOf('__value__') > -1){
                 var query = data.query.replace(/__value__/g, escaped_filters);
                 qry = model.find({$where: query});
