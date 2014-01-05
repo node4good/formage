@@ -65,6 +65,9 @@ model.formage = {
 
     // list of fields to be displayed by formage for this model
     list: ['number', 'title', 'album', 'artist', 'year'],
+    
+    // order documents, save order in this field (type: Number)
+    sortable: 'order',
 
     // list of order fields
     order_by: ['-year', 'album', 'number'],
