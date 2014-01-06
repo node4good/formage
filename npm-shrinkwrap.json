@@ -1,6 +1,6 @@
 {
   "name": "formage",
-  "version": "2.5.0",
+  "version": "2.5.2",
   "dependencies": {
     "lodash": {
       "version": "2.4.1",
@@ -21,8 +21,7 @@
       "dependencies": {
         "coffee-script": {
           "version": "1.4.0",
-          "from": "coffee-script@1.4.0",
-          "resolved": "https://registry.npmjs.org/coffee-script/-/coffee-script-1.4.0.tgz"
+          "from": "coffee-script@1.4.0"
         },
         "underscore": {
           "version": "1.4.4",
@@ -44,8 +43,7 @@
       "dependencies": {
         "lodash": {
           "version": "2.0.0",
-          "from": "lodash@2.0.0",
-          "resolved": "https://registry.npmjs.org/lodash/-/lodash-2.0.0.tgz"
+          "from": "lodash@2.0.0"
         }
       }
     },
