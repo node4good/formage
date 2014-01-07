@@ -30,8 +30,9 @@
       }
     },
     "nodestrum": {
-      "version": "0.6.1",
-      "from": "nodestrum@"
+      "version": "0.7.1",
+      "from": "nodestrum@0.7.1",
+      "resolved": "https://registry.npmjs.org/nodestrum/-/nodestrum-0.7.1.tgz"
     },
     "node-ckeditor": {
       "version": "4.2.561",
