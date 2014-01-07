@@ -1,7 +1,8 @@
 'use strict';
 var express = require('express'),
     mongoose = require('mongoose'),
-    formage = require('../..');
+    formage = require('../..'),
+    nodestrum = require('nodestrum');
 
 //noinspection JSUnresolvedVariable
 var MONGO_URL = process.env.MONGO_URL,
@@ -12,6 +13,9 @@ var app = exports.app = express();
 app.set('port', process.env.PORT || 8080);
 app.set('mongo', MONGO_URL || MONGOLAB_URI || 'mongodb://localhost/formage-example');
 
+app.configure('development', function() {
+    app.use(nodestrum.ConnectionCloser);
+});
 app.use(express.favicon());
 app.use(express.methodOverride());
 app.use(express.cookieParser('magical secret admin'));
