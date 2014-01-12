@@ -243,7 +243,8 @@
                             callback(rsp);
                         });
                 }
-            }
+            },
+            minimumInputLength:0
         });
     };
 

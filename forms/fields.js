@@ -10,7 +10,10 @@ var widgets = require('./widgets'),
 	fs = require('fs'),
 	util = require('util'),
     cloudinary = require('cloudinary');
+
 var mongoose = require.main.require('mongoose');
+
+var UPLOAD_DIRECTROY =  (path.join(__dirname, '..','..', '..', 'public', 'cdn') + '/');
 
 exports.setAmazonCredentials = function (credentials) {
     try {
@@ -21,6 +24,10 @@ exports.setAmazonCredentials = function (credentials) {
         util.puts('no knox');
     }
 };
+
+exports.setUploadDirectory = function(folder){
+    UPLOAD_DIRECTROY = folder;
+}
 
 exports.getKnoxClient = function () {
     return module.knox_client;
@@ -580,7 +587,7 @@ var FileField_ = exports.FileField = BaseField.extend({
         options = options || {};
         options.widget = options.widget || widgets.FileWidget;
         //noinspection JSUnresolvedVariable
-        this.directory = options.upload_to || path.join(__dirname, '..','..', '..', 'public', 'cdn') + '/';
+        this.directory = options.upload_to || UPLOAD_DIRECTROY;
         this._super(options);
     },
     to_schema: function () {

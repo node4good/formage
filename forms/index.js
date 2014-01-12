@@ -13,6 +13,7 @@ module.exports.fields = require('./fields');
 module.exports.widgets = require('./widgets');
 
 module.exports.setAmazonCredentials = module.exports.fields.setAmazonCredentials;
+module.exports.setUploadDirectory = module.exports.fields.setUploadDirectory;
 
 
 module.exports.serve_static = function() {
