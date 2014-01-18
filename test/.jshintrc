@@ -1,0 +1,27 @@
+{
+    "freeze":true,
+    "immed":true,
+    "noarg":true,
+    "noempty":true,
+    "nonew":true,
+    "undef":true,
+    "strict":true,
+    "trailing":true,
+    "unused":true,
+    "sub":true,
+    "supernew":true,
+    "scripturl": true,
+    "node":true,
+    "globals": [
+        "_",
+        "describe",
+        "before",
+        "after",
+        "it",
+        "expect",
+        "makeRes",
+        "mock_req_proto",
+        "mock_res_proto",
+        "should"
+    ]
+}

@@ -16,16 +16,18 @@
       "from": "async@"
     },
     "cloudinary": {
-      "version": "1.0.6",
-      "from": "cloudinary@",
+      "version": "1.0.7",
+      "from": "cloudinary@1.0.7",
+      "resolved": "http://registry.npmjs.org/cloudinary/-/cloudinary-1.0.7.tgz",
       "dependencies": {
         "coffee-script": {
           "version": "1.4.0",
-          "from": "coffee-script@1.4.0"
+          "from": "coffee-script@1.4.x"
         },
         "underscore": {
           "version": "1.4.4",
-          "from": "underscore@1.4.4"
+          "from": "underscore@1.4.x",
+          "resolved": "http://registry.npmjs.org/underscore/-/underscore-1.4.4.tgz"
         }
       }
     },
@@ -44,28 +46,32 @@
       "dependencies": {
         "lodash": {
           "version": "2.0.0",
-          "from": "lodash@2.0.0"
+          "from": "lodash@2.0.0",
+          "resolved": "http://registry.npmjs.org/lodash/-/lodash-2.0.0.tgz"
         }
       }
     },
     "mpromise": {
       "version": "0.5.0",
-      "from": "mpromise@0.5.0"
+      "from": "mpromise@0.5.0",
+      "resolved": "http://registry.npmjs.org/mpromise/-/mpromise-0.5.0.tgz"
     },
     "connect-multiparty": {
-      "version": "1.0.1",
-      "from": "connect-multiparty@",
+      "version": "1.0.2",
+      "from": "connect-multiparty@1.0.2",
+      "resolved": "http://registry.npmjs.org/connect-multiparty/-/connect-multiparty-1.0.2.tgz",
       "dependencies": {
         "multiparty": {
-          "version": "3.0.0",
-          "from": "multiparty@3.0.0",
+          "version": "3.1.2",
+          "from": "multiparty@~3.1.0",
+          "resolved": "http://registry.npmjs.org/multiparty/-/multiparty-3.1.2.tgz",
           "dependencies": {
             "readable-stream": {
-              "version": "1.1.9",
+              "version": "1.1.10",
               "from": "readable-stream@~1.1.9",
               "dependencies": {
                 "core-util-is": {
-                  "version": "1.0.0",
+                  "version": "1.0.1",
                   "from": "core-util-is@~1.0.0"
                 },
                 "debuglog": {
