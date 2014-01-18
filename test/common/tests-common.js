@@ -1,21 +1,22 @@
 'use strict';
 global._ = require('lodash');
-global.chai = require('chai');
+var chai = require('chai');
 global.should = chai.should();
-global.expect = require('chai').expect;
+global.expect = chai.expect;
 require('nodestrum');
 Error.stackTraceLimit = 100;
-chai.Assertion.includeStack = true;
 process.env.FORMAGE_DISABLE_DOMAINS = true;
 process.env.MONGOOSE_DISABLE_STABILITY_WARNING = true;
 
 //noinspection JSUnusedLocalSymbols
 global.mock_req_proto = {
+    method: "get",
+    session: {},
     params: {},
     query: {},
     headers: {},
     connection: {},
-    admin_user: {hasPermissions: function (model, action) {return true}}
+    admin_user: {hasPermissions: function () {return true;}}
 };
 
 
@@ -28,6 +29,7 @@ function magic_throw() {
 }
 
 
+//noinspection JSUnusedGlobalSymbols
 global.mock_res_proto = {
     setHeader: function () {},
     status: function (val) {this._status = val;},
