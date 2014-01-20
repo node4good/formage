@@ -193,9 +193,8 @@ describe("edge cases on mongoose", function () {
             this.registry.adapter.Users.ensureExists("admin", "admin", done);
         });
     });
-
-
 });
+
 
 describe("no init options, no models, changed ENV for 100% in routes.js", function () {
     before(function () {

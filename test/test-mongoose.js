@@ -1,8 +1,8 @@
 'use strict';
-/*global makeRes,mock_req_proto,mock_res_proto,should */
+/*global makeRes,mock_req_proto,mock_res_proto,should,renderedEmbeded,mockFind */
 describe("high level REST requests on mongoose", function () {
-    var ctx = {};
     before(function (done) {
+        var ctx = this;
         _.each(require.cache, function (mod, modName) {
             if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb'))
                 delete require.cache[modName];
@@ -32,21 +32,35 @@ describe("high level REST requests on mongoose", function () {
                     admin_users_gui: true
                 });
                 ctx.app = mock_req_proto.app = app.admin_app;
+                ctx.startTheTest = function startTheTest(req, res, argOut) {
+                    var done = ctx._runnable.callback;
+                    var out = function (err) {
+                        if (typeof(argOut) === 'function')
+                            try {
+                                err = argOut(err);
+                            } catch (e) {
+                                err = e;
+                            }
+                        if (err) done(err);
+                    };
+                    ctx.app.handle(req, res, out);
+                };
                 done(err);
-            })
+            });
         });
     });
 
 
     after(function () {
-        ctx.mongoose.disconnect();
-        delete ctx.registry;
-        delete ctx.mongoose;
-        delete ctx.app;
+        this.mongoose.disconnect();
+        delete this.registry;
+        delete this.mongoose;
+        delete this.app;
     });
 
 
     it("post to `tests`", function (done) {
+        var ctx = this;
         var mock_req = _.defaults({
             url: "/model/Tests/document/new",
             method: "POST",
@@ -159,6 +173,7 @@ describe("high level REST requests on mongoose", function () {
 
 
     it("post to `embed`", function (done) {
+        var ctx = this;
         var mock_req = _.defaults({
             url: "/model/embed/document/new",
             method: "POST",
@@ -186,10 +201,10 @@ describe("high level REST requests on mongoose", function () {
             expect(instance.embeded.list1[0].embeded2.list3[0].embeded4.list5[1]).to.equal(6);
 
             var test = this;
-            var pages = ctx.registry.models['pages'].model;
-            var old_pages_find = pages.find;
-            pages.find = function () { return {limit : function () {return {exec: function (cb) {return cb(null, [new pages({_id: '529321b430de15681b00000b', title:'gaga'})]) }}}}};
-            test.rest_models = function () { pages.find = old_pages_find; };
+            var Pages = ctx.registry.models['pages'].model;
+            var old_pages_find = Pages.find;
+            Pages.find = mockFind([new Pages({_id: '529321b430de15681b00000b', title:'gaga'})]);
+            test.rest_models = function () { Pages.find = old_pages_find; };
             var mock_req = _.defaults({
                 url: '/model/embed/document/' + test_doc_id,
                 method: "GET"
@@ -221,14 +236,14 @@ describe("high level REST requests on mongoose", function () {
 
 
     it("get `embed`", function (done) {
-        var test = this;
-        var embed = ctx.registry.models['embed'].model;
-        var old_embed_findbyid = embed.findById;
-        embed.findById = function (_, cb) { cb(null, new embed(embedMockObj)) };
-        var pages = ctx.registry.models['pages'].model;
-        var old_pages_find = pages.find;
-        pages.find = function () { return {limit : function () {return {exec: function (cb) {return cb(null, [new pages({_id: '529321b430de15681b00000b', title:'gaga'})]) }}}}};
-        test.rest_models = function () {embed.findById = old_embed_findbyid; pages.find = old_pages_find; };
+        var ctx = this;
+        var Embed = ctx.registry.models['embed'].model;
+        var old_embed_findbyid = Embed.findById;
+        Embed.findById = function (_, cb) { cb(null, new Embed(embedMockObj)); };
+        var Pages = ctx.registry.models['pages'].model;
+        var old_pages_find = Pages.find;
+        Pages.find = mockFind([new Pages({_id: '529321b430de15681b00000b', title:'gaga'})]);
+        ctx.rest_models = function () {Embed.findById = old_embed_findbyid; Pages.find = old_pages_find; };
 
         var mock_req = _.defaults({
             url: '/model/embed/document/mockmockmock',
@@ -238,8 +253,8 @@ describe("high level REST requests on mongoose", function () {
         var mock_res = makeRes(mock_req, done);
 
         mock_res.render = function (view, locals) {
-            test.rest_models();
-            delete test.rest_models;
+            ctx.rest_models();
+            delete ctx.rest_models;
 
             // fragile
             var actual = String(locals.form);
@@ -258,15 +273,16 @@ describe("high level REST requests on mongoose", function () {
         ctx.app.handle(mock_req, mock_res);
     });
 
+
     it("update `embed`", function (done) {
-        var test = this;
-        var embed = ctx.registry.models['embed'].model;
-        var old_embed_findbyid = embed.findById;
-        embed.findById = function (_, cb) { cb(null, new embed(embedMockObj)) };
-        var pages = ctx.registry.models['pages'].model;
-        var old_pages_find = pages.find;
-        pages.find = function () { return {limit : function () {return {exec: function (cb) {return cb(null, [new pages({_id: '529321b430de15681b00000b', title:'gaga'})]) }}}}};
-        test.rest_models = function () {embed.findById = old_embed_findbyid; pages.find = old_pages_find;};
+        var ctx = this;
+        var Embed = ctx.registry.models['embed'].model;
+        var old_embed_findbyid = Embed.findById;
+        Embed.findById = function (_, cb) { cb(null, new Embed(embedMockObj)); };
+        var Pages = ctx.registry.models['pages'].model;
+        var old_pages_find = Pages.find;
+        Pages.find = mockFind([new Pages({_id: '529321b430de15681b00000b', title:'gaga'})]);
+        ctx.rest_models = function () {Embed.findById = old_embed_findbyid; Pages.find = old_pages_find;};
 
         var mock_req = _.defaults({
             url: '/model/embed/document/mockmockmock',
@@ -280,8 +296,8 @@ describe("high level REST requests on mongoose", function () {
 
         var mock_res = makeRes(mock_req, done);
         mock_res.redirect = function (url) {
-            test.rest_models();
-            delete test.rest_models;
+            ctx.rest_models();
+            delete ctx.rest_models;
             expect(url).to.have.string("/admin/model/embed");
 
             var instance = this._debug_form.instance;
@@ -294,6 +310,7 @@ describe("high level REST requests on mongoose", function () {
 
 
     describe("nested & embeded", function () {
+        var ctx;
         function step1(done) {
             var mock_req = _.defaults({
                 url: "/model/config/document/single",
@@ -380,6 +397,7 @@ describe("high level REST requests on mongoose", function () {
         }
 
         it("should get updated", function (done) {
+            ctx = this;
             step1(done);
         });
     });
@@ -405,18 +423,18 @@ describe("high level REST requests on mongoose", function () {
         var uploadSentinal;
         require('cloudinary').uploader.upload = function (path, callback) {
             uploadSentinal = true;
-            expect(path).to.exist;
+            expect(path).to.match(/\.png$/);
             callback({});
         };
 
         mock_res.json = function (status, data) {
             expect(status).to.equal(200, data);
-            expect(uploadSentinal).to.be.true;
+            expect(uploadSentinal).to.be.equal(true);
             expect(data).to.have.property('title').equal(mock_req.body.title, data + mock_res._debug_form);
             done();
         };
 
-        ctx.app.handle(mock_req, mock_res);
+        this.app.handle(mock_req, mock_res);
     });
 
 
@@ -440,7 +458,7 @@ describe("high level REST requests on mongoose", function () {
         var uploadSentinal = 0;
         require('cloudinary').uploader.upload = function (path, callback) {
             uploadSentinal++;
-            expect(path).to.exist;
+            expect(path).to.match(/\.png$/);
             callback({});
         };
 
@@ -451,7 +469,7 @@ describe("high level REST requests on mongoose", function () {
             done();
         };
 
-        ctx.app.handle(mock_req, mock_res);
+        this.app.handle(mock_req, mock_res);
     });
 
 
@@ -472,21 +490,21 @@ describe("high level REST requests on mongoose", function () {
         }, mock_req_proto);
         var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
-        var uploadSentinel;
+        var uploadSentinel = 0;
         require('cloudinary').uploader.upload = function (path, callback) {
-            uploadSentinel = true;
-            expect(path).to.exist;
+            uploadSentinel++;
+            expect(path).to.match(/\.png$/);
             callback({mock:'mock'});
         };
 
         mock_res.json = function (status, data) {
             expect(status).to.equal(200, data);
-            expect(uploadSentinel).to.be.true;
+            expect(uploadSentinel).to.equal(1);
             expect(data).to.have.property('embeded');
             done();
         };
 
-        ctx.app.handle(mock_req, mock_res);
+        this.app.handle(mock_req, mock_res);
     });
 
 
@@ -513,11 +531,11 @@ describe("high level REST requests on mongoose", function () {
             done();
         };
 
-        ctx.app.handle(mock_req, mock_res);
+        this.app.handle(mock_req, mock_res);
     });
 
 
-    it("Mock test model page", function (done) {
+    it("Mock model page", function (done) {
         var mock_req = _.defaults({
             url: "/model/AppliesTo/",
             method: "GET"
@@ -529,17 +547,49 @@ describe("high level REST requests on mongoose", function () {
             expect(options).to.have.property('actions').with.length(1);
             expect(options).to.have.property('dataTable').with.property('header').with.length(3);
             this.req.app.render(view, options, function (err, doc) {
+                expect(doc).to.be.a('string');
                 done(err);
             });
         };
 
-        ctx.app.handle(mock_req, mock_res);
+        this.app.handle(mock_req, mock_res);
+    });
+
+
+    it.skip("view model page 2", function (done) {
+        var Tests = this.registry.models['Tests'].model;
+        var old_Tests_find = Tests.find;
+        Tests.find = mockFind([new Tests()]);
+        var reset_models = function () { Tests.find = old_Tests_find; };
+
+        var mock_req = _.defaults({
+            url: '/model/Tests/',
+            method: "GET",
+            query: {start: "0", order_by: "string_req", limit: "20", populates: "ref"},
+            headers: {}
+        }, mock_req_proto);
+
+        var mock_res = makeRes(mock_req, done);
+        mock_res.render = function (view, options) {
+            reset_models();
+            expect(view).to.equal("model.jade");
+            expect(options).to.have.property('actions').with.length(1);
+            expect(options).to.have.property('dataTable').with.property('header').with.length(7);
+            expect(options.dataTable).to.have.property('data').with.length(1);
+            this.req.app.render(view, options, function (err, doc) {
+                expect(doc).to.be.a('string');
+                done(err);
+            });
+        };
+        this.startTheTest(mock_req, mock_res, function (err) {
+            expect(err);
+        });
     });
 
 
 
     describe('core screens', function () {
-        require('./common/core_test')(ctx);
+        require('./core-tests')(this);
     });
 });
 
