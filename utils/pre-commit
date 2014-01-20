@@ -1,0 +1,11 @@
+#!/c/node10/node.exe
+var cmd = require('child_process');
+cmd.exec('git diff --cached --name-only --diff-filter=ACM | grep ".js$"', function (err, stdout) {
+    if (stdout.length == 0) return;
+    var args = stdout.split('\n');
+    args.unshift('');
+    args.pop();
+    var cli = require("jshint/src/cli.js");
+    cli.getBufferSize = function () { return 0; };
+    cli.interpret(args);
+});
