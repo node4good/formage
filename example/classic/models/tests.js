@@ -69,7 +69,7 @@ schema.methods.toString = function () {return this.string_req};
 
 schema.formage = {
     filters: ['ref', 'string_req'],
-    list: ['embeded.name1', 'ref', 'filepicker', 'filepicker_picture', 'filepicker_aviary', 'swizzle'],
+    list: ['embeded.name1', 'ref', 'filepicker', 'filepicker_picture', 'filepicker_aviary', 'swizzle', 'date'],
     subCollections: [{label: 'Sub Tests', model: 'pages', field:'ref'}],
     list_populate: ['ref']
 };

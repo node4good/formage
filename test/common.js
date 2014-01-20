@@ -57,6 +57,7 @@ global.mockFind = function mockFindFactory(arr) {
             populate: function mockLimit() { return this; },
             skip: function mockLimit() { return this; },
             limit: function mockLimit() { return this; },
+            sort: function mockLimit() { return this; },
             exec: function mockExec(cb) {
                 var p = new Promise(cb);
                 p.fulfill(arr);
