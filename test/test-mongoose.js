@@ -556,7 +556,7 @@ describe("high level REST requests on mongoose", function () {
     });
 
 
-    it.skip("view model page 2", function (done) {
+    it("view model page 2", function (done) {
         var Tests = this.registry.models['Tests'].model;
         var old_Tests_find = Tests.find;
         Tests.find = mockFind([new Tests()]);
