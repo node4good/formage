@@ -22,11 +22,12 @@
       "dependencies": {
         "coffee-script": {
           "version": "1.4.0",
-          "from": "coffee-script@1.4.x"
+          "from": "coffee-script@1.4.0",
+          "resolved": "http://registry.npmjs.org/coffee-script/-/coffee-script-1.4.0.tgz"
         },
         "underscore": {
           "version": "1.4.4",
-          "from": "underscore@1.4.x",
+          "from": "underscore@1.4.4",
           "resolved": "http://registry.npmjs.org/underscore/-/underscore-1.4.4.tgz"
         }
       }
@@ -52,9 +53,9 @@
       }
     },
     "mpromise": {
-      "version": "0.5.0",
-      "from": "mpromise@0.5.0",
-      "resolved": "http://registry.npmjs.org/mpromise/-/mpromise-0.5.0.tgz"
+      "version": "0.5.1",
+      "from": "mpromise@0.5.1",
+      "resolved": "http://registry.npmjs.org/mpromise/-/mpromise-0.5.1.tgz"
     },
     "connect-multiparty": {
       "version": "1.0.2",
@@ -63,7 +64,7 @@
       "dependencies": {
         "multiparty": {
           "version": "3.1.2",
-          "from": "multiparty@~3.1.0",
+          "from": "multiparty@3.1.2",
           "resolved": "http://registry.npmjs.org/multiparty/-/multiparty-3.1.2.tgz",
           "dependencies": {
             "readable-stream": {
@@ -76,7 +77,8 @@
                 },
                 "debuglog": {
                   "version": "0.0.2",
-                  "from": "debuglog@0.0.2"
+                  "from": "debuglog@0.0.2",
+                  "resolved": "http://registry.npmjs.org/debuglog/-/debuglog-0.0.2.tgz"
                 }
               }
             },

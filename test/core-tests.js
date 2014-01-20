@@ -1,6 +1,6 @@
 'use strict';
-/*global makeRes */
-module.exports = function (ctx) {
+/*global mock_req_proto,mock_res_proto,should,test_post_body_multipart */
+module.exports = function () {
     describe("general", function () {
         it("Mock test document page", function (done) {
             var mock_req = _.defaults({
@@ -12,10 +12,10 @@ module.exports = function (ctx) {
             mock_res.render = function (view, options) {
                 view.should.equal("document.jade");
                 should.exist(options);
-                done()
+                done();
             };
 
-            ctx.app.handle(mock_req, mock_res);
+            this.app.handle(mock_req, mock_res);
         });
 
 
@@ -33,12 +33,13 @@ module.exports = function (ctx) {
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
             mock_res.redirect = function (path) {
+                expect(path).to.be.equal("/admin/model/AppliesTo");
                 should.not.exist(mock_res._status);
                 Number(1).should.equal(arguments.length);
                 done();
             };
 
-            ctx.app.handle(mock_req, mock_res);
+            this.app.handle(mock_req, mock_res);
         });
 
 
@@ -61,7 +62,7 @@ module.exports = function (ctx) {
                 done();
             };
 
-            ctx.app.handle(mock_req, mock_res);
+            this.app.handle(mock_req, mock_res);
         });
 
 
@@ -87,7 +88,7 @@ module.exports = function (ctx) {
                 done();
             };
 
-            ctx.app.handle(mock_req, mock_res);
+            this.app.handle(mock_req, mock_res);
         });
 
 
@@ -110,7 +111,7 @@ module.exports = function (ctx) {
                 });
             };
 
-            ctx.app.handle(mock_req, mock_res);
+            this.app.handle(mock_req, mock_res);
         });
     });
 
@@ -149,7 +150,7 @@ module.exports = function (ctx) {
                 done();
             };
 
-            ctx.app.handle(mock_req, mock_res);
+            this.app.handle(mock_req, mock_res);
         });
 
 
@@ -178,7 +179,7 @@ module.exports = function (ctx) {
                 });
             };
 
-            ctx.app.handle(mock_req, mock_res);
+            this.app.handle(mock_req, mock_res);
         });
 
 
@@ -197,7 +198,7 @@ module.exports = function (ctx) {
                 done();
             };
 
-            ctx.app.handle(mock_req, mock_res);
+            this.app.handle(mock_req, mock_res);
         });
 
 
@@ -218,7 +219,7 @@ module.exports = function (ctx) {
                 done();
             };
 
-            ctx.app.handle(mock_req, mock_res);
+            this.app.handle(mock_req, mock_res);
         });
     });
 
@@ -240,28 +241,7 @@ module.exports = function (ctx) {
                 });
             };
 
-            ctx.app.handle(mock_req, mock_res);
-        });
-
-
-        it("Mock test model page with query params", function (done) {
-            var mock_req = _.defaults({
-                url: "/model/Tests/",
-                query: {start: "0", order_by: "string_req", limit: "20", populates: "ref"},
-                method: "GET"
-            }, mock_req_proto);
-            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
-
-            mock_res.render = function (view, options) {
-                view.should.equal("model.jade");
-                should.exist(options);
-                this.req.app.render(view, options, function (err, doc) {
-                    should.exist(doc);
-                    done(err);
-                });
-            };
-
-            ctx.app.handle(mock_req, mock_res);
+            this.app.handle(mock_req, mock_res);
         });
 
 
@@ -281,7 +261,7 @@ module.exports = function (ctx) {
                 });
             };
 
-            ctx.app.handle(mock_req, mock_res);
+            this.app.handle(mock_req, mock_res);
         });
     });
 
@@ -303,7 +283,7 @@ module.exports = function (ctx) {
                     return done();
                 });
             };
-            ctx.app.handle(mock_req, mock_res);
+            this.app.handle(mock_req, mock_res);
         });
 
 
@@ -329,7 +309,7 @@ module.exports = function (ctx) {
                 done();
             };
 
-            ctx.app.handle(mock_req, mock_res);
+            this.app.handle(mock_req, mock_res);
         });
 
 
@@ -352,7 +332,7 @@ module.exports = function (ctx) {
                 done();
             };
 
-            ctx.app.handle(mock_req, mock_res);
+            this.app.handle(mock_req, mock_res);
         });
 
 
@@ -374,7 +354,7 @@ module.exports = function (ctx) {
                 done();
             };
 
-            ctx.app.handle(mock_req, mock_res);
+            this.app.handle(mock_req, mock_res);
         });
 
 
@@ -402,7 +382,7 @@ module.exports = function (ctx) {
                 done();
             };
 
-            ctx.app.handle(mock_req, mock_res);
+            this.app.handle(mock_req, mock_res);
         });
     });
 };

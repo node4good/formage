@@ -1,3 +1,4 @@
 -R spec
---require ./test/common/tests-common.js
+--require ./test/common.js
+--glob test*.js
 --bail

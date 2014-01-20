@@ -1,8 +1,9 @@
 'use strict';
+/*global mock_req_proto */
 describe("high level REST requests on tungus", function () {
     if (process.version.indexOf('v0.8') === 0) return;
-    var ctx = {};
     before(function (done) {
+        var ctx = this;
         _.each(require.cache, function (mod, modName) {
             if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb'))
                 delete require.cache[modName];
@@ -37,12 +38,12 @@ describe("high level REST requests on tungus", function () {
     });
 
 
-    require('./common/core_test')(ctx);
+    require('./core-tests')(this);
 
 
     after(function () {
-        ctx.mongoose.disconnect();
-        delete ctx.mongoose;
-        delete ctx.app;
+        this.mongoose.disconnect();
+        delete this.mongoose;
+        delete this.app;
     });
 });

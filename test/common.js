@@ -1,6 +1,7 @@
 'use strict';
 global._ = require('lodash');
 var chai = require('chai');
+var Promise = require('mpromise');
 global.should = chai.should();
 global.expect = chai.expect;
 require('nodestrum');
@@ -50,3 +51,17 @@ global.makeRes = function makeRes(req, done) {
 var fs = require('fs');
 global.test_post_body_multipart = fs.readFileSync('test/fixtures/test-post-body.mime', 'utf-8');
 global.renderedEmbeded = fs.readFileSync('test/fixtures/rendered-embed-form.txt', 'utf-8');
+global.mockFind = function mockFindFactory(arr) {
+    return function mockFind() {
+        return {
+            populate: function mockLimit() { return this; },
+            skip: function mockLimit() { return this; },
+            limit: function mockLimit() { return this; },
+            exec: function mockExec(cb) {
+                var p = new Promise(cb);
+                p.fulfill(arr);
+                return p;
+            }
+        };
+    };
+};
