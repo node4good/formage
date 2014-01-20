@@ -12,7 +12,7 @@
     "supernew":true,
     "scripturl": true,
     "node":true,
-    "globals": [
+    "predef": [
         "_",
         "describe",
         "before",
