@@ -1,0 +1,3 @@
+REVIEWBOARD_URL = "http://rb.empeeric.com/reviewboard/"
+REPOSITORY = "formage"
+BRANCH = "master"
