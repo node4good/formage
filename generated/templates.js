@@ -209,6 +209,7 @@ var cloudinary_url = value_url && value.url.split('/upload/')[0] + '/upload/c_fi
 var geomery = value && value.geometry && value.geometry.lat + ',' + value.geometry.lng;
 var maps_url = geomery && 'https://maps.google.com/?q=' + geomery;
 var filename = value && value.filename;
+var date_string = value && value.toISOString ? value.toISOString().split('T')[0] : '';
 switch (type){
 case 'Picture':
 buf.push("<a" + (jade.attrs({ 'href':(value_url), 'target':('_blank') }, {"href":true,"target":true})) + "><img" + (jade.attrs({ 'src':(cloudinary_url) }, {"src":true})) + "/></a>");
@@ -243,7 +244,7 @@ buf.push.apply(buf, jade.indent);
 buf.push("<div class=\"bool\"><i" + (jade.attrs({ "class": [((value ? 'icon-ok' : 'icon-remove'))] }, {"class":true})) + "></i></div>");
   break;
 case 'Date':
-buf.push("<a" + (jade.attrs({ 'href':(document_url) }, {"href":true})) + ">" + (jade.escape(null == (jade.interp = value.toISOString().split('T')[0]) ? "" : jade.interp)) + "</a>");
+buf.push("<a" + (jade.attrs({ 'href':(document_url) }, {"href":true})) + ">" + (jade.escape(null == (jade.interp = date_string) ? "" : jade.interp)) + "</a>");
   break;
 default:
 buf.push("<a" + (jade.attrs({ 'href':(document_url) }, {"href":true})) + ">" + (jade.escape(null == (jade.interp = value) ? "" : jade.interp)) + "</a>");

@@ -6,6 +6,7 @@ mixin fielddesc(value, type, document_url)
     - var geomery = value && value.geometry && value.geometry.lat + ',' + value.geometry.lng;
     - var maps_url = geomery && 'https://maps.google.com/?q=' + geomery;
     - var filename = value && value.filename;
+    - var date_string = value && value.toISOString ? value.toISOString().split('T')[0] : '';
     case type
         when 'Picture'
             a(href=value_url, target='_blank'): img(src=cloudinary_url)
@@ -32,7 +33,7 @@ mixin fielddesc(value, type, document_url)
                 i(class=(value ? 'icon-ok' : 'icon-remove'))
 
         when 'Date'
-            a(href=document_url): =value.toISOString().split('T')[0]
+            a(href=document_url): =date_string
 
         default
             a(href=document_url): =value
