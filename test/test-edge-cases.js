@@ -46,6 +46,13 @@ describe("edge cases on mongoose", function () {
         });
 
 
+        after(function () {
+            delete this.app;
+            delete this.registry;
+            delete this.startTheTest;
+        });
+
+
         it("works", function () {
             expect(this.registry).to.be.an('object');
         });
@@ -219,11 +226,27 @@ describe("no init options, no models, changed ENV for 100% in routes.js", functi
 
         process.env.FORMAGE_DISABLE_DOMAINS = old_domain_value;
         process.env.NODE_DEBUG = old_node_debug;
+
+        this.startTheTest = function startTheTest(req, res, argOut) {
+            var done = this._runnable.callback;
+            var out = function (err) {
+                if (typeof(argOut) === 'function')
+                    try {
+                        err = argOut(err);
+                    } catch (e) {
+                        err = e;
+                    }
+                done(err);
+            };
+            var app = this.app.admin_app;
+            process.nextTick(function () {
+                app.handle(req, res, out);
+            });
+        };
     });
 
 
     after(function () {
-        process.domain.dispose();
         delete this.formage;
         delete this.mongoose;
         delete this.express;
@@ -234,7 +257,7 @@ describe("no init options, no models, changed ENV for 100% in routes.js", functi
         expect(this.registry).to.be.an('object');
     });
 
-    it("try to get a 500", function try_to_get_a_500() {
+    it("try to get a 500",function try_to_get_a_500() {
         var mock_req = _.defaults({url: "/model/gaga"}, mock_req_proto);
 
         var mock_res = _.defaults({
@@ -255,9 +278,7 @@ describe("no init options, no models, changed ENV for 100% in routes.js", functi
             };
         };
         this.startTheTest(mock_req, mock_res, function mockOut(err) {
-            var Assertion = require('chai').Assertion;
-            var a = new Assertion(err, 'hello');
-            a.to.have.property('message').contain("ooff");
+            expect(err).to.have.property('message').contain("ooff");
         });
     }).async = true;
 });
