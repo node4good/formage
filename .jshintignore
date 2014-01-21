@@ -1,7 +1,7 @@
-assets/**/*.*
-coverage/**/*.*
-dump/**/*.*
-example/**/*.*
-generated/**/*.*
-node_modules/**/*.*
-test/old/**/*.*
+assets
+coverage
+dump
+example
+generated
+node_modules
+test/old
