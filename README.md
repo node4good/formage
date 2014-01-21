@@ -1,29 +1,24 @@
-<img src="http://i.imgur.com/9vVHCPY.png" align="top" />  Formage
-
-[![Build Status](https://travis-ci.org/Empeeric/formage.png?branch=master "Build Status")](https://travis-ci.org/Empeeric/formage) 
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/Empeeric/formage/trend.png "Bitdeli Badge")](https://bitdeli.com/free) 
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/b3ef5b297ff96ba6b5c573e376debd1d "githalytics.com")](http://githalytics.com/Empeeric/formage) 
-
+Formage [![Build Status](https://travis-ci.org/Empeeric/formage.png?branch=master "Build Status")](https://travis-ci.org/Empeeric/formage) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/Empeeric/formage/trend.png "Bitdeli Badge")](https://bitdeli.com/free) [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/b3ef5b297ff96ba6b5c573e376debd1d "githalytics.com")](http://githalytics.com/Empeeric/formage)
 =============
 
 [Bootstraped](http://twitter.github.com/bootstrap/) Admin GUI addon for [Mongoose](http://mongoosejs.com/), [JugglingDB](https://github.com/1602/jugglingdb), or just as a form generator.
 Originally forked from [mongoose-admin](https://github.com/marccampbell/mongoose-admin).
 
-Example Usage
------
+<img src="http://i.imgur.com/9vVHCPY.png" align="top" /> 
+
+#### Example Usage
 [![npm install formage](https://nodei.co/npm/formage.png?downloads=true)](https://nodei.co/npm/formage/)
 <!-- [![NPM](https://nodei.co/npm-dl/formage.png)](https://nodei.co/npm/formage/) -->
 ```js
 var express = require('express'),
     app = express();
 
-require('formage').init(app, express [, models, options]);
+require('formage').init(app, express, models]);
 ```
 
 Look at the `\example` directory.
 
-Options
--------
+### Options
 ```js
 // Site-wide options, and their default values
 require('formage').init(app, express, models, {
@@ -86,89 +81,34 @@ model.formage = {
 };
 ```
 
-#### Field options
+#### Fields
+Formage comes with the following built-in fields,
+but [custom fields](https://github.com/Empeeric/formage/wiki/Custom-Fields) can be written if needed.
+- String
+- Boolean
+- Number
+- Date
+- Time
+- Enum ([select2](http://ivaynberg.github.io/select2/))
+- Ref ([select2](http://ivaynberg.github.io/select2/))
+- Text (`<textarea>`)
+- HTML ([ckeditor](http://ckeditor.com/))
+- FilePicker ([File Picker](https://www.inkfilepicker.com/))
+- Picture ([Cloudinary](http://cloudinary.com/))
+- GeoPoint ([Google Maps](https://maps.google.com/))
+
+You can pass options to the underlying fields and widgets:
 ```js
 var schema = new mongoose.Schema({
     artist: { type: String, label: 'Who made it?' },
-    // lang is a two letter ISO 639-1 code as recognized by google
-    location: { type: Schema.Types.GeoPoint, widget_options: {lang: 'nl'}}
+    location: { type: Schema.Types.GeoPoint, widget_options: { lang: 'nl' }}
 });
 ```
-[ISO 639-1](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
+(The map widget lang setting is a two-letter [ISO 639-1](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.)
 
-#### Extending
-``` js
-var ReversedWidget = formage.widgets.TextWidget.extend({
-    render: function (res) {
-        this.value = this.value.split("").reverse().join("");
-        this.attrs.style = '-moz-transform: scale(-1, 1); -webkit-transform: scale(-1, 1); transform: scale(-1, 1);';
-        this._super(res);
-    }
-});
-
-var ReversedField = formage.fields.StringField.extend({
-    init: function (options) {
-        options = options || {};
-        options.widget = ReversedWidget;
-        this._super(options);
-    },
-    clean_value: function (req, callback) {
-        this.value = this.value.split("").reverse().join("");
-        this._super(req, callback);
-    }
-});
-
-var schema = new mongoose.Schema({
-    reversed: { type: String, formageField: ReversedField}
-});
-```
-Shout-out to my man @jrowny
-
----
-
-If we want to have a complex underlining type we need to "lie" to mongoose
-
-```js
-var TwoDWidget = formage.widgets.TextWidget.extend({
-    render: function (res) {
-        var value = this.value || {};
-        var lat = value.lat;
-        var lng = value.lng;
-        var name = this.name;
-        this.name = name + '_lat';
-        this.value = lat;
-        this._super(res);
-        this.name = name + '_lng';
-        this.value = lng;
-        this._super(res);
-    }
-});
-
-
-var TwoDField = formage.fields.StringField.extend({
-    init: function (options) {
-        options = options || {};
-        options.widget = TwoDWidget;
-        this._super(options);
-    },
-    clean_value: function (req, callback) {
-        var lat = Number(req.body[this.name + '_lat']);
-        var lng = Number(req.body[this.name + '_lng']);
-        this.value = { lat: lat, lng: lng};
-        this._super(req, callback);
-    }
-});
-var TwoD = function TwoD(path, options) {
-    TwoD.super_.call(this, path, options);
-};
-util.inherits(TwoD, Schema.Types.Mixed);
-Types.TwoD = Object;
-Schema.Types.TwoD = TwoD;
-
-var schema = new mongoose.Schema({
-    two_d: { type: TwoD, formageField: TwoDField}
-});
-```
+#### Hmm
+- [Extend formage with your custom field](https://github.com/Empeeric/formage/wiki/Custom-Fields)
+- [Embed a formage form outside of the admin](https://github.com/Empeeric/formage/wiki/Outing-Formage-Form)
 
 License
 -------
