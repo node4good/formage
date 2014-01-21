@@ -50,7 +50,6 @@
     "tungus": "",
     "chai": "git+https://github.com/Empeeric/chai.git",
     "mocha": "",
-    "mocha-jshint": "",
     "jshint": ""
   },
   "optionalDevDependencies": {
