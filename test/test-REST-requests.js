@@ -1,8 +1,123 @@
 'use strict';
-/*global mock_req_proto,mock_res_proto,should,test_post_body_multipart */
-module.exports = function () {
-    describe("general", function () {
-        it("Mock test document page", function (done) {
+/*global mock_req_proto,mock_res_proto,makeRes,should,test_post_body_multipart,describe,before,after,it,expect,_ */
+describe("REST requests", function () {
+    describe("mongoose", function () {
+        before(function (done) {
+            var ctx = this;
+            _.each(require.cache, function (mod, modName) {
+                if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb'))
+                    delete require.cache[modName];
+            });
+            var formage = require('../index');
+            var mongoose = ctx.mongoose = require("mongoose");
+            var conn_str = 'mongodb://localhost/formage-test' + this.test.parent.title.replace(/\s/g, '');
+            mongoose.connect(conn_str, function (err) {
+                if (err) return done(err);
+                return mongoose.connection.db.dropDatabase(function (err) {
+                    var AppliesTo = mongoose.model('AppliesTo', new mongoose.Schema({
+                        Title: {type: String, limit: 100, required: true},
+                        Identifier: {type: String, limit: 100},
+                        Editable: {type: Number}
+                    }));
+                    var tests = require('../example/classic/models/tests');
+                    var pages = require('../example/classic/models/pages');
+                    var config = require('../example/classic/models/config');
+                    var gallery = require('../example/classic/models/gallery');
+                    var embed = require('../example/classic/models/embed');
+                    var bugs = require('../example/classic/models/bugs');
+                    var express = require('express');
+                    var app = express();
+                    ctx.registry = formage.init(app, express, {pages: pages, AppliesTo: AppliesTo, Tests: tests, config: config, gallery: gallery, embed: embed, bugs: bugs}, {
+                        title: 'Formage Example',
+                        default_section: 'Main',
+                        admin_users_gui: true
+                    });
+                    ctx.app = mock_req_proto.app = app.admin_app;
+                    ctx.startTheTest = function startTheTest(req, res, argOut) {
+                        var done = ctx._runnable.callback;
+                        var out = function (err) {
+                            if (typeof(argOut) === 'function')
+                                try {
+                                    err = argOut(err);
+                                } catch (e) {
+                                    err = e;
+                                }
+                            if (err) done(err);
+                        };
+                        ctx.app.handle(req, res, out);
+                    };
+                    done(err);
+                });
+            });
+        });
+
+
+        after(function () {
+            this.mongoose.disconnect();
+            delete this.registry;
+            delete this.mongoose;
+            delete this.app;
+        });
+
+
+        describeCommonTests(" for mongoose");
+    });
+
+
+
+    describe("tungus", function () {
+        if (process.version.indexOf('v0.8') === 0) return;
+        before(function (done) {
+            var ctx = this;
+            _.each(require.cache, function (mod, modName) {
+                if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb'))
+                    delete require.cache[modName];
+            });
+            require('tungus');
+            var formage = require('../index');
+            var mongoose = ctx.mongoose = require("mongoose");
+            var conn_str = 'tingodb://./.data/RESTontingodb';
+            mongoose.connect(conn_str, function (err) {
+                if (err) return done(err);
+                return mongoose.connection.db.dropDatabase(function (err) {
+                    var AppliesTo = mongoose.model('AppliesTo', new mongoose.Schema({
+                        Title: {type: String, limit: 100, required: true},
+                        Identifier: {type: String, limit: 100},
+                        Editable: {type: Number}
+                    }));
+                    var express = require('express');
+                    var app = express();
+                    var tests = require('../example/classic/models/tests');
+                    delete tests.formage.subCollections;
+                    var pages = require('../example/classic/models/pages');
+                    var config = require('../example/classic/models/config');
+                    ctx.registry = formage.init(app, express, {pages: pages, AppliesTo: AppliesTo, Tests: tests, config: config}, {
+                        title: 'Formage Example',
+                        default_section: 'Main',
+                        admin_users_gui: true
+                    });
+                    ctx.app = mock_req_proto.app = app.admin_app;
+                    done(err);
+                });
+            });
+        });
+
+
+        after(function () {
+            this.mongoose.disconnect();
+            delete this.mongoose;
+            delete this.app;
+        });
+
+
+        describeCommonTests(" for tungus");
+    });
+});
+
+
+function describeCommonTests(caller) {
+    describe("general " + caller, function () {
+        it("Mock test document page" + caller, function (done) {
             var mock_req = _.defaults({
                 url: "/model/Tests/document/new",
                 method: "GET"
@@ -19,7 +134,7 @@ module.exports = function () {
         });
 
 
-        it("test document - post simple", function (done) {
+        it("test document - post simple" + caller, function (done) {
             var mock_req = _.defaults({
                 url: "/model/AppliesTo/document/new",
                 method: "POST",
@@ -43,7 +158,7 @@ module.exports = function () {
         });
 
 
-        it("test document - post - failing validation", function (done) {
+        it("test document - post - failing validation" + caller, function (done) {
             var mock_req = _.defaults({
                 url: "/model/AppliesTo/document/new",
                 method: "POST",
@@ -66,7 +181,7 @@ module.exports = function () {
         });
 
 
-        it("test document - post full form", function (done) {
+        it("test document - post full form" + caller, function (done) {
             var mock_req = _.defaults({
                 url: "/json/model/Tests/document/new",
                 method: "POST",
@@ -92,7 +207,7 @@ module.exports = function () {
         });
 
 
-        it('test that there are sections', function (done) {
+        it('test that there are sections' + caller, function (done) {
             var mock_req = _.defaults({
                 url: "/",
                 method: "GET"
@@ -116,8 +231,8 @@ module.exports = function () {
     });
 
 
-    describe("document flow", function () {
-        it("post", function (done) {
+    describe("document flow" + caller, function () {
+        it("post" + caller, function (done) {
             var mock_req = _.defaults({
                 url: "/json/model/Tests/document/new",
                 method: "POST",
@@ -154,7 +269,7 @@ module.exports = function () {
         });
 
 
-        it("get", function (done) {
+        it("get" + caller, function (done) {
             var mock_req = _.defaults({
                 url: "/model/Tests/document/" + module._create_id,
                 method: "GET"
@@ -183,7 +298,7 @@ module.exports = function () {
         });
 
 
-        it("checkDependencies", function (done) {
+        it("checkDependencies" + caller, function (done) {
             var mock_req = _.defaults({
                 url: "/json/model/Tests/document/" + module._create_id + '/dependencies',
                 method: "GET",
@@ -202,12 +317,12 @@ module.exports = function () {
         });
 
 
-        it("delete", function (done) {
+        it("delete" + caller, function (done) {
             var test_doc_id = module._create_id;
             delete module._create_id;
             var mock_req = _.defaults({
                 url: "/json/model/Tests/action/delete",
-                body: {ids:[test_doc_id]},
+                body: {ids: [test_doc_id]},
                 method: "POST"
             }, mock_req_proto);
 
@@ -224,8 +339,8 @@ module.exports = function () {
     });
 
 
-    describe("the tests model", function () {
-        it("Mock test model page", function (done) {
+    describe("the tests model" + caller, function () {
+        it("Mock test model page" + caller, function (done) {
             var mock_req = _.defaults({
                 url: "/model/AppliesTo/",
                 method: "GET"
@@ -245,7 +360,7 @@ module.exports = function () {
         });
 
 
-        it("Mock test models page", function (done) {
+        it("Mock test models page" + caller, function (done) {
             var mock_req = _.defaults({
                 url: "/",
                 method: "GET"
@@ -265,8 +380,8 @@ module.exports = function () {
         });
     });
 
-    describe("play with a single model", function () {
-        it("should get", function (done) {
+    describe("play with a single model" + caller, function () {
+        it("should get" + caller, function (done) {
             var mock_req = _.defaults({
                 url: "/model/config/document/single",
                 method: "GET"
@@ -287,7 +402,7 @@ module.exports = function () {
         });
 
 
-        it("should post", function (done) {
+        it("should post" + caller, function (done) {
             var mock_req = _.defaults({
                 url: "/model/config/document/single",
                 method: "POST",
@@ -316,8 +431,8 @@ module.exports = function () {
     });
 
 
-    describe("Admin Users", function () {
-        it("Model view", function (done) {
+    describe("Admin Users" + caller, function () {
+        it("Model view" + caller, function (done) {
             var mock_req = _.defaults({
                 url: "/model/Admin_Users/",
                 method: "GET"
@@ -336,7 +451,7 @@ module.exports = function () {
         });
 
 
-        it("document view", function (done) {
+        it("document view" + caller, function (done) {
             var userId = this.test.parent._exampleUserID;
             delete this.test.parent._exampleUserID;
             var mock_req = _.defaults({
@@ -358,7 +473,7 @@ module.exports = function () {
         });
 
 
-        it("Mock test admin user page post", function (done) {
+        it("Mock test admin user page post" + caller, function (done) {
             var mock_req = _.defaults({
                 url: "/model/Admin_Users/document/new",
                 body: {
@@ -385,4 +500,4 @@ module.exports = function () {
             this.app.handle(mock_req, mock_res);
         });
     });
-};
+}

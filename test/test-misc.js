@@ -1,6 +1,6 @@
 'use strict';
-/*global makeRes,mock_req_proto,mock_res_proto,should,renderedEmbeded,mockFind */
-describe("high level REST requests on mongoose", function () {
+/*global mock_req_proto,mock_res_proto,makeRes,renderedEmbeded,should,describe,before,after,it,expect,_,mockFind */
+describe("misc requests on mongoose", function () {
     before(function (done) {
         var ctx = this;
         _.each(require.cache, function (mod, modName) {
@@ -215,7 +215,7 @@ describe("high level REST requests on mongoose", function () {
             mock_res.render = function (view, locals) {
                 // fragile
                 var actual = String(locals.form);
-                var expected = global.renderedEmbeded;
+                var expected = renderedEmbeded;
                 expect(actual).to.equal(expected);
 
                 this.req.app.render(view, locals, function (err, doc) {
@@ -306,100 +306,6 @@ describe("high level REST requests on mongoose", function () {
             done();
         };
         ctx.app.handle(mock_req, mock_res);
-    });
-
-
-    describe("nested & embeded", function () {
-        var ctx;
-        function step1(done) {
-            var mock_req = _.defaults({
-                url: "/model/config/document/single",
-                method: "POST",
-                body: {
-                    title: 'ref1',
-                    'footer.links_li0_text': 'tgf2',
-                    'footer.links_li0_url': 'yhg2'
-                }
-            }, mock_req_proto);
-            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
-            mock_res.render = function (view, options) {
-                done(options.form.errors);
-            };
-            mock_res.redirect = function (url) {
-                url.should.equal("/admin/model/config");
-                step2(done);
-            };
-            ctx.app.handle(mock_req, mock_res);
-        }
-
-        function step2(done) {
-            var mock_req = _.defaults({
-                url: "/model/config/document/single",
-                method: "GET"
-            }, mock_req_proto);
-
-            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
-
-            mock_res.render = function (view, options) {
-                view.should.equal("document.jade");
-                should.exist(options);
-                options.form.instance.footer.links[0].text.should.equal("tgf2");
-                options.form.instance.footer.links[0].url.should.equal("yhg2");
-                this.req.app.render(view, options, function (err, doc) {
-                    if (err) throw err;
-                    should.exist(doc);
-                    Boolean(~doc.indexOf(' value="tgf2" class="optional" type="text" name="footer.links_li0_text"'))
-                        .should.equal(true);
-                    step3(done);
-                });
-            };
-            ctx.app.handle(mock_req, mock_res);
-        }
-
-        function step3(done) {
-            var mock_req = _.defaults({
-                url: "/model/config/document/single",
-                method: "POST",
-                body: {'footer.links_li0_text': ''}
-            }, mock_req_proto);
-            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
-            mock_res.render = function (view, options) {
-                throw options.form.errors.exception[0];
-            };
-            mock_res.redirect = function (url) {
-                url.should.equal("/admin/model/config");
-                step4(done);
-            };
-
-            ctx.app.handle(mock_req, mock_res);
-        }
-
-        function step4(done) {
-            var mock_req = _.defaults({
-                url: "/model/config/document/single",
-                method: "GET"
-            }, mock_req_proto);
-
-            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
-
-            mock_res.render = function (view, options) {
-                view.should.equal("document.jade");
-                should.exist(options);
-                this.req.app.render(view, options, function (err, doc) {
-                    if (err) throw err;
-                    should.exist(doc);
-                    Boolean(~doc.indexOf(' value="" class="optional" type="text" name="footer.links_li0_text"'))
-                        .should.equal(true);
-                    return done();
-                });
-            };
-            ctx.app.handle(mock_req, mock_res);
-        }
-
-        it("should get updated", function (done) {
-            ctx = this;
-            step1(done);
-        });
     });
 
 
@@ -587,9 +493,97 @@ describe("high level REST requests on mongoose", function () {
     });
 
 
+    describe("nested & embeded", function () {
+        var ctx;
+        function step1(done) {
+            var mock_req = _.defaults({
+                url: "/model/config/document/single",
+                method: "POST",
+                body: {
+                    title: 'ref1',
+                    'footer.links_li0_text': 'tgf2',
+                    'footer.links_li0_url': 'yhg2'
+                }
+            }, mock_req_proto);
+            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+            mock_res.render = function (view, options) {
+                done(options.form.errors);
+            };
+            mock_res.redirect = function (url) {
+                url.should.equal("/admin/model/config");
+                step2(done);
+            };
+            ctx.app.handle(mock_req, mock_res);
+        }
 
-    describe('core screens', function () {
-        require('./core-tests')(this);
+        function step2(done) {
+            var mock_req = _.defaults({
+                url: "/model/config/document/single",
+                method: "GET"
+            }, mock_req_proto);
+
+            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+
+            mock_res.render = function (view, options) {
+                view.should.equal("document.jade");
+                should.exist(options);
+                options.form.instance.footer.links[0].text.should.equal("tgf2");
+                options.form.instance.footer.links[0].url.should.equal("yhg2");
+                this.req.app.render(view, options, function (err, doc) {
+                    if (err) throw err;
+                    should.exist(doc);
+                    Boolean(~doc.indexOf(' value="tgf2" class="optional" type="text" name="footer.links_li0_text"'))
+                        .should.equal(true);
+                    step3(done);
+                });
+            };
+            ctx.app.handle(mock_req, mock_res);
+        }
+
+        function step3(done) {
+            var mock_req = _.defaults({
+                url: "/model/config/document/single",
+                method: "POST",
+                body: {'footer.links_li0_text': ''}
+            }, mock_req_proto);
+            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+            mock_res.render = function (view, options) {
+                throw options.form.errors.exception[0];
+            };
+            mock_res.redirect = function (url) {
+                url.should.equal("/admin/model/config");
+                step4(done);
+            };
+
+            ctx.app.handle(mock_req, mock_res);
+        }
+
+        function step4(done) {
+            var mock_req = _.defaults({
+                url: "/model/config/document/single",
+                method: "GET"
+            }, mock_req_proto);
+
+            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+
+            mock_res.render = function (view, options) {
+                view.should.equal("document.jade");
+                should.exist(options);
+                this.req.app.render(view, options, function (err, doc) {
+                    if (err) throw err;
+                    should.exist(doc);
+                    Boolean(~doc.indexOf(' value="" class="optional" type="text" name="footer.links_li0_text"'))
+                        .should.equal(true);
+                    return done();
+                });
+            };
+            ctx.app.handle(mock_req, mock_res);
+        }
+
+        it("should get updated", function (done) {
+            ctx = this;
+            step1(done);
+        });
     });
 });
 
