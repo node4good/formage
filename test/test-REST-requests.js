@@ -107,6 +107,8 @@ describe("REST requests", function () {
             this.mongoose.disconnect();
             delete this.mongoose;
             delete this.app;
+            delete this.registry;
+            delete global.MONGOOSE_DRIVER_PATH;
         });
 
 
