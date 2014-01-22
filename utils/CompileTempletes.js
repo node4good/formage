@@ -34,4 +34,6 @@ jadeFiles.forEach(function(file) {
     }
 });
 console.log('\x1B[36mformage\x1B[39m: compiled %d templates', jadeFiles.length);
-fs.writeFileSync(path.join(__dirname, '..', 'generated', 'templates.js'), js);
+var genDir = path.join(__dirname, '..', 'generated');
+if (!fs.existsSync(genDir)) fs.mkdirSync(genDir);
+fs.writeFileSync(path.join(genDir, 'templates.js'), js);
