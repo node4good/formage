@@ -43,7 +43,7 @@
   "devDependencies": {
     "jade": "0.35.0",
     "express": "",
-    "mongoose": "",
+    "mongoose": "git+https://github.com/LearnBoost/mongoose.git",
     "jugglingdb": "",
     "istanbul": "",
     "tingodb": "git+https://github.com/Empeeric/tingodb.git",
