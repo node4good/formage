@@ -2,7 +2,7 @@
   "name": "formage",
   "description": "Admin GUI addon for mongoose, jugglingdb, or just as a form generator",
   "version": "2.5.3",
-  "main": "index.js",
+  "main": "lib/index.js",
   "author": {
     "name": "Etai Peretz",
     "email": "etai@empeeric.com",
