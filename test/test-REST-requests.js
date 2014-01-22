@@ -8,7 +8,7 @@ describe("REST requests", function () {
                 if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb'))
                     delete require.cache[modName];
             });
-            var formage = require('../index');
+            var formage = require('../');
             var mongoose = ctx.mongoose = require("mongoose");
             var conn_str = 'mongodb://localhost/formage-test' + this.test.parent.title.replace(/\s/g, '');
             mongoose.connect(conn_str, function (err) {
@@ -74,7 +74,7 @@ describe("REST requests", function () {
                     delete require.cache[modName];
             });
             require('tungus');
-            var formage = require('../index');
+            var formage = require('../');
             var mongoose = ctx.mongoose = require("mongoose");
             var conn_str = 'tingodb://./.data/RESTontingodb';
             mongoose.connect(conn_str, function (err) {
