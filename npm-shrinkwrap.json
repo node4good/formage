@@ -1,6 +1,6 @@
 {
   "name": "formage",
-  "version": "2.5.2",
+  "version": "2.5.4",
   "dependencies": {
     "lodash": {
       "version": "2.4.1",
@@ -58,14 +58,13 @@
       "resolved": "http://registry.npmjs.org/mpromise/-/mpromise-0.5.1.tgz"
     },
     "connect-multiparty": {
-      "version": "1.0.2",
-      "from": "connect-multiparty@1.0.2",
-      "resolved": "http://registry.npmjs.org/connect-multiparty/-/connect-multiparty-1.0.2.tgz",
+      "version": "1.0.3",
+      "from": "connect-multiparty@1.0.3",
+      "resolved": "http://registry.npmjs.org/connect-multiparty/-/connect-multiparty-1.0.3.tgz",
       "dependencies": {
         "multiparty": {
-          "version": "3.1.2",
-          "from": "multiparty@3.1.2",
-          "resolved": "http://registry.npmjs.org/multiparty/-/multiparty-3.1.2.tgz",
+          "version": "3.2.0",
+          "from": "multiparty@~3.2.0",
           "dependencies": {
             "readable-stream": {
               "version": "1.1.10",
@@ -77,8 +76,7 @@
                 },
                 "debuglog": {
                   "version": "0.0.2",
-                  "from": "debuglog@0.0.2",
-                  "resolved": "http://registry.npmjs.org/debuglog/-/debuglog-0.0.2.tgz"
+                  "from": "debuglog@0.0.2"
                 }
               }
             },
