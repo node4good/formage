@@ -2,3 +2,4 @@
 /dump/
 *.tgz
 /Procfile
+/utils/
