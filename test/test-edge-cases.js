@@ -6,7 +6,7 @@ describe("edge cases on mongoose", function () {
             if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb'))
                 delete require.cache[modName];
         });
-        this.formage = require('../index');
+        this.formage = require('../');
         var mongoose = this.mongoose = require("mongoose");
         this.express = require('express');
         var conn_str = 'mongodb://localhost/formage-test' + this.test.parent.title.replace(/\s/g, '');

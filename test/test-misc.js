@@ -7,7 +7,7 @@ describe("misc requests on mongoose", function () {
             if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb'))
                 delete require.cache[modName];
         });
-        var formage = require('../index');
+        var formage = require('../');
         var mongoose = ctx.mongoose = require("mongoose");
         var conn_str = 'mongodb://localhost/formage-test' + this.test.parent.title.replace(/\s/g, '');
         mongoose.connect(conn_str, function (err) {
