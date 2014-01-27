@@ -661,7 +661,9 @@ var FileField_ = exports.FileField = BaseField.extend({
                     self.value = {
                         path: uploaded_file.name,
                         url: url,
-                        size: uploaded_file.size};
+                        size: uploaded_file.size,
+                        timestamp:Date.now()
+                    };
                     on_finish();
                 });
             } else {
@@ -676,7 +678,8 @@ var FileField_ = exports.FileField = BaseField.extend({
                         self.value = {
                             path: filename,
                             url: '/cdn/' + filename,
-                            size: uploaded_file.size
+                            size: uploaded_file.size,
+                            timestamp:Date.now()
                         };
                         on_finish();
                     });
