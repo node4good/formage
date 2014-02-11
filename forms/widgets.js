@@ -163,16 +163,16 @@ exports.DateWidget = exports.InputWidget.extend({
 exports.DateTimeWidget = exports.InputWidget.extend({
     init: function (options) {
         this._super('text', options);
-        this.attrs['data-format'] = "yyyy-MM-dd hh:mm";
+        this.attrs['data-format'] = "dd/MM/yyyy hh:mm:ss";
         this.static.js.push('/vendor/bootstrap-datetimepicker.min.js');
         this.static.css.push('/vendor/bootstrap-datetimepicker.min.css');
     },
     render: function (res) {
         var widget_id =  'datetimepicker' + this.name;
-        res.write('\n<div class="input-append date" id="' + widget_id + '">\n');
+        res.write('\n<div class="input-append date nf_timepicker" id="' + widget_id + '">\n');
         this._super(res);
         res.write('\n<span class="add-on">\n<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>\n</span>\n</div>\n');
-        var script = "$('#" + widget_id + "').datetimepicker();";
+        var script = "$('#" + widget_id + "').datetimepicker(); ";
         res.write('<script>' + script + '</script>');
     }
 });

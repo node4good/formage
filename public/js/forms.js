@@ -70,8 +70,11 @@
             $('.nf_ref', ctx).each(getQueryFunctionForSelect2);
             $('select', ctx).select2();
         }
-        if ($.fn.datepicker) $('.nf_datepicker', ctx).datepicker({format:'yyyy-mm-dd'});
-        if ($.fn.timepicker) $('.nf_timepicker', ctx).timepicker();
+        if ($.fn.datepicker) $('.nf_datepicker', ctx).datepicker({format:'mm/dd/yyyy'});
+//        if ($.fn.timepicker) $('.nf_timepicker', ctx).timepicker({format:'MM/dd/yyyy HH:mm:ss PP'}).on('change', function(e) {
+//            var val = $(this).val();
+//            console.log(val);
+//        });
         $('[data-ref]', ctx).each(refLink);
     }
 
@@ -397,10 +400,15 @@
 
         $('form#document').submit(function () {
 
-            $('.date input').each(function(){
-                var val = $(this).val();
-                if(val)
-                    $(this).val(new Date(val));
+            $('.nf_datepicker,.nf_timepicker').each(function(){
+                var data = $(this).data('datepicker') || $(this).data('datetimepicker');
+                if(data){
+                    var date = data.date || data._date;
+                    if(date && date != new Date()){
+                        var $input = this.tagName == 'INPUT' ? $(this) : $('input',this);
+                        $input.val(date);
+                    }
+                }
             });
             $('p.submit button').prop('disabled', true);
         });
