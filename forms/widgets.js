@@ -436,6 +436,30 @@ exports.MapWidget = exports.InputWidget.extend({
     }
 });
 
+exports.MapAreaWidget = exports.InputWidget.extend({
+    init: function (options) {
+        this._super(options.showLatLng ? 'text' : 'hidden', options);
+        this.attrs.class.push('nf_mapview_area');
+        this.static.js.push('//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&language=he&libraries=places');
+        this.static.js.push('/js/maps.js');
+        this.static.css.push('/css/maps.css');
+    },
+
+    render: function (res) {
+        res.write('<div class="nf_widget">');
+        var old_value = this.value;
+        var tlLat = this.value && this.value.topLeft && this.value.topLeft.geometry ? this.value.topLeft.geometry.lat : '';
+        var tlLng = this.value && this.value.topLeft && this.value.topLeft.geometry ? this.value.topLeft.geometry.lng : '';
+        var brLat = this.value && this.value.bottomRight && this.value.bottomRight.geometry ? this.value.bottomRight.geometry.lat : '';
+        var brLng = this.value && this.value.bottomRight && this.value.bottomRight.geometry ? this.value.bottomRight.geometry.lng : '';
+        this.value = tlLat + '  ,  ' + tlLng + ' ; ' + brLat + ' , ' + brLng;
+        this._super(res);
+        this.value = old_value;
+        res.write('\n</div>\n');
+    }
+});
+
+
 
 exports.ComboBoxWidget = exports.ChoicesWidget.extend({
     init: function (options) {

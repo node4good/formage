@@ -429,6 +429,10 @@ var MongooseForm = exports.MongooseForm = BaseForm.extend({
             return new fields.GeoField(options);
         }
 
+        if (mongoose_field.options.type.name === 'GeoArea') {
+            return new fields.GeoAreaField(options);
+        }
+
         if (mongoose_field.options.type.name === 'Mixed') {
             return new fields.DictField(options);
         }

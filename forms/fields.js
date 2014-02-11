@@ -765,6 +765,31 @@ var GeoField = exports.GeoField = BaseField.extend({
     }
 });
 
+var GeoAreaField = exports.GeoAreaField = BaseField.extend({
+    init: function (options) {
+        options = options || {};
+        options.widget = options.widget || widgets.MapAreaWidget;
+        this._super(options);
+    },
+    clean_value: function (req, callback) {
+        var str = this.value;
+        var points = str.split(/\s*;\s*/);
+        var topLeft = this.parsePoint(points[0]);
+        var bottomRight = this.parsePoint(points[1]);
+        if(!topLeft || !bottomRight)
+            this.value = null;
+        else
+            this.value = {topLeft:topLeft,bottomRight:bottomRight};
+        this._super(simpleReq(req), callback);
+    },
+    parsePoint : function(str,address){
+        var parts = str.split(',').map(function(part){return part.trim()});
+        if (parts.length !== 2 || parts[0] === '' || parts[1] === '')
+            return null;
+        else
+            return { geometry: { lat: Number(parts[0]), lng: Number(parts[1])}};
+    }
+});
 
 var DictField = exports.DictField = BaseField.extend({
     init: function (options) {

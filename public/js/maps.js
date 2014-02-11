@@ -8,7 +8,7 @@ var geocoder = window.google ? new google.maps.Geocoder() : null;
 
 
 $(function() {
-    $('.nf_mapview').geopicker();
+    $('.nf_mapview,.nf_mapview_area').geopicker();
 });
 
 
@@ -24,10 +24,11 @@ $.fn.geopicker = function(params) {
         address_input = defaults['address_field'] || elm.attr('address_field'),
         map_id = defaults['map_id'] || (elm.is('[map_id]') ? elm.attr('map_id') : null);
 
+    var isArea = elm.hasClass('nf_mapview_area');
 //    console.log('geopicker', elm);
 
     var map;
-    var marker;
+    var marker, rect, bounds;
     var center;
 
     var init = function() {
@@ -37,32 +38,59 @@ $.fn.geopicker = function(params) {
             $('<div class="geopicker_map" id="' + map_id + '" style="height:300px;"></div>').insertAfter(elm);
         }
 
-        var latlng = elm.val() || '0,0';
+        var latlng = elm.val() || (isArea ? '0,0:0,0' : '0,0');
+
 
         var m_init_map = function() {
             map = init_map(map_id,center);
-            marker = add_draggable_marker(map, center, function(loc)
-            {
-                update_location(loc);
-                if(address_input )
+            if(isArea) {
+                bounds = stringToBounds(latlng);
+                if(bounds && bounds.topLeft.lat != 0 && bounds.topLeft.lng != 0 && bounds.bottomRight.lat != 0 && bounds.bottomRight.lng != 0){
+                    var neBound = new google.maps.LatLng(bounds.topLeft.lat,bounds.bottomRight.lng);
+                    var swBound = new google.maps.LatLng(bounds.bottomRight.lat,bounds.topLeft.lng);
+                    bounds = new google.maps.LatLngBounds(swBound, neBound);
+                }
+                else {
+                    var neBound = new google.maps.LatLng(center.lat - 0.01,center.lng + 0.01);
+                    var swBound = new google.maps.LatLng(center.lat + 0.01 ,center.lng - 0.01);
+                    bounds = new google.maps.LatLngBounds(swBound, neBound);
+                }
+                map.fitBounds(bounds);
+                rect = new google.maps.Rectangle({
+                    map:map,
+                    bounds: bounds,
+                    editable: true,
+                    draggable: true
+                });
+                google.maps.event.addListener(rect, 'bounds_changed', function(){
+                    updateArea(rect.getBounds());
+                });
+            }
+            else {
+                marker = add_draggable_marker(map, center, function(loc)
                 {
-                    var geo = new google.maps.Geocoder();
-                    geo.geocode( { latLng: loc },function(results,status)
+                    update_location(loc);
+                    if(address_input )
                     {
+                        var geo = new google.maps.Geocoder();
+                        geo.geocode( { latLng: loc },function(results,status)
+                        {
+                            if(results && results.length > 0)
+                                $('#' + address_input).val(results[0].formatted_address);
+                        });
+                    }
+                });
+            }
+            google.maps.event.addListener(map, 'dblclick', function(event){
+                if(!isArea) {
+                    update_location(event.latLng);
+                    marker.setPosition(event.latLng);
+                    var geo = new google.maps.Geocoder();
+                    geo.geocode({ latLng: event.latLng }, function(results, status){
                         if(results && results.length > 0)
                             $('#' + address_input).val(results[0].formatted_address);
                     });
                 }
-            });
-
-            google.maps.event.addListener(map, 'dblclick', function(event){
-                update_location(event.latLng);
-                marker.setPosition(event.latLng);
-                var geo = new google.maps.Geocoder();
-                geo.geocode({ latLng: event.latLng }, function(results, status){
-                    if(results && results.length > 0)
-                        $('#' + address_input).val(results[0].formatted_address);
-                });
             });
 
             google.maps.event.addListener(map, 'click', function(event){
@@ -76,15 +104,27 @@ $.fn.geopicker = function(params) {
                     map.setCenter(location.geometry.location);
                 });
         };
-        var parts = latlng.split(/\s*,\s*/);
-        center = { lat: Number(parts[0]), lng: Number(parts[1])};
+        if(isArea){
+            var bounds = stringToBounds(latlng);
+            if(bounds) {
+                center = { lat: bounds.topLeft.lat/2 + bounds.bottomRight.lat/2,
+                    lng: bounds.topLeft.lng/2 + bounds.bottomRight.lng/2};
+            }
+        }
+        else {
+            var parts = latlng.split(/\s*,\s*/);
+            center = { lat: Number(parts[0]), lng: Number(parts[1])};
+        }
         if(center.lat == 0.0 && center.lng == 0.0)
         {
             user_position(function(loc)
             {
                 center = loc;
                 m_init_map();
-                update_location(marker.getPosition());
+                if(marker)
+                    update_location(marker.getPosition());
+                if(rect)
+                    updateArea(rect.getBounds());
             }, function()
             {
                 m_init_map();
@@ -100,6 +140,12 @@ $.fn.geopicker = function(params) {
         var lng = loc.lng();
         elm.val(lat + '  ,  ' + lng);
     };
+
+    var updateArea = function(bounds){
+        var ne = bounds.getNorthEast();
+        var sw = bounds.getSouthWest();
+        elm.val(ne.lat() + ' , ' + sw.lng() + ' ; ' + sw.lat() + ' , ' + ne.lng());
+    }
 
     elm.change(function(e){
         var val = $(this).val();
@@ -119,6 +165,18 @@ $.fn.geopicker = function(params) {
             });
         }
     })
+
+    function stringToBounds(str){
+        var parts = str.split(/\s*;\s*/);
+        if(parts.length == 2) {
+            var points =  parts.map(function(part){
+                var parts = part.split(/\s*,\s*/);
+                return { lat: Number(parts[0]), lng: Number(parts[1])};;
+            });
+            return {topLeft:points[0], bottomRight:points[1]};
+        }
+        return null;
+    }
     init();
 };
 

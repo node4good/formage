@@ -80,6 +80,16 @@ var init = function () {
     mongoose.Types.GeoPoint = Object;
     mongoose.Schema.Types.GeoPoint = GeoPoint;
 
+    var GeoArea = function GeoArea (path, options) {
+        GeoArea.super_.call(this, path, options);
+    };
+    util.inherits(GeoArea, mongoose.Schema.Types.Mixed);
+
+    exports.GeoArea = GeoArea;
+
+    mongoose.Types.GeoArea = Object;
+    mongoose.Schema.Types.GeoArea = GeoArea;
+
     var Text = function Text (path, options) {
         Text.super_.call(this, path, options);
     };
