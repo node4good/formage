@@ -139,7 +139,7 @@
     width: 150px;
     position: absolute;
     margin: -21px 0 0 -145px;
-    word-break: break-all;
+    white-space: nowrap;
     line-height: 1.5em;
 }
 .nf_fieldset > h2 {
