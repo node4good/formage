@@ -1,6 +1,6 @@
 <div>
 <div class="nf_fieldset toplevel closed">
-<h2>embeded</h2>
+<h2>Embeded</h2>
 <div>
 <div class="field">
 <label for="id_embeded.name1" class="field_label optional_label">Name1</label>
@@ -15,7 +15,7 @@
 <input  value="" class="optional" type="text" name="embeded.list1_tmpl_name2" id="id_embeded_list1_tmpl_name2" />
 </div>
 <div class="nf_fieldset">
-<h2>embeded2</h2>
+<h2>Embeded2</h2>
 <div class="field">
 <label for="id_embeded.list1_tmpl_embeded2.name3" class="field_label optional_label">Name3</label>
 <input  value="" class="optional" type="text" name="embeded.list1_tmpl_embeded2.name3" id="id_embeded_list1_tmpl_embeded2_name3" />
@@ -29,13 +29,13 @@
 <input  value="" class="optional" type="text" name="embeded.list1_tmpl_embeded2.list3_tmpl_name4" id="id_embeded_list1_tmpl_embeded2_list3_tmpl_name4" />
 </div>
 <div class="nf_fieldset">
-<h2>embeded4</h2>
+<h2>Embeded4</h2>
 <div class="field">
-<label for="id_embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.nested_string5" class="field_label optional_label">Nested String5</label>
+<label for="id_embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.nested_string5" class="field_label optional_label">Nested string5</label>
 <input  value="" class="optional" type="text" name="embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.nested_string5" id="id_embeded_list1_tmpl_embeded2_list3_tmpl_embeded4_nested_string5" />
 </div>
 <div class="field">
-<label for="id_embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.nested_string_req5" class="field_label required_label">Nested String Req5</label>
+<label for="id_embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.nested_string_req5" class="field_label required_label">Nested string req5</label>
 <input  value="" class="required" type="text" name="embeded.list1_tmpl_embeded2.list3_tmpl_embeded4.nested_string_req5" id="id_embeded_list1_tmpl_embeded2_list3_tmpl_embeded4_nested_string_req5" />
 </div>
 <div class="field">
@@ -92,7 +92,7 @@
 <input  value="2" class="optional" type="text" name="embeded.list1_li0_name2" id="id_embeded_list1_li0_name2" />
 </div>
 <div class="nf_fieldset">
-<h2>embeded2</h2>
+<h2>Embeded2</h2>
 <div class="field">
 <label for="id_embeded.list1_li0_embeded2.name3" class="field_label optional_label">Name3</label>
 <input  value="3" class="optional" type="text" name="embeded.list1_li0_embeded2.name3" id="id_embeded_list1_li0_embeded2_name3" />
@@ -106,13 +106,13 @@
 <input  value="" class="optional" type="text" name="embeded.list1_li0_embeded2.list3_tmpl_name4" id="id_embeded_list1_li0_embeded2_list3_tmpl_name4" />
 </div>
 <div class="nf_fieldset">
-<h2>embeded4</h2>
+<h2>Embeded4</h2>
 <div class="field">
-<label for="id_embeded.list1_li0_embeded2.list3_tmpl_embeded4.nested_string5" class="field_label optional_label">Nested String5</label>
+<label for="id_embeded.list1_li0_embeded2.list3_tmpl_embeded4.nested_string5" class="field_label optional_label">Nested string5</label>
 <input  value="" class="optional" type="text" name="embeded.list1_li0_embeded2.list3_tmpl_embeded4.nested_string5" id="id_embeded_list1_li0_embeded2_list3_tmpl_embeded4_nested_string5" />
 </div>
 <div class="field">
-<label for="id_embeded.list1_li0_embeded2.list3_tmpl_embeded4.nested_string_req5" class="field_label required_label">Nested String Req5</label>
+<label for="id_embeded.list1_li0_embeded2.list3_tmpl_embeded4.nested_string_req5" class="field_label required_label">Nested string req5</label>
 <input  value="" class="required" type="text" name="embeded.list1_li0_embeded2.list3_tmpl_embeded4.nested_string_req5" id="id_embeded_list1_li0_embeded2_list3_tmpl_embeded4_nested_string_req5" />
 </div>
 <div class="field">
@@ -163,13 +163,13 @@
 <input  value="4" class="optional" type="text" name="embeded.list1_li0_embeded2.list3_li0_name4" id="id_embeded_list1_li0_embeded2_list3_li0_name4" />
 </div>
 <div class="nf_fieldset">
-<h2>embeded4</h2>
+<h2>Embeded4</h2>
 <div class="field">
-<label for="id_embeded.list1_li0_embeded2.list3_li0_embeded4.nested_string5" class="field_label optional_label">Nested String5</label>
+<label for="id_embeded.list1_li0_embeded2.list3_li0_embeded4.nested_string5" class="field_label optional_label">Nested string5</label>
 <input  value="5s" class="optional" type="text" name="embeded.list1_li0_embeded2.list3_li0_embeded4.nested_string5" id="id_embeded_list1_li0_embeded2_list3_li0_embeded4_nested_string5" />
 </div>
 <div class="field">
-<label for="id_embeded.list1_li0_embeded2.list3_li0_embeded4.nested_string_req5" class="field_label required_label">Nested String Req5</label>
+<label for="id_embeded.list1_li0_embeded2.list3_li0_embeded4.nested_string_req5" class="field_label required_label">Nested string req5</label>
 <input  value="5sr" class="required" type="text" name="embeded.list1_li0_embeded2.list3_li0_embeded4.nested_string_req5" id="id_embeded_list1_li0_embeded2_list3_li0_embeded4_nested_string_req5" />
 </div>
 <div class="field">

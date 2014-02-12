@@ -10,7 +10,7 @@
       <env name="FORMAGE_DB_LAYER" value="jugglingdb" />
       <env name="NODE_DEBUG" value="formage" />
     </envs>
-    <browser start="false" url="" with-js-debugger="false" />
+    <browser url="" />
     <RunnerSettings RunnerId="NodeJS.debug" />
     <RunnerSettings RunnerId="NodeJS.run" />
     <ConfigurationWrapper RunnerId="NodeJS.debug" />

@@ -11,7 +11,7 @@
       <env name="FORMAGE_DB_LAYER" value="mongoose" />
       <env name="NODE_DEBUG" value="formage" />
     </envs>
-    <browser start="false" name="Chrome" url="http://dev.empeeric.com/admin/model/tests" with-js-debugger="true" />
+    <browser name="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" with-js-debugger="true" url="http://dev.empeeric.com/admin/model/tests" />
     <RunnerSettings RunnerId="NodeJS.debug" />
     <RunnerSettings RunnerId="NodeJS.run" />
     <ConfigurationWrapper RunnerId="NodeJS.debug" />
