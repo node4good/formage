@@ -1,14 +1,13 @@
-Formage [![Build Status](https://travis-ci.org/Empeeric/formage.png?branch=master "Build Status")](https://travis-ci.org/Empeeric/formage) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/Empeeric/formage/trend.png "Bitdeli Badge")](https://bitdeli.com/free) [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/b3ef5b297ff96ba6b5c573e376debd1d "githalytics.com")](http://githalytics.com/Empeeric/formage)
-=============
+# <img src="http://i.imgur.com/9vVHCPY.png" align="top" /> Formage 
 
 [Bootstraped](http://twitter.github.com/bootstrap/) Admin GUI addon for [Mongoose](http://mongoosejs.com/), [JugglingDB](https://github.com/1602/jugglingdb), or just as a form generator.
 Originally forked from [mongoose-admin](https://github.com/marccampbell/mongoose-admin).
 
-<img src="http://i.imgur.com/9vVHCPY.png" align="top" /> 
+[![Build Status](https://travis-ci.org/Empeeric/formage.png?branch=master "Build Status")](https://travis-ci.org/Empeeric/formage) 
 
-#### Example Usage
-[![npm install formage](https://nodei.co/npm/formage.png?downloads=true)](https://nodei.co/npm/formage/)
 <!-- [![NPM](https://nodei.co/npm-dl/formage.png)](https://nodei.co/npm/formage/) -->
+
+## Example Usage
 ```js
 var express = require('express'),
     app = express();
@@ -119,3 +118,5 @@ Sponsor
 <a id="stormlogo" href="http://www.jetbrains.com/webstorm/" alt="Smart IDE for web development with HTML Editor, CSS &amp; JavaScript support" title="Smart IDE for web development with HTML Editor, CSS &amp; JavaScript support">
   ![](http://i.imgur.com/ynQ6c.png)
 </a>
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/Empeeric/formage/trend.png "Bitdeli Badge")](https://bitdeli.com/free) [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/b3ef5b297ff96ba6b5c573e376debd1d "githalytics.com")](http://githalytics.com/Empeeric/formage)
