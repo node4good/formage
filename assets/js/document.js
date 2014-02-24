@@ -106,7 +106,7 @@ function refLink() {
         .insertAfter($this)
         .click(function () {
             var id = $this.val() || 'new';
-            var refType = $this.data('ref').toLocaleLowerCase();
+            var refType = $this.data('ref');
             var url = [root, '/model/', refType, '/document/', id, '?_dialog=yes'].join('');
             window.showDialog($this, url);
         });
