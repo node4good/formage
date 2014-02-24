@@ -43,14 +43,15 @@
   "devDependencies": {
     "jade": "0.35.0",
     "express": "",
-    "mongoose": "git+https://github.com/LearnBoost/mongoose.git",
+    "mongoose": "LearnBoost/mongoose.git",
     "jugglingdb": "",
     "istanbul": "",
-    "tingodb": "git+https://github.com/Empeeric/tingodb.git",
+    "tingodb": "Empeeric/tingodb.git",
     "tungus": "",
-    "chai": "git+https://github.com/Empeeric/chai.git",
+    "chai": "Empeeric/chai.git",
     "mocha": "",
-    "jshint": ""
+    "jshint": "",
+    "grist": ""
   },
   "optionalDevDependencies": {
     "msnodesql": "",
