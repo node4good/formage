@@ -27,7 +27,7 @@ require('formage').init(app, express, models, {
     username: 'admin',
     password: 'admin',
     admin_users_gui: true
-);
+});
 ```
 
 #### Model options
