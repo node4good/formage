@@ -24,6 +24,8 @@ block body
 
     - if (errors)
         p.alert.alert-error Saving failed, fix the following errors and try again.
+    - if (generalError)
+        p.alert.alert-error #{generalError}
     form#document(enctype="multipart/form-data",method="post").clearfix
         != renderedDocument
         - if(subCollections && subCollections.length)

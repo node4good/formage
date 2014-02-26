@@ -533,15 +533,22 @@ var MongooseForm = exports.MongooseForm = BaseForm.extend({
             if (!err) return callback(null, object);
             // Handle the errors
             console.error(err.stack || err);
-            err.errors = err.errors || {};
             self.errors = {};
-            Object.keys(err.errors || {}).forEach(function (key) {
-                var error = err.errors[key];
-                if (self.fields[key] instanceof fields.BaseField) {
-                    self.errors[key] = [error.type || error.message || error];
-                    self.fields[key].errors = self.errors[key];
+            if(err.errors) {
+                Object.keys(err.errors).forEach(function (key) {
+                    var error = err.errors[key];
+                    if (self.fields[key] instanceof fields.BaseField) {
+                        self.errors[key] = [error.type || error.message || error];
+                        self.fields[key].errors = self.errors[key];
+                    }
+                });
+            }
+            else {
+                if(err.code == 11000){
+                    err.message = 'Conflict in DB: "' + /\{\s*\:\s*"(.*?)"\s*\}/.exec(err.message)[1] + '" must be unique.';
                 }
-            });
+                self.errors['__self__'] = err.message;
+            }
             return callback(new Error(self));
         });
     }
