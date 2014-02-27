@@ -118,5 +118,3 @@ Sponsor
 <a id="stormlogo" href="http://www.jetbrains.com/webstorm/" alt="Smart IDE for web development with HTML Editor, CSS &amp; JavaScript support" title="Smart IDE for web development with HTML Editor, CSS &amp; JavaScript support">
   ![](http://i.imgur.com/ynQ6c.png)
 </a>
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/Empeeric/formage/trend.png "Bitdeli Badge")](https://bitdeli.com/free) [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/b3ef5b297ff96ba6b5c573e376debd1d "githalytics.com")](http://githalytics.com/Empeeric/formage)
