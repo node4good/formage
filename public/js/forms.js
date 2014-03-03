@@ -216,6 +216,7 @@
 
 		var allowCustom = jElem.data('allowcustom');
 
+        var initResult;
         jElem.select2({query:function (options) {
             var term = options.term;
             var page = options.page;
@@ -230,6 +231,10 @@
                         more:false,
                         context:context
                     };
+                    if(initResult && result.results.filter(function(obj){
+                        return obj.id == initResult.id;
+                    }) == 0)
+                        result.results.unshift(initResult);
 					if(allowCustom){
 						result.results.push({id:term,text:term});
 					}
@@ -243,6 +248,7 @@
                         data:query_data,
                         id:id
                     }).done(function (rsp) {
+                            initResult = rsp;
                             callback(rsp);
                         });
                 }

@@ -235,6 +235,22 @@ function init_map( id , center){
     return map;
 }
 
+function addMarker(map,center,onClick,icon){
+    if (!center) center = new google.maps.LatLng(-34.397, 34.644);
+    else center = new google.maps.LatLng(center.lat, center.lng);
+    var  marker = new google.maps.Marker({
+        map: map,
+        position: center,
+        draggable: false,
+        icon:icon
+    });
+
+    if (onclick)
+        google.maps.event.addListener(marker, 'click', onclick);
+
+    return marker;
+}
+
 function add_draggable_marker(map,center, location_changed, onclick,icon) {
     if (!center) center = new google.maps.LatLng(-34.397, 34.644);
     else center = new google.maps.LatLng(center.lat, center.lng);

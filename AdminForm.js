@@ -37,7 +37,8 @@ var AdminForm = exports.AdminForm = MongooseForm.extend({
                     value.options.widget_options.data = value.options.widget_options.data || {};
                     value.options.widget_options.data.data = encodeURIComponent(JSON.stringify({
                         model: value.options.ref,
-                        query: value.options.query || '/__value__/i.test(this.name || this.title || this._id.toString())'
+                        query: value.options.query || '/__value__/i.test(this.name || this.title || this._id.toString())',
+                        constraints:value.options.constraints
                     }));
                     value.widget = new widgets.AutocompleteWidget(value.options.widget_options);
                 }
@@ -103,12 +104,14 @@ var _JestAdminResource = jest.Resource.extend({
         else {
             var qry;
             var escaped_filters = filters.query.replace(_escaper, "\\$&") || '.';
+            var obj = data.constraints || {};
             if(data.query.indexOf('__value__') > -1){
                 var query = data.query.replace(/__value__/g, escaped_filters);
-                qry = model.find({$where: query});
+                obj['$where'] = query;
+                qry = model.find(obj);
             }
             else{
-                qry = model.find().where(data.query,new RegExp('^' + escaped_filters));
+                qry = model.find(obj).where(data.query,new RegExp('^' + escaped_filters));
             }
             qry.limit(20).exec(function (err, results) {
                 if (results) {
