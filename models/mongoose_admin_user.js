@@ -26,7 +26,8 @@ var AdminUserData = new mongoose.Schema({
     permissions: [
         {
             type: mongoose.Schema.ObjectId,
-            ref: '_MongooseAdminPermission'
+            ref: '_MongooseAdminPermission',
+            query:'name'
         }
     ],
     lastVisit:{type:Date,'default':Date.now}

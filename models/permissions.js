@@ -13,7 +13,7 @@ Schema.methods.toString = function(){
     return this.name;
 };
 
-exports.model = mongoose.model('_MongooseAdminPermission', Schema);
+exports.model = mongoose.model('_MongooseAdminPermission', Schema,'mongooseadminpermissions');
 
 var permodel_permission = ['view','delete','create','update','order'];
 
