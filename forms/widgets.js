@@ -495,6 +495,12 @@ exports.AutocompleteWidget = exports.TextWidget.extend({
         var self = this;
         var _super = this._super.bind(self);
         var id = this.value;
+        if(Array.isArray(id)){
+            id = id.map(function(a) { return a + '';}).filter(function(a) { return a; });
+            if(!id.length)
+                id = null;
+        }
+
         self.data['name'] = id || '';
         if (!id) return _super(callback);
         var query = Array.isArray(id) ? this.ref.find().where('_id').in(id) : this.ref.findById(id);
