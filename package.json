@@ -78,7 +78,7 @@
     "lint": "jshint .",
     "cover": "istanbul cover ./node_modules/mocha/bin/_mocha -x generated/**",
     "postpublish": "git push origin master --tags",
-    "prepublish": "node utils/CompileTempletes.js"
+    "prepublish": "node utils/CompileTempletes.js && mocha"
   },
   "bugs": {
     "url": "https://github.com/Empeeric/formage/issues"
