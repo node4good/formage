@@ -1,34 +1,32 @@
 {
   "name": "formage",
-  "version": "2.5.4",
+  "version": "2.5.8",
   "dependencies": {
     "lodash": {
       "version": "2.4.1",
       "from": "lodash@"
     },
     "lodash-contrib": {
-      "version": "241.3.1",
-      "from": "lodash-contrib@241.3.1",
-      "resolved": "https://registry.npmjs.org/lodash-contrib/-/lodash-contrib-241.3.1.tgz"
+      "version": "241.3.2",
+      "from": "lodash-contrib@241.3.2",
+      "resolved": "http://registry.npmjs.org/lodash-contrib/-/lodash-contrib-241.3.2.tgz"
     },
     "async": {
-      "version": "0.2.9",
-      "from": "async@"
+      "version": "0.2.10",
+      "from": "async@0.2.10",
+      "resolved": "http://registry.npmjs.org/async/-/async-0.2.10.tgz"
     },
     "cloudinary": {
-      "version": "1.0.7",
-      "from": "cloudinary@1.0.7",
-      "resolved": "http://registry.npmjs.org/cloudinary/-/cloudinary-1.0.7.tgz",
+      "version": "1.0.8",
+      "from": "cloudinary@1.0.8",
       "dependencies": {
         "coffee-script": {
           "version": "1.4.0",
-          "from": "coffee-script@1.4.0",
-          "resolved": "http://registry.npmjs.org/coffee-script/-/coffee-script-1.4.0.tgz"
+          "from": "coffee-script@1.4.0"
         },
         "underscore": {
           "version": "1.4.4",
-          "from": "underscore@1.4.4",
-          "resolved": "http://registry.npmjs.org/underscore/-/underscore-1.4.4.tgz"
+          "from": "underscore@1.4.4"
         }
       }
     },
@@ -38,8 +36,9 @@
       "resolved": "https://registry.npmjs.org/nodestrum/-/nodestrum-0.7.1.tgz"
     },
     "node-ckeditor": {
-      "version": "4.2.561",
-      "from": "node-ckeditor@"
+      "version": "4.3.2",
+      "from": "node-ckeditor@4.3.2",
+      "resolved": "http://registry.npmjs.org/node-ckeditor/-/node-ckeditor-4.3.2.tgz"
     },
     "formage-mongoose-types": {
       "version": "1.0.1",
@@ -47,8 +46,7 @@
       "dependencies": {
         "lodash": {
           "version": "2.0.0",
-          "from": "lodash@2.0.0",
-          "resolved": "http://registry.npmjs.org/lodash/-/lodash-2.0.0.tgz"
+          "from": "lodash@2.0.0"
         }
       }
     },
@@ -63,16 +61,21 @@
       "resolved": "http://registry.npmjs.org/connect-multiparty/-/connect-multiparty-1.0.3.tgz",
       "dependencies": {
         "multiparty": {
-          "version": "3.2.0",
-          "from": "multiparty@~3.2.0",
+          "version": "3.2.3",
+          "from": "multiparty@3.2.3",
+          "resolved": "http://registry.npmjs.org/multiparty/-/multiparty-3.2.3.tgz",
           "dependencies": {
             "readable-stream": {
-              "version": "1.1.10",
-              "from": "readable-stream@~1.1.9",
+              "version": "1.1.11",
+              "from": "readable-stream@1.1.11",
               "dependencies": {
                 "core-util-is": {
                   "version": "1.0.1",
                   "from": "core-util-is@~1.0.0"
+                },
+                "string_decoder": {
+                  "version": "0.10.25-1",
+                  "from": "string_decoder@~0.10.x"
                 },
                 "debuglog": {
                   "version": "0.0.2",
@@ -82,7 +85,27 @@
             },
             "stream-counter": {
               "version": "0.2.0",
-              "from": "stream-counter@~0.2.0"
+              "from": "stream-counter@~0.2.0",
+              "dependencies": {
+                "readable-stream": {
+                  "version": "1.1.11",
+                  "from": "readable-stream@1.1.11",
+                  "dependencies": {
+                    "core-util-is": {
+                      "version": "1.0.1",
+                      "from": "core-util-is@~1.0.0"
+                    },
+                    "string_decoder": {
+                      "version": "0.10.25-1",
+                      "from": "string_decoder@~0.10.x"
+                    },
+                    "debuglog": {
+                      "version": "0.0.2",
+                      "from": "debuglog@0.0.2"
+                    }
+                  }
+                }
+              }
             }
           }
         },
