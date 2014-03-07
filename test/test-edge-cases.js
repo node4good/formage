@@ -183,7 +183,7 @@ describe("edge cases on mongoose", function () {
 
 
         it("ensureExists", function (done) {
-            this.registry.adapter.Users.ensureExists("admin", "admin", done);
+            this.registry.adapter.UsersModel.ensureExists("admin", "admin", done);
         });
     });
 });
