@@ -436,7 +436,7 @@ function describeCommonTests(caller) {
     describe("Admin Users" + caller, function () {
         it("Model view" + caller, function (done) {
             var mock_req = _.defaults({
-                url: "/model/Admin_Users/",
+                url: "/model/formage_users_/",
                 method: "GET"
             }, mock_req_proto);
 
@@ -457,7 +457,7 @@ function describeCommonTests(caller) {
             var userId = this.test.parent._exampleUserID;
             delete this.test.parent._exampleUserID;
             var mock_req = _.defaults({
-                url: "/model/Admin_Users/document/" + userId,
+                url: "/model/formage_users_/document/" + userId,
                 method: "GET"
             }, mock_req_proto);
 
@@ -477,7 +477,7 @@ function describeCommonTests(caller) {
 
         it("Mock test admin user page post" + caller, function (done) {
             var mock_req = _.defaults({
-                url: "/model/Admin_Users/document/new",
+                url: "/model/formage_users_/document/new",
                 body: {
                     username: "admin" + Math.random(),
                     password: 'gimli',
@@ -494,7 +494,7 @@ function describeCommonTests(caller) {
             mock_res.render = done;
 
             mock_res.redirect = function (p) {
-                '/admin/model/Admin_Users'.should.equal(p);
+                '/admin/model/formage_users_'.should.equal(p);
                 should.exist(p);
                 done();
             };
