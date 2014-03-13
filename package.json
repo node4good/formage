@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "jade": "0.35.0",
-    "express": "",
+    "express": "< 4",
     "mongoose": "LearnBoost/mongoose.git",
     "jugglingdb": "",
     "istanbul": "",

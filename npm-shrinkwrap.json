@@ -1,6 +1,6 @@
 {
   "name": "formage",
-  "version": "2.5.11",
+  "version": "2.5.12",
   "dependencies": {
     "async": {
       "version": "0.2.10",
