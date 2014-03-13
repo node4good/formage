@@ -1,16 +1,7 @@
 {
   "name": "formage",
-  "version": "2.5.8",
+  "version": "2.5.11",
   "dependencies": {
-    "lodash": {
-      "version": "2.4.1",
-      "from": "lodash@"
-    },
-    "lodash-contrib": {
-      "version": "241.3.2",
-      "from": "lodash-contrib@241.3.2",
-      "resolved": "http://registry.npmjs.org/lodash-contrib/-/lodash-contrib-241.3.2.tgz"
-    },
     "async": {
       "version": "0.2.10",
       "from": "async@0.2.10",
@@ -22,38 +13,15 @@
       "dependencies": {
         "coffee-script": {
           "version": "1.4.0",
-          "from": "coffee-script@1.4.0"
+          "from": "coffee-script@1.4.0",
+          "resolved": "http://registry.npmjs.org/coffee-script/-/coffee-script-1.4.0.tgz"
         },
         "underscore": {
           "version": "1.4.4",
-          "from": "underscore@1.4.4"
+          "from": "underscore@1.4.4",
+          "resolved": "http://registry.npmjs.org/underscore/-/underscore-1.4.4.tgz"
         }
       }
-    },
-    "nodestrum": {
-      "version": "0.7.1",
-      "from": "nodestrum@0.7.1",
-      "resolved": "https://registry.npmjs.org/nodestrum/-/nodestrum-0.7.1.tgz"
-    },
-    "node-ckeditor": {
-      "version": "4.3.2",
-      "from": "node-ckeditor@4.3.2",
-      "resolved": "http://registry.npmjs.org/node-ckeditor/-/node-ckeditor-4.3.2.tgz"
-    },
-    "formage-mongoose-types": {
-      "version": "1.0.1",
-      "from": "formage-mongoose-types@",
-      "dependencies": {
-        "lodash": {
-          "version": "2.0.0",
-          "from": "lodash@2.0.0"
-        }
-      }
-    },
-    "mpromise": {
-      "version": "0.5.1",
-      "from": "mpromise@0.5.1",
-      "resolved": "http://registry.npmjs.org/mpromise/-/mpromise-0.5.1.tgz"
     },
     "connect-multiparty": {
       "version": "1.0.3",
@@ -68,18 +36,22 @@
             "readable-stream": {
               "version": "1.1.11",
               "from": "readable-stream@1.1.11",
+              "resolved": "http://registry.npmjs.org/readable-stream/-/readable-stream-1.1.11.tgz",
               "dependencies": {
                 "core-util-is": {
                   "version": "1.0.1",
-                  "from": "core-util-is@~1.0.0"
+                  "from": "core-util-is@~1.0.0",
+                  "resolved": "http://registry.npmjs.org/core-util-is/-/core-util-is-1.0.1.tgz"
                 },
                 "string_decoder": {
                   "version": "0.10.25-1",
-                  "from": "string_decoder@~0.10.x"
+                  "from": "string_decoder@~0.10.x",
+                  "resolved": "http://registry.npmjs.org/string_decoder/-/string_decoder-0.10.25-1.tgz"
                 },
                 "debuglog": {
                   "version": "0.0.2",
-                  "from": "debuglog@0.0.2"
+                  "from": "debuglog@0.0.2",
+                  "resolved": "http://registry.npmjs.org/debuglog/-/debuglog-0.0.2.tgz"
                 }
               }
             },
@@ -90,18 +62,22 @@
                 "readable-stream": {
                   "version": "1.1.11",
                   "from": "readable-stream@1.1.11",
+                  "resolved": "http://registry.npmjs.org/readable-stream/-/readable-stream-1.1.11.tgz",
                   "dependencies": {
                     "core-util-is": {
                       "version": "1.0.1",
-                      "from": "core-util-is@~1.0.0"
+                      "from": "core-util-is@~1.0.0",
+                      "resolved": "http://registry.npmjs.org/core-util-is/-/core-util-is-1.0.1.tgz"
                     },
                     "string_decoder": {
                       "version": "0.10.25-1",
-                      "from": "string_decoder@~0.10.x"
+                      "from": "string_decoder@~0.10.x",
+                      "resolved": "http://registry.npmjs.org/string_decoder/-/string_decoder-0.10.25-1.tgz"
                     },
                     "debuglog": {
                       "version": "0.0.2",
-                      "from": "debuglog@0.0.2"
+                      "from": "debuglog@0.0.2",
+                      "resolved": "http://registry.npmjs.org/debuglog/-/debuglog-0.0.2.tgz"
                     }
                   }
                 }
@@ -114,6 +90,41 @@
           "from": "qs@~0.6.5"
         }
       }
+    },
+    "formage-mongoose-types": {
+      "version": "1.0.1",
+      "from": "formage-mongoose-types@",
+      "dependencies": {
+        "lodash": {
+          "version": "2.0.0",
+          "from": "lodash@2.0.0",
+          "resolved": "http://registry.npmjs.org/lodash/-/lodash-2.0.0.tgz"
+        }
+      }
+    },
+    "lodash": {
+      "version": "2.4.1",
+      "from": "lodash@"
+    },
+    "lodash-contrib": {
+      "version": "241.4.2",
+      "from": "lodash-contrib@241.4.2",
+      "resolved": "http://registry.npmjs.org/lodash-contrib/-/lodash-contrib-241.4.2.tgz"
+    },
+    "mpromise": {
+      "version": "0.5.4",
+      "from": "mpromise@0.5.4",
+      "resolved": "http://registry.npmjs.org/mpromise/-/mpromise-0.5.4.tgz"
+    },
+    "node-ckeditor": {
+      "version": "4.3.2",
+      "from": "node-ckeditor@4.3.2",
+      "resolved": "http://registry.npmjs.org/node-ckeditor/-/node-ckeditor-4.3.2.tgz"
+    },
+    "nodestrum": {
+      "version": "0.10.0",
+      "from": "nodestrum@0.10.0",
+      "resolved": "http://registry.npmjs.org/nodestrum/-/nodestrum-0.10.0.tgz"
     }
   }
 }
