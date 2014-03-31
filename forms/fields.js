@@ -581,6 +581,28 @@ var MultiRefField = exports.MultiRefField = RefField.extend({
 	}
 });
 
+var TempFileField = exports.TempFileField = BaseField.extend({
+    init: function (options) {
+        options = options || {};
+        options.widget = options.widget || widgets.FileWidget;
+        this._super(options);
+    },
+    clean_value: function (req, callback) {
+
+        if (req.files && req.files[this.name]) {
+            var uploaded_file = req.files[this.name];
+            this.value = {
+                path:uploaded_file.path,
+                size: uploaded_file.size,
+                timestamp:Date.now()
+            };
+        }
+        this._super(simpleReq(req), callback);
+
+    }
+
+});
+
 
 var FileField_ = exports.FileField = BaseField.extend({
     init: function (options) {

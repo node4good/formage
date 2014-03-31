@@ -264,6 +264,10 @@ var parseFilters = function (model_settings, filters, search) {
     var model = model_settings.model;
     var new_filters = {};
     _.each(filters, function (value, key) {
+        try{
+            value = JSON.parse(value);
+        }
+        catch(e){}
         var parts = key.split('__');
         key = parts[0];
         if (model.schema && model.schema.paths[key]) {
@@ -275,8 +279,10 @@ var parseFilters = function (model_settings, filters, search) {
                 new_filters[key] = Number(value) || undefined;
             }
             else if (type == Boolean) {
-                new_filters[key] = value == 'true';
+                new_filters[key] = value === true;
             }
+            else if(type.name == 'ObjectId' && value == 'null')
+                new_filters[key] = null;
             else
                 new_filters[key] = value;
         }
@@ -391,8 +397,12 @@ var routes = {
 
                 var makeLink = function (key, value) {
                     var query = _.clone(currentQuery);
-                    if(key)
-                        query[key] = value;
+                    if(key){
+                        if(value == '__all__')
+                            delete query[key];
+                        else
+                            query[key] = value;
+                    }
                     if(isDialog)
                         query['_dialog'] = 'yes';
                     return '?' + _.map(query,function (value, key) {

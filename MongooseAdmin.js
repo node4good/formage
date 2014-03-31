@@ -56,6 +56,10 @@ function buildModelFilters (model, filters, dict) {
         async.forEach(
             filters,
             function (filter, cbk) {
+                if(typeof(filter) == 'object'){
+                    dict.push(filter);
+                    return cbk();
+                }
                 model.collection.distinct(filter, function (err, results) {
                     if (results) {
                         if (results[0] && Array.isArray(results[0])) {
