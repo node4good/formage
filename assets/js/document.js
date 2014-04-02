@@ -1,5 +1,5 @@
 'use strict';
-/*global dialogCallback,_dialog_response,isDialog,root,$,window,location */
+/*global $,window,Aviary */
 var MINIMUM_ITEM_COUNT_TO_EXPAND = 1;
 
 
@@ -92,22 +92,21 @@ function initWidgets(ctx) {
     // Wire FilePicker widget. FieldBinding is done automagicly by type="filepicker"
     $('input[type=filepicker]', ctx).on('change', function (e) {
         e.preventDefault();
-        //noinspection JSUnresolvedVariable
         var file = e.originalEvent.fpfile;
         $(this).val(JSON.stringify(file));
-        var a = $(this).parent().find('a').text(file.filename).attr('href', file.url);
+        $(this).parent().find('a').text(file.filename).attr('href', file.url);
     });
 }
 
 
 function refLink() {
-    var $this = $(this);
+    var $this = $(this); // jshint ignore:line
     var $a = $('<a class="btn" ></a>')
         .insertAfter($this)
         .click(function () {
             var id = $this.val() || 'new';
             var refType = $this.data('ref');
-            var url = [root, '/model/', refType, '/document/', id, '?_dialog=yes'].join('');
+            var url = [window.root, '/model/', refType, '/document/', id, '?_dialog=yes'].join('');
             window.showDialog($this, url);
         });
 
@@ -194,7 +193,7 @@ function ListField(el) {
 
 
 function getQueryFunctionForSelect2() {
-    var jElem = $(this);
+    var jElem = $(this); // jshint ignore:line
     var query_url = jElem.data('url');
     var query_data = decodeURIComponent(jElem.data('data'));
 
@@ -207,13 +206,13 @@ function getQueryFunctionForSelect2() {
             data: query_data,
             query: term
         }).success(function (rsp) {
-                var result = {
-                    results: rsp['objects'] || rsp,
-                    more: false,
-                    context: context
-                };
-                callback(result);
-            });
+            var result = {
+                results: rsp['objects'] || rsp,
+                more: false,
+                context: context
+            };
+            callback(result);
+        });
     },
         initSelection: function (element, callback) {
             var id = $(element).val();
@@ -222,8 +221,8 @@ function getQueryFunctionForSelect2() {
                     data: query_data,
                     id: id
                 }).done(function (rsp) {
-                        callback(rsp);
-                    });
+                    callback(rsp);
+                });
             }
         }
     });
@@ -232,27 +231,27 @@ function getQueryFunctionForSelect2() {
 
 function deleteDocument(callback) {
     $('#deleteButton').button('loading');
-    var depsUrl = [root, 'json', 'model', window.model, 'document', window.docId, 'dependencies'].join('/');
+    var depsUrl = [window.root, 'json', 'model', window.model, 'document', window.docId, 'dependencies'].join('/');
     $.get(depsUrl).done(function (result) {
         var msg = result.length ? 'there are other entities dependent on this document:<ul><li>' + result.join('</li><li>') + '</li></ul>' : '';
         msg += 'Are you sure you want to delete?';
-        bootbox.confirm(msg, function (res) {
+        window.bootbox.confirm(msg, function (res) {
             if (!res) return $('#deleteButton').button('reset');
             return $.ajax({
                 type: 'POST',
-                url: root + '/json/model/' + model + '/action/delete',
-                data: {ids: [docId]},
+                url: window.root + '/json/model/' + window.model + '/action/delete',
+                data: {ids: [window.docId]},
                 success: function () {
                     $('#deleteButton').button('reset');
                     if (callback) callback();
                 },
                 error: function (xhr, textStatus) {
                     $('#deleteButton').button('reset');
-                    bootbox.alert(textStatus);
+                    window.bootbox.alert(textStatus);
                     console.error('Deleting error', arguments);
                 }
             });
-        })
+        });
     });
 }
 
@@ -268,24 +267,24 @@ function initActions() {
 
         var msg = 'Are you sure you want to ' + $(this).text().toLowerCase() + ' this document? Changes made will not be saved!';
 
-        bootbox.confirm(msg, function (result) {
+        window.bootbox.confirm(msg, function (result) {
             if (!result) return;
 
-            $.post(root + '/json/model/' + window.model + '/action/' + action_id, { ids: ids }).always(function (data) {
+            $.post(window.root + '/json/model/' + window.model + '/action/' + action_id, { ids: ids }).always(function (data) {
                 if (data.responseText) data = JSON.parse(data.responseText);
                 if (data.error) {
-                    bootbox.dialog("Some documents failed: " + data.error, [
+                    window.bootbox.dialog("Some documents failed: " + data.error, [
                         {
                             "label": "Error",
                             "class": "btn-danger",
-                            "callback": location.reload.bind(location)
+                            "callback": window.location.reload.bind(window.location)
                         }
                     ]);
                 } else {
-                    if (isDialog) {
-                        dialogCallback({});
+                    if (window.isDialog) {
+                        window.dialogCallback({});
                     } else {
-                        location.href = location.href.split('/document/')[0];
+                        window.location.href = window.location.href.split('/document/')[0];
                     }
                 }
             });
@@ -344,24 +343,27 @@ function initModal() {
 }
 
 
-if (window.Aviary) window.featherEditor = new Aviary.Feather({
-    apiKey: window.AVIARY_API_KEY,
-    apiVersion: 3,
-    theme: 'dark', // Check out our new 'light' and 'dark' themes!
-    tools: 'resize,crop,enhance',
-    appendTo: '',
-    onSave: function (imageID, newURL) {
-        var $image = $(document.getElementById(imageID));
-        var OrigInkBlob = $image[0].InkBlob;
-        window.filepicker.writeUrl(OrigInkBlob, newURL, function (NewInkBlob) {
-            $image.attr('src', NewInkBlob.url + '?' + Date.now());
-            var $input = $image.parent().parent().find('input');
-            $input.val(JSON.stringify(NewInkBlob));
-            $input.parent().find('a.file-link').attr('href', NewInkBlob.url);
-            featherEditor.close();
-        });
-    }
-});
+if (window.Aviary) {
+    //noinspection JSUnusedGlobalSymbols
+    window.featherEditor = new Aviary.Feather({
+        apiKey: window.AVIARY_API_KEY,
+        apiVersion: 3,
+        theme: 'dark', // Check out our new 'light' and 'dark' themes!
+        tools: 'resize,crop,enhance',
+        appendTo: '',
+        onSave: function (imageID, newURL) {
+            var $image = $(window.document.getElementById(imageID));
+            var OrigInkBlob = $image[0].InkBlob;
+            window.filepicker.writeUrl(OrigInkBlob, newURL, function (NewInkBlob) {
+                $image.attr('src', NewInkBlob.url + '?' + Date.now());
+                var $input = $image.parent().parent().find('input');
+                $input.val(JSON.stringify(NewInkBlob));
+                $input.parent().find('a.file-link').attr('href', NewInkBlob.url);
+                window.featherEditor.close();
+            });
+        }
+    });
+}
 
 
 function handle_file_picked($field, InkBlob) {
@@ -378,7 +380,7 @@ function handle_file_picked($field, InkBlob) {
 function handle_file_picked_aviary($field, InkBlob) {
     handle_file_picked($field, InkBlob);
     var $image = $field.find('img.thumb-picker');
-    featherEditor.launch({image: $image[0], url: InkBlob.url});
+    window.featherEditor.launch({image: $image[0], url: InkBlob.url});
 }
 
 
@@ -413,12 +415,12 @@ function trigger_clearpicker(e) {
     $field.find(".editor").hide();
     $field.find(".clearer").hide();
     $field.find('img.thumb-picker').attr('src', 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D');
-    $field.find('a.file-link').attr('href', '#')
+    $field.find('a.file-link').attr('href', '#');
 }
 
 
 $(function () {
-    window.docId = location.pathname.split('/').pop();
+    window.docId = window.location.pathname.split('/').pop();
 
     initWidgets();
 
@@ -426,9 +428,9 @@ $(function () {
 
     $('form#document').submit(function (e) {
         $('p.submit button').prop('disabled', true);
-        if (isDialog) {
+        if (window.isDialog) {
             e.preventDefault();
-            var upsertURL = [root, 'json', 'model', window.model, 'document', window.docId].join('/');
+            var upsertURL = [window.root, 'json', 'model', window.model, 'document', window.docId].join('/');
             $.post(upsertURL, $(this).serialize()).done(function (docInfo) {
                 window.parent.hideDialog({id: docInfo.id, label: docInfo.label});
             });
@@ -439,7 +441,7 @@ $(function () {
         .on('click', 'button.editor', trigger_refilepicker)
         .on('click', 'button.clearer', trigger_clearpicker);
 
-    if (isDialog) {
+    if (window.isDialog) {
         $('#cancelButton').click(function (e) {
             e.preventDefault();
             window.parent.hideDialog({cancel: true});
@@ -448,10 +450,10 @@ $(function () {
 
     $('#deleteButton').click(function () {
         deleteDocument(function () {
-            if (isDialog) {
-                window.parent.hideDialog({delete: true})
+            if (window.isDialog) {
+                window.parent.hideDialog({delete: true});
             } else {
-                location.href = location.href.split('/document/')[0];
+                window.location.href = window.location.href.split('/document/')[0];
             }
         });
     });
