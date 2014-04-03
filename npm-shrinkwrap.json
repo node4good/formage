@@ -1,6 +1,6 @@
 {
   "name": "formage",
-  "version": "2.5.16",
+  "version": "2.5.17",
   "dependencies": {
     "async": {
       "version": "0.6.2",
@@ -33,7 +33,7 @@
           "dependencies": {
             "readable-stream": {
               "version": "1.1.12",
-              "from": "readable-stream@~1.1.9",
+              "from": "readable-stream@1.1.12",
               "dependencies": {
                 "core-util-is": {
                   "version": "1.0.1",
@@ -49,13 +49,37 @@
                 },
                 "inherits": {
                   "version": "2.0.1",
-                  "from": "inherits@2"
+                  "from": "inherits@^2.0.1"
                 }
               }
             },
             "stream-counter": {
               "version": "0.2.0",
-              "from": "stream-counter@~0.2.0"
+              "from": "stream-counter@~0.2.0",
+              "dependencies": {
+                "readable-stream": {
+                  "version": "1.1.12",
+                  "from": "readable-stream@1.1.12",
+                  "dependencies": {
+                    "core-util-is": {
+                      "version": "1.0.1",
+                      "from": "core-util-is@~1.0.0"
+                    },
+                    "isarray": {
+                      "version": "0.0.1",
+                      "from": "isarray@0.0.1"
+                    },
+                    "string_decoder": {
+                      "version": "0.10.25-1",
+                      "from": "string_decoder@~0.10.x"
+                    },
+                    "inherits": {
+                      "version": "2.0.1",
+                      "from": "inherits@2"
+                    }
+                  }
+                }
+              }
             }
           }
         },
@@ -71,8 +95,7 @@
       "dependencies": {
         "lodash": {
           "version": "2.0.0",
-          "from": "lodash@2.0.0",
-          "resolved": "http://registry.npmjs.org/lodash/-/lodash-2.0.0.tgz"
+          "from": "lodash@2.0.0"
         }
       }
     },
@@ -87,8 +110,7 @@
     },
     "mpromise": {
       "version": "0.5.4",
-      "from": "mpromise@0.5.4",
-      "resolved": "http://registry.npmjs.org/mpromise/-/mpromise-0.5.4.tgz"
+      "from": "mpromise@0.5.4"
     },
     "node-ckeditor": {
       "version": "4.3.2",

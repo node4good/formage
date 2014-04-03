@@ -6,23 +6,16 @@ html(lang='en')
 
         link(rel='stylesheet', href='#{rootPath}/vendor/ui-lightness/jquery-ui-1.10.2.custom.css')
         link(rel='stylesheet', href='#{rootPath}/vendor/bootstrap/css/bootstrap.css')
-        link(rel='stylesheet', href='#{rootPath}/vendor/datetimepicker/bootstrap-datetimepicker.min.css')
-        link(rel='stylesheet', href='#{rootPath}/vendor/select2/select2.css')
 
         link(rel='stylesheet', href='#{rootPath}/css/main.css')
-        link(rel='stylesheet', href='#{rootPath}/css/forms.css')
         link(rel='stylesheet', href='#{rootPath}/css/maps.css')
 
         script(src='#{rootPath}/vendor/jquery-1.9.1.js')
         script(src='#{rootPath}/vendor/jquery-ui-1.10.2.custom.js')
         script(src='#{rootPath}/vendor/bootstrap/js/bootstrap.js')
-        script(src='#{rootPath}/vendor/datetimepicker/bootstrap-datetimepicker.min.js')
-        script(src='#{rootPath}/vendor/ckeditor/ckeditor.js')
-        script(src='#{rootPath}/vendor/select2/select2.js')
-        script(src="#{rootPath}/vendor/bootbox.min.js")
         script(src='#{rootPath}/js/clienstrum.js')
 
-        script var root = '#{rootPath}';
+        script window.root = '#{rootPath}';
 
         != renderedHead
 

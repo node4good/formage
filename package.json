@@ -41,14 +41,14 @@
     "connect-multiparty": ""
   },
   "devDependencies": {
-    "jade": "0.35.0",
+    "jade": "0.35.x",
     "express": "< 4",
-    "mongoose": "LearnBoost/mongoose.git",
+    "mongoose": "",
     "jugglingdb": "",
     "istanbul": "",
-    "tingodb": "Empeeric/tingodb.git",
+    "tingodb": "",
     "tungus": "",
-    "chai": "Empeeric/chai.git",
+    "chai": "",
     "mocha": "",
     "jshint": "",
     "grist": ""
