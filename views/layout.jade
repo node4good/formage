@@ -4,18 +4,18 @@ html(lang='en')
         meta(charset='utf-8')
         title!= pageTitle
 
-        link(rel='stylesheet', href='#{rootPath}/vendor/ui-lightness/jquery-ui-1.10.2.custom.css')
-        link(rel='stylesheet', href='#{rootPath}/vendor/bootstrap/css/bootstrap.css')
+        link(rel='stylesheet', href='#{rootPath}/vendor/jquery-ui/themes/ui-lightness/jquery-ui.css')
+        link(rel='stylesheet', href='#{rootPath}/vendor/bootstrap/docs/assets/css/bootstrap.css')
 
         link(rel='stylesheet', href='#{rootPath}/css/main.css')
         link(rel='stylesheet', href='#{rootPath}/css/maps.css')
 
-        script(src='#{rootPath}/vendor/jquery-1.9.1.js')
-        script(src='#{rootPath}/vendor/jquery-ui-1.10.2.custom.js')
-        script(src='#{rootPath}/vendor/bootstrap/js/bootstrap.js')
+        script(src='#{rootPath}/vendor/jquery/jquery.js')
+        script(src='#{rootPath}/vendor/jquery-ui/ui/jquery-ui.js')
+        script(src='#{rootPath}/vendor/bootstrap/docs/assets/js/bootstrap.js')
         script(src='#{rootPath}/js/clienstrum.js')
 
-        script window.root = '#{rootPath}';
+        script var root = '#{rootPath}';
 
         != renderedHead
 
