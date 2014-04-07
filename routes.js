@@ -736,4 +736,8 @@ function multipartMiddleware(req,res,next){
     });
 
     form.parse(req);
+    try{
+	req.resume();
+    }
+    catch(ex) {}
 }
