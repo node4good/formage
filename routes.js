@@ -310,12 +310,20 @@ function getSearchQuery(model,searchValue){
     var searchRule = model && model.options && model.options.search;
     if(!searchRule)
         return null;
+    if(model.options.searchTranslate)
+        searchValue = model.options.searchTranslate(searchValue);
+
     var valueEscaped = escapeRegExp(searchValue);
     var query;
     if(Array.isArray(searchRule)){
-        query = searchRule.map(function(field){
-            return '/__value__/i.test(this.' + field + ')';
-        }).join('||');
+//        query = searchRule.map(function(field){
+//            return '/__value__/i.test(this.' + field + ')';
+//        }).join('||');
+        return {$or:searchRule.map(function(field){
+            var obj = {};
+            obj[field] = RegExp('^' + valueEscaped,'i');
+            return obj;
+        })};
     }
     else{
         query = searchRule;

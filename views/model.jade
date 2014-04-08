@@ -117,10 +117,10 @@ block body
                 ul.nav.nav-list
                     - each filter in filters
                         li.nav-header
-                            strong #{filter.key}:
+                            strong #{filter.label || filter.key}:
                         - if (current_filters[filter.key])
                             li
-                                a(href='#{makeLink(filter.key,"")}') All
+                                a(href='#{makeLink(filter.key,"__all__")}') All
                         - else
                             li.active
                                 strong All

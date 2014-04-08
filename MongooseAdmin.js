@@ -60,6 +60,10 @@ function buildModelFilters (model, filters, dict) {
                     dict.push(filter);
                     return cbk();
                 }
+                if(model.schema.paths[filter] && model.schema.paths[filter].type == Boolean){
+                    dict.push({key:filter,values:[{value:true,text:'True'},{value:false,text:'False'}]});
+                    return cbk();
+                }
                 model.collection.distinct(filter, function (err, results) {
                     if (results) {
                         if (results[0] && Array.isArray(results[0])) {
@@ -67,6 +71,7 @@ function buildModelFilters (model, filters, dict) {
                         }
                         if (results.length > 30)
                             results.splice(5);
+
                         if (model.schema.paths[filter] && model.schema.paths[filter].options.ref) {
                             mongoose.model(model.schema.paths[filter].options.ref).find()
                                 .where('_id').in(results)
