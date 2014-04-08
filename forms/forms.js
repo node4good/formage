@@ -511,6 +511,10 @@ var MongooseForm = exports.MongooseForm = BaseForm.extend({
                     else
                         newArray.push(obj);
                 });
+                originalArray.forEach(function(item){
+                    if(item.remove)
+                        item.remove();
+                });
                 if(typeof(model.set) == 'function')
                     model.set(field_name,newArray);
                 else
