@@ -503,22 +503,25 @@ var MongooseForm = exports.MongooseForm = BaseForm.extend({
                 var newArray = [];
                 value.forEach(function(obj){
                     if(obj.id){
-                        var match = _.find(originalArray,function(iter){
+                        var match = _.find(originalArray || [],function(iter){
                             return iter.id == obj.id;
                         });
                         if(match){
                             self.setValuesToModel(match,obj);
                             newArray.push(match);
-                            originalArray.splice(originalArray.indexOf(match),1);
+                            if(originalArray)
+                                originalArray.splice(originalArray.indexOf(match),1);
                         }
                     }
                     else
                         newArray.push(obj);
                 });
-                originalArray.forEach(function(item){
-                    if(item.remove)
-                        item.remove();
-                });
+                if(originalArray){
+                    originalArray.forEach(function(item){
+                        if(item.remove)
+                            item.remove();
+                    });
+                }
                 if(typeof(model.set) == 'function')
                     model.set(field_name,newArray);
                 else
