@@ -770,6 +770,7 @@ var GeoField = exports.GeoField = BaseField.extend({
     init: function (options) {
         options = options || {};
         options.widget = options.widget || widgets.MapWidget;
+        this.newGeoField = options.newGeoField;
         this._super(options);
     },
     clean_value: function (req, callback) {
@@ -778,7 +779,11 @@ var GeoField = exports.GeoField = BaseField.extend({
         if (parts.length !== 2 || parts[0] === '' || parts[1] === '')
             this.value = null;
         else {
-            this.value = { geometry: { lat: Number(parts[0]), lng: Number(parts[1])}};
+            if(this.newGeoField)
+                this.value = { geometry: [Number(parts[0]), Number(parts[1])]};
+            else
+                this.value = { geometry: { lat: Number(parts[0]), lng: Number(parts[1])}};
+
             if (this.name + '_address' in req.body) {
                 this.value.address = req.body[this.name + '_address'];
             }

@@ -427,8 +427,9 @@ exports.MapWidget = exports.InputWidget.extend({
             res.write('\n<input type="text" name="' + this.name + '_address" id="id_' + this.name + '_address" value="' + address + '" />\n');
         }
         var old_value = this.value;
-        var lat = this.value && this.value.geometry ? this.value.geometry.lat : '';
-        var lng = this.value && this.value.geometry ? this.value.geometry.lng : '';
+        var geometry = this.value && this.value.geometry;
+        var lat = geometry ? (Array.isArray(geometry) ? geometry[0] : geometry.lat) : '';
+        var lng = geometry ? (Array.isArray(geometry) ? geometry[1] : geometry.lng) : '';
         this.value = lat + '  ,  ' + lng;
         this._super(res);
         this.value = old_value;

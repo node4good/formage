@@ -428,6 +428,10 @@ var MongooseForm = exports.MongooseForm = BaseForm.extend({
         if (mongoose_field.options.type.name === 'GeoPoint') {
             return new fields.GeoField(options);
         }
+        if (mongoose_field.options.type.name === 'GeoPoint2') {
+            options.newGeoField = true;
+            return new fields.GeoField(options);
+        }
 
         if (mongoose_field.options.type.name === 'GeoArea') {
             return new fields.GeoAreaField(options);
