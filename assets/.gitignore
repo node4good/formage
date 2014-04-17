@@ -1,0 +1,17 @@
+*.md
+*.txt
+Makefile
+*LICENSE*
+*.less
+test
+tests
+.*
+src
+docs
+build
+speed
+**/jquery-ui/themes
+**/jquery-ui/ui
+**/bootstrap/js
+
+!**/bootstrap-datetimepicker/build
