@@ -7,6 +7,7 @@
     "select2": "*",
     "bootstrap-datetimepicker": "*",
     "bootstrap": "2.3.2",
-    "bootbox": "2.5.1"
+    "bootbox": "2.5.1",
+    "socket.io-client": "~0.9.16"
   }
 }

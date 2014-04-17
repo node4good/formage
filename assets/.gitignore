@@ -13,5 +13,7 @@ speed
 **/jquery-ui/themes
 **/jquery-ui/ui
 **/bootstrap/js
+vendor/socket.io-client/lib
+vendor/socket.io-client/support
 
 !**/bootstrap-datetimepicker/build
