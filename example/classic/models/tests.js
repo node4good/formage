@@ -1,8 +1,9 @@
+'use strict';
+
 //noinspection JSUnresolvedVariable
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     SchemaTypes = Schema.Types,
-    ObjectId = SchemaTypes.ObjectId;
     fWidgets = require('../../../').widgets;
 
 var schema = module.exports = new Schema({
@@ -10,6 +11,7 @@ var schema = module.exports = new Schema({
     string_req: { type: String, required: true, label: 'Name' },
     ref: { type: SchemaTypes.ObjectId, ref: 'pages' },
     ref_with_query: { type: SchemaTypes.ObjectId, ref: 'pages', query:'__value__', url:'/' },
+    ref_with_socket: { type: SchemaTypes.ObjectId, ref: 'pages', socket: true },
     date: { type: Date },
     datetime: { type: Date, widget:fWidgets.DateTimeWidget },
     time: { type: SchemaTypes.Time },
@@ -65,7 +67,7 @@ var schema = module.exports = new Schema({
     },
     mixed: SchemaTypes.Mixed
 });
-schema.methods.toString = function () {return this.string_req};
+schema.methods.toString = function () { return this.string_req; };
 
 schema.formage = {
     filters: ['ref', 'string_req'],
