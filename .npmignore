@@ -1,7 +1,0 @@
-/.*
-/.idea/
-/dump/
-*.tgz
-/node_modules
-/coverage
-/.data/
