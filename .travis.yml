@@ -7,3 +7,6 @@ node_js:
 
 services:
   - mongodb
+
+notifications:
+  slack: empeeric:Hsm2xE5SNniMiUAEgM0Ngcnb
