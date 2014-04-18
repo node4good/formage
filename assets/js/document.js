@@ -83,6 +83,7 @@ function initWidgets(ctx) {
     });
     initFieldSet(ctx);
     if ($.fn.select2) {
+        $('.socket-select', ctx).each(getSocketFunctionForSelect2);
         $('.nf_ref', ctx).each(getQueryFunctionForSelect2);
         $('select', ctx).select2();
     }
@@ -193,11 +194,12 @@ function ListField(el) {
 
 
 function getQueryFunctionForSelect2() {
-    var jElem = $(this); // jshint ignore:line
-    var query_url = jElem.data('url');
-    var query_data = decodeURIComponent(jElem.data('data'));
+    var $this = $(this); // jshint ignore:line
+    if (~$this[0].className.indexOf('select2')) return;
+    var query_url = $this.data('url');
+    var query_data = decodeURIComponent($this.data('data'));
 
-    jElem.select2({query: function (options) {
+    $this.select2({query: function (options) {
         var term = options.term;
         //var page = options.page;
         var context = options.context;
@@ -224,6 +226,35 @@ function getQueryFunctionForSelect2() {
                     callback(rsp);
                 });
             }
+        }
+    });
+}
+
+
+function getSocketFunctionForSelect2() {
+    var $this = $(this); // jshint ignore:line
+    if (~$this[0].className.indexOf('select2')) return;
+    var modelName = $this.data('modelname');
+
+    $this.select2({
+        query: function (options) {
+            var term = options.term;
+            //var page = options.page;
+            var context = options.context;
+            var callback = options.callback;
+            window.socketio.json.emit(modelName, term, function (data) {
+                var result = {
+                    results: data,
+                    more: false,
+                    context: context
+                };
+                callback(result);
+            });
+        },
+        initSelection: function (element, callback) {
+            var id = $this.val();
+            var text = $this.data('initialname') || '';
+            callback({id: id, text: text});
         }
     });
 }

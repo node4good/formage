@@ -30,15 +30,17 @@
     }
   ],
   "dependencies": {
-    "lodash": "",
-    "lodash-contrib": "",
     "async": "",
     "cloudinary": "",
-    "nodestrum": "",
-    "node-ckeditor": "",
+    "connect-multiparty": "",
+    "debug": "",
     "formage-mongoose-types": "",
+    "lodash": "",
+    "lodash-contrib": "",
     "mpromise": ">= 0.5.0",
-    "connect-multiparty": ""
+    "node-ckeditor": "",
+    "nodestrum": "",
+    "socket.io": "< 1.0.0"
   },
   "devDependencies": {
     "jade": "0.35.x",

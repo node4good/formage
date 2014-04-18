@@ -80,8 +80,8 @@ describe("edge cases on mongoose", function () {
 
             mock_res.redirect = function (path) {
                 should.not.exist(mock_res._status);
-                "admin".should.equal(mock_req.session._mongooseAdminUser.username);
-                module._mongooseAdminUser = mock_req.session._mongooseAdminUser;
+                "admin".should.equal(mock_req.session._FormageUser.username);
+                module._FormageUser = mock_req.session._FormageUser;
                 path.should.equal(mock_req.app.route);
                 done();
             }.bind(this);
@@ -114,15 +114,15 @@ describe("edge cases on mongoose", function () {
 
 
         it("can reenter after login", function (done) {
-            if (!module._mongooseAdminUser) done("didn't get present");
+            if (!module._FormageUser) done("didn't get present");
             var mock_req = _.defaults({
                 url: "/",
                 session: {},
                 method: "get"
             }, mock_req_proto);
             delete mock_req.admin_user;
-            mock_req.session._mongooseAdminUser = module._mongooseAdminUser;
-            delete module._mongooseAdminUser;
+            mock_req.session._FormageUser = module._FormageUser;
+            delete module._FormageUser;
 
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
@@ -146,7 +146,7 @@ describe("edge cases on mongoose", function () {
                 method: "get"
             }, mock_req_proto);
             delete mock_req.admin_user;
-            delete mock_req.session._mongooseAdminUser;
+            delete mock_req.session._FormageUser;
 
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
@@ -165,7 +165,7 @@ describe("edge cases on mongoose", function () {
             var mock_req = _.defaults({
                 url: "/logout",
                 headers: {},
-                session: {_mongooseAdminUser: {}},
+                session: {_FormageUser: {}},
                 method: "get"
             }, mock_req_proto);
 
