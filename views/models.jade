@@ -2,10 +2,9 @@ extends layout.jade
 
 block body
     - each section in sections
-        div(class=(sections.length > 1 ? 'section' : ''))
-            - if (sections.length > 1)
-                h2
-                    span #{section.name}
+        section.row-fluid
+            h2
+                span #{section.name}
             ul.models
                 - each modelConfig in section.models
                     - var url = rootPath + '/model/' + modelConfig.modelName
