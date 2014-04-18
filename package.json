@@ -43,17 +43,18 @@
     "socket.io": "< 1.0.0"
   },
   "devDependencies": {
-    "jade": "0.35.x",
-    "express": "< 4",
-    "mongoose": "",
-    "jugglingdb": "",
-    "istanbul": "",
-    "tingodb": "",
-    "tungus": "",
+    "bower": "",
     "chai": "",
-    "mocha": "",
+    "express": "< 4",
+    "grist": "",
+    "istanbul": "",
+    "jade": "0.35.x",
     "jshint": "",
-    "grist": ""
+    "jugglingdb": "",
+    "mocha": "",
+    "mongoose": "",
+    "tingodb": "",
+    "tungus": ""
   },
   "optionalDevDependencies": {
     "msnodesql": "",
@@ -81,9 +82,6 @@
   },
   "directories": {
     "example": "./example"
-  },
-  "engines": {
-    "node": "0.11.x"
   },
   "licenses": [
     {
