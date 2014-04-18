@@ -1,0 +1,384 @@
+@import 'nib'
+.formage
+  header
+    .navbar-inner
+      padding 20px 0
+      margin-bottom 20px
+      background #f5f5f5
+      border-bottom 1px solid #e5e5e5
+      box-shadow none !important
+    &.page-header
+      padding 20px 30px
+      background #EEE
+      border-radius 10px
+    h1
+      font-size 20px
+      line-height 20px
+    .btn-group
+      margin-top 5px
+
+  .divider
+    padding 0 5px
+    color #CCC
+
+  h2
+    text-align center
+
+  #login
+    width 500px
+    margin 0 auto
+
+  .footer
+    text-align center
+    padding 20px 0
+    margin-top 50px
+    border-top 1px solid #e5e5e5
+
+  h3 [class^='icon-'],
+  h2 [class^='icon-']
+    vertical-align baseline
+    margin-right 3px
+
+  ul
+    &.models
+      width 500px
+      margin 0 auto
+      list-style none
+
+  .table-striped
+    td
+      text-align center
+
+  .counter, .pagination
+    text-align center
+
+  a
+    h3
+      color black
+      font-weight normal
+
+  section
+    margin-top 30px
+    border-top 3px double #e2e2e2
+    h2
+      margin -23px auto 0
+      text-align center
+      span
+        background white
+        padding 10px 20px
+
+  #actions
+    margin-bottom 0
+
+  .center
+    text-align center !important
+
+  #filters
+    width 20%
+    float right
+    margin-left 3%
+    box-sizing border-box
+    h3
+      margin-top 0
+    ul
+      list-style none
+      &.nav-list
+        padding 0
+    & + div
+      width 77%
+      float left
+    input
+      &.literal
+        width 140px
+
+  td
+    &.picture
+      text-align center
+
+  .bool
+    text-align center
+
+  .list-drag
+    display inline-block
+    padding 5px
+
+  .ui-sortable-helper
+    border 0 1px 1px 0 solid #DDD
+    background whiteSmoke
+
+  tr
+    &.sortable-placeholder
+      height 47px
+      overflow hidden
+      &:before
+        position absolute
+        content ''
+        width 940px
+        height 1px
+        border-top 1px solid #DDD
+
+  .span9
+    tr
+      &.sortable-placeholder
+        &:before
+          width 700px
+
+  #reorder
+    margin-right 20px
+    margin-left 0
+
+  p
+    &.submit
+      clear both
+      padding-top 30px
+      text-align center
+      button[type=submit]
+        width 160px
+    &.alert-error
+      margin -20px 0 30px 0
+
+  .form-horizontal
+    width 400px
+
+  .field input, .field textarea
+    width 400px
+
+  .field
+    zoom 1
+    position relative
+    textarea
+      height 100px
+    &:after
+      clear both
+    .field_label
+      float left
+      width 100px
+      min-height 30px
+      padding 5px 15px 0 0
+      text-align right
+      overflow hidden
+      margin-top -4px
+    span
+      &.error
+        position relative
+        top -4px
+        margin-left 10px
+        padding 3px 5px
+        color #B94A48
+        text-shadow 0 1px 0 rgba(255, 255, 255, 0.5)
+        background-color #F2DEDE
+        border 1px solid #FBEED5
+        border-radius 4px
+    a
+      img
+        margin-bottom 9px
+    input
+      &.file-clear
+        width 1em
+
+  .nf_fieldset input[type="checkbox"], input[type="radio"]
+    width 1em
+
+  .nf_fieldset
+    box-sizing border-box
+    background white
+    min-height 30px
+    select
+      min-width 314px
+    input[type="file"]
+      width 200px
+      margin-right 15px
+      & + input[type=checkbox]
+        margin 0 10px
+    textarea
+      width 400px
+      height 200px
+    p
+      &.error
+        width 100%
+        margin 0 auto 10px auto
+    & > h2
+      margin -20px 0 0 -185px
+  .field
+
+  .field input, .field select, .field textarea
+    margin 2px 0 10px
+
+  .field:before,
+  .field:after
+    content ""
+    display table
+
+  .nf_widget
+    margin 0 0 10px 115px
+
+  .nf_add
+    margin-bottom 10px
+
+  .select2-container
+    min-width 314px
+
+  .input-append
+    float left
+    & + span
+      &.error
+        top 6px
+
+  .nf_widget + span.error,
+  .field textarea + span.error
+    position absolute
+    top 35px
+    left 20px
+
+  .nf_fieldset, .nf_listfield_container
+    clear both
+    margin 0 0 15px 115px
+    padding 20px 20px 5px
+    transition box-shadow .2s, border .2s
+    position relative
+    border 1px solid #ddd
+    border-radius 3px
+    box-shadow #eee 0 0 5px 0
+    min-width 585px
+
+  .nf_listfield_container
+    min-height 30px
+    background white
+    & > .field_label
+      font-size 20px
+      font-weight bold
+      user-select none
+      margin-top -25px
+      margin-left -135px
+    & > .list_summary
+      position static
+      font-size 14px
+      margin -5px 0 0 10px
+      text-align left
+      display inline-block
+    &.closed
+      min-width 372px
+      width 372px
+      min-height 6px
+  & > .list_summary
+
+  .nf_fieldset > div, .nf_listfield_container > div
+    display none
+
+  .nf_fieldset.closed,
+  .nf_fieldset > i,
+  .nf_fieldset > h2,
+  .nf_listfield_container.closed,
+  .nf_listfield_container > i,
+  .nf_listfield_container > label
+    cursor pointer
+
+  .nf_fieldset.closed:hover,
+  .nf_listfield_container.closed:hover
+    box-shadow #bbb 0 0 6px 0
+
+  .nf_fieldset > h2,
+  .nf_listfield_container > label
+    font-size 20px
+    text-align right
+    width 150px
+    position absolute
+    margin -21px 0 0 -145px
+    white-space nowrap
+    line-height 1.5em
+
+  .nf_fieldset > i, .nf_listfield_container > i
+    position absolute
+    top 5px
+    left 5px
+
+  .nf_hidden_template
+    display none
+
+  .nf_listfield
+    ul
+      margin 0
+    li
+      display block
+      list-style none
+      margin-bottom 10px
+      padding 10px 10px 0
+      border 1px solid #ddd
+      background #F7F7F9
+      border-radius 2px
+      -webkit-transition background 1s
+      position relative
+      &.new_li
+        background-color #f6f7d0
+    .list_summary
+      display inline
+      margin 1em
+
+  .nf_listfield_delete
+    cursor pointer
+
+  .nf_listfield_delete, .nf_listfield_drag, .nf_listfield_append
+    position absolute
+    right 2px
+    top 2px
+    padding 2px
+    border 0
+    background transparent
+
+  .nf_listfield_drag
+    right 20px
+    cursor move
+
+  .ui-combobox
+    input
+      float left
+      padding 5px
+    a
+      float left
+      height 30px
+      margin-left -1px
+
+  .select2-result-label
+    min-height 1em
+
+  .subCollection
+    font-size 20px
+    line-height 30px
+    float left
+    clear left
+
+  a[target='_blank']
+    color forestgreen
+
+  .file-link
+    margin 0 5px
+
+  .thumb-picker
+    border 1px solid #ddd
+    border-radius 2px
+    box-shadow #eee 0 0 2px 0
+
+  .th-medium
+    width 100px
+
+  .th-slim
+    width 85px
+    text-align center
+
+  .th-superslim
+    width 60px
+    text-align center
+
+  .geopicker_map
+    img
+      max-width none
+
+
+  #old-version
+    position: fixed
+    bottom: 1em
+    right: 1em
+    width: 30em
+    height: 4em
+    border-radius: 10px
+    opacity: 0.8
