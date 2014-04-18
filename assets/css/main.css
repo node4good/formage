@@ -1,170 +1,429 @@
-/*
-    header
-*/
-header .navbar-inner {
-    padding: 20px 0;
-    margin-bottom: 20px;
-    background: #f5f5f5;
-    border-bottom: 1px solid #e5e5e5;
-    box-shadow: none !important;
+.formage header .navbar-inner {
+  padding: 20px 0;
+  margin-bottom: 20px;
+  background: #f5f5f5;
+  border-bottom: 1px solid #e5e5e5;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
 }
-header.page-header {
-    padding: 20px 30px;
-    background: #EEE;
-    border-radius: 10px;
+.formage header.page-header {
+  padding: 20px 30px;
+  background: #eee;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
 }
-header h1 {
-    font-size: 20px;
-    line-height: 20px;
+.formage header h1 {
+  font-size: 20px;
+  line-height: 20px;
 }
-header .btn-group {
-    margin-top: 5px;
+.formage header .btn-group {
+  margin-top: 5px;
 }
-.divider {
-    padding: 0 5px;
-    color: #CCC;
+.formage .divider {
+  padding: 0 5px;
+  color: #ccc;
 }
-h2 {
-    text-align: center;
+.formage h2 {
+  text-align: center;
 }
-
-/*
-    login form
-*/
-#login {
-    width: 500px;
-    margin: 0 auto;
+.formage #login {
+  width: 500px;
+  margin: 0 auto;
 }
-
-/*
-    footer
-*/
-.footer {
-    text-align: center;
-    padding: 20px 0;
-    margin-top: 50px;
-    border-top: 1px solid #e5e5e5;
+.formage .footer {
+  text-align: center;
+  padding: 20px 0;
+  margin-top: 50px;
+  border-top: 1px solid #e5e5e5;
 }
-
-
-/*
-    bootstrap misc
-*/
-h3 [class^='icon-'],
-h2 [class^='icon-'] {
-    vertical-align: baseline;
-    margin-right: 3px;
+.formage h3 [class^='icon-'],
+.formage h2 [class^='icon-'] {
+  vertical-align: baseline;
+  margin-right: 3px;
 }
-
-
-/*
-    model list
-*/
-ul.models {
-    width: 500px;
-    margin: 0 auto;
-    list-style: none;
+.formage ul.models {
+  width: 500px;
+  margin: 0 auto;
+  list-style: none;
 }
-.table-striped td {
-    text-align: center;
+.formage .table-striped td {
+  text-align: center;
 }
-.counter, .pagination {
-    text-align: center;
+.formage .counter,
+.formage .pagination {
+  text-align: center;
 }
-a h3 { color: black; font-weight: normal; }
-.section {
-    margin-top: 30px;
-    border-top: 3px double #e2e2e2;
+.formage a h3 {
+  color: #000;
+  font-weight: normal;
 }
-.section h2 {
-    margin: -23px auto 0;
-    text-align: center;
+.formage section {
+  margin-top: 30px;
+  border-top: 3px double #e2e2e2;
 }
-.section h2 span {
-    background: white;
-    padding: 10px 20px;
+.formage section h2 {
+  margin: -23px auto 0;
+  text-align: center;
 }
-
-
-/*
-    document list
-*/
-#actions {
-    margin-bottom: 0;
+.formage section h2 span {
+  background: #fff;
+  padding: 10px 20px;
 }
-.center {
-    text-align: center !important;
+.formage #actions {
+  margin-bottom: 0;
 }
-#filters {
-    width: 20%;
-    float: right;
-    margin-left: 3%;
-    box-sizing: border-box;
+.formage .center {
+  text-align: center !important;
 }
-#filters h3 {
-    margin-top: 0;
+.formage #filters {
+  width: 20%;
+  float: right;
+  margin-left: 3%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
-#filters ul {
-    list-style: none;
+.formage #filters h3 {
+  margin-top: 0;
 }
-td.picture {
-    text-align: center;
+.formage #filters ul {
+  list-style: none;
 }
-#filters + div {
-    width: 77%;
-    float: left;
+.formage #filters ul.nav-list {
+  padding: 0;
 }
-
-.bool {
-    text-align: center;
+.formage #filters + div {
+  width: 77%;
+  float: left;
 }
-
-
-/*
-    sortable
-*/
-.list-drag {
-    display: inline-block;
-    padding: 5px;
+.formage #filters input.literal {
+  width: 140px;
 }
-.ui-sortable-helper {
-    border: 0 1px 1px 0 solid #DDD;
-    background: whiteSmoke;
+.formage td.picture {
+  text-align: center;
 }
-tr.sortable-placeholder {
-    height: 47px;
-    overflow: hidden;
+.formage .bool {
+  text-align: center;
 }
-tr.sortable-placeholder:before {
-    position: absolute;
-    content: '';
-    width: 940px; height: 1px;
-    border-top: 1px solid #DDD;
+.formage .list-drag {
+  display: inline-block;
+  padding: 5px;
 }
-.span9 tr.sortable-placeholder:before {
-    width: 700px;
+.formage .ui-sortable-helper {
+  border: 0 1px 1px 0 solid #ddd;
+  background: whiteSmoke;
 }
-#reorder {
-    margin-right: 20px;
-    margin-left: 0;
+.formage tr.sortable-placeholder {
+  height: 47px;
+  overflow: hidden;
 }
-
-
-/*
-    form
-*/
-p.submit {
-    clear: both;
-    padding-top: 30px;
-    text-align: center;
+.formage tr.sortable-placeholder:before {
+  position: absolute;
+  content: '';
+  width: 940px;
+  height: 1px;
+  border-top: 1px solid #ddd;
 }
-p.submit button[type=submit] {
-    width: 160px;
+.formage .span9 tr.sortable-placeholder:before {
+  width: 700px;
 }
-p.alert-error {
-    margin: -20px 0 30px 0;
+.formage #reorder {
+  margin-right: 20px;
+  margin-left: 0;
 }
-
-.form-horizontal {
-    width:400px;
+.formage p.submit {
+  clear: both;
+  padding-top: 30px;
+  text-align: center;
+}
+.formage p.submit button[type=submit] {
+  width: 160px;
+}
+.formage p.alert-error {
+  margin: -20px 0 30px 0;
+}
+.formage .form-horizontal {
+  width: 400px;
+}
+.formage .field input,
+.formage .field textarea {
+  width: 400px;
+}
+.formage .field {
+  zoom: 1;
+  position: relative;
+}
+.formage .field textarea {
+  height: 100px;
+}
+.formage .field:after {
+  clear: both;
+}
+.formage .field .field_label {
+  float: left;
+  width: 100px;
+  min-height: 30px;
+  padding: 5px 15px 0 0;
+  text-align: right;
+  overflow: hidden;
+  margin-top: -4px;
+}
+.formage .field span.error {
+  position: relative;
+  top: -4px;
+  margin-left: 10px;
+  padding: 3px 5px;
+  color: #b94a48;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+  background-color: #f2dede;
+  border: 1px solid #fbeed5;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+}
+.formage .field a img {
+  margin-bottom: 9px;
+}
+.formage .field input.file-clear {
+  width: 1em;
+}
+.formage .nf_fieldset input[type="checkbox"],
+.formage input[type="radio"] {
+  width: 1em;
+}
+.formage .nf_fieldset {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  background: #fff;
+  min-height: 30px;
+}
+.formage .nf_fieldset select {
+  min-width: 314px;
+}
+.formage .nf_fieldset input[type="file"] {
+  width: 200px;
+  margin-right: 15px;
+}
+.formage .nf_fieldset input[type="file"] + input[type=checkbox] {
+  margin: 0 10px;
+}
+.formage .nf_fieldset textarea {
+  width: 400px;
+  height: 200px;
+}
+.formage .nf_fieldset p.error {
+  width: 100%;
+  margin: 0 auto 10px auto;
+}
+.formage .nf_fieldset > h2 {
+  margin: -20px 0 0 -185px;
+}
+.formage .field,
+.formage .field input,
+.formage .field select,
+.formage .field textarea {
+  margin: 2px 0 10px;
+}
+.formage .field:before,
+.formage .field:after {
+  content: "";
+  display: table;
+}
+.formage .nf_widget {
+  margin: 0 0 10px 115px;
+}
+.formage .nf_add {
+  margin-bottom: 10px;
+}
+.formage .select2-container {
+  min-width: 314px;
+}
+.formage .input-append {
+  float: left;
+}
+.formage .input-append + span.error {
+  top: 6px;
+}
+.formage .nf_widget + span.error,
+.formage .field textarea + span.error {
+  position: absolute;
+  top: 35px;
+  left: 20px;
+}
+.formage .nf_fieldset,
+.formage .nf_listfield_container {
+  clear: both;
+  margin: 0 0 15px 115px;
+  padding: 20px 20px 5px;
+  -webkit-transition: box-shadow 0.2s, border 0.2s;
+  -moz-transition: box-shadow 0.2s, border 0.2s;
+  -o-transition: box-shadow 0.2s, border 0.2s;
+  -ms-transition: box-shadow 0.2s, border 0.2s;
+  transition: box-shadow 0.2s, border 0.2s;
+  position: relative;
+  border: 1px solid #ddd;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-box-shadow: #eee 0 0 5px 0;
+  box-shadow: #eee 0 0 5px 0;
+  min-width: 585px;
+}
+.formage .nf_listfield_container {
+  min-height: 30px;
+  background: #fff;
+}
+.formage .nf_listfield_container > .field_label {
+  font-size: 20px;
+  font-weight: bold;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  margin-top: -25px;
+  margin-left: -135px;
+}
+.formage .nf_listfield_container > .list_summary {
+  position: static;
+  font-size: 14px;
+  margin: -5px 0 0 10px;
+  text-align: left;
+  display: inline-block;
+}
+.formage .nf_listfield_container.closed {
+  min-width: 372px;
+  width: 372px;
+  min-height: 6px;
+}
+.formage > .list_summary,
+.formage .nf_fieldset > div,
+.formage .nf_listfield_container > div {
+  display: none;
+}
+.formage .nf_fieldset.closed,
+.formage .nf_fieldset > i,
+.formage .nf_fieldset > h2,
+.formage .nf_listfield_container.closed,
+.formage .nf_listfield_container > i,
+.formage .nf_listfield_container > label {
+  cursor: pointer;
+}
+.formage .nf_fieldset.closed:hover,
+.formage .nf_listfield_container.closed:hover {
+  -webkit-box-shadow: #bbb 0 0 6px 0;
+  box-shadow: #bbb 0 0 6px 0;
+}
+.formage .nf_fieldset > h2,
+.formage .nf_listfield_container > label {
+  font-size: 20px;
+  text-align: right;
+  width: 150px;
+  position: absolute;
+  margin: -21px 0 0 -145px;
+  white-space: nowrap;
+  line-height: 1.5em;
+}
+.formage .nf_fieldset > i,
+.formage .nf_listfield_container > i {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+.formage .nf_hidden_template {
+  display: none;
+}
+.formage .nf_listfield ul {
+  margin: 0;
+}
+.formage .nf_listfield li {
+  display: block;
+  list-style: none;
+  margin-bottom: 10px;
+  padding: 10px 10px 0;
+  border: 1px solid #ddd;
+  background: #f7f7f9;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  -webkit-transition: background 1s;
+  position: relative;
+}
+.formage .nf_listfield li.new_li {
+  background-color: #f6f7d0;
+}
+.formage .nf_listfield .list_summary {
+  display: inline;
+  margin: 1em;
+}
+.formage .nf_listfield_delete {
+  cursor: pointer;
+}
+.formage .nf_listfield_delete,
+.formage .nf_listfield_drag,
+.formage .nf_listfield_append {
+  position: absolute;
+  right: 2px;
+  top: 2px;
+  padding: 2px;
+  border: 0;
+  background: transparent;
+}
+.formage .nf_listfield_drag {
+  right: 20px;
+  cursor: move;
+}
+.formage .ui-combobox input {
+  float: left;
+  padding: 5px;
+}
+.formage .ui-combobox a {
+  float: left;
+  height: 30px;
+  margin-left: -1px;
+}
+.formage .select2-result-label {
+  min-height: 1em;
+}
+.formage .subCollection {
+  font-size: 20px;
+  line-height: 30px;
+  float: left;
+  clear: left;
+}
+.formage a[target='_blank'] {
+  color: #228b22;
+}
+.formage .file-link {
+  margin: 0 5px;
+}
+.formage .thumb-picker {
+  border: 1px solid #ddd;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  -webkit-box-shadow: #eee 0 0 2px 0;
+  box-shadow: #eee 0 0 2px 0;
+}
+.formage .th-medium {
+  width: 100px;
+}
+.formage .th-slim {
+  width: 85px;
+  text-align: center;
+}
+.formage .th-superslim {
+  width: 60px;
+  text-align: center;
+}
+.formage .geopicker_map img {
+  max-width: none;
+}
+.formage #old-version {
+  position: fixed;
+  bottom: 1em;
+  right: 1em;
+  width: 30em;
+  height: 4em;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  opacity: 0.8;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  filter: alpha(opacity=80);
 }
