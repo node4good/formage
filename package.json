@@ -1,7 +1,7 @@
 {
   "name": "formage",
   "description": "Admin GUI addon for mongoose, jugglingdb, or just as a form generator",
-  "version": "2.7.3",
+  "version": "2.7.4",
   "main": "lib/index.js",
   "author": {
     "name": "Etai Peretz",
@@ -78,7 +78,7 @@
     "lint": "jshint .",
     "cover": "istanbul cover ./node_modules/mocha/bin/_mocha -x generated/**",
     "postpublish": "git push origin master --tags",
-    "prepublish": "node utils/CompileTempletes.js && bower i && git clean -X -d -f assets && mocha"
+    "prepublish": "node utils/CompileTempletes.js && mocha"
   },
   "directories": {
     "example": "./example"
