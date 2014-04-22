@@ -1,3 +1,4 @@
+"use strict";
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     SchemaTypes = Schema.Types,
@@ -5,21 +6,24 @@ var mongoose = require('mongoose'),
 
 
 var schema = new Schema({
-    parent: { type: ObjectId, ref: 'navigation' },
+    parent: { type: ObjectId, ref: 'navigation', inline:true },
+    main: { type: ObjectId, ref: 'pages', inline:true },
+    others: { type:[{ type: ObjectId, ref: 'pages', inline:true }], open:true },
     meta: [{
         name: { type: String },
         content: { type: SchemaTypes.Text }
     }],
-    title: { type: String, required: true, trim: true },
+    label: { type: String, required: true, trim: true },
+    html_title: { type: String, required: true, trim: true },
     url: { type: String, trim: true, lowercase: true, unique: true },
     order: { type: Number, editable: false },
-    menu: { type: Boolean, 'default': true },
-    show: { type: Boolean, 'default': true }
+    isMenu: { type: Boolean, 'default': true },
+    isShow: { type: Boolean, 'default': true }
 });
 
 schema.formage = {
-    list_populate: ['parent'],
-    list: ['title', 'parent', 'url', 'menu', 'show'],
+    list_populate: ['parent', 'main'],
+    list: ['title', 'parent', 'main', 'url', 'menu', 'show'],
     filters: ['parent'],
     order_by: ['order'],
     sortable: 'order'

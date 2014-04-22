@@ -1,10 +1,10 @@
+"use strict";
 var mongoose = require('mongoose'),
     Types = mongoose.Schema.Types;
 
 var schema = new mongoose.Schema({
     title: { type: String, required: true },
-    picture: { type: Types.Picture },
-    author: { type: Types.ObjectId, ref: 'pages' }
+    text: { type: Types.Text }
 });
 
 schema.methods.toString = function() {

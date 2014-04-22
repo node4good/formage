@@ -1,4 +1,8 @@
 'use strict';
+var Path = require('path');
+global.MONGOOSE_DRIVER_PATH = Path.dirname(require.resolve('grist/driver'));
+process.env.MONGOOSE_TEST_URI = 'tingodb://' + __dirname + "/data";
+
 var express = require('express'),
     mongoose = require('mongoose'),
     formage = require('../..'),
@@ -35,7 +39,7 @@ app.use(app.router);
 mongoose.connect(app.get('mongo'));
 
 //mongoose.set('debug', true);
-var admin = formage.init(app, express, require('./models'), {
+var admin = formage.init(app, express, {pages:require('./models').pages, navigation:require('./models').navigation}, {
     title: title || 'Formage Example',
     default_section: 'Main',
     admin_users_gui: true
