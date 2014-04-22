@@ -13,6 +13,10 @@ var schema = new Schema({
         name: { type: String },
         content: { type: SchemaTypes.Text }
     }],
+    embeded: {
+        str1: String,
+        str2: String
+    },
     label: { type: String, required: true, trim: true },
     html_title: { type: String, required: true, trim: true },
     url: { type: String, trim: true, lowercase: true, unique: true },
