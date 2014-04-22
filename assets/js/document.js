@@ -1,6 +1,5 @@
 'use strict';
 /*global $,window,Aviary */
-var MINIMUM_ITEM_COUNT_TO_EXPAND = 1;
 
 
 var btn = {
@@ -38,34 +37,32 @@ function initFieldSet(ctx) {
         }
         $(this).data('nf_fieldset', true);
 
-        var t = $(this),
-            isTopLevel = t.is('.toplevel'),
-            h2 = $('> h2, > label', t),
-            div = $('> div', t),
-            i = $('<i class="icon-chevron-right" />').prependTo(t);
+        var $this = $(this),
+            isTopLevel = $this.is('.toplevel'),
+            h2 = $('> h2, > label', $this),
+            div = $('> div', $this),
+            i = $('<i class="icon-chevron-right" />').prependTo($this);
 
-        t.find('label').add(i).add(h2).off('click').on('click', function chevronToggle(e) {
+        $this.find('label').add(i).add(h2).off('click').on('click', function chevronToggle(e) {
             e.stopPropagation();
-            var is_open = div.is(':visible');
-            var divs = isTopLevel ? t.find('div') : div;
-            var im = isTopLevel ? t.find('i.icon-chevron-down, i.icon-chevron-right') : i;
-            if (is_open) {
+            toggleVisibility();
+        });
+
+        function toggleVisibility() {
+            $this.is_open = !$this.hasClass('closed');
+            var divs = isTopLevel ? $this.find('div') : div;
+            var im = isTopLevel ? $this.find('i.icon-chevron-down, i.icon-chevron-right') : i;
+            if ($this.is_open) {
                 im.removeClass('icon-chevron-down').addClass('icon-chevron-right');
                 divs.stop(1, 1).slideUp('fast');
-                t.addClass('closed');
+                $this.addClass('closed');
             } else {
                 im.removeClass('icon-chevron-right').addClass('icon-chevron-down');
                 divs.stop(1, 1).slideDown('fast');
-                t.removeClass('closed');
-            }
-        });
-
-        // Only list-view
-        if (t.is('.nf_listfield_container')) {
-            if (updateListfield(t) <= MINIMUM_ITEM_COUNT_TO_EXPAND) {
-                t.click();
+                $this.removeClass('closed');
             }
         }
+        toggleVisibility();
     });
 }
 
@@ -162,11 +159,9 @@ function ListField(el) {
     }
     self.el.data('processed', 'true');
 
-    self.el.closest('.field').addClass('nf_listfield_container');
-
     self.name = self.el.attr('name');
 
-    var tpl = $('> .nf_hidden_template', el);
+    var tpl = self.el.find('> .nf_hidden_template');
     tpl.find('.nf_listfield');
     self.template = tpl.html();
     tpl.remove();
