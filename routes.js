@@ -53,9 +53,9 @@ var json_routes = {
             id = req.body.id;
 
         require('./dependencies').check(false,MongooseAdmin.singleton.models, name, id, function (err, results) {
-            var json = _.map(results, function (result) {
+            var json = _(results).compact().map(function (result) {
                 return result.name || result.title || result.toString();
-            });
+            }).valueOf();
             res.json(json, 200);
         });
     },
