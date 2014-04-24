@@ -32,8 +32,9 @@
           "resolved": "http://registry.npmjs.org/multiparty/-/multiparty-3.2.4.tgz",
           "dependencies": {
             "readable-stream": {
-              "version": "1.1.12",
-              "from": "readable-stream@1.1.12",
+              "version": "1.1.13-1",
+              "from": "readable-stream@1.1.13-1",
+              "resolved": "http://registry.npmjs.org/readable-stream/-/readable-stream-1.1.13-1.tgz",
               "dependencies": {
                 "core-util-is": {
                   "version": "1.0.1",
@@ -49,7 +50,7 @@
                 },
                 "inherits": {
                   "version": "2.0.1",
-                  "from": "inherits@^2.0.1"
+                  "from": "inherits@~2.0.1"
                 }
               }
             },
@@ -58,8 +59,9 @@
               "from": "stream-counter@~0.2.0",
               "dependencies": {
                 "readable-stream": {
-                  "version": "1.1.12",
-                  "from": "readable-stream@1.1.12",
+                  "version": "1.1.13-1",
+                  "from": "readable-stream@1.1.13-1",
+                  "resolved": "http://registry.npmjs.org/readable-stream/-/readable-stream-1.1.13-1.tgz",
                   "dependencies": {
                     "core-util-is": {
                       "version": "1.0.1",
@@ -75,7 +77,7 @@
                     },
                     "inherits": {
                       "version": "2.0.1",
-                      "from": "inherits@2"
+                      "from": "inherits@~2.0.1"
                     }
                   }
                 }
@@ -100,7 +102,8 @@
       "dependencies": {
         "lodash": {
           "version": "2.0.0",
-          "from": "lodash@2.0.0"
+          "from": "lodash@2.0.0",
+          "resolved": "http://registry.npmjs.org/lodash/-/lodash-2.0.0.tgz"
         }
       }
     },
@@ -152,8 +155,7 @@
                 },
                 "nan": {
                   "version": "0.3.2",
-                  "from": "http://registry.npmjs.org/nan/-/nan-0.3.2.tgz",
-                  "resolved": "http://registry.npmjs.org/nan/-/nan-0.3.2.tgz"
+                  "from": "nan@0.3.2"
                 },
                 "tinycolor": {
                   "version": "0.0.1",
@@ -185,8 +187,7 @@
         },
         "policyfile": {
           "version": "0.0.4",
-          "from": "policyfile@0.0.4",
-          "resolved": "http://registry.npmjs.org/policyfile/-/policyfile-0.0.4.tgz"
+          "from": "policyfile@0.0.4"
         },
         "base64id": {
           "version": "0.1.0",
@@ -194,8 +195,7 @@
         },
         "redis": {
           "version": "0.7.3",
-          "from": "redis@0.7.3",
-          "resolved": "http://registry.npmjs.org/redis/-/redis-0.7.3.tgz"
+          "from": "redis@0.7.3"
         }
       }
     }

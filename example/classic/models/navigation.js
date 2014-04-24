@@ -6,22 +6,22 @@ var mongoose = require('mongoose'),
 
 
 var schema = new Schema({
-    parent: { type: ObjectId, ref: 'navigation', inline:true },
+//    parent: { type: ObjectId, ref: 'navigation' },
     main: { type: ObjectId, ref: 'pages', inline:true },
-    others: { type:[{ type: ObjectId, ref: 'pages', inline:true }], open:true },
-    meta: [{
-        name: { type: String },
-        content: { type: SchemaTypes.Text }
-    }],
+//    others: [{ type: ObjectId, ref: 'pages', inline:true }],
+//    meta: [{
+//        name: { type: String },
+//        content: { type: SchemaTypes.Text }
+//    }],
     embeded: {
         str1: String,
         str2: String
     },
-    label: { type: String, required: true, trim: true },
+//    label: { type: String, required: true, trim: true },
     html_title: { type: String, required: true, trim: true },
-    url: { type: String, trim: true, lowercase: true, unique: true },
-    order: { type: Number, editable: false },
-    isMenu: { type: Boolean, 'default': true },
+//    url: { type: String, trim: true, lowercase: true, unique: true },
+//    order: { type: Number, editable: false },
+//    isMenu: { type: Boolean, 'default': true },
     isShow: { type: Boolean, 'default': true }
 });
 
@@ -34,7 +34,7 @@ schema.formage = {
 };
 
 schema.methods.toString = function() {
-    return this.title;
+    return this.html_title;
 };
 
 module.exports = schema;
