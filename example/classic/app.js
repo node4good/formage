@@ -1,7 +1,9 @@
 'use strict';
-var Path = require('path');
-global.MONGOOSE_DRIVER_PATH = Path.dirname(require.resolve('grist/driver'));
-process.env.MONGOOSE_TEST_URI = 'grist://' + __dirname + "/data";
+require('trace');
+require('clarify')(require('path').resolve(__dirname + '\\..\\..\\node_modules'));
+//var Path = require('path');
+//global.MONGOOSE_DRIVER_PATH = Path.dirname(require.resolve('grist/driver'));
+//process.env.MONGOOSE_TEST_URI = 'tingodb://' + __dirname + "/data";
 
 var express = require('express'),
     mongoose = require('mongoose'),
@@ -20,8 +22,6 @@ app.set('mongo', MONGO_URL || MONGOLAB_URI || 'mongodb://localhost/formage-examp
 app.configure('development', function() {
     app.use(nodestrum.ConnectionCloser);
 });
-app.use(express.favicon());
-app.use(express.methodOverride());
 app.use(express.cookieParser('magical secret admin'));
 app.use(express.cookieSession({cookie: { maxAge: 1000 * 60 * 60 *  24 }}));
 

@@ -170,7 +170,7 @@ function describeCommonTests(caller) {
                     Editable: "1"
                 }
             }, mock_req_proto);
-            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+            var mock_res = makeRes({ req: mock_req }, done);
 
             mock_res.render = function (view, options) {
                 view.should.equal("document.jade");
