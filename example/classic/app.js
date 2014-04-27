@@ -1,4 +1,5 @@
 'use strict';
+require('trace');
 var Path = require('path');
 global.MONGOOSE_DRIVER_PATH = Path.dirname(require.resolve('grist/driver'));
 process.env.MONGOOSE_TEST_URI = 'tingodb://' + __dirname + "/data";

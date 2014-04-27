@@ -1,11 +1,11 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="app.js" type="NodeJSConfigurationType" factoryName="Node.js" singleton="true" path-to-node="$NODE_PATH$/node" path-to-js-file="classic/app.js" working-dir="$PROJECT_DIR$/example">
+  <configuration default="false" name="app.js" type="NodeJSConfigurationType" factoryName="Node.js" singleton="true" path-to-node="$NODE_PATH$/node12" path-to-js-file="classic/app.js" working-dir="$PROJECT_DIR$/example">
     <envs>
       <env name="NODE_DEBUG" value="formage" />
       <env name="PORT" value="80" />
       <env name="FILEPICKER_API_KEY" value="AmvMlokejTHVU4WYtGhyKz" />
-      <env name="CLOUDINARY_URL" value="cloudinary://585968645961973:QKIr5QDRS3mp9F9QYxa3DC7-Omg@ho0xbnxzd" />
       <env name="AVIARY_API_KEY" value="lqe7dik7cphyefe9" />
+      <env name="CLOUDINARY_URL" value="cloudinary://585968645961973:QKIr5QDRS3mp9F9QYxa3DC7-Omg@ho0xbnxzd" />
       <env name="NODE_ENV" value="development" />
       <env name="ADMIN_TITLE" value="abcd" />
       <env name="FORMAGE_DB_LAYER" value="mongoose" />

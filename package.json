@@ -54,6 +54,7 @@
     "mocha": "",
     "mongoose": "",
     "tingodb": "",
+    "trace": "",
     "tungus": ""
   },
   "optionalDevDependencies": {
