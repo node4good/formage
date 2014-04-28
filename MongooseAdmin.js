@@ -64,6 +64,10 @@ function buildModelFilters (model, filters, dict) {
                     dict.push({key:filter,values:[{value:true,text:'True'},{value:false,text:'False'}]});
                     return cbk();
                 }
+                if(model.schema.paths[filter] && model.schema.paths[filter].options && model.schema.paths[filter].options.enum){
+                    dict.push({key:filter,values:model.schema.paths[filter].options.enum.map(function(option) { return {value:option,text:option,isString:true}; })});
+                    return cbk();
+                }
                 model.collection.distinct(filter, function (err, results) {
                     if (results) {
                         if (results[0] && Array.isArray(results[0])) {
