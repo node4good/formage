@@ -631,6 +631,8 @@ var FileField_ = exports.FileField = BaseField.extend({
         var base = self._super;
         self.value = self.value || {};
         function on_finish() {
+            if(self.value && !self.value.url)
+                self.value = null;
             base.call(self, simpleReq(req), callback);
         }
 
