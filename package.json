@@ -57,6 +57,7 @@
     "tungus": ""
   },
   "optionalDevDependencies": {
+    "clarify": "",
     "msnodesql": "",
     "jugglingdb-mssql": ""
   },
