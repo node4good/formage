@@ -1,7 +1,7 @@
 {
   "name": "formage",
   "description": "Admin GUI addon for mongoose, jugglingdb, or just as a form generator",
-  "version": "2.7.4",
+  "version": "2.7.13",
   "main": "lib/index.js",
   "author": {
     "name": "Etai Peretz",
@@ -37,7 +37,7 @@
     "formage-mongoose-types": "",
     "lodash": "",
     "lodash-contrib": "",
-    "mpromise": ">= 0.5.0",
+    "mpromise": "^0.5.4",
     "node-ckeditor": "",
     "nodestrum": "",
     "socket.io": "< 1.0.0"
