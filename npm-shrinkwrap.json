@@ -1,6 +1,6 @@
 {
   "name": "formage",
-  "version": "2.7.7",
+  "version": "2.7.10",
   "dependencies": {
     "async": {
       "version": "0.8.0",
@@ -133,7 +133,8 @@
     },
     "mpromise": {
       "version": "0.5.4",
-      "from": "mpromise@0.5.4"
+      "from": "mpromise@0.5.4",
+      "resolved": "http://registry.npmjs.org/mpromise/-/mpromise-0.5.4.tgz"
     },
     "node-ckeditor": {
       "version": "4.3.2",
