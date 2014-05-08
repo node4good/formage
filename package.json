@@ -37,7 +37,7 @@
     "formage-mongoose-types": "",
     "lodash": "",
     "lodash-contrib": "",
-    "mpromise": ">= 0.5.0",
+    "mpromise": "^0.5.4",
     "node-ckeditor": "",
     "nodestrum": "",
     "socket.io": "< 1.0.0"
