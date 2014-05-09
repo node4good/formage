@@ -85,6 +85,18 @@ Content-Disposition: form-data; name="object.object.object.nested_string_req"
 
 object.object.object.nested_string_req
 ------WebKitFormBoundaryRAMJbJAUpnXaUbFE
+Content-Disposition: form-data; name="req_test"
+
+1
+------WebKitFormBoundaryRAMJbJAUpnXaUbFE
+Content-Disposition: form-data; name="req_number"
+
+1
+------WebKitFormBoundaryRAMJbJAUpnXaUbFE
+Content-Disposition: form-data; name="req_date"
+
+2014/3/3
+------WebKitFormBoundaryRAMJbJAUpnXaUbFE
 Content-Disposition: form-data; name="mixed"
 
 
