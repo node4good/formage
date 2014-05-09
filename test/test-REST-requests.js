@@ -242,14 +242,17 @@ function describeCommonTests(caller) {
                 body: {
                     string_req: "gaga",
                     num_with_params: "0",
-                    enum: "",
+                    'enum': "",
                     'list_o_numbers_li0___self__': "0",
                     'list_o_numbers_li1___self__': "1",
                     'list_o_numbers_li2___self__': "2",
                     'list_li0_name': 'ggg',
                     'list_li0_list_li0_name': 'hhh',
                     'list_li0_list_li1_name': 'jjj',
-                    'object.object.object.nested_string_req': "gigi"
+                    'object.object.object.nested_string_req': "gigi",
+                    'req_test': '1',
+                    'req_number': 1,
+                    'req_date': '2014/3/3'
                 }
             }, mock_req_proto);
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);

@@ -72,7 +72,7 @@ describe("misc requests on mongoose", function () {
                 date: '',
                 datetime: '',
                 time: '',
-                enum: '',
+                'enum': '',
                 rich_text: '',
                 text: '',
                 file_picker: '{"isWriteable":true,"size":222783,"mimetype":"image/jpeg","filename":"Birthday_mail.jpg","url":"http://featherfiles.aviary.com/2013-11-08/lqe7dik7cphyefe9/bdb746685c6c408b988e91403c81e59f.png"}',
@@ -102,11 +102,15 @@ describe("misc requests on mongoose", function () {
                 'embeded.list1_li0_embeded2.list3_li0_embeded4.list5_li1___self__': '6',
                 'object.object.object.nested_string': '',
                 'object.object.object.nested_string_req': '123',
-                mixed: ''
+                'req_test': '1',
+                'req_number': 1,
+                'req_date': '2014/3/3',
+                'mixed': ''
             }
         }, mock_req_proto);
         var mock_res = makeRes(mock_req, done);
 
+        mock_res.render = function (temple, locals) { done(new Error(JSON.stringify(locals.errors))); };
         mock_res.redirect = function (url) {
             var doc = this._debug_form.instance;
             var test_doc_id = doc.id;
