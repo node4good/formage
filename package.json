@@ -53,6 +53,7 @@
     "jugglingdb": "",
     "mocha": "",
     "mongoose": "",
+    "stack-chain": "^1.0.0",
     "tingodb": "",
     "tungus": ""
   },

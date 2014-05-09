@@ -65,7 +65,12 @@ var schema = module.exports = new Schema({
             }
         }]
     },
-    mixed: SchemaTypes.Mixed
+    mixed: SchemaTypes.Mixed,
+    req_test: { type: String, required: true, 'default':'1' },
+    req_number: { type: Number, required: true, 'default':1 },
+    req_boolean: { type: Boolean, required: true, 'default':true },
+    req_date: { type: Date, required: true, 'default':Date.now }
+
 });
 schema.methods.toString = function () { return this.string_req; };
 
