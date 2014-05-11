@@ -3,7 +3,7 @@ require('nodestrum');
 Error.stackTraceLimit = 100;
 var Path = require('path');
 global.MONGOOSE_DRIVER_PATH = Path.dirname(require.resolve('grist/driver'));
-process.env.MONGOOSE_TEST_URI = 'tingodb://' + __dirname + "/data";
+global.CONN_STR_PREFIX = 'grist://' + Path.join(__dirname, "gristdata-");
 
 var _ = require('lodash');
 var chai = require('chai');

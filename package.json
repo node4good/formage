@@ -34,6 +34,7 @@
     "cloudinary": "",
     "connect-multiparty": "",
     "debug": "",
+    "grist": "",
     "formage-mongoose-types": "",
     "lodash": "",
     "lodash-contrib": "",
@@ -46,20 +47,12 @@
     "bower": "",
     "chai": "",
     "express": "< 4",
-    "grist": "",
     "istanbul": "",
     "jade": "0.35.x",
     "jshint": "",
     "jugglingdb": "",
     "mocha": "",
-    "mongoose": "",
-    "tingodb": "",
-    "tungus": ""
-  },
-  "optionalDevDependencies": {
-    "clarify": "",
-    "msnodesql": "",
-    "jugglingdb-mssql": ""
+    "mongoose": ""
   },
   "keywords": [
     "admin",
