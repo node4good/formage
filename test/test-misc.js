@@ -9,7 +9,7 @@ describe("misc requests on mongoose", function () {
         });
         var formage = require('../');
         var mongoose = ctx.mongoose = require("mongoose");
-        var conn_str = 'mongodb://localhost/formage-test' + this.test.parent.title.replace(/\s/g, '');
+        var conn_str = global.CONN_STR_PREFIX + this.test.parent.title.replace(/\s/g, '');
         mongoose.connect(conn_str, function (err) {
             if (err) return done(err);
             return mongoose.connection.db.dropDatabase(function (err) {

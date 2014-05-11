@@ -9,7 +9,7 @@ describe("edge cases on mongoose", function () {
         this.formage = require('../');
         var mongoose = this.mongoose = require("mongoose");
         this.express = require('express');
-        var conn_str = 'mongodb://localhost/formage-test' + this.test.parent.title.replace(/\s/g, '');
+        var conn_str = global.CONN_STR_PREFIX + this.test.parent.title.replace(/\s/g, '');
         mongoose.connect(conn_str, function (err) {
             if (err) return done(err);
             return mongoose.connection.db.dropDatabase(done);
