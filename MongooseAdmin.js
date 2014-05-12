@@ -116,6 +116,11 @@ MongooseAdmin.prototype.registerMongooseModel = function (name, model, fields, o
         value: 'delete',
         label: 'Delete',
         func: function (user, ids, callback) {
+            if(MongooseAdmin.singleton.ignoreDependencies)
+                return model.remove({_id: {'$in': ids}}, function(err) {
+                    return callback(err);
+                });
+
             //noinspection JSUnresolvedFunction
             async.map(
                 ids,
@@ -127,7 +132,7 @@ MongooseAdmin.prototype.registerMongooseModel = function (name, model, fields, o
                     var no_dependencies = _.difference(ids, with_deps);
                     return model.remove({_id: {'$in': no_dependencies}}, function(err, docs) {
                         err = err || (!with_deps.length)? null : new Error("can't delete " + with_deps.join(',') + " as they have dependencies");
-                        return callback(err, docs)
+                        return callback(err)
                     });
                 }
             );
