@@ -452,6 +452,9 @@ MongooseAdmin.prototype.deleteDocument = function(user, collectionName, document
         if (!document) {
             return onReady('Document not found');
         }
+        if(self.ignoreDependencies)
+            return document.remove(onReady);
+
         return dependencies.unlink(self.models, collectionName, documentId, function (err) {
             if (err) return onReady('unlink dependencies failed');
             document.remove();
