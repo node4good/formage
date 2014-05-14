@@ -3,7 +3,7 @@ require('nodestrum');
 Error.stackTraceLimit = 100;
 var Path = require('path');
 global.MONGOOSE_DRIVER_PATH = Path.dirname(require.resolve('grist/driver'));
-global.CONN_STR_PREFIX = 'grist://' + Path.join(__dirname, "gristdata-");
+global.CONN_STR_PREFIX = 'grist://formage-test-data';
 
 var _ = require('lodash');
 var chai = require('chai');
