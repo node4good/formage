@@ -1,6 +1,4 @@
 'use strict';
-require('nodestrum');
-Error.stackTraceLimit = 100;
 var Path = require('path');
 global.MONGOOSE_DRIVER_PATH = Path.dirname(require.resolve('grist/driver'));
 global.CONN_STR_PREFIX = 'grist://formage-test-data';
@@ -34,13 +32,14 @@ function magic_throw() {
 
 
 var mock_res_proto = {
-    setHeader: _.identity,
+    writeHead: function () {},
+    setHeader: function (key, val) { this[key] = val; },
     status: function (val) {
         this.setHeader(val);
         this._status = val;
     },
-    output: {push: _.identity},
-    outputEncodings: {push: _.identity},
+    output: {push: _.noop},
+    outputEncodings: {push: _.noop},
     render: magic_throw,
     redirect: magic_throw
 };

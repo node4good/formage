@@ -1,9 +1,8 @@
 'use strict';
-require('trace');
-require('clarify')(require('path').resolve(__dirname + '\\..\\..\\node_modules'));
-//var Path = require('path');
-//global.MONGOOSE_DRIVER_PATH = Path.dirname(require.resolve('grist/driver'));
-//process.env.MONGOOSE_TEST_URI = 'tingodb://' + __dirname + "/data";
+require('../../vendor/trace');
+var Path = require('path');
+global.MONGOOSE_DRIVER_PATH = Path.dirname(require.resolve('grist/driver'));
+var MONGOOSE_TEST_URI = 'grist://' + __dirname + "/data";
 
 var express = require('express'),
     mongoose = require('mongoose'),
@@ -11,19 +10,16 @@ var express = require('express'),
     nodestrum = require('nodestrum');
 
 //noinspection JSUnresolvedVariable
-var MONGO_URL = process.env.MONGO_URL,
-    MONGOLAB_URI = process.env.MONGOLAB_URI,
-    title = process.env.ADMIN_TITLE;
+var title = process.env.ADMIN_TITLE;
 
 var app = exports.app = express();
-app.set('port', process.env.PORT || 8080);
-app.set('mongo', MONGO_URL || MONGOLAB_URI || 'mongodb://localhost/formage-example');
+var PORT = process.env.PORT || 8080;
+var MONGO_URL = process.env.MONGOLAB_URI || MONGOOSE_TEST_URI;
+mongoose.connect(MONGO_URL);
 
 app.configure('development', function() {
     app.use(nodestrum.ConnectionCloser);
 });
-app.use(express.cookieParser('magical secret admin'));
-app.use(express.cookieSession({cookie: { maxAge: 1000 * 60 * 60 *  24 }}));
 
 // A nice feature so that we server the admin statics before the logger
 formage.serve_static(app, express);
@@ -36,7 +32,6 @@ app.configure('development', function() {
 
 app.use(app.router);
 
-mongoose.connect(app.get('mongo'));
 
 //mongoose.set('debug', true);
 var admin = formage.init(app, express, {pages:require('./models').pages, navigation:require('./models').navigation}, {
@@ -51,6 +46,7 @@ app.get('/', function(req, res) {
     res.redirect('/admin');
 });
 
-var server = app.listen(app.get('port'));
-console.log('Express server listening on port ', server.address().port);
+var server = app.listen(PORT, function () {
+    console.log('Express server listening on port ', server.address().port);
+});
 

@@ -313,7 +313,7 @@ describe("misc requests on mongoose", function () {
     });
 
 
-    it("test document - post mime form with picture", function (done) {
+    it.skip("test document - post mime form with picture", function (done) {
         var gallery_post = require('fs').readFileSync('test/fixtures/gallery-post.mime', 'binary');
         var mock_req = _.defaults({
             url: "/json/model/gallery/document/new",
@@ -331,7 +331,8 @@ describe("misc requests on mongoose", function () {
         var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
         var uploadSentinal;
-        require('cloudinary').uploader.upload = function (path, callback) {
+        var mock_cloudinary = require.cache[require.resolve('cloudinary')] = {uploader:{}};
+        mock_cloudinary.uploader.upload = function (path, callback) {
             uploadSentinal = true;
             expect(path).to.match(/\.png$/);
             callback({});
@@ -348,7 +349,7 @@ describe("misc requests on mongoose", function () {
     });
 
 
-    it("test document - post mime form with picture array", function (done) {
+    it.skip("test document - post mime form with picture array", function (done) {
         var gallery_post = require('fs').readFileSync('test/fixtures/gallery-post-picture-array.mime', 'binary');
         var mock_req = _.defaults({
             url: "/json/model/gallery/document/new",
