@@ -90,13 +90,19 @@ describe("edge cases on mongoose", function () {
 
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
+            var test = this;
             mock_res.redirect = function (path) {
-                should.not.exist(mock_res._status);
-                "admin".should.equal(mock_req.session._FormageUser.username);
-                module._FormageUser = mock_req.session._FormageUser;
-                path.should.equal(mock_req.app.route);
+                expect(mock_res).to.not.have.property('_status');
+                expect(mock_req.session._FormageUserID).to.have.length(24);
+                expect(mock_req.app.route).to.equal(path);
+                mock_res.writeHead("mockmock", "mockmock");
+            };
+            mock_res.setHeader = function (name, value) {
+                if (name !== 'Set-Cookie') return;
+                test.SetCookie = value;
                 done();
-            }.bind(this);
+            };
+            mock_res.writeHead = function() {};
 
             this.app.admin_app.handle(mock_req, mock_res);
         });
@@ -126,15 +132,15 @@ describe("edge cases on mongoose", function () {
 
 
         it("can reenter after login", function (done) {
-            if (!module._FormageUser) done("didn't get present");
+            if (!this.SetCookie) done(new Error("didn't get present"));
             var mock_req = _.defaults({
                 url: "/",
                 session: {},
+                headers: {cookie: this.SetCookie},
                 method: "get"
             }, mock_req_proto);
             delete mock_req.admin_user;
-            mock_req.session._FormageUser = module._FormageUser;
-            delete module._FormageUser;
+            delete this.SetCookie;
 
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
@@ -158,7 +164,7 @@ describe("edge cases on mongoose", function () {
                 method: "get"
             }, mock_req_proto);
             delete mock_req.admin_user;
-            delete mock_req.session._FormageUser;
+            delete mock_req.session._FormageUserID;
 
             var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
@@ -177,7 +183,7 @@ describe("edge cases on mongoose", function () {
             var mock_req = _.defaults({
                 url: "/logout",
                 headers: {},
-                session: {_FormageUser: {}},
+                session: {_FormageUserID: {}},
                 method: "get"
             }, mock_req_proto);
 

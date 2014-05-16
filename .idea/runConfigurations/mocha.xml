@@ -7,7 +7,7 @@
       <env name="CLOUDINARY_URL" value="cloudinary://585968645961973:QKIr5QDRS3mp9F9QYxa3DC7-Omg@ho0xbnxzd" />
     </envs>
     <ui>BDD</ui>
-    <extra-mocha-options>--require trace</extra-mocha-options>
+    <extra-mocha-options>--require ./vendor/trace</extra-mocha-options>
     <test-directory>$PROJECT_DIR$/test</test-directory>
     <recursive>false</recursive>
     <RunnerSettings RunnerId="MochaDebugRunner" />

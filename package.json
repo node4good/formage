@@ -1,11 +1,11 @@
 {
   "name": "formage",
   "description": "Admin GUI addon for mongoose, jugglingdb, or just as a form generator",
-  "version": "2.7.26",
+  "version": "3.0.0",
   "main": "lib/index.js",
   "author": {
-    "name": "Etai Peretz",
-    "email": "etai@empeeric.com",
+    "name": "Refael Ackermann",
+    "email": "refael@empeeric.com",
     "url": "http://www.empeeric.com/"
   },
   "contributors": [
@@ -13,11 +13,6 @@
       "name": "Ishai Jaffe",
       "email": "ishai@bablic.com",
       "url": "http://www.bablic.com/"
-    },
-    {
-      "name": "Refael Ackermann",
-      "email": "refael@empeeric.com",
-      "url": "http://www.empeeric.com/"
     },
     {
       "email": "etaypere@gmail.com",
