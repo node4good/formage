@@ -15,7 +15,6 @@ assets/**/tests
 assets/**/less
 assets/**/.*
 assets/**/src
-assets/**/build
 assets/**/speed
 assets/**/example*
 assets/**/jquery-ui/themes
@@ -24,5 +23,5 @@ assets/**/bootstrap/**/*.html
 assets/**/bootstrap/**/templates
 assets/vendor/socket.io-client/lib
 assets/vendor/socket.io-client/support
-!assets/**/bootstrap-datetimepicker/build
 
+formage-test-data*/

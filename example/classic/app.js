@@ -1,7 +1,7 @@
 'use strict';
-var Path = require('path');
-global.MONGOOSE_DRIVER_PATH = Path.dirname(require.resolve('grist/driver'));
-process.env.MONGOOSE_TEST_URI = 'tingodb://' + __dirname + "/data";
+//var Path = require('path');
+//global.MONGOOSE_DRIVER_PATH = Path.dirname(require.resolve('grist/driver'));
+//process.env.MONGOOSE_TEST_URI = 'grist://' + __dirname + "/data";
 
 var express = require('express'),
     mongoose = require('mongoose'),
