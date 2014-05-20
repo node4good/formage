@@ -22,7 +22,7 @@ var schema = module.exports = new Schema({
     file: { type: SchemaTypes.File, upload_to: 'assets/cdn'},
     filepicker: { type: SchemaTypes.Filepicker },
     filepicker_picture: { type: SchemaTypes.Filepicker, widget: 'FilepickerPictureWidget' },
-    filepicker_aviary: { type: SchemaTypes.Filepicker, widget: 'AviaryWidget' },
+    filepicker_aviary: { type: SchemaTypes.Filepicker, widget: 'AviaryWidget', sizeConstraint:"370x230"},
     map: { type: SchemaTypes.GeoPoint, widget_options: {lang: 'nl'} },
     num: { type: SchemaTypes.Integer },
     num_validated: { type: SchemaTypes.Integer, validate: [function () {return true;}, "boo"] },

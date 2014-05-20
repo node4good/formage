@@ -15,7 +15,7 @@ var MONGO_URL = process.env.MONGO_URL,
 
 var app = exports.app = express();
 app.set('port', process.env.PORT || 8080);
-app.set('mongo', MONGO_URL || MONGOLAB_URI || 'mongodb://localhost/formage-example');
+app.set('mongo', MONGO_URL || MONGOLAB_URI || 'grist://formage-example-test-data');
 
 app.configure('development', function() {
     app.use(nodestrum.ConnectionCloser);
@@ -39,7 +39,7 @@ app.use(app.router);
 mongoose.connect(app.get('mongo'));
 
 //mongoose.set('debug', true);
-var admin = formage.init(app, express, {pages:require('./models').pages, navigation:require('./models').navigation}, {
+var admin = formage.init(app, express, require('./models'), {
     title: title || 'Formage Example',
     default_section: 'Main',
     admin_users_gui: true

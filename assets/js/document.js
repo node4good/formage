@@ -406,7 +406,13 @@ function handle_file_picked($field, InkBlob) {
 function handle_file_picked_aviary($field, InkBlob) {
     handle_file_picked($field, InkBlob);
     var $image = $field.find('img.thumb-picker');
-    window.featherEditor.launch({image: $image[0], url: InkBlob.url});
+    var sizeConstraint = $field.find("input").data('sizeconstraint');
+    var args = {image: $image[0], url: InkBlob.url, initTool: 'crop'};
+    if (sizeConstraint) {
+        args.cropPresets = [['Target', sizeConstraint], 'Custom', 'Original'];
+        args.cropPresetDefault = 'Target';
+    }
+    window.featherEditor.launch(args);
 }
 
 
@@ -429,7 +435,7 @@ function trigger_refilepicker(e) {
     var $field = $(e.target).parent().parent();
     var serInkBlob = $field.find('input').val();
     var InkBlob = JSON.parse(serInkBlob);
-    handle_file_picked($field, InkBlob);
+    handle_file_picked_aviary($field, InkBlob);
 }
 
 
