@@ -18,11 +18,22 @@ describe("edge cases on mongoose", function () {
         this.mongoose.disconnect();
         delete this.mongoose;
         delete this.express;
+        delete this.app;
+        delete this.registry;
     });
 
 
-    describe("no init options, no models", function () {
-        before(function () {
+    describe("no init options no models", function () {
+        before(function (done) {
+            require.cache = {};
+            this.formage = require('../');
+            var mongoose = this.mongoose = require("mongoose");
+            this.express = require('express');
+            var conn_str = global.CONN_STR_PREFIX + this.test.parent.title.replace(/\s/g, '');
+            mongoose.connect(conn_str, function (err) {
+                if (err) return done(err);
+                return mongoose.connection.db.dropDatabase(done);
+            });
             this.app = this.express();
             this.app.use(this.express.cookieParser('magical secret admin'));
             this.app.use(this.express.cookieSession({cookie: { maxAge: 1000 * 60 * 60 * 24 }}));
@@ -31,6 +42,10 @@ describe("edge cases on mongoose", function () {
 
 
         after(function () {
+            delete this.formage;
+            this.mongoose.disconnect();
+            delete this.mongoose;
+            delete this.express;
             delete this.app;
             delete this.registry;
         });
