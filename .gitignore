@@ -17,8 +17,6 @@ assets/**/.*
 assets/**/src
 assets/**/speed
 assets/**/example*
-assets/**/jquery-ui/themes
-assets/**/jquery-ui/ui
 assets/**/bootstrap/**/*.html
 assets/**/bootstrap/**/templates
 assets/vendor/socket.io-client/lib

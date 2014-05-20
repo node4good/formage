@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "dependencies": {
     "jquery": "*",
-    "jquery-ui": "*",
     "select2": "*",
     "bootstrap-datetimepicker": "*",
     "bootstrap": "2.3.2",
