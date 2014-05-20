@@ -2,10 +2,7 @@
 /*global mock_req_proto,mock_res_proto,should,describe,before,after,it,expect,_ */
 describe("edge cases on mongoose", function () {
     before(function (done) {
-        _.each(require.cache, function (mod, modName) {
-            if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb'))
-                delete require.cache[modName];
-        });
+        require.cache = {};
         this.formage = require('../');
         var mongoose = this.mongoose = require("mongoose");
         this.express = require('express');
