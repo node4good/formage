@@ -1,6 +1,6 @@
 {
   "name": "formage",
-  "version": "2.7.20",
+  "version": "2.7.25",
   "dependencies": {
     "async": {
       "version": "0.9.0",
@@ -100,9 +100,9 @@
       }
     },
     "grist": {
-      "version": "1.0.14",
-      "from": "grist@1.0.14",
-      "resolved": "http://registry.npmjs.org/grist/-/grist-1.0.14.tgz",
+      "version": "1.0.17",
+      "from": "grist@1.0.17",
+      "resolved": "http://registry.npmjs.org/grist/-/grist-1.0.17.tgz",
       "dependencies": {
         "safe": {
           "version": "0.1.4",
