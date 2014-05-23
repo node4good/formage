@@ -39,6 +39,7 @@
     "socket.io": "< 1.0.0"
   },
   "devDependencies": {
+    "asynctrace": "",
     "bower": "",
     "chai": "",
     "express": "< 4",
@@ -47,8 +48,7 @@
     "jshint": "",
     "jugglingdb": "",
     "mocha": "",
-    "mongoose": "",
-    "stack-chain": ""
+    "mongoose": ""
   },
   "keywords": [
     "admin",

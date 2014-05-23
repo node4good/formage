@@ -3,11 +3,8 @@
 describe("REST requests", function () {
     describe("mongoose", function () {
         before(function (done) {
+            Object.keys(require.cache).forEach(function (name) { delete require.cache[name]; });
             var ctx = this;
-            _.each(require.cache, function (mod, modName) {
-                if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb'))
-                    delete require.cache[modName];
-            });
             var formage = require('../');
             var mongoose = ctx.mongoose = require("mongoose");
             var conn_str = global.CONN_STR_PREFIX + this.test.parent.title.replace(/\s/g, '');
@@ -52,11 +49,16 @@ describe("REST requests", function () {
         });
 
 
-        after(function () {
-            this.mongoose.disconnect();
-            delete this.registry;
-            delete this.mongoose;
-            delete this.app;
+        after(function (done) {
+            this.mongoose.connection.db.dropDatabase(function () {
+                delete this.formage;
+                this.mongoose.disconnect();
+                delete this.mongoose;
+                delete this.express;
+                delete this.app;
+                delete this.registry;
+                done();
+            }.bind(this));
         });
 
 

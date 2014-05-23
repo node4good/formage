@@ -2,35 +2,35 @@
 /*global mock_req_proto,mock_res_proto,makeRes,should,describe,before,after,it,expect,_,mockFind,makeMockFindById */
 describe("misc requests on mongoose", function () {
     before(function (done) {
+        Object.keys(require.cache).forEach(function (name) { delete require.cache[name]; });
         var ctx = this;
-        _.each(require.cache, function (mod, modName) {
-            if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb'))
-                delete require.cache[modName];
-        });
         var formage = require('../');
         var mongoose = ctx.mongoose = require("mongoose");
         var conn_str = global.CONN_STR_PREFIX + this.test.parent.title.replace(/\s/g, '');
         mongoose.connect(conn_str, function (err) {
             if (err) return done(err);
             return mongoose.connection.db.dropDatabase(function (err) {
-                var AppliesTo = mongoose.model('AppliesTo', new mongoose.Schema({
-                    Title: {type: String, limit: 100, required: true},
-                    Identifier: {type: String, limit: 100},
-                    Editable: {type: Number}
-                }));
-                var tests = require('../example/classic/models/tests');
-                var pages = require('../example/classic/models/pages');
-                var config = require('../example/classic/models/config');
-                var gallery = require('../example/classic/models/gallery');
-                var embed = require('../example/classic/models/embed');
-                var bugs = require('../example/classic/models/bugs');
                 var express = require('express');
                 var app = express();
-                ctx.registry = formage.init(app, express, {pages: pages, AppliesTo: AppliesTo, Tests: tests, config: config, gallery: gallery, embed:embed, bugs:bugs}, {
+                var models = {
+                    AppliesTo: new mongoose.Schema({
+                        Title: {type: String, limit: 100, required: true},
+                        Identifier: {type: String, limit: 100},
+                        Editable: {type: Number}
+                    }),
+                    pages: require('../example/classic/models/pages'),
+                    Tests: require('../example/classic/models/tests'),
+                    config: require('../example/classic/models/config'),
+                    gallery: require('../example/classic/models/gallery'),
+                    embed: require('../example/classic/models/embed'),
+                    bugs: require('../example/classic/models/bugs')
+                };
+                var options = {
                     title: 'Formage Example',
                     default_section: 'Main',
                     admin_users_gui: true
-                });
+                };
+                ctx.registry = formage.init(app, express, models, options);
                 ctx.app = mock_req_proto.app = app.admin_app;
                 ctx.startTheTest = function startTheTest(req, res, argOut) {
                     var done = ctx._runnable.callback;
@@ -51,11 +51,16 @@ describe("misc requests on mongoose", function () {
     });
 
 
-    after(function () {
-        this.mongoose.disconnect();
-        delete this.registry;
-        delete this.mongoose;
-        delete this.app;
+    after(function (done) {
+        this.mongoose.connection.db.dropDatabase(function () {
+            delete this.formage;
+            this.mongoose.disconnect();
+            delete this.mongoose;
+            delete this.express;
+            delete this.app;
+            delete this.registry;
+            done();
+        }.bind(this));
     });
 
 

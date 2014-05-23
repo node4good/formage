@@ -1,5 +1,5 @@
 'use strict';
-require('../../vendor/trace');
+require('asynctrace');
 var Path = require('path');
 global.MONGOOSE_DRIVER_PATH = Path.dirname(require.resolve('grist/driver'));
 var MONGOOSE_TEST_URI = 'grist://' + __dirname + "/data";
