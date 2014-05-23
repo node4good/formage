@@ -438,7 +438,7 @@ function describeCommonTests(caller) {
     });
 
 
-    describe("Admin Users" + caller, function () {
+    describe.skip("Admin Users" + caller, function () {
         it("Model view" + caller, function (done) {
             var mock_req = _.defaults({
                 url: "/model/formage_users_/",

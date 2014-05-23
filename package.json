@@ -39,7 +39,6 @@
     "socket.io": "< 1.0.0"
   },
   "devDependencies": {
-    "asynctrace": "",
     "bower": "",
     "chai": "",
     "express": "< 4",
@@ -50,10 +49,16 @@
     "mocha": "",
     "mongoose": ""
   },
+  "optionalDependencies": {
+    "asynctrace": ""
+  },
   "keywords": [
     "admin",
     "forms",
     "cross-database",
+    "MongoDB",
+    "MongoDB-GUI",
+    "grist",
     "mongoose",
     "mongoose-gui",
     "juggling",

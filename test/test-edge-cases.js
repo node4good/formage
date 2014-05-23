@@ -5,15 +5,15 @@ describe("edge cases on mongoose", function () {
         before(function (done) {
             Object.keys(require.cache).forEach(function (name) { delete require.cache[name]; });
             this.formage = require('../');
-            var mongoose = this.mongoose = require("mongoose");
+            this.mongoose = require("mongoose");
             this.express = require('express');
-            var conn_str = global.CONN_STR_PREFIX + this.test.parent.title.replace(/\s/g, '');
-            mongoose.connect(conn_str, function (err) {
+            var conn_str = global.CONN_STR_PREFIX + this.test.parent.title.replace(/\s/g, '-');
+            this.mongoose.connect(conn_str, function (err) {
                 if (err) return done(err);
-                return mongoose.connection.db.dropDatabase(done);
-            });
-            this.app = this.express();
-            this.registry = this.formage.init(this.app, this.express);
+                this.app = this.express();
+                this.registry = this.formage.init(this.app, this.express);
+                done();
+            }.bind(this));
         });
 
 
@@ -71,7 +71,7 @@ describe("edge cases on mongoose", function () {
             var test = this;
             mock_res.redirect = function (path) {
                 expect(mock_res).to.not.have.property('_status');
-                expect(mock_req.session._FormageUserID).to.have.length(24);
+                expect(mock_req.session._FormageUserID).to.have.length.gt(23);
                 expect(mock_req.app.route).to.equal(path);
                 mock_res.writeHead("mockmock", "mockmock");
             };
@@ -179,8 +179,9 @@ describe("edge cases on mongoose", function () {
         });
 
 
-        it("ensureExists", function (done) {
-            this.registry.adapter.UsersModel.ensureExists("admin", "admin", function () {done();});
+        it("setupSuperuser", function (done) {
+            this.registry.adapter.UsersModel.setupSuperuser("admin", "admin");
+            done();
         });
     });
 });
