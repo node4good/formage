@@ -41,13 +41,14 @@ describe("edge cases on mongoose", function () {
         });
 
 
-        after(function () {
-            delete this.formage;
-            this.mongoose.disconnect();
-            delete this.mongoose;
-            delete this.express;
-            delete this.app;
-            delete this.registry;
+        after(function (done) {
+                delete this.formage;
+                this.mongoose.disconnect();
+                delete this.mongoose;
+                delete this.express;
+                delete this.app;
+                delete this.registry;
+                done();
         });
 
 
@@ -102,7 +103,8 @@ describe("edge cases on mongoose", function () {
                 test.SetCookie = value;
                 done();
             };
-            mock_res.writeHead = function() {};
+            mock_res.writeHead = function () {
+            };
 
             this.app.admin_app.handle(mock_req, mock_res);
         });

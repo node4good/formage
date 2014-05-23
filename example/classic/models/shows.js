@@ -25,7 +25,7 @@ var schema = new Schema({
         url: String
     },
     lineup: [{
-        lineupItem: { type: Types.ObjectId, ref: 'infoItems'},
+        lineupItem: { type: Types.ObjectId, ref: 'infoItems', inline:true },
         timestamp: String
     }],
     order: { type: Number, editable: false, default: 0 }
