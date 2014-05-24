@@ -52,11 +52,16 @@
   "optionalDependencies": {
     "asynctrace": ""
   },
+  "peerDependencies": {
+    "express": "< 4",
+	"mongoose": ">= 3.8.0"
+  },
   "keywords": [
     "admin",
     "forms",
     "cross-database",
     "MongoDB",
+    "MongoDB-admin",
     "MongoDB-GUI",
     "grist",
     "mongoose",
@@ -79,7 +84,7 @@
     "example": "./example"
   },
   "engines": {
-    "node": "0.10.x"
+    "node": ">= 0.10.0"
   },
   "licenses": [
     {
