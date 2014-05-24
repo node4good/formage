@@ -1,7 +1,7 @@
 {
   "name": "formage",
   "description": "Admin GUI addon for mongoose, jugglingdb, or just as a form generator",
-  "version": "2.7.26",
+  "version": "2.7.27",
   "main": "lib/index.js",
   "author": {
     "name": "Etai Peretz",
@@ -56,15 +56,15 @@
   },
   "peerDependencies": {
     "express": "< 4",
-	"mongoose": ">= 3.8.0"
+    "mongoose": ">= 3.8.0"
   },
   "keywords": [
     "admin",
     "forms",
     "cross-database",
-	"MongoDB",
-	"MongoDB-admin",
-	"MongoDB-gui",
+    "MongoDB",
+    "MongoDB-admin",
+    "MongoDB-gui",
     "mongoose",
     "mongoose-gui",
     "juggling",
