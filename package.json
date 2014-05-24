@@ -52,13 +52,19 @@
     "jshint": "",
     "jugglingdb": "",
     "mocha": "",
-    "mongoose": "",
-    "stack-chain": ""
+    "mongoose": ""
+  },
+  "peerDependencies": {
+    "express": "< 4",
+	"mongoose": ">= 3.8.0"
   },
   "keywords": [
     "admin",
     "forms",
     "cross-database",
+	"MongoDB",
+	"MongoDB-admin",
+	"MongoDB-gui",
     "mongoose",
     "mongoose-gui",
     "juggling",
@@ -79,7 +85,7 @@
     "example": "./example"
   },
   "engines": {
-    "node": "0.10.x"
+    "node": ">= 0.10.0"
   },
   "licenses": [
     {
