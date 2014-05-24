@@ -69,7 +69,8 @@ var schema = module.exports = new Schema({
     req_test: { type: String, required: true, 'default':'1' },
     req_number: { type: Number, required: true, 'default':1 },
     req_boolean: { type: Boolean, required: true, 'default':true },
-    req_date: { type: Date, required: true, 'default':Date.now }
+    req_date: { type: Date, required: true, 'default':Date.now },
+    should_be_excluded: { type: Date }
 
 });
 schema.methods.toString = function () { return this.string_req; };
@@ -78,7 +79,8 @@ schema.formage = {
     filters: ['ref', 'string_req'],
     list: ['embeded.name1', 'ref', 'filepicker', 'filepicker_picture', 'filepicker_aviary', 'swizzle', 'date'],
     subCollections: [{label: 'Sub Tests', model: 'pages', field:'ref'}],
-    list_populate: ['ref']
+    list_populate: ['ref'],
+    exclude: ['should_be_excluded']
 };
 
 schema.virtual('swizzle').get(function() {
