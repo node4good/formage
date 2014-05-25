@@ -249,3 +249,7 @@ p.error {
 .field .required_label{
     border-color:#0081a8;
 }
+.nav-list select{
+    min-width:177px;
+    width:177px;
+}

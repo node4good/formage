@@ -117,25 +117,35 @@ block body
                 ul.nav.nav-list
                     - each filter in filters
                         li.nav-header
-                            strong #{filter.label || filter.key}:
-                        - if (current_filters[filter.key])
-                            li
-                                a(href='#{makeLink(filter.key,"__all__")}') All
+                            strong #{filter.key}:
+                        - if(filter.values.length >= 10)
+                            select(onchange="var v = $(this).val(); window.location.href = v !== '' ? '#{makeLink(filter.key,'__replace__')}'.replace('__replace__',v) : '#{makeLink(filter.key,'')}';")
+                                - if (current_filters[filter.key])
+                                    option(value='') All
+                                - else
+                                    option(selected) Select..
+                                - each value in filter.values
+                                    - if(value && value.text)
+                                        option(value="#{value.value || ''}",selected=(current_filters[filter.key] !== String(value.value) ? undefined : 'selected')) #{value.text}
                         - else
-                            li.active
-                                strong All
-                        - each value in filter.values
-                            - if (value)
+                            - if (current_filters[filter.key])
                                 li
-                                    - if (current_filters[filter.key] !== String(value.value) )
-                                        a(href='#{makeLink(filter.key, value.value)}') #{value.text}
-                                    - else
-                                        strong #{value.text}
+                                    a(href='#{makeLink(filter.key,"")}') All
+                            - else
+                                li.active
+                                    strong All
+                            - each value in filter.values
+                                - if (value)
+                                    li
+                                        - if (current_filters[filter.key] !== String(value.value) )
+                                            a(href='#{makeLink(filter.key, value.value)}') #{value.text}
+                                        - else
+                                            strong #{value.text}
 
-                        - if (filter.isString)
-                            div
-                                input(type='text',style='width:217px; !important ',name='#{filter.key}',value='#{current_filters[filter.key] || ""}')
-                                button.free_search(data-href='#{makeLink(filter.key, "__replace__")}') search
+                            - if (filter.isString)
+                                div
+                                    input(type='text',style='width:217px; !important ',name='#{filter.key}',value='#{current_filters[filter.key] || ""}')
+                                    button.free_search(data-href='#{makeLink(filter.key, "__replace__")}') search
 
 block scripts
     script.
