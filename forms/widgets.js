@@ -33,6 +33,8 @@ var Widget = exports.Widget = Class.extend({
         this.required = options.required || false;
         this.validators = options.validators || [];
         this.attrs = options.attrs || {};
+        if(this.options.readOnly)
+            this.attrs['readonly'] = this.attrs['readonly'] || 'readonly';
         this.attrs.class = this.attrs.class || [];
         this.attrs.class.push(this.required ? 'required_label' : 'optional_label');
         this.data = options.data || {};

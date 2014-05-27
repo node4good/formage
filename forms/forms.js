@@ -165,6 +165,8 @@ var BaseForm = exports.BaseForm = Class.extend({
 
         async.each(Object.keys(self.fields), function (field_name, cbk) {
                 var field = self.fields[field_name];
+                if(field.readOnly)
+                    return cbk();
                 field.clean_value(self.request, function (err) {
                     if (err) return cbk(err);
                     if (field.errors && field.errors.length) {

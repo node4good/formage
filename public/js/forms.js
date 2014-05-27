@@ -70,7 +70,7 @@
             $('.nf_ref', ctx).each(getQueryFunctionForSelect2);
             $('select', ctx).select2();
         }
-        if ($.fn.datepicker) $('.nf_datepicker', ctx).datepicker({format:'mm/dd/yyyy'});
+        if ($.fn.datepicker) $('.nf_datepicker:not([readonly])', ctx).datepicker({format:'mm/dd/yyyy'});
 //        if ($.fn.timepicker) $('.nf_timepicker', ctx).timepicker({format:'MM/dd/yyyy HH:mm:ss PP'}).on('change', function(e) {
 //            var val = $(this).val();
 //            console.log(val);
@@ -407,6 +407,8 @@
         $('form#document').submit(function () {
 
             $('.nf_datepicker,.nf_timepicker').each(function(){
+                if($(this).is('[readonly]'))
+                    return;
                 var data = $(this).data('datepicker') || $(this).data('datetimepicker');
                 if(data){
                     var date = data.date || data._date;
