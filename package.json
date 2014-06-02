@@ -77,7 +77,7 @@
     "test": "mocha",
     "lint": "jshint .",
     "cover": "istanbul cover ./node_modules/mocha/bin/_mocha -x generated/**",
-    "postpublish": "git push origin master --tags",
+    "postpublish": "git push --follow-tags",
     "prepublish": "node utils/CompileTempletes.js && bower i && git clean -X -d -f assets && mocha"
   },
   "directories": {
