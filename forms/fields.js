@@ -653,6 +653,28 @@ var FileField_ = exports.FileField = BaseField.extend({
             self.value = null;
         }
 
+        function getContentType(path){
+            var parts = path.split('.');
+            var ext = parts[parts.length-1].toLowerCase();
+            switch(ext){
+                case 'jpg':
+                case 'jpeg':
+                    return 'image/jpeg';
+                case 'png':
+                    return 'image/png';
+                case 'gif':
+                    return 'image/gif';
+                case 'bmp':
+                    return 'image/bmp';
+                case 'tiff':
+                    return 'image/tiff';
+                case 'txt':
+                    return 'text/plain';
+                default:
+                    return 'binary/octet-stream';
+            }
+        }
+
         function handle_upload(err) {
             if (err) console.trace(err);
             if (!req.files || !req.files[self.name] || !req.files[self.name].name) {
@@ -668,7 +690,9 @@ var FileField_ = exports.FileField = BaseField.extend({
                     filename_to_upload = '/' + self.options.createFilename(self,uploaded_file.name);
                 else
                     filename_to_upload = '/' + self.create_filename(uploaded_file.name);
-                module.knox_client.putStream(stream, filename_to_upload, {'Content-Length': uploaded_file.size}, function (err, res) {
+
+                var contentType = getContentType(uploaded_file.path);
+                module.knox_client.putStream(stream, filename_to_upload, {'Content-Length': uploaded_file.size,'Content-Type':contentType}, function (err, res) {
                     if (err) {
                         //noinspection JSUnresolvedVariable
                         if (err.socket && err.socket._httpMessage) {
