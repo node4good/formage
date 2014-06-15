@@ -1,95 +1,96 @@
 {
-  "name": "formage",
-  "description": "Admin GUI addon for mongoose, jugglingdb, or just as a form generator",
-  "version": "3.0.3",
-  "main": "lib/index.js",
-  "author": {
-    "name": "Refael Ackermann",
-    "email": "refael@empeeric.com",
-    "url": "http://www.empeeric.com/"
-  },
-  "contributors": [
-    {
-      "name": "Ishai Jaffe",
-      "email": "ishai@bablic.com",
-      "url": "http://www.bablic.com/"
-    },
-    {
-      "email": "etaypere@gmail.com",
-      "url": "http://www.empeeric.com/"
-    },
-    {
-      "name": "Alon Valadji",
-      "email": "alon@empeeric.com",
-      "url": "http://www.empeeric.com/"
-    }
-  ],
-  "dependencies": {
-    "async": "",
-    "cloudinary": "",
-    "connect-multiparty": "",
-    "debug": "",
-    "grist": "",
-    "formage-mongoose-types": "",
-    "lodash": "",
-    "lodash-contrib": "",
-    "mpromise": "^0.5.4",
-    "node-ckeditor": "",
-    "nodestrum": "",
-    "socket.io": "< 1.0.0"
-  },
-  "devDependencies": {
-    "bower": "",
-    "chai": "",
-    "express": "< 4",
-    "istanbul": "",
-    "jade": "0.35.x",
-    "jshint": "",
-    "jugglingdb": "",
-    "mocha": "",
-    "mongoose": ""
-  },
-  "optionalDependencies": {
-    "asynctrace": ""
-  },
-  "peerDependencies": {
-    "express": "< 4",
-	"mongoose": ">= 3.8.0"
-  },
-  "keywords": [
-    "admin",
-    "forms",
-    "cross-database",
-    "MongoDB",
-    "MongoDB-admin",
-    "MongoDB-GUI",
-    "grist",
-    "mongoose",
-    "mongoose-gui",
-    "juggling",
-    "jugglingdb",
-    "backoffice",
-    "cms"
-  ],
-  "repository": "Empeeric/formage",
-  "scripts": {
-    "start": "node example/classic/app",
-    "test": "mocha",
-    "lint": "jshint .",
-    "cover": "istanbul cover ./node_modules/mocha/bin/_mocha -x generated/**",
-    "postpublish": "git push --follow-tags",
-    "prepublish": "node utils/CompileTempletes.js && bower i && git clean -X -d -f assets && mocha"
-  },
-  "directories": {
-    "example": "./example"
-  },
-  "engines": {
-    "node": ">= 0.10.0"
-  },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://raw.github.com/Empeeric/formage/master/LICENSE"
-    }
-  ]
+   "author" : {
+      "email" : "refael@empeeric.com",
+      "name" : "Refael Ackermann",
+      "url" : "http://www.empeeric.com/"
+   },
+   "contributors" : [
+      {
+         "email" : "ishai@bablic.com",
+         "name" : "Ishai Jaffe",
+         "url" : "http://www.bablic.com/"
+      },
+      {
+         "email" : "etaypere@gmail.com",
+         "url" : "http://www.empeeric.com/"
+      },
+      {
+         "email" : "alon@empeeric.com",
+         "name" : "Alon Valadji",
+         "url" : "http://www.empeeric.com/"
+      }
+   ],
+   "dependencies" : {
+      "async" : "",
+      "cloudinary" : "",
+      "connect-multiparty" : "",
+      "debug" : "",
+      "formage-mongoose-types" : "",
+      "grist" : "",
+      "lodash" : "",
+      "lodash-contrib" : "",
+      "mpromise" : "^0.5.4",
+      "node-ckeditor" : "",
+      "nodestrum" : "",
+      "socket.io" : "< 1.0.0"
+   },
+   "description" : "Admin GUI addon for mongoose, jugglingdb, or just as a form generator",
+   "devDependencies" : {
+      "bower" : "",
+      "chai" : "",
+      "express" : "< 4",
+      "istanbul" : "",
+      "jade" : "0.35.x",
+      "jshint" : "",
+      "jugglingdb" : "",
+      "mocha" : "",
+      "mongoose" : ""
+   },
+   "directories" : {
+      "example" : "./example"
+   },
+   "engines" : {
+      "node" : ">= 0.10.0"
+   },
+   "keywords" : [
+      "admin",
+      "forms",
+      "cross-database",
+      "MongoDB",
+      "MongoDB-admin",
+      "MongoDB-GUI",
+      "grist",
+      "mongoose",
+      "mongoose-gui",
+      "juggling",
+      "jugglingdb",
+      "backoffice",
+      "cms"
+   ],
+   "licenses" : [
+      {
+         "type" : "MIT",
+         "url" : "https://raw.github.com/Empeeric/formage/master/LICENSE"
+      }
+   ],
+   "main" : "lib/index.js",
+   "name" : "formage",
+   "optionalDependencies" : {
+      "asynctrace" : ""
+   },
+   "peerDependencies" : {
+      "express" : "< 4",
+      "mongoose" : ">= 3.8.0"
+   },
+   "repository" : "Empeeric/formage",
+   "scripts" : {
+      "cover" : "istanbul cover ./node_modules/mocha/bin/_mocha -x generated/**",
+      "lint" : "jshint .",
+      "mypublish" : "npm version patch && npm publish && git push --follow-tags",
+      "postpublish" : "git push --follow-tags",
+      "prepublish" : "node utils/CompileTempletes.js && bower i && git clean -X -d -f assets && mocha",
+      "start" : "node example/classic/app",
+      "test" : "mocha"
+   },
+   "version" : "3.0.3"
 }
