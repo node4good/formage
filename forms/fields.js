@@ -589,14 +589,24 @@ var TempFileField = exports.TempFileField = BaseField.extend({
         this._super(options);
     },
     clean_value: function (req, callback) {
-
         if (req.files && req.files[this.name]) {
             var uploaded_file = req.files[this.name];
-            this.value = {
-                path:uploaded_file.path,
-                size: uploaded_file.size,
-                timestamp:Date.now()
-            };
+            if(Array.isArray(uploaded_file))
+                this.value = uploaded_file.map(function(file){
+                    return {
+                        path:file.path,
+                        size: file.size,
+                        originalFilename:file.originalFilename,
+                        timestamp:Date.now()
+                    };
+                });
+            else
+                this.value = {
+                    path:uploaded_file.path,
+                    size: uploaded_file.size,
+                    originalFilename:file.originalFilename,
+                    timestamp:Date.now()
+                };
         }
         this._super(simpleReq(req), callback);
 
