@@ -45,23 +45,24 @@ function initFieldSet(ctx) {
 
         $this.find('label').add(i).add(h2).off('click').on('click', function chevronToggle(e) {
             e.stopPropagation();
-            toggleVisibility($this.hasClass('closed'));
+            toggleVisibility();
         });
 
-        function toggleVisibility(isToOpen) {
+        function toggleVisibility() {
+            $this.is_open = !$this.hasClass('closed');
             var divs = isTopLevel ? $this.find('div') : div;
             var im = isTopLevel ? $this.find('i.icon-chevron-down, i.icon-chevron-right') : i;
-            if (isToOpen) {
-                im.removeClass('icon-chevron-right').addClass('icon-chevron-down');
-                divs.stop(1, 1).slideDown('fast');
-                $this.removeClass('closed');
-            } else {
+            if ($this.is_open) {
                 im.removeClass('icon-chevron-down').addClass('icon-chevron-right');
                 divs.stop(1, 1).slideUp('fast');
                 $this.addClass('closed');
+            } else {
+                im.removeClass('icon-chevron-right').addClass('icon-chevron-down');
+                divs.stop(1, 1).slideDown('fast');
+                $this.removeClass('closed');
             }
         }
-        toggleVisibility(!$this.hasClass('closed'));
+        toggleVisibility();
     });
 }
 

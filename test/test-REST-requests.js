@@ -3,8 +3,11 @@
 describe("REST requests", function () {
     describe("mongoose", function () {
         before(function (done) {
-            Object.keys(require.cache).forEach(function (name) { delete require.cache[name]; });
             var ctx = this;
+            _.each(require.cache, function (mod, modName) {
+                if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb'))
+                    delete require.cache[modName];
+            });
             var formage = require('../');
             var mongoose = ctx.mongoose = require("mongoose");
             var conn_str = global.CONN_STR_PREFIX + this.test.parent.title.replace(/\s/g, '');
@@ -49,16 +52,11 @@ describe("REST requests", function () {
         });
 
 
-        after(function (done) {
-            this.mongoose.connection.db.dropDatabase(function () {
-                delete this.formage;
-                this.mongoose.disconnect();
-                delete this.mongoose;
-                delete this.express;
-                delete this.app;
-                delete this.registry;
-                done();
-            }.bind(this));
+        after(function () {
+            this.mongoose.disconnect();
+            delete this.registry;
+            delete this.mongoose;
+            delete this.app;
         });
 
 
@@ -172,7 +170,7 @@ function describeCommonTests(caller) {
                     Editable: "1"
                 }
             }, mock_req_proto);
-            var mock_res = makeRes({ req: mock_req }, done);
+            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
             mock_res.render = function (view, options) {
                 view.should.equal("document.jade");
@@ -438,7 +436,7 @@ function describeCommonTests(caller) {
     });
 
 
-    describe.skip("Admin Users" + caller, function () {
+    describe("Admin Users" + caller, function () {
         it("Model view" + caller, function (done) {
             var mock_req = _.defaults({
                 url: "/model/formage_users_/",

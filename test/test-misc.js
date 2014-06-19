@@ -1,36 +1,36 @@
 'use strict';
-/*global mock_req_proto,mock_res_proto,makeRes,should,describe,before,after,it,expect,_,mockFind,makeMockFindById */
+/*global mock_req_proto,mock_res_proto,makeRes,renderedEmbeded,should,describe,before,after,it,expect,_,mockFind */
 describe("misc requests on mongoose", function () {
     before(function (done) {
-        Object.keys(require.cache).forEach(function (name) { delete require.cache[name]; });
         var ctx = this;
+        _.each(require.cache, function (mod, modName) {
+            if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb'))
+                delete require.cache[modName];
+        });
         var formage = require('../');
         var mongoose = ctx.mongoose = require("mongoose");
         var conn_str = global.CONN_STR_PREFIX + this.test.parent.title.replace(/\s/g, '');
         mongoose.connect(conn_str, function (err) {
             if (err) return done(err);
             return mongoose.connection.db.dropDatabase(function (err) {
+                var AppliesTo = mongoose.model('AppliesTo', new mongoose.Schema({
+                    Title: {type: String, limit: 100, required: true},
+                    Identifier: {type: String, limit: 100},
+                    Editable: {type: Number}
+                }));
+                var tests = require('../example/classic/models/tests');
+                var pages = require('../example/classic/models/pages');
+                var config = require('../example/classic/models/config');
+                var gallery = require('../example/classic/models/gallery');
+                var embed = require('../example/classic/models/embed');
+                var bugs = require('../example/classic/models/bugs');
                 var express = require('express');
                 var app = express();
-                var models = {
-                    AppliesTo: new mongoose.Schema({
-                        Title: {type: String, limit: 100, required: true},
-                        Identifier: {type: String, limit: 100},
-                        Editable: {type: Number}
-                    }),
-                    pages: require('../example/classic/models/pages'),
-                    Tests: require('../example/classic/models/tests'),
-                    config: require('../example/classic/models/config'),
-                    gallery: require('../example/classic/models/gallery'),
-                    embed: require('../example/classic/models/embed'),
-                    bugs: require('../example/classic/models/bugs')
-                };
-                var options = {
+                ctx.registry = formage.init(app, express, {pages: pages, AppliesTo: AppliesTo, Tests: tests, config: config, gallery: gallery, embed:embed, bugs:bugs}, {
                     title: 'Formage Example',
                     default_section: 'Main',
                     admin_users_gui: true
-                };
-                ctx.registry = formage.init(app, express, models, options);
+                });
                 ctx.app = mock_req_proto.app = app.admin_app;
                 ctx.startTheTest = function startTheTest(req, res, argOut) {
                     var done = ctx._runnable.callback;
@@ -51,20 +51,15 @@ describe("misc requests on mongoose", function () {
     });
 
 
-    after(function (done) {
-        this.mongoose.connection.db.dropDatabase(function () {
-            delete this.formage;
-            this.mongoose.disconnect();
-            delete this.mongoose;
-            delete this.express;
-            delete this.app;
-            delete this.registry;
-            done();
-        }.bind(this));
+    after(function () {
+        this.mongoose.disconnect();
+        delete this.registry;
+        delete this.mongoose;
+        delete this.app;
     });
 
 
-    it.skip("post to `tests`", function (done) {
+    it("post to `tests`", function (done) {
         var ctx = this;
         var mock_req = _.defaults({
             url: "/model/Tests/document/new",
@@ -181,7 +176,7 @@ describe("misc requests on mongoose", function () {
     });
 
 
-    it.skip("post to `embed`", function (done) {
+    it("post to `embed`", function (done) {
         var ctx = this;
         var mock_req = _.defaults({
             url: "/model/embed/document/new",
@@ -224,7 +219,7 @@ describe("misc requests on mongoose", function () {
             mock_res.render = function (view, locals) {
                 // fragile
                 var actual = String(locals.form);
-                var expected = global.renderedEmbeded;
+                var expected = renderedEmbeded;
                 expect(actual).to.equal(expected);
 
                 this.req.app.render(view, locals, function (err, doc) {
@@ -244,11 +239,11 @@ describe("misc requests on mongoose", function () {
     });
 
 
-    it.skip("get `embed`", function (done) {
+    it("get `embed`", function (done) {
         var ctx = this;
         var Embed = ctx.registry.models['embed'].model;
         var old_embed_findbyid = Embed.findById;
-        Embed.findById = makeMockFindById(new Embed(embedMockObj));
+        Embed.findById = function (_, cb) { cb(null, new Embed(embedMockObj)); };
         var Pages = ctx.registry.models['pages'].model;
         var old_pages_find = Pages.find;
         Pages.find = mockFind([new Pages({_id: '529321b430de15681b00000b', title:'gaga'})]);
@@ -267,7 +262,7 @@ describe("misc requests on mongoose", function () {
 
             // fragile
             var actual = String(locals.form);
-            var expected = global.renderedEmbeded;
+            var expected = renderedEmbeded;
             expect(actual).to.equal(expected);
 
             this.req.app.render(view, locals, function (err, doc) {
@@ -283,11 +278,11 @@ describe("misc requests on mongoose", function () {
     });
 
 
-    it.skip("update `embed`", function (done) {
+    it("update `embed`", function (done) {
         var ctx = this;
         var Embed = ctx.registry.models['embed'].model;
         var old_embed_findbyid = Embed.findById;
-        Embed.findById = makeMockFindById(new Embed(embedMockObj));
+        Embed.findById = function (_, cb) { cb(null, new Embed(embedMockObj)); };
         var Pages = ctx.registry.models['pages'].model;
         var old_pages_find = Pages.find;
         Pages.find = mockFind([new Pages({_id: '529321b430de15681b00000b', title:'gaga'})]);
@@ -298,7 +293,7 @@ describe("misc requests on mongoose", function () {
             method: "POST",
             headers: {},
             body: {
-                'embeded.list1_li0_name2': 'a',
+//                'embeded.list1_li0_name2': 'a',
                 'embeded.list1_li1_name2': 'updated'
             }
         }, mock_req_proto);
@@ -318,7 +313,7 @@ describe("misc requests on mongoose", function () {
     });
 
 
-    it.skip("test document - post mime form with picture", function (done) {
+    it("test document - post mime form with picture", function (done) {
         var gallery_post = require('fs').readFileSync('test/fixtures/gallery-post.mime', 'binary');
         var mock_req = _.defaults({
             url: "/json/model/gallery/document/new",
@@ -336,8 +331,7 @@ describe("misc requests on mongoose", function () {
         var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
         var uploadSentinal;
-        var mock_cloudinary = require.cache[require.resolve('cloudinary')] = {uploader:{}};
-        mock_cloudinary.uploader.upload = function (path, callback) {
+        require('cloudinary').uploader.upload = function (path, callback) {
             uploadSentinal = true;
             expect(path).to.match(/\.png$/);
             callback({});
@@ -354,7 +348,7 @@ describe("misc requests on mongoose", function () {
     });
 
 
-    it.skip("test document - post mime form with picture array", function (done) {
+    it("test document - post mime form with picture array", function (done) {
         var gallery_post = require('fs').readFileSync('test/fixtures/gallery-post-picture-array.mime', 'binary');
         var mock_req = _.defaults({
             url: "/json/model/gallery/document/new",
@@ -389,7 +383,7 @@ describe("misc requests on mongoose", function () {
     });
 
 
-    it.skip("post mime form with picture to embed", function (done) {
+    it("post mime form with picture to embed", function (done) {
         var gallery_post = require('fs').readFileSync('test/fixtures/embed-post.mime', 'binary');
         var mock_req = _.defaults({
             url: "/json/model/embed/document/new",
