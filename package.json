@@ -1,7 +1,7 @@
 {
   "name": "formage",
   "description": "Admin GUI addon for mongoose, jugglingdb, or just as a form generator",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "main": "lib/index.js",
   "author": {
     "name": "Refael Ackermann",
@@ -54,7 +54,7 @@
   },
   "peerDependencies": {
     "express": "< 4",
-	"mongoose": ">= 3.8.0"
+    "mongoose": ">= 3.8.0"
   },
   "keywords": [
     "admin",
@@ -92,31 +92,31 @@
       "url": "https://raw.github.com/Empeeric/formage/master/LICENSE"
     }
   ],
-    "jshintConfig": {
-        "esnext": true,
-        "expr": true,
-        "forin": true,
-        "freeze": true,
-        "globals": {
-            "after": true,
-            "before": true,
-            "describe": true,
-            "expect": true,
-            "it": true,
-            "Promise": true
-        },
-        "immed": true,
-        "maxdepth": 4,
-        "newcap": true,
-        "noarg": true,
-        "node": true,
-        "noempty": true,
-        "nonew": true,
-        "scripturl": true,
-        "sub": true,
-        "supernew": true,
-        "trailing": true,
-        "undef": true,
-        "unused": true
-    }
+  "jshintConfig": {
+    "esnext": true,
+    "expr": true,
+    "forin": true,
+    "freeze": true,
+    "globals": {
+      "after": true,
+      "before": true,
+      "describe": true,
+      "expect": true,
+      "it": true,
+      "Promise": true
+    },
+    "immed": true,
+    "maxdepth": 4,
+    "newcap": true,
+    "noarg": true,
+    "node": true,
+    "noempty": true,
+    "nonew": true,
+    "scripturl": true,
+    "sub": true,
+    "supernew": true,
+    "trailing": true,
+    "undef": true,
+    "unused": true
+  }
 }
