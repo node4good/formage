@@ -1,5 +1,5 @@
 "use strict";
-/*global mock_req_proto,mock_res_proto,should,describe,before,after,it,expect,_ */
+/*global makeRes,mock_req_proto,mock_res_proto,should,describe,before,after,it,expect,_ */
 describe("edge cases on mongoose", function () {
     before(function (done) {
         require.cache = {};
@@ -88,11 +88,11 @@ describe("edge cases on mongoose", function () {
                 }
             }, mock_req_proto);
 
-            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+            var mock_res = makeRes(mock_req, done);
 
             mock_res.redirect = function (path) {
                 should.not.exist(mock_res._status);
-                "admin".should.equal(mock_req.session._FormageUser.username);
+                expect(mock_req.session).to.have.property('_FormageUser');
                 module._FormageUser = mock_req.session._FormageUser;
                 path.should.equal(mock_req.app.route);
                 done();

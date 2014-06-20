@@ -49,7 +49,12 @@ global._ = _;
 global.should = chai.should();
 global.expect = chai.expect;
 global.mock_res_proto = mock_res_proto;
-global.makeRes = function makeRes(req, done) { return _.defaults({ req: req, send: function (status, err) {done(err);} }, mock_res_proto); };
+global.makeRes = function makeRes(req, done) {
+    return _.defaults({
+        req: req,
+        send: function (status, err) {done(err);}
+    }, mock_res_proto);
+};
 
 global.test_post_body_multipart = fs.readFileSync('test/fixtures/test-post-body.mime', 'utf-8');
 global.renderedEmbeded = fs.readFileSync('test/fixtures/rendered-embed-form.txt', 'utf-8');
