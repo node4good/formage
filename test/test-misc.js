@@ -176,7 +176,7 @@ describe("misc requests on mongoose", function () {
     });
 
 
-    it("post to `embed`", function (done) {
+    it.skip("post to `embed`", function (done) {
         var ctx = this;
         var mock_req = _.defaults({
             url: "/model/embed/document/new",
@@ -200,9 +200,9 @@ describe("misc requests on mongoose", function () {
 
             var instance = this._debug_form.instance;
             var test_doc_id = instance.id;
-//            expect(instance.embeded.list1[0].embeded2.list3[0].embeded4.nested_string_req5).to.equal('5sr');
-//            expect(instance.embeded.list1[0].embeded2.list3[0].embeded4.list5[0]).to.equal(5);
-//            expect(instance.embeded.list1[0].embeded2.list3[0].embeded4.list5[1]).to.equal(6);
+            expect(instance.embeded.list1[0].embeded2.list3[0].embeded4.nested_string_req5).to.equal('5sr');
+            expect(instance.embeded.list1[0].embeded2.list3[0].embeded4.list5[0]).to.equal(5);
+            expect(instance.embeded.list1[0].embeded2.list3[0].embeded4.list5[1]).to.equal(6);
 
             var test = this;
             var Pages = ctx.registry.models['pages'].model;
@@ -239,7 +239,7 @@ describe("misc requests on mongoose", function () {
     });
 
 
-    it("get `embed`", function (done) {
+    it.skip("get `embed`", function (done) {
         var ctx = this;
         var Embed = ctx.registry.models['embed'].model;
         var old_embed_findbyid = Embed.findById;
@@ -383,7 +383,7 @@ describe("misc requests on mongoose", function () {
     });
 
 
-    it("post mime form with picture to embed", function (done) {
+    it.skip("post mime form with picture to embed", function (done) {
         var gallery_post = require('fs').readFileSync('test/fixtures/embed-post.mime', 'binary');
         var mock_req = _.defaults({
             url: "/json/model/embed/document/new",
@@ -584,7 +584,7 @@ describe("misc requests on mongoose", function () {
             ctx.app.handle(mock_req, mock_res);
         }
 
-        it.only("should get updated", function (done) {
+        it("should get updated", function (done) {
             ctx = this;
             step1(done);
         });
