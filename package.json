@@ -36,7 +36,7 @@
     "mpromise": "^0.5.4",
     "node-ckeditor": "",
     "nodestrum": "",
-    "socket.io": "< 1.0.0"
+    "socket.io": "^1.0.0"
   },
   "devDependencies": {
     "bower": "",
