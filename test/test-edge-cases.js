@@ -113,7 +113,7 @@ describe("edge cases on mongoose", function () {
                 }
             }, mock_req_proto);
 
-            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+            var mock_res = makeRes(mock_req, done);
 
             mock_res.redirect = function (path) {
                 should.not.exist(mock_res._status);
@@ -136,7 +136,7 @@ describe("edge cases on mongoose", function () {
             mock_req.session._FormageUser = module._FormageUser;
             delete module._FormageUser;
 
-            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+            var mock_res = makeRes(mock_req, done);
 
             mock_res.render = function (view, options) {
                 view.should.equal("models.jade");
@@ -160,7 +160,7 @@ describe("edge cases on mongoose", function () {
             delete mock_req.admin_user;
             delete mock_req.session._FormageUser;
 
-            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+            var mock_res = makeRes(mock_req, done);
 
             mock_res.redirect = function (path) {
                 should.not.exist(mock_res._status);
@@ -181,7 +181,7 @@ describe("edge cases on mongoose", function () {
                 method: "get"
             }, mock_req_proto);
 
-            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+            var mock_res = makeRes(mock_req, done);
 
             mock_res.redirect = function (path) {
                 should.not.exist(mock_res._status);
@@ -191,11 +191,6 @@ describe("edge cases on mongoose", function () {
             }.bind(this);
 
             this.app.admin_app.handle(mock_req, mock_res);
-        });
-
-
-        it("ensureExists", function (done) {
-            this.registry.adapter.UsersModel.ensureExists("admin", "admin", done);
         });
     });
 });
