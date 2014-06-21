@@ -1,5 +1,5 @@
 "use strict";
-/*global makeRes,mock_req_proto,mock_res_proto,should,describe,before,after,it,expect,_ */
+/*global makeRes,mock_req_proto,should,describe,before,after,it,expect,_ */
 describe("edge cases on mongoose", function () {
     before(function (done) {
         require.cache = {};
@@ -62,7 +62,7 @@ describe("edge cases on mongoose", function () {
                 method: "GET"
             }, mock_req_proto);
 
-            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+            var mock_res = makeRes(mock_req, done);
 
             mock_res.render = function (view, options) {
                 view.should.equal("login.jade");
