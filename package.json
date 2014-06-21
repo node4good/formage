@@ -81,7 +81,8 @@
     "cover": "istanbul cover ./node_modules/mocha/bin/_mocha -x generated/**",
     "postpublish": "git push --follow-tags",
     "setassets": "node utils/CompileTempletes.js && bower i && git clean -X -d -f assets",
-    "mypublish": "npm run setassets && npm shr && mocha && npm version patch && npm publish"
+    "prepublish": "npm run setassets && npm test",
+    "mypublish": "npm shr && npm version patch && npm publish"
   },
   "directories": {
     "example": "./example"
