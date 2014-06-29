@@ -176,7 +176,7 @@ describe("misc requests on mongoose", function () {
     });
 
 
-    it.only("post to `embed`", function (done) {
+    it.skip("post to `embed`", function (done) {
         var ctx = this;
         var mock_req = _.defaults({
             url: "/model/embed/document/new",
