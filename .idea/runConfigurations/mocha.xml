@@ -1,13 +1,14 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="mocha" type="mocha-javascript-test-runner" factoryName="Mocha" singleton="true">
-    <node-options />
+    <node-options>--prof</node-options>
     <working-directory>$PROJECT_DIR$</working-directory>
     <pass-parent-env>true</pass-parent-env>
     <envs>
       <env name="CLOUDINARY_URL" value="cloudinary://585968645961973:QKIr5QDRS3mp9F9QYxa3DC7-Omg@ho0xbnxzd" />
+      <env name="DEBUG" value="formage" />
     </envs>
     <ui>BDD</ui>
-    <extra-mocha-options>--require asynctrace</extra-mocha-options>
+    <extra-mocha-options>--require asynctrace -C</extra-mocha-options>
     <test-directory>$PROJECT_DIR$/test</test-directory>
     <recursive>false</recursive>
     <RunnerSettings RunnerId="MochaDebugRunner" />
