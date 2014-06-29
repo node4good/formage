@@ -4,6 +4,7 @@ dump/
 node_modules/
 coverage/
 .data/
+.tmp/
 
 assets/**/*.md
 assets/**/*.txt

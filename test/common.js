@@ -3,11 +3,11 @@ require('nodestrum');
 Error.stackTraceLimit = 100;
 var Path = require('path');
 global.MONGOOSE_DRIVER_PATH = Path.dirname(require.resolve('grist/driver'));
-global.CONN_STR_PREFIX = 'grist://formage-test-data';
+global.CONN_STR_PREFIX = 'grist://.tmp/formage-test-data---';
 
 var _ = require('lodash');
 var chai = require('chai');
-var Promise = require('mpromise');
+var MPromise = require('mpromise');
 var fs = require('fs');
 
 process.env.FORMAGE_DISABLE_DOMAINS = true;
@@ -67,7 +67,7 @@ global.mockFind = function mockFindFactory(arr) {
             limit: function mockLimit() { return this; },
             sort: function mockLimit() { return this; },
             exec: function mockExec(cb) {
-                var p = new Promise(cb);
+                var p = new MPromise(cb);
                 p.fulfill(arr);
                 return p;
             }
