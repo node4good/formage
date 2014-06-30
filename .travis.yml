@@ -8,7 +8,7 @@ deploy:
   provider: npm
   email: refael@empeeric.com
   api_key:
-    secure: W4ebbKSofiCVLQu3ESR+zv8+OCFaIMVRCfDDyWCOauebbTti/K3fuX+XgI9+OrddudehbZPaB1wuPHD1qRcCX2BgldVyij+Hs6JaKgd89s72I9t4WwTp8WWvWLMlx3jfF1WzoAvvSA81E6YO9xB2r/cMxZkNET3beRt/3xkgKNY=
+    secure: NXRNsBH0gd5IsuXz6IG1HeFnd4wVewGU9ORu6PPiWdzDSYSsWDyFZtR6EYqcQK6PBC8AIFgYTosQVNW7EaLzCBBtQ5L6jFpdSuLc8Wy9kWF5SmsFCWVLaezRc5NDHx7p5PNph4MJxuTY0nPifE5+MHsBa5KLG6BpD1xs3/+hRn0=
   on:
     tags: true
     repo: Empeeric/formage
