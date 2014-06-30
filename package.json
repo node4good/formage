@@ -34,6 +34,7 @@
     "grist": "",
     "lodash": "",
     "lodash-contrib": "",
+    "lru-cache": "",
     "mpromise": "^0.5.4",
     "node-ckeditor": "",
     "nodestrum": "",
