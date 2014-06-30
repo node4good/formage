@@ -1,8 +1,14 @@
 language: node_js
-
 node_js:
-  - "0.11"
-  - "0.10"
-
+- '0.11'
+- '0.10'
 notifications:
   slack: empeeric:Hsm2xE5SNniMiUAEgM0Ngcnb
+deploy:
+  provider: npm
+  email: refael@empeeric.com
+  api_key:
+    secure: SdPUQJmyES1sQOCWwtbg0QQ7HDvqs8HZ7te7i+eI+ky0Jbkmlr/tsqmoRvGTg/M2DHs9JhEgfSZjLi83ccMFzrLGVNCtOleZjTZfwdQYx18GDl8Yqo7ooUqnEYod4qlA+8vYIF/ahjnFwvCXCzEsoxJo/j0UsoSuPrrT2v6PZyM=
+  on:
+    tags: true
+    repo: Empeeric/formage
