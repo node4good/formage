@@ -1,12 +1,9 @@
 'use strict';
-/*global makeRes,mock_req_proto,mock_res_proto,makeRes,renderedEmbeded,should,describe,before,after,it,expect,_,mockFind */
+/*global makeRes,mock_req_proto,mock_res_proto,makeRes,renderedEmbeded,should,describe,before,after,it,expect,_,mockFind,sanitizeRequireCache */
 describe("misc requests on mongoose", function () {
     before(function (done) {
+        sanitizeRequireCache();
         var ctx = this;
-        _.each(require.cache, function (mod, modName) {
-            if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb'))
-                delete require.cache[modName];
-        });
         var formage = require('../');
         var mongoose = ctx.mongoose = require("mongoose");
         var conn_str = global.CONN_STR_PREFIX + this.test.parent.title.replace(/\s/g, '_');
@@ -56,6 +53,7 @@ describe("misc requests on mongoose", function () {
         delete this.registry;
         delete this.mongoose;
         delete this.app;
+        sanitizeRequireCache();
     });
 
 

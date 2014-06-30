@@ -1,8 +1,8 @@
 "use strict";
-/*global makeRes,mock_req_proto,should,describe,before,after,it,expect,_ */
+/*global makeRes,mock_req_proto,should,describe,before,after,it,expect,_,sanitizeRequireCache */
 describe("edge cases on mongoose", function () {
     before(function (done) {
-        require.cache = {};
+        sanitizeRequireCache();
         this.formage = require('../');
         var mongoose = this.mongoose = require("mongoose");
         this.express = require('express');
@@ -20,6 +20,7 @@ describe("edge cases on mongoose", function () {
         delete this.express;
         delete this.app;
         delete this.registry;
+        sanitizeRequireCache();
     });
 
 

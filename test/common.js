@@ -74,3 +74,11 @@ global.mockFind = function mockFindFactory(arr) {
         };
     };
 };
+
+
+global.sanitizeRequireCache = function sanitizeRequireCache() {
+    _.each(require.cache, function (mod, modName) {
+        if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb') || ~modName.indexOf('grist'))
+            delete require.cache[modName];
+    });
+};
