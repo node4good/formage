@@ -27,10 +27,10 @@ formage.serve_static(app, express);
 app.configure('development', function() {
     app.locals('pretty', true);
     app.use(express.logger('dev'));
+    app.use(app.router);
     app.use(express.errorHandler());
 });
 
-app.use(app.router);
 
 
 //mongoose.set('debug', true);
@@ -47,6 +47,7 @@ app.get('/', function(req, res) {
 });
 
 var server = app.listen(PORT, function () {
+    server.setTimeout(1000);
     console.log('Express server listening on port ', server.address().port);
 });
 

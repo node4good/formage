@@ -29,6 +29,7 @@
     "body-parser": "latest",
     "cloudinary": "",
     "connect-multiparty": "",
+    "cookie-session": "",
     "debug": "",
     "formage-mongoose-types": "",
     "grist": "",
