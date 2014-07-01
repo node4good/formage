@@ -115,7 +115,7 @@ describe("edge cases on mongoose", function () {
 
                 mock_res.redirect = function (path) {
                     should.not.exist(mock_res._status);
-                    expect(mock_req.session).to.have.property('_FormageUser');
+                    expect(mock_req.session).to.have.property('formageUser');
                     module.formageUser = mock_req.session.formageUser;
                     path.should.equal(mock_req.app.route);
                     done();
@@ -166,7 +166,7 @@ describe("edge cases on mongoose", function () {
 
             mock_res.redirect = function (path) {
                 should.not.exist(mock_res._status);
-                expect(mock_req.session['_loginReferrer']).to.equal("/");
+                expect(mock_req.session['formageLoginReferrer']).to.equal("/");
                 path.should.equal(mock_req.app.route + '/login');
                 done();
             }.bind(this);
@@ -187,7 +187,7 @@ describe("edge cases on mongoose", function () {
 
             mock_res.redirect = function (path) {
                 should.not.exist(mock_res._status);
-                should.not.exist(mock_req.session['_loginReferrer']);
+                should.not.exist(mock_req.session['formageLoginReferrer']);
                 path.should.equal("/");
                 done();
             }.bind(this);
