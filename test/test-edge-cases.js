@@ -26,25 +26,15 @@ describe("edge cases on mongoose", function () {
 
     describe("no init options no models", function () {
         before(function (done) {
-            require.cache = {};
-            this.formage = require('../');
-            var mongoose = this.mongoose = require("mongoose");
-            this.express = require('express');
-            var conn_str = global.CONN_STR_PREFIX + this.test.parent.title.replace(/\s/g, '');
-            mongoose.connect(conn_str, function (err) {
-                if (err) return done(err);
-                return mongoose.connection.db.dropDatabase(done);
-            });
             this.app = this.express();
+            this.app.use(this.express.cookieParser('magical secret admin'));
+            this.app.use(this.express.cookieSession({cookie: { maxAge: 1000 * 60 * 60 * 24 }}));
             this.registry = this.formage.init(this.app, this.express);
+            done();
         });
 
 
         after(function () {
-            delete this.formage;
-            this.mongoose.disconnect();
-            delete this.mongoose;
-            delete this.express;
             delete this.app;
             delete this.registry;
         });
@@ -74,7 +64,6 @@ describe("edge cases on mongoose", function () {
 
             this.app.admin_app.handle(mock_req, mock_res, done);
         });
-
         it("can't log in with wrong creds", function (done) {
             var mock_req = _.defaults({
                 url: "/login",
