@@ -1,12 +1,12 @@
 "use strict";
-/*global mock_req_proto,mock_res_proto,should,describe,before,after,it,expect,_ */
+/*global makeRes,mock_req_proto,should,describe,before,after,it,expect,_,sanitizeRequireCache */
 describe("edge cases on mongoose", function () {
     before(function (done) {
-        require.cache = {};
+        sanitizeRequireCache();
         this.formage = require('../');
         var mongoose = this.mongoose = require("mongoose");
         this.express = require('express');
-        var conn_str = global.CONN_STR_PREFIX + this.test.parent.title.replace(/\s/g, '');
+        var conn_str = global.CONN_STR_PREFIX + this.test.parent.title.replace(/\s/g, '_');
         mongoose.connect(conn_str, function (err) {
             if (err) return done(err);
             return mongoose.connection.db.dropDatabase(done);
@@ -20,32 +20,21 @@ describe("edge cases on mongoose", function () {
         delete this.express;
         delete this.app;
         delete this.registry;
+        sanitizeRequireCache();
     });
 
 
     describe("no init options no models", function () {
         before(function (done) {
-            require.cache = {};
-            this.formage = require('../');
-            var mongoose = this.mongoose = require("mongoose");
-            this.express = require('express');
-            var conn_str = global.CONN_STR_PREFIX + this.test.parent.title.replace(/\s/g, '');
-            mongoose.connect(conn_str, function (err) {
-                if (err) return done(err);
-                return mongoose.connection.db.dropDatabase(done);
-            });
             this.app = this.express();
             this.app.use(this.express.cookieParser('magical secret admin'));
             this.app.use(this.express.cookieSession({cookie: { maxAge: 1000 * 60 * 60 * 24 }}));
             this.registry = this.formage.init(this.app, this.express);
+            done();
         });
 
 
         after(function () {
-            delete this.formage;
-            this.mongoose.disconnect();
-            delete this.mongoose;
-            delete this.express;
             delete this.app;
             delete this.registry;
         });
@@ -62,7 +51,7 @@ describe("edge cases on mongoose", function () {
                 method: "GET"
             }, mock_req_proto);
 
-            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+            var mock_res = makeRes(mock_req, done);
 
             mock_res.render = function (view, options) {
                 view.should.equal("login.jade");
@@ -76,32 +65,6 @@ describe("edge cases on mongoose", function () {
             this.app.admin_app.handle(mock_req, mock_res);
         });
 
-
-        it("can log in", function (done) {
-            var mock_req = _.defaults({
-                url: "/login",
-                method: "POST",
-                session: {},
-                body: {
-                    username: "admin",
-                    password: "admin"
-                }
-            }, mock_req_proto);
-
-            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
-
-            mock_res.redirect = function (path) {
-                should.not.exist(mock_res._status);
-                "admin".should.equal(mock_req.session._FormageUser.username);
-                module._FormageUser = mock_req.session._FormageUser;
-                path.should.equal(mock_req.app.route);
-                done();
-            }.bind(this);
-
-            this.app.admin_app.handle(mock_req, mock_res);
-        });
-
-
         it("can't log in with wrong creds", function (done) {
             var mock_req = _.defaults({
                 url: "/login",
@@ -113,7 +76,7 @@ describe("edge cases on mongoose", function () {
                 }
             }, mock_req_proto);
 
-            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+            var mock_res = makeRes(mock_req, done);
 
             mock_res.redirect = function (path) {
                 should.not.exist(mock_res._status);
@@ -124,30 +87,57 @@ describe("edge cases on mongoose", function () {
             this.app.admin_app.handle(mock_req, mock_res);
         });
 
+        describe("login and re-enter", function () {
+            it("can log in", function (done) {
+                var mock_req = _.defaults({
+                    url: "/login",
+                    method: "POST",
+                    session: {},
+                    body: {
+                        username: "admin",
+                        password: "admin"
+                    }
+                }, mock_req_proto);
 
-        it("can reenter after login", function (done) {
-            if (!module._FormageUser) done("didn't get present");
-            var mock_req = _.defaults({
-                url: "/",
-                session: {},
-                method: "get"
-            }, mock_req_proto);
-            delete mock_req.admin_user;
-            mock_req.session._FormageUser = module._FormageUser;
-            delete module._FormageUser;
+                var mock_res = makeRes(mock_req, done);
 
-            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+                mock_res.redirect = function (path) {
+                    should.not.exist(mock_res._status);
+                    expect(mock_req.session).to.have.property('_FormageUser');
+                    module._FormageUser = mock_req.session._FormageUser;
+                    path.should.equal(mock_req.app.route);
+                    done();
+                }.bind(this);
 
-            mock_res.render = function (view, options) {
-                view.should.equal("models.jade");
-                should.exist(options);
-                this.req.app.render(view, options, function (err, doc) {
-                    should.exist(doc);
-                    done(err);
-                });
-            };
+                this.app.admin_app.handle(mock_req, mock_res);
+            });
 
-            this.app.admin_app.handle(mock_req, mock_res);
+
+            it("can reenter after login", function (done) {
+                this.registry.registerModel(require('../example/classic/models/tests'), 'tests');
+                if (!module._FormageUser) done("didn't get present");
+                var mock_req = _.defaults({
+                    url: "/",
+                    session: {},
+                    method: "get"
+                }, mock_req_proto);
+                delete mock_req.admin_user;
+                mock_req.session._FormageUser = module._FormageUser;
+                delete module._FormageUser;
+
+                var mock_res = makeRes(mock_req, done);
+
+                mock_res.render = function (view, options) {
+                    view.should.equal("models.jade");
+                    should.exist(options);
+                    this.req.app.render(view, options, function (err, doc) {
+                        should.exist(doc);
+                        done(err);
+                    });
+                };
+
+                this.app.admin_app.handle(mock_req, mock_res);
+            });
         });
 
 
@@ -160,7 +150,7 @@ describe("edge cases on mongoose", function () {
             delete mock_req.admin_user;
             delete mock_req.session._FormageUser;
 
-            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+            var mock_res = makeRes(mock_req, done);
 
             mock_res.redirect = function (path) {
                 should.not.exist(mock_res._status);
@@ -177,25 +167,20 @@ describe("edge cases on mongoose", function () {
             var mock_req = _.defaults({
                 url: "/logout",
                 headers: {},
-                session: {_FormageUser: {}},
+                session: {formageUser: {}},
                 method: "get"
             }, mock_req_proto);
 
-            var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
+            var mock_res = makeRes(mock_req, done);
 
             mock_res.redirect = function (path) {
                 should.not.exist(mock_res._status);
-                should.not.exist(mock_req.session['_loginReferrer']);
+                should.not.exist(mock_req.session['formageLoginReferrer']);
                 path.should.equal("/");
                 done();
             }.bind(this);
 
             this.app.admin_app.handle(mock_req, mock_res);
-        });
-
-
-        it("ensureExists", function (done) {
-            this.registry.adapter.UsersModel.ensureExists("admin", "admin", done);
         });
     });
 });
