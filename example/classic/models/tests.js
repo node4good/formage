@@ -15,7 +15,7 @@ var schema = module.exports = new Schema({
     date: { type: Date },
     datetime: { type: Date, widget:fWidgets.DateTimeWidget },
     time: { type: SchemaTypes.Time },
-    enum: { type: String, enum: ['1', '2', '3'] },
+    'enum': { type: String, 'enum': ['1', '2', '3'] },
     rich_text: { type: SchemaTypes.Html },
     text: { type: SchemaTypes.Text },
     image: { type: SchemaTypes.Picture },

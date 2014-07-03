@@ -17,8 +17,6 @@ var schema = new mongoose.Schema({
                         nested_string5: { type: String },
                         nested_string_req5: { type: String, required: true },
                         list5: [Number],
-                        pic: SchemaTypes.Picture,
-                        pics: [SchemaTypes.Picture],
                         refs: new Array({ type: SchemaTypes.ObjectId, ref: 'pages' })
                     })
                 })

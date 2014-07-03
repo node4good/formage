@@ -93,7 +93,7 @@ but [custom fields](https://github.com/Empeeric/formage/wiki/Custom-Fields) can 
 - Text (`<textarea>`)
 - HTML ([ckeditor](http://ckeditor.com/))
 - FilePicker ([File Picker](https://www.inkfilepicker.com/))
-- Picture ([Cloudinary](http://cloudinary.com/))
+- Picture ([File Picker](https://www.inkfilepicker.com/))
 - GeoPoint ([Google Maps](https://maps.google.com/))
 
 You can pass options to the underlying fields and widgets:

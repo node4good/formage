@@ -198,6 +198,8 @@ describe("misc requests on mongoose", function () {
 
             var instance = this._debug_form.instance;
             var test_doc_id = instance.id;
+            console.log();
+            console.log(JSON.stringify(instance, null, '\t'));
             expect(instance.embeded.list1[0].embeded2.list3[0].embeded4.nested_string_req5).to.equal('5sr');
             expect(instance.embeded.list1[0].embeded2.list3[0].embeded4.list5[0]).to.equal(5);
             expect(instance.embeded.list1[0].embeded2.list3[0].embeded4.list5[1]).to.equal(6);
@@ -311,7 +313,7 @@ describe("misc requests on mongoose", function () {
     });
 
 
-    it("test document - post mime form with picture", function (done) {
+    it.skip("test document - post mime form with picture", function (done) {
         var gallery_post = require('fs').readFileSync('test/fixtures/gallery-post.mime', 'binary');
         var mock_req = _.defaults({
             url: "/json/model/gallery/document/new",
@@ -346,7 +348,7 @@ describe("misc requests on mongoose", function () {
     });
 
 
-    it("test document - post mime form with picture array", function (done) {
+    it.skip("test document - post mime form with picture array", function (done) {
         var gallery_post = require('fs').readFileSync('test/fixtures/gallery-post-picture-array.mime', 'binary');
         var mock_req = _.defaults({
             url: "/json/model/gallery/document/new",
