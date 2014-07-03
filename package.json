@@ -75,22 +75,51 @@
   "repository": "Empeeric/formage",
   "scripts": {
     "start": "node example/classic/app",
-    "test": "mocha",
+    "test": "npm run generate && mocha",
     "lint": "jshint .",
     "cover": "istanbul cover ./node_modules/mocha/bin/_mocha -x generated/**",
-    "postpublish": "git push origin master --tags",
-    "prepublish": "node utils/CompileTempletes.js && bower i && git clean -X -d -f assets && mocha"
+    "generate": "node utils/CompileTempletes.js",
+    "setassets": "npm run generate && bower i && git clean -X -d -f assets",
+    "prepublish": "npm run generate",
+    "mypublish": "npm run setassets && npm shr && npm version patch && git push --follow-tags"
   },
   "directories": {
     "example": "./example"
   },
   "engines": {
-    "node": ">= 0.10.0"
+    "node": "^0.10.0"
   },
   "licenses": [
     {
       "type": "MIT",
       "url": "https://raw.github.com/Empeeric/formage/master/LICENSE"
     }
-  ]
+  ],
+  "jshintConfig": {
+    "esnext": true,
+    "expr": true,
+    "forin": true,
+    "freeze": true,
+    "globals": {
+      "after": true,
+      "before": true,
+      "describe": true,
+      "expect": true,
+      "it": true,
+      "Promise": false
+    },
+    "immed": true,
+    "maxdepth": 4,
+    "newcap": true,
+    "noarg": true,
+    "node": true,
+    "noempty": true,
+    "nonew": true,
+    "scripturl": true,
+    "sub": true,
+    "supernew": true,
+    "trailing": true,
+    "undef": true,
+    "unused": true
+  }
 }
