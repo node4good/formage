@@ -14,6 +14,8 @@ var btn = {
                     $(this).remove();
                 });
                 updateListfield(t.closest('.nf_listfield_container'));
+                var self = $(this).closest('.nf_listfield').data('listfield');
+                self.length--;
             });
     },
     drag: function () {
@@ -68,7 +70,7 @@ function initFieldSet(ctx) {
 
 
 function updateListfield(t) {
-    var length = $('> .nf_listfield > ul > li', t).length;
+    var length = $('> .nf_listfield > ul > li', t).length - 1;
     t.find('.list_summary').text(length ? length + ' items' : 'No items');
     return length;
 }
