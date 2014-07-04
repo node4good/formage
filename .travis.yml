@@ -2,8 +2,15 @@ language: node_js
 node_js:
 - '0.11'
 - '0.10'
+
+branches:
+  only:
+    - master
+    - /^pr-.*$/
+
 notifications:
   slack: empeeric:Hsm2xE5SNniMiUAEgM0Ngcnb
+
 deploy:
   provider: npm
   email: refael@empeeric.com
