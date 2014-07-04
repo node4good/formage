@@ -1,7 +1,7 @@
 {
   "name": "formage",
   "description": "Admin GUI addon for mongoose, jugglingdb, or just as a form generator",
-  "version": "3.0.18",
+  "version": "3.0.24",
   "main": "lib/Formage.js",
   "author": {
     "name": "Refael Ackermann",
@@ -85,7 +85,7 @@
     "generate": "node utils/CompileTempletes.js",
     "setassets": "npm run generate && bower i && git clean -X -d -f assets",
     "prepublish": "npm run generate",
-    "mypublish": "npm run setassets && npm shr && npm version patch && git push --follow-tags"
+    "mypublish": "npm run setassets && npm version patch --version-with-shrinkwrap && git push --follow-tags"
   },
   "directories": {
     "example": "./example"
