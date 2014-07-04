@@ -485,7 +485,7 @@ $(function () {
     $('#deleteButton').click(function () {
         deleteDocument(function () {
             if (window.isDialog) {
-                window.parent.hideDialog({delete: true});
+                window.parent.hideDialog({'delete': true});
             } else {
                 window.location.href = window.location.href.split('/document/')[0];
             }
