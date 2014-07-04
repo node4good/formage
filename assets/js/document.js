@@ -105,7 +105,7 @@ function refLink() {
         .insertAfter($this)
         .click(function () {
             var id = $this.val() || 'new';
-            var modelName = $this.data('modelName');
+            var modelName = $this.data('modelname');
             var url = [window.root, '/model/', modelName, '/document/', id, '?_dialog=yes'].join('');
             window.showDialog($this, url);
         });
