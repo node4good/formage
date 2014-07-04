@@ -85,7 +85,7 @@
     "generate": "node utils/CompileTempletes.js",
     "setassets": "npm run generate && bower i && git clean -X -d -f assets",
     "prepublish": "npm run generate",
-    "mypublish": "npm run setassets && npm shr && npm version patch && git push --follow-tags"
+    "mypublish": "npm run setassets && npm version patch && npm shr && git commit -m shr -- npm-shrinkwrap.json && git push --follow-tags"
   },
   "directories": {
     "example": "./example"
