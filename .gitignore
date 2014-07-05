@@ -22,8 +22,3 @@ assets/**/speed
 assets/**/example*
 assets/**/bootstrap/**/*.html
 assets/**/bootstrap/**/templates
-assets/vendor/socket.io-client/lib
-assets/vendor/socket.io-client/support
-
-formage-test-data*/
-data/

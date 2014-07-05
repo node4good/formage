@@ -1,12 +1,11 @@
 {
-  "name": "formage",
-  "version": "1.0.0",
-  "dependencies": {
-    "jquery": "*",
-    "select2": "*",
-    "bootstrap-datetimepicker": "*",
-    "bootstrap": "2.3.2",
-    "bootbox": "2.5.1",
-    "socket.io-client": "~0.9.16"
-  }
+   "dependencies" : {
+      "bootbox" : "2.5.1",
+      "bootstrap" : "2.3.2",
+      "bootstrap-datetimepicker" : "*",
+      "jquery" : "*",
+      "select2" : "*"
+   },
+   "name" : "formage",
+   "version" : "1.0.1"
 }
