@@ -3,9 +3,9 @@
 [Bootstraped](http://twitter.github.com/bootstrap/) Admin GUI addon for [Mongoose](http://mongoosejs.com/), [JugglingDB](https://github.com/1602/jugglingdb), or just as a form generator.
 Originally forked from [mongoose-admin](https://github.com/marccampbell/mongoose-admin).
 
-[![Build Status](https://travis-ci.org/Empeeric/formage.png?branch=master "Build Status")](https://travis-ci.org/Empeeric/formage) 
+[![Build Status](https://travis-ci.org/TheNodeILs/formage.png?branch=master "Build Status")](https://travis-ci.org/TheNodeILs/formage) 
 
-<!-- [![NPM](https://nodei.co/npm-dl/formage.png)](https://nodei.co/npm/formage/) -->
+[![NPM](https://nodei.co/npm-dl/formage.png)](https://nodei.co/npm/formage/)
 
 ## Example Usage
 ```js
