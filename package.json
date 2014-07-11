@@ -30,6 +30,7 @@
     "connect-multiparty": "",
     "cookie-session": "",
     "debug": "",
+    "express": "4",
     "formage-mongoose-types": "",
     "grist": "",
     "lodash-contrib": "",
@@ -43,7 +44,6 @@
   "devDependencies": {
     "bower": "",
     "chai": "",
-    "express": "< 4",
     "istanbul": "",
     "jade": "0.35.x",
     "jshint": "",
