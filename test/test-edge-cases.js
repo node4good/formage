@@ -36,8 +36,6 @@ describe("edge cases on mongoose", function () {
                 return mongoose.connection.db.dropDatabase(done);
             });
             this.app = this.express();
-            this.app.use(this.express.cookieParser('magical secret admin'));
-            this.app.use(this.express.cookieSession({cookie: { maxAge: 1000 * 60 * 60 * 24 }}));
             this.registry = this.formage.init(this.app, this.express);
         });
 
@@ -74,7 +72,7 @@ describe("edge cases on mongoose", function () {
                 });
             };
 
-            this.app.admin_app.handle(mock_req, mock_res);
+            this.app.admin_app.handle(mock_req, mock_res, done);
         });
 
         it("can't log in with wrong creds", function (done) {
@@ -96,7 +94,7 @@ describe("edge cases on mongoose", function () {
                 done();
             }.bind(this);
 
-            this.app.admin_app.handle(mock_req, mock_res);
+            this.app.admin_app.handle(mock_req, mock_res, done);
         });
 
         describe("login and re-enter", function () {
@@ -104,7 +102,6 @@ describe("edge cases on mongoose", function () {
                 var mock_req = _.defaults({
                     url: "/login",
                     method: "POST",
-                    session: {},
                     body: {
                         username: "admin",
                         password: "admin"
@@ -112,30 +109,35 @@ describe("edge cases on mongoose", function () {
                 }, mock_req_proto);
 
                 var mock_res = makeRes(mock_req, done);
-
+                var test = this;
                 mock_res.redirect = function (path) {
                     should.not.exist(mock_res._status);
                     expect(mock_req.session).to.have.property('formageUser');
-                    module.formageUser = mock_req.session.formageUser;
-                    path.should.equal(mock_req.app.route);
+                    expect(path).equal(mock_req.app.mountpath || mock_req.app.route);
+                    // triger save cookie
+                    try {
+                        this.writeHead();
+                    } catch (e) {}
+                    expect( mock_res._headers).to.have.property("set-cookie");
+                    test.sessionCookie = mock_res._headers["set-cookie"].join('; ');
                     done();
-                }.bind(this);
+                };
 
-                this.app.admin_app.handle(mock_req, mock_res);
+                this.app.admin_app.handle(mock_req, mock_res, done);
             });
 
 
             it("can reenter after login", function (done) {
                 this.registry.registerModel(require('../example/classic/models/tests'), 'tests');
-                if (!module.formageUser) done("didn't get present");
+                if (!this.sessionCookie) done("didn't get present");
                 var mock_req = _.defaults({
                     url: "/",
-                    session: {},
+                    headers: {},
                     method: "get"
                 }, mock_req_proto);
                 delete mock_req.admin_user;
-                mock_req.session.formageUser = module.formageUser;
-                delete module.formageUser;
+                mock_req.headers["cookie"] = this.sessionCookie;
+                delete this.sessionCookie;
 
                 var mock_res = makeRes(mock_req, done);
 
@@ -148,7 +150,7 @@ describe("edge cases on mongoose", function () {
                     });
                 };
 
-                this.app.admin_app.handle(mock_req, mock_res);
+                this.app.admin_app.handle(mock_req, mock_res, done);
             });
         });
 
@@ -160,18 +162,17 @@ describe("edge cases on mongoose", function () {
                 method: "get"
             }, mock_req_proto);
             delete mock_req.admin_user;
-            delete mock_req.session.formageUser;
 
             var mock_res = makeRes(mock_req, done);
 
             mock_res.redirect = function (path) {
                 should.not.exist(mock_res._status);
                 expect(mock_req.session['formageLoginReferrer']).to.equal("/");
-                path.should.equal(mock_req.app.route + '/login');
+                expect(path).include('/login');
                 done();
             }.bind(this);
 
-            this.app.admin_app.handle(mock_req, mock_res);
+            this.app.admin_app.handle(mock_req, mock_res, done);
         });
 
 

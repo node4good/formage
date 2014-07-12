@@ -55,7 +55,6 @@
     "asynctrace": ""
   },
   "peerDependencies": {
-    "express": "< 4",
     "mongoose": ">= 3.8.0"
   },
   "publishConfig": {

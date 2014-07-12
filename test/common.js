@@ -52,7 +52,8 @@ global.mock_res_proto = mock_res_proto;
 global.makeRes = function makeRes(req, done) {
     return _.defaults({
         req: req,
-        send: function (status, err) {done(err);}
+        send: function (status, err) {done(err);},
+        end: function (msg) { done(msg.replace(/(<br>)|(\\n)/g, '\n')); }
     }, mock_res_proto);
 };
 
