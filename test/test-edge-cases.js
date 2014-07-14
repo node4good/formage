@@ -1,38 +1,33 @@
 "use strict";
-/*global makeRes,mock_req_proto,should,describe,before,after,it,expect,_,sanitizeRequireCache */
+/*global makeRes,mock_req_proto,should,describe,before,after,it,expect,_,sanitizeRequireCache,framework */
 describe("edge cases on mongoose", function () {
     before(function (done) {
-        sanitizeRequireCache();
+        this.mongoose = sanitizeRequireCache(this.test.parent.title, done);
         this.formage = require('../');
-        var mongoose = this.mongoose = require("mongoose");
-        this.express = require('express');
-        var conn_str = global.CONN_STR_PREFIX + this.test.parent.title.replace(/\s/g, '_');
-        mongoose.connect(conn_str, function (err) {
-            if (err) return done(err);
-            return mongoose.connection.db.dropDatabase(done);
-        });
     });
 
     after(function () {
         delete this.formage;
         this.mongoose.disconnect();
         delete this.mongoose;
-        delete this.express;
-        delete this.app;
-        delete this.registry;
         sanitizeRequireCache();
     });
 
 
     describe("no init options no models", function () {
         before(function (done) {
-            this.app = this.express();
-            this.registry = this.formage.init(this.app, this.express);
-            done();
+            this.mongoose = sanitizeRequireCache(this.test.parent.title, done);
+            this.formage = require('../');
+            this.app = framework();
+            this.registry = this.formage.init(this.app);
         });
 
 
         after(function () {
+            delete this.formage;
+            this.mongoose.disconnect();
+            delete this.mongoose;
+            delete this.express;
             delete this.app;
             delete this.registry;
         });
@@ -62,6 +57,7 @@ describe("edge cases on mongoose", function () {
 
             this.app.admin_app.handle(mock_req, mock_res, done);
         });
+
         it("can't log in with wrong creds", function (done) {
             var mock_req = _.defaults({
                 url: "/login",
@@ -98,7 +94,7 @@ describe("edge cases on mongoose", function () {
                 var mock_res = makeRes(mock_req, done);
                 var test = this;
                 mock_res.redirect = function (path) {
-                    should.not.exist(mock_res._status);
+                    expect(mock_res._status).not.exist;
                     expect(mock_req.session).to.have.property('formageUser');
                     expect(path).equal(mock_req.app.mountpath || mock_req.app.route);
                     // triger save cookie

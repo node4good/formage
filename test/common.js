@@ -9,6 +9,8 @@ var _ = require('lodash-contrib');
 var chai = require('chai');
 var MPromise = require('mpromise');
 var fs = require('fs');
+global.framework = require('express');
+
 
 process.env.FORMAGE_DISABLE_DOMAINS = true;
 process.env.MONGOOSE_DISABLE_STABILITY_WARNING = true;
@@ -77,9 +79,18 @@ global.mockFind = function mockFindFactory(arr) {
 };
 
 
-global.sanitizeRequireCache = function sanitizeRequireCache() {
+global.sanitizeRequireCache = function sanitizeRequireCache(name, done) {
     _.each(require.cache, function (mod, modName) {
         if (~modName.indexOf('formage') || ~modName.indexOf('mongoose') || ~modName.indexOf('jugglingdb') || ~modName.indexOf('grist'))
             delete require.cache[modName];
     });
+    if (name) {
+        var mongoose = require("mongoose");
+        var conn_str = global.CONN_STR_PREFIX + name.replace(/\s/g, '_');
+        mongoose.connect(conn_str, function (err) {
+            if (err) return done(err);
+            return mongoose.connection.db.dropDatabase(done);
+        });
+        return mongoose;
+    }
 };

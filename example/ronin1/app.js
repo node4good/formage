@@ -21,9 +21,6 @@ app.use(express.methodOverride());
 app.use(express.cookieParser('magical secret admin'));
 app.use(express.cookieSession({cookie: { maxAge: 1000 * 60 * 60 *  24 }}));
 
-// A nice feature so that we server the admin statics before the logger
-formage.serve_static(app, express);
-
 app.configure('development', function() {
     app.locals('pretty', true);
     app.use(express.logger('dev'));

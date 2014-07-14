@@ -21,8 +21,6 @@ app.configure('development', function() {
     app.use(nodestrum.ConnectionCloser);
 });
 
-// A nice feature so that we server the admin statics before the logger
-formage.serve_static(app, express);
 
 app.configure('development', function() {
     app.locals('pretty', true);
