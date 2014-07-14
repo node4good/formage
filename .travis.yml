@@ -14,4 +14,4 @@ deploy:
   on:
     tags: true
     node: "0.10"
-    repo: Empeeric/formage
+    repo: TheNodeILs/formage
