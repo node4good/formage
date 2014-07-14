@@ -9,7 +9,7 @@ var _ = require('lodash-contrib');
 var chai = require('chai');
 var MPromise = require('mpromise');
 var fs = require('fs');
-global.framework = require('express');
+global.framework = process.env.TEST_ON_OPINION ? require('opinion') : require('express');
 
 
 process.env.FORMAGE_DISABLE_DOMAINS = true;

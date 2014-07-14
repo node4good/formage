@@ -1,5 +1,5 @@
 'use strict';
-/*global makeRes,mock_req_proto,mock_res_proto,makeRes,renderedEmbeded,should,describe,before,after,it,expect,_,mockFind,sanitizeRequireCache */
+/*global framework,makeRes,mock_req_proto,mock_res_proto,makeRes,renderedEmbeded,should,describe,before,after,it,expect,_,mockFind,sanitizeRequireCache */
 describe("misc requests on mongoose", function () {
     before(function (done) {
         sanitizeRequireCache();
@@ -21,9 +21,8 @@ describe("misc requests on mongoose", function () {
                 var gallery = require('../example/classic/models/gallery');
                 var embed = require('../example/classic/models/embed');
                 var bugs = require('../example/classic/models/bugs');
-                var express = require('express');
-                var app = express();
-                ctx.registry = formage.init(app, express, {pages: pages, AppliesTo: AppliesTo, Tests: tests, config: config, gallery: gallery, embed:embed, bugs:bugs}, {
+                var app = framework();
+                ctx.registry = formage.init(app, {pages: pages, AppliesTo: AppliesTo, Tests: tests, config: config, gallery: gallery, embed:embed, bugs:bugs}, {
                     title: 'Formage Example',
                     default_section: 'Main',
                     admin_users_gui: true

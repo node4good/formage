@@ -119,6 +119,7 @@
     "node": true,
     "noempty": true,
     "nonew": true,
+    "noyield": true,
     "scripturl": true,
     "sub": true,
     "supernew": true,

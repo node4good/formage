@@ -1,5 +1,5 @@
 'use strict';
-/*global makeRes,mock_req_proto,mock_res_proto,makeRes,should,test_post_body_multipart,describe,before,after,it,expect,_,sanitizeRequireCache */
+/*global framework,makeRes,mock_req_proto,mock_res_proto,makeRes,should,test_post_body_multipart,describe,before,after,it,expect,_,sanitizeRequireCache */
 describe("REST requests", function () {
     describe("mongoose", function () {
         before(function (done) {
@@ -22,9 +22,8 @@ describe("REST requests", function () {
                     var gallery = require('../example/classic/models/gallery');
                     var embed = require('../example/classic/models/embed');
                     var bugs = require('../example/classic/models/bugs');
-                    var express = require('express');
-                    var app = express();
-                    ctx.registry = formage.init(app, express, {pages: pages, AppliesTo: AppliesTo, Tests: tests, config: config, gallery: gallery, embed: embed, bugs: bugs}, {
+                    var app = framework();
+                    ctx.registry = formage.init(app, {pages: pages, AppliesTo: AppliesTo, Tests: tests, config: config, gallery: gallery, embed: embed, bugs: bugs}, {
                         title: 'Formage Example',
                         default_section: 'Main',
                         admin_users_gui: true
