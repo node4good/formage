@@ -108,7 +108,12 @@ describe("misc requests on mongoose", function () {
         }, mock_req_proto);
         var mock_res = makeRes(mock_req, done);
 
-        mock_res.render = function (temple, locals) { done(new Error(JSON.stringify(locals.errors))); };
+        mock_res.render = function (temple, locals) {
+            var err = locals.errors && locals.errors.exception;
+            var msg = JSON.stringify(locals.errors, null, '  ');
+            console.log(msg);
+            done(err || msg);
+        };
         mock_res.redirect = function (url) {
             var doc = this._debug_form.instance;
             var test_doc_id = doc.id;
@@ -550,7 +555,7 @@ describe("misc requests on mongoose", function () {
             }, mock_req_proto);
             var mock_res = makeRes(mock_req, done);
             mock_res.render = function (view, options) {
-                throw options.form.errors.exception[0];
+                done(options.errors.exception);
             };
             mock_res.redirect = function (url) {
                 url.should.equal("/admin/model/config");
