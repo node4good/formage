@@ -12,6 +12,7 @@ deploy:
   api_key:
     secure: Tb4amuc/AVifAsiuRAy1aBibfOnZ5WiC+Jbx9i7k/IzpYbou1zDLejlvFOYYegeDY099zs1vrS2wkcBgkLYcTVY7FneIQgIBrVaP2RQC27X4XgnqtYiNXJmsMwT2/gmah/+2Ix7Yf/v1n6Cyufe5VuX0yN+jPtrygcH30+iaUvg=
   on:
+    all_branches: true
     tags: true
-    node: '0.10'
-    repo: Empeeric/formage
+    node: "0.10"
+    repo: TheNodeILs/formage
