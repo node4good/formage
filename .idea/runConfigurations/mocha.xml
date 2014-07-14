@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="mocha" type="mocha-javascript-test-runner" factoryName="Mocha" singleton="true">
-    <node-options />
+    <node-options>--harmony</node-options>
     <working-directory>$PROJECT_DIR$</working-directory>
     <pass-parent-env>true</pass-parent-env>
     <envs>

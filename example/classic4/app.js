@@ -34,7 +34,7 @@ app.configure('development', function() {
 
 
 //mongoose.set('debug', true);
-var admin = formage.init(app, require('./models'), {
+var admin = formage.init(app, express, require('./models'), {
     title: title || 'Formage Example',
     default_section: 'Main',
     admin_users_gui: true
