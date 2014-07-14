@@ -49,11 +49,11 @@
     "jshint": "",
     "jugglingdb": "",
     "mocha": "",
-    "mongoose": "unstable",
-    "opinion": "^1.0.29"
+    "mongoose": "unstable"
   },
   "optionalDependencies": {
-    "asynctrace": ""
+    "asynctrace": "",
+    "opinion": "^1.0.29"
   },
   "peerDependencies": {
     "mongoose": ">= 3.8.0"
