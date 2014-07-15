@@ -22,6 +22,7 @@ global.mock_req_proto = {
     query: {},
     headers: {},
     connection: {},
+    on: _.noop,
     admin_user: {hasPermissions: function () {return true;}}
 };
 
@@ -41,10 +42,12 @@ var mock_res_proto = {
         this.setHeader(val);
         this._status = val;
     },
+    locals: {},
     output: {push: _.identity},
     outputEncodings: {push: _.identity},
     render: magic_throw,
-    redirect: magic_throw
+    redirect: magic_throw,
+    once: _.noop
 };
 
 global._ = _;

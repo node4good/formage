@@ -28,7 +28,8 @@ describe("REST requests", function () {
                         default_section: 'Main',
                         admin_users_gui: true
                     });
-                    ctx.app = mock_req_proto.app = app.admin_app;
+                    ctx.app = mock_req_proto.app = app.adminRouter;
+                    ctx.admin_app = mock_req_proto.admin_app = app.admin_app;
                     ctx.startTheTest = function startTheTest(req, res, argOut) {
                         var done = ctx._runnable.callback;
                         var out = function (err) {
@@ -139,12 +140,12 @@ describe("REST requests", function () {
                 var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
                 mock_res.json = function (status, data) {
-                    expect(status).to.equal(200, data + JSON.stringify(mock_res._debug_form && mock_res._debug_form.errors));
-                    expect(data).to.have.property('string_req').equal(mock_req.body.string_req, data + mock_res._debug_form);
+                    expect(status).to.equal(200, JSON.stringify(data.form && data.form.errors, null, "  "));
+                    expect(data).to.have.property('string_req').equal(mock_req.body.string_req);
                     done();
                 };
 
-                this.app.handle(mock_req, mock_res);
+                this.app.handle(mock_req, mock_res, done);
             });
 
 
@@ -155,12 +156,12 @@ describe("REST requests", function () {
                 }, mock_req_proto);
 
                 var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
-
+                var adminApp = this.admin_app;
                 mock_res.render = function (view, options) {
                     view.should.equal("models.jade");
                     should.exist(options);
                     Boolean(options.sections.length > 0).should.equal(true);
-                    this.req.app.render(view, options, function (err, doc) {
+                    adminApp.render(view, options, function (err, doc) {
                         if (err) return done(err);
                         should.exist(doc);
                         return done();
@@ -220,12 +221,12 @@ describe("REST requests", function () {
                 }, mock_req_proto);
 
                 var mock_res = makeRes(mock_req, done);
-
+                var adminApp = this.admin_app;
                 mock_res.render = function (view, options) {
                     view.should.equal('document.jade');
                     Number(0).should.equal(Object.keys(options.errors).length);
                     should.exist(options.form);
-                    this.req.app.render(view, options, function (err, doc) {
+                    adminApp.render(view, options, function (err, doc) {
                         should.exist(doc);
                         Boolean('<script src="//maps.googleapis.com').should.equal(true);
                         if (options.form.instance._doc) {
@@ -290,11 +291,11 @@ describe("REST requests", function () {
                     method: "GET"
                 }, mock_req_proto);
                 var mock_res = makeRes(mock_req, done);
-
+                var adminApp = this.admin_app;
                 mock_res.render = function (view, options) {
                     view.should.equal("model.jade");
                     should.exist(options);
-                    this.req.app.render(view, options, function (err, doc) {
+                    adminApp.render(view, options, function (err, doc) {
                         should.exist(doc);
                         done(err);
                     });
@@ -311,10 +312,11 @@ describe("REST requests", function () {
                 }, mock_req_proto);
                 var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
 
+                var adminApp = this.admin_app;
                 mock_res.render = function (view, options) {
                     view.should.equal("models.jade");
                     should.exist(options);
-                    this.req.app.render(view, options, function (err, doc) {
+                    adminApp.render(view, options, function (err, doc) {
                         should.exist(doc);
                         done(err);
                     });
@@ -332,11 +334,11 @@ describe("REST requests", function () {
                 }, mock_req_proto);
 
                 var mock_res = _.defaults({ req: mock_req }, mock_res_proto);
-
+                var adminApp = this.admin_app;
                 mock_res.render = function (view, options) {
                     view.should.equal("document.jade");
                     should.exist(options);
-                    this.req.app.render(view, options, function (err, doc) {
+                    adminApp.render(view, options, function (err, doc) {
                         if (err) return done(err);
                         should.exist(doc);
                         return done();

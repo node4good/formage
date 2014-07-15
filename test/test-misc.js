@@ -27,7 +27,8 @@ describe("misc requests on mongoose", function () {
                     default_section: 'Main',
                     admin_users_gui: true
                 });
-                ctx.app = mock_req_proto.app = app.admin_app;
+                ctx.app = mock_req_proto.app = app.adminRouter;
+                ctx.admin_app = mock_req_proto.admin_app = app.admin_app;
                 ctx.startTheTest = function startTheTest(req, res, argOut) {
                     var done = ctx._runnable.callback;
                     var out = function (err) {
@@ -151,7 +152,7 @@ describe("misc requests on mongoose", function () {
                 expect(instance.list_o_numbers[2]).to.equal(3);
                 expect(instance.list_o_numbers[3]).to.equal(4);
 
-                this.req.app.render(view, locals, function (err, doc) {
+                ctx.admin_app.render(view, locals, function (err, doc) {
                     if (err) return done(err);
                     should.exist(doc);
 
@@ -456,11 +457,12 @@ describe("misc requests on mongoose", function () {
         }, mock_req_proto);
         var mock_res = makeRes(mock_req, done);
 
+        var adminApp = this.admin_app;
         mock_res.render = function (view, options) {
             expect(view).to.equal("model.jade");
             expect(options).to.have.property('actions').with.length(1);
             expect(options).to.have.property('dataTable').with.property('header').with.length(3);
-            this.req.app.render(view, options, function (err, doc) {
+            adminApp.render(view, options, function (err, doc) {
                 expect(doc).to.be.a('string');
                 done(err);
             });
@@ -484,13 +486,14 @@ describe("misc requests on mongoose", function () {
         }, mock_req_proto);
 
         var mock_res = makeRes(mock_req, done);
+        var adminApp = this.admin_app;
         mock_res.render = function (view, options) {
             reset_models();
             expect(view).to.equal("model.jade");
             expect(options).to.have.property('actions').with.length(1);
             expect(options).to.have.property('dataTable').with.property('header').with.length(7);
             expect(options.dataTable).to.have.property('data').with.length(1);
-            this.req.app.render(view, options, function (err, doc) {
+            adminApp.render(view, options, function (err, doc) {
                 expect(doc).to.be.a('string');
                 done(err);
             });
@@ -531,13 +534,12 @@ describe("misc requests on mongoose", function () {
             }, mock_req_proto);
 
             var mock_res = makeRes(mock_req, done);
-
             mock_res.render = function (view, options) {
                 view.should.equal("document.jade");
                 should.exist(options);
                 options.form.instance.footer.links[0].text.should.equal("tgf2");
                 options.form.instance.footer.links[0].url.should.equal("yhg2");
-                this.req.app.render(view, options, function (err, doc) {
+                ctx.admin_app.render(view, options, function (err, doc) {
                     if (err) throw err;
                     should.exist(doc);
                     Boolean(~doc.indexOf(' value="tgf2" class="optional" type="text" name="footer.links_li0_text"'))
@@ -577,7 +579,7 @@ describe("misc requests on mongoose", function () {
             mock_res.render = function (view, options) {
                 view.should.equal("document.jade");
                 should.exist(options);
-                this.req.app.render(view, options, function (err, doc) {
+                ctx.admin_app.render(view, options, function (err, doc) {
                     if (err) throw err;
                     should.exist(doc);
                     Boolean(~doc.indexOf(' value="" class="optional" type="text" name="footer.links_li0_text"'))

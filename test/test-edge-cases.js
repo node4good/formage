@@ -38,6 +38,31 @@ describe("edge cases on mongoose", function () {
         });
 
 
+        it("parent app works", function (done) {
+            var mock_req = _.defaults({
+                url: "/admin/login",
+                method: "GET"
+            }, mock_req_proto);
+
+            var mock_res = makeRes(mock_req, done);
+            mock_res.getHeader = _.noop;
+            mock_res.setHEader = _.noop;
+
+
+            var adminApp = this.app.admin_app;
+            mock_res.render = function (view, options) {
+                expect(view).equal("login.jade");
+                expect(options).property('pageTitle');
+                adminApp.render(view, options, function (err, doc) {
+                    should.exist(doc);
+                    done(err);
+                });
+            };
+            this.app.handle = this.app.handle || this.app.callback();
+            this.app.handle(mock_req, mock_res, done);
+        });
+
+
         it("show login screen", function (done) {
             var mock_req = _.defaults({
                 url: "/login",
@@ -46,16 +71,17 @@ describe("edge cases on mongoose", function () {
 
             var mock_res = makeRes(mock_req, done);
 
+            var adminApp = this.app.admin_app;
             mock_res.render = function (view, options) {
                 view.should.equal("login.jade");
                 should.exist(options);
-                this.req.app.render(view, options, function (err, doc) {
+                adminApp.render(view, options, function (err, doc) {
                     should.exist(doc);
                     done(err);
                 });
             };
 
-            this.app.admin_app.handle(mock_req, mock_res, done);
+            this.app.adminRouter.handle(mock_req, mock_res, done);
         });
 
         it("can't log in with wrong creds", function (done) {
@@ -77,7 +103,7 @@ describe("edge cases on mongoose", function () {
                 done();
             }.bind(this);
 
-            this.app.admin_app.handle(mock_req, mock_res, done);
+            this.app.adminRouter.handle(mock_req, mock_res, done);
         });
 
         describe("login and re-enter", function () {
@@ -92,21 +118,27 @@ describe("edge cases on mongoose", function () {
                 }, mock_req_proto);
 
                 var mock_res = makeRes(mock_req, done);
+                var headers;
+                mock_res.writeHead = _.noop;
+                mock_res.getHeader = _.noop;
+                mock_res.setHeader = function (name, argHeaders) { headers = argHeaders; };
                 var test = this;
                 mock_res.redirect = function (path) {
                     expect(mock_res._status).not.exist;
                     expect(mock_req.session).to.have.property('formageUser');
-                    expect(path).equal(mock_req.app.mountpath || mock_req.app.route);
+                    expect(path).equal(test.app.admin_app.mountpath);
                     // triger save cookie
                     try {
                         this.writeHead();
-                    } catch (e) {}
-                    expect( mock_res._headers).to.have.property("set-cookie");
-                    test.sessionCookie = mock_res._headers["set-cookie"].join('; ');
+                    } catch (e) {
+                        console.log('\n###goo###\n');
+                    }
+                    expect(headers).to.have.length(2);
+                    test.sessionCookie = headers.join('; ');
                     done();
                 };
 
-                this.app.admin_app.handle(mock_req, mock_res, done);
+                this.app.adminRouter.handle(mock_req, mock_res, done);
             });
 
 
@@ -124,16 +156,17 @@ describe("edge cases on mongoose", function () {
 
                 var mock_res = makeRes(mock_req, done);
 
+                var adminApp = this.app.admin_app;
                 mock_res.render = function (view, options) {
                     view.should.equal("models.jade");
                     should.exist(options);
-                    this.req.app.render(view, options, function (err, doc) {
+                    adminApp.render(view, options, function (err, doc) {
                         should.exist(doc);
                         done(err);
                     });
                 };
 
-                this.app.admin_app.handle(mock_req, mock_res, done);
+                this.app.adminRouter.handle(mock_req, mock_res, done);
             });
         });
 
@@ -155,7 +188,7 @@ describe("edge cases on mongoose", function () {
                 done();
             }.bind(this);
 
-            this.app.admin_app.handle(mock_req, mock_res, done);
+            this.app.adminRouter.handle(mock_req, mock_res, done);
         });
 
 
@@ -176,7 +209,7 @@ describe("edge cases on mongoose", function () {
                 done();
             }.bind(this);
 
-            this.app.admin_app.handle(mock_req, mock_res);
+            this.app.adminRouter.handle(mock_req, mock_res);
         });
     });
 });
