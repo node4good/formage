@@ -234,7 +234,12 @@ function getSocketFunctionForSelect2() {
     var modelName = $this.data('modelname');
 
     $this.select2({
-        query: function (options) {
+        query: _.debounce(function (options) {
+            if (_.isEmpty(options.term)) return options.callback({
+                results: [],
+                more: false,
+                context: options.context
+            });
             var term = options.term;
             //var page = options.page;
             var context = options.context;
@@ -247,7 +252,7 @@ function getSocketFunctionForSelect2() {
                 };
                 callback(result);
             });
-        },
+        }, 600),
         initSelection: function (element, callback) {
             var id = $this.val();
             var text = $this.data('initialname') || '';

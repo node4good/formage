@@ -1,11 +1,12 @@
 {
-   "dependencies" : {
-      "bootbox" : "2.5.1",
-      "bootstrap" : "2.3.2",
-      "bootstrap-datetimepicker" : "*",
-      "jquery" : "*",
-      "select2" : "*"
-   },
-   "name" : "formage",
-   "version" : "1.0.1"
+  "dependencies": {
+    "bootbox": "2.5.1",
+    "bootstrap": "2.3.2",
+    "bootstrap-datetimepicker": "*",
+    "jquery": "*",
+    "select2": "*",
+    "lodash": "~2.4.1"
+  },
+  "name": "formage",
+  "version": "1.0.1"
 }
