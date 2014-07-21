@@ -258,11 +258,11 @@ function getSocketFunctionForSelect2() {
             callback({id: id, text: text});
         }
     }).on('change', function(e){
-        if(e.added.type) {
-            window.socketio.json.emit('selected', e.added, function (data) {
-                $this.data(data);
-            });
-        }
+        if(!e.added) return;
+        window.socketio.json.emit('selected', e.added, function (id) {
+            if (_.isEmpty(id)) return this.data([]);
+            e.added.id = id;
+        });
     });
 }
 
