@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
 
 
 var schema = new Schema({
-    parent: { type: ObjectId, ref: 'navigation', inline:true },
+    parent: { type: ObjectId, ref: 'navigation' },
     main: { type: ObjectId, ref: 'pages', inline:true },
     others: { type:[{ type: ObjectId, ref: 'pages', inline:true }], open:true },
     meta: [{
