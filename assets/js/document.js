@@ -1,6 +1,5 @@
 'use strict';
-/*global $,window,Aviary */
-
+/*global $,window,Aviary,_ */
 
 var btn = {
     'delete': function () {
@@ -257,6 +256,12 @@ function getSocketFunctionForSelect2() {
             var id = $this.val();
             var text = $this.data('initialname') || '';
             callback({id: id, text: text});
+        }
+    }).on('change', function(e){
+        if(e.added.type) {
+            window.socketio.json.emit('selected', e.added, function (data) {
+                $this.data(data);
+            });
         }
     });
 }
