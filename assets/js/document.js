@@ -63,6 +63,7 @@ function initFieldSet(ctx) {
                 $this.removeClass('closed');
             }
         }
+
         toggleVisibility();
     });
 }
@@ -257,8 +258,8 @@ function getSocketFunctionForSelect2() {
             var text = $this.data('initialname') || '';
             callback({id: id, text: text});
         }
-    }).on('change', function(e){
-        if(!e.added) return;
+    }).on('change', function (e) {
+        if (!e.added) return;
         window.socketio.json.emit('selected', e.added, function (id) {
             if (_.isEmpty(id)) return this.data([]);
             e.added.id = id;
@@ -421,7 +422,11 @@ function handle_file_picked_aviary($field, InkBlob) {
     var sizeConstraint = $field.find("input").data('sizeconstraint');
     var args = {image: $image[0], url: InkBlob.url, initTool: 'crop'};
     if (sizeConstraint) {
-        args.cropPresets = [['Target', sizeConstraint], 'Custom', 'Original'];
+        args.cropPresets = [
+            ['Target', sizeConstraint],
+            'Custom',
+            'Original'
+        ];
         args.cropPresetDefault = 'Target';
     }
     window.featherEditor.launch(args);
@@ -470,16 +475,28 @@ $(function () {
 
     initModal();
 
-    $('form#document').submit(function (e) {
-        $('p.submit button').prop('disabled', true);
-        if (window.isDialog) {
-            e.preventDefault();
-            var upsertURL = [window.root, 'json', 'model', window.model, 'document', window.docId].join('/');
-            $.post(upsertURL, $(this).serialize()).done(function (docInfo) {
-                window.parent.hideDialog({id: docInfo.id, label: docInfo.label});
+    var $form = $('form#document');
+    var $buttons = $form.find('p.submit button');
+    var url = window.location.href.replace('/model', '/json/model');
+
+    $form.submit(function (e) {
+        e.preventDefault();
+        var diag = window.bootbox.alert("Saving...");
+        $buttons.prop('disabled', true);
+        var q = $.post(url, $form.serialize())
+            .fail(function (jqXHR) {
+                var ret = jqXHR.responseJSON;
+                window.bootbox.alert("Save failed - " + ret.name + '\n' + ret.fields);
+            })
+            .always(function () {
+                diag.modal('hide');
+                $buttons.prop('disabled', false);
             });
-        }
-    })
+        if (window.isDialog)
+            q.done(function (data) { window.parent.hideDialog({id: data.id, label: data.label}); });
+    });
+
+    $form
         .on('click', 'button.picker', trigger_picturepicker)
         .on('click', 'button.aviary-picker', trigger_aviarypicker)
         .on('click', 'button.editor', trigger_refilepicker)
@@ -503,5 +520,6 @@ $(function () {
     });
 
     initActions();
+
 });
 
