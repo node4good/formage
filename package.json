@@ -1,127 +1,127 @@
 {
-   "author" : {
-      "email" : "refael@empeeric.com",
-      "name" : "Refael Ackermann",
-      "url" : "http://www.empeeric.com/"
-   },
-   "contributors" : [
-      {
-         "email" : "ishai@bablic.com",
-         "name" : "Ishai Jaffe",
-         "url" : "http://www.bablic.com/"
-      },
-      {
-         "email" : "etaypere@gmail.com",
-         "url" : "http://www.empeeric.com/"
-      },
-      {
-         "email" : "alon@empeeric.com",
-         "name" : "Alon Valadji",
-         "url" : "http://www.empeeric.com/"
-      }
-   ],
-   "dependencies" : {
-      "async" : "",
-      "body-parser" : "latest",
-      "connect-multiparty" : "",
-      "cookie-session" : "",
-      "debug" : "",
-      "express" : "4",
-      "formage-mongoose-types" : "",
-      "lodash-contrib" : "",
-      "lru-cache" : "",
-      "mpromise" : "latest",
-      "node-ckeditor" : "",
-      "nodestrum" : "",
-      "serve-static" : "latest",
-      "socket.io" : "latest"
-   },
-   "description" : "Admin GUI addon for mongoose, jugglingdb, or just as a form generator",
-   "devDependencies" : {
-      "bower" : "",
-      "chai" : "",
-      "grist" : "latest",
-      "istanbul" : "",
-      "jade" : "0.35.x",
-      "jshint" : "",
-      "jugglingdb" : "",
-      "mocha" : "",
-      "mongoose" : "unstable",
-      "opinion" : "latest"
-   },
-   "directories" : {
-      "example" : "./example"
-   },
-   "engines" : {
-      "node" : "^0.10.0"
-   },
-   "jshintConfig" : {
-      "esnext" : true,
-      "expr" : true,
-      "forin" : true,
-      "freeze" : true,
-      "globals" : {
-         "Promise" : false,
-         "after" : true,
-         "before" : true,
-         "describe" : true,
-         "expect" : true,
-         "it" : true
-      },
-      "immed" : true,
-      "maxdepth" : 4,
-      "newcap" : true,
-      "noarg" : true,
-      "node" : true,
-      "noempty" : true,
-      "nonew" : true,
-      "noyield" : true,
-      "scripturl" : true,
-      "sub" : true,
-      "supernew" : true,
-      "trailing" : true,
-      "undef" : true,
-      "unused" : true
-   },
-   "keywords" : [
-      "admin",
-      "forms",
-      "cross-database",
-      "MongoDB",
-      "MongoDB-admin",
-      "MongoDB-GUI",
-      "grist",
-      "mongoose",
-      "mongoose-gui",
-      "juggling",
-      "jugglingdb",
-      "backoffice",
-      "cms"
-   ],
-   "licenses" : [
-      {
-         "type" : "MIT",
-         "url" : "https://raw.github.com/Empeeric/formage/master/LICENSE"
-      }
-   ],
-   "main" : "lib/Formage.js",
-   "name" : "formage",
-   "optionalDependencies" : {
-      "asynctrace" : ""
-   },
-   "publishConfig" : {
-      "tag" : "beta"
-   },
-   "repository" : "Empeeric/formage",
-   "scripts" : {
-      "cover" : "istanbul cover ./node_modules/mocha/bin/_mocha -x generated/**",
-      "generate" : "node utils/CompileTempletes.js",
-      "lint" : "jshint .",
-      "mypublish" : "npm run setassets && npm version patch --version-with-shrinkwrap && git push --follow-tags",
-      "prepublish" : "npm run generate",
-      "setassets" : "npm run generate && bower i && git clean -X -d -f assets",
-      "start" : "node example/classic/app",
-      "test" : "npm run generate && mocha"
-   },
-   "version" : "3.2.6"
+  "author": {
+    "email": "refael@empeeric.com",
+    "name": "Refael Ackermann",
+    "url": "http://www.empeeric.com/"
+  },
+  "contributors": [
+    {
+      "email": "ishai@bablic.com",
+      "name": "Ishai Jaffe",
+      "url": "http://www.bablic.com/"
+    },
+    {
+      "email": "etaypere@gmail.com",
+      "url": "http://www.empeeric.com/"
+    },
+    {
+      "email": "alon@empeeric.com",
+      "name": "Alon Valadji",
+      "url": "http://www.empeeric.com/"
+    }
+  ],
+  "dependencies": {
+    "async": "",
+    "body-parser": "latest",
+    "connect-multiparty": "",
+    "cookie-session": "",
+    "debug": "",
+    "express": "4",
+    "formage-mongoose-types": "",
+    "lodash-contrib": "",
+    "lru-cache": "",
+    "mpromise": "latest",
+    "node-ckeditor": "",
+    "nodestrum": "",
+    "serve-static": "latest",
+    "socket.io": "latest"
+  },
+  "description": "Admin GUI addon for mongoose, jugglingdb, or just as a form generator",
+  "devDependencies": {
+    "bower": "",
+    "chai": "",
+    "grist": "latest",
+    "istanbul": "",
+    "jade": "0.35.x",
+    "jshint": "",
+    "jugglingdb": "",
+    "mocha": "",
+    "mongoose": "unstable",
+    "opinion": "latest"
+  },
+  "directories": {
+    "example": "./example"
+  },
+  "engines": {
+    "node": "^0.10.0"
+  },
+  "jshintConfig": {
+    "esnext": true,
+    "expr": true,
+    "forin": true,
+    "freeze": true,
+    "globals": {
+      "Promise": false,
+      "after": true,
+      "before": true,
+      "describe": true,
+      "expect": true,
+      "it": true
+    },
+    "immed": true,
+    "maxdepth": 4,
+    "newcap": true,
+    "noarg": true,
+    "node": true,
+    "noempty": true,
+    "nonew": true,
+    "noyield": true,
+    "scripturl": true,
+    "sub": true,
+    "supernew": true,
+    "trailing": true,
+    "undef": true,
+    "unused": true
+  },
+  "keywords": [
+    "admin",
+    "forms",
+    "cross-database",
+    "MongoDB",
+    "MongoDB-admin",
+    "MongoDB-GUI",
+    "grist",
+    "mongoose",
+    "mongoose-gui",
+    "juggling",
+    "jugglingdb",
+    "backoffice",
+    "cms"
+  ],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://raw.github.com/Empeeric/formage/master/LICENSE"
+    }
+  ],
+  "main": "lib/Formage.js",
+  "name": "formage",
+  "optionalDependencies": {
+    "asynctrace": ""
+  },
+  "publishConfig": {
+    "tag": "beta"
+  },
+  "repository": "Empeeric/formage",
+  "scripts": {
+    "cover": "istanbul cover ./node_modules/mocha/bin/_mocha -x generated/**",
+    "generate": "node utils/CompileTempletes.js",
+    "lint": "jshint .",
+    "mypublish": "npm run setassets && npm version patch --version-with-shrinkwrap && git push --follow-tags",
+    "prepublish": "npm run generate",
+    "setassets": "npm run generate && bower i && git clean -X -d -f assets",
+    "start": "node example/classic/app",
+    "test": "npm run generate && mocha"
+  },
+  "version": "3.2.7"
 }
