@@ -22,6 +22,7 @@
   ],
   "dependencies": {
     "async": "",
+    "basic-auth": "latest",
     "body-parser": "latest",
     "connect-multiparty": "",
     "cookie-session": "",
