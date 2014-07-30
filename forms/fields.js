@@ -43,6 +43,7 @@ var BaseField = exports.BaseField = Class.extend({
     init: function (options) {
         options = options || {};
         this.options = options;
+        this.emptyIsNull = typeof(options.emptyIsNull) == 'undefined' ? true : options.emptyIsNull;
         this['default'] = options['default'];
         this.required = options.required == null ? false : options.required;
         this.readOnly = options.readOnly || false;
@@ -118,7 +119,7 @@ var BaseField = exports.BaseField = Class.extend({
         return this;
     },
     clean_value: function (req, callback) {
-        if (String(this.value) === '' && !Array.isArray(this.value))
+        if (this.emptyIsNull && String(this.value) === '' && !Array.isArray(this.value))
             this.value = null;
         if ((this.value === null || this.value === []) && this.required)
             this.errors.push('this field is required');
@@ -189,6 +190,7 @@ var BooleanField = exports.BooleanField = BaseField.extend({
 var EnumField = exports.EnumField = BaseField.extend({
     init: function (options, choices) {
         options = options || {};
+        options.emptyIsNull = options.emptyIsNull || false;
         options.widget = options.widget || widgets.ChoicesWidget;
         options.widget_options = options.widget_options || {};
         options.widget_options.choices = options.widget_options.choices || choices;
@@ -202,8 +204,22 @@ var EnumField = exports.EnumField = BaseField.extend({
         return schema;
     },
     clean_value: function (req, callback) {
-        if (this.value === '')
-            this.value = null;
+        if (this.value === ''){
+            var hasEmpty = false;
+            for(var i=0; i<this.options.widget_options.choices.length; i++){
+                var choice = this.options.widget_options.choices[i];
+                if(typeof(choice) == 'string' && choice === ''){
+                    hasEmpty = true;
+                    break;
+                }
+                else if(typeof(choice) == 'object' && choice[0] === ''){
+                    hasEmpty = true;
+                    break;
+                }
+            }
+            if(!hasEmpty)
+                this.value = null;
+        }
         this._super(simpleReq(req), callback);
         return this;
     }
