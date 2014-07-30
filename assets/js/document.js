@@ -235,6 +235,7 @@ function getSocketFunctionForSelect2() {
 
     $this.select2({
         query: _.debounce(function (options) {
+            if (!window.socketio.connected) window.bootbox.alert("connectivity issues. best save, and refresh");
             if (_.isEmpty(options.term)) return options.callback({
                 results: [],
                 more: false,

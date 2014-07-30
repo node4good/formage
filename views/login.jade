@@ -21,23 +21,3 @@ block body
         .controls
             button#loginButton.btn(type='submit') Login
 
-    script.
-        $("form#login").on("submit", function (e) {
-            e.preventDefault();
-            var user = $("input#username").val();
-            var pass = $("input#password").val();
-            $.ajax({
-                type: "GET",
-                url: "/admin/fakeLogin",
-                username: user,
-                password: pass
-            }).done(
-                function () {
-                    location.href = '/admin/';
-                }
-            ).fail(
-                function (jq, status) {
-                    alert(status);
-                }
-            );
-        });
