@@ -248,7 +248,7 @@ buf.push(jade.escape(null == (jade.interp = filename) ? "" : jade.interp));
 }
 else
 {
-var cdn_url = (value_url.replace('https', 'http').replace('www.filepicker.io', 'cdn.empeeric.com'));
+var cdn_url = ((value_url || "").replace('https', 'http').replace('www.filepicker.io', 'cdn.empeeric.com'));
 if (~cdn_url.indexOf('cdn.empeeric.com'))
 {
 buf.push("<img" + (jade.attrs({ 'src':(cdn_url+'/convert?fit=crop&w=80&h=80') }, {"src":true})) + "/>");

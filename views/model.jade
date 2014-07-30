@@ -20,7 +20,7 @@ mixin fielddesc(value, type, document_url)
                     - if (value.isWriteable && value.mimetype.indexOf('image') != 0)
                         =filename
                     - else
-                        cdn_url = value_url.replace('https', 'http').replace('www.filepicker.io', 'cdn.empeeric.com');
+                        cdn_url = (value_url || "").replace('https', 'http').replace('www.filepicker.io', 'cdn.empeeric.com');
                         - if (~cdn_url.indexOf('cdn.empeeric.com'))
                             img(src= cdn_url+'/convert?fit=crop&w=80&h=80')
 
