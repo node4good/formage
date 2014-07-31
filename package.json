@@ -1,13 +1,13 @@
 {
   "author": {
-    "email": "refael@empeeric.com",
     "name": "Refael Ackermann",
+    "email": "refael@empeeric.com",
     "url": "http://www.empeeric.com/"
   },
   "contributors": [
     {
-      "email": "ishai@bablic.com",
       "name": "Ishai Jaffe",
+      "email": "ishai@bablic.com",
       "url": "http://www.bablic.com/"
     },
     {
@@ -15,8 +15,8 @@
       "url": "http://www.empeeric.com/"
     },
     {
-      "email": "alon@empeeric.com",
       "name": "Alon Valadji",
+      "email": "alon@empeeric.com",
       "url": "http://www.empeeric.com/"
     }
   ],
@@ -54,7 +54,7 @@
     "example": "./example"
   },
   "engines": {
-    "node": "^0.10.0"
+    "node": "> 0.10.0"
   },
   "jshintConfig": {
     "esnext": true,
