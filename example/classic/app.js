@@ -6,6 +6,7 @@ var MONGOOSE_TEST_URI = 'grist://' + __dirname + "/data";
 
 var express = require('express'),
     mongoose = require('mongoose'),
+    socketio = require('socket.io'),
     formage = require('../..');
 
 //noinspection JSUnresolvedVariable
@@ -23,17 +24,16 @@ app.get('/', function(req, res) {
     res.redirect('/admin');
 });
 
-//mongoose.set('debug', true);
-var admin = formage.init(app, require('./models'), {
-    title: title || 'Formage Example',
-    default_section: 'Main',
-    admin_users_gui: true
-});
+app.listen(PORT, function () {
+    var io = socketio.listen(this);
+    formage.init(app, require('./models'), {
+        title: title || 'Formage Example',
+        default_section: 'Main',
+        admin_users_gui: true,
+        socketio: io
+    });
 
-admin.app.locals.global_head = "<script>\n" + "(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){\n    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),\n    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\n})(window,document,'script','//www.google-analytics.com/analytics.js','ga');\nga('create', 'UA-15378843-16', 'www.formage.io');\nga('send', 'pageview');" + "\n</script>";
-
-var server = app.listen(PORT, function () {
-    server.setTimeout(1000);
-    console.log('Express server listening on port ', server.address().port);
+    this.setTimeout(1000);
+    console.log('Express server listening on port ', this.address().port);
 });
 

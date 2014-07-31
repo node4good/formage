@@ -16,15 +16,6 @@ var schema = new Schema({
     end_time: {type: Types.Time},
     date: { type: Date },
     picture: { type: Types.Filepicker, widget: 'FilepickerPictureWidget' },
-    broadcaster: [
-        { type: Types.ObjectId, ref: 'users'}
-    ],
-    default_info_item: {
-        title: String,
-        text: Types.Text,
-        image: { type: Types.Filepicker, widget: 'FilepickerPictureWidget' },
-        url: String
-    },
     lineup: [{
         lineupItem: { type: Types.ObjectId, ref: 'infoItems', socket:true },
         timestamp: String
@@ -169,7 +160,7 @@ schema.statics.setShowPicture = function(shows, cbk){
     models.config.getConfig(function(conf){
         config = conf;
         _.each(shows, function(show){
-            var default_image = show.channel.default_info_item.image && show.channel.default_info_item.image !== "" ? show.channel.default_info_item.image : config.default_picture;
+            var default_image = show.channel && show.channel.default_info_item.image && show.channel.default_info_item.image !== "" ? show.channel.default_info_item.image : config.default_picture;
             if(show.default_info_item){
                 if(!show.default_info_item.picture || show.default_info_item.picture === "" ) {
                     show.default_info_item.image = default_image;
@@ -189,6 +180,17 @@ schema.statics.setShowPicture = function(shows, cbk){
         cbk(shows);
     });
 };
+
+schema.pre('save', function(next){
+    if(this._originalStatus == 'ready' && this.status == 'on-air') {
+        global.registry.socketio.sockets.emit('on air', this.toObject());
+    }
+    next();
+});
+
+schema.post( 'init', function() {
+    this._originalStatus = this.toObject().status;
+});
 
 var parseShowData = function(show, callback){
     models.shows.setShowPicture([show], function(results) {
@@ -217,10 +219,11 @@ var parseShowData = function(show, callback){
 };
 
 schema.formage = {
-    list: ['title', 'description', 'broadcaster', 'channel', 'date', 'picture'],
+    list: ['date', 'channel', 'title', 'description', 'broadcaster', 'picture'],
     list_populate: ['navigation', 'channel', 'broadcaster'],
-    filters: ['status', 'channel'],
-    search: ['title', 'description']
+    filters: ['status', 'channel', 'broadcaster'],
+    search: ['title', 'description', 'broadcaster'],
+    sortable: '-date'
 };
 
 module.exports = schema;
