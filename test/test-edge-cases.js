@@ -63,7 +63,7 @@ describe("edge cases on mongoose", function () {
         });
 
 
-        it("show login screen", function (done) {
+        it.skip("show login screen", function (done) {
             var mock_req = _.defaults({
                 url: "/login",
                 method: "GET"
@@ -84,7 +84,7 @@ describe("edge cases on mongoose", function () {
             this.app.adminRouter.handle(mock_req, mock_res, done);
         });
 
-        it("can't log in with wrong creds", function (done) {
+        it.skip("can't log in with wrong creds", function (done) {
             var mock_req = _.defaults({
                 url: "/login",
                 method: "POST",
@@ -106,7 +106,7 @@ describe("edge cases on mongoose", function () {
             this.app.adminRouter.handle(mock_req, mock_res, done);
         });
 
-        describe("login and re-enter", function () {
+        describe.skip("login and re-enter", function () {
             it("can log in", function (done) {
                 var mock_req = _.defaults({
                     url: "/login",
@@ -171,7 +171,7 @@ describe("edge cases on mongoose", function () {
         });
 
 
-        it("can't reenter with no session", function (done) {
+        it.skip("can't reenter with no session", function (done) {
             var mock_req = _.defaults({
                 url: "/",
                 session: {},
@@ -192,7 +192,7 @@ describe("edge cases on mongoose", function () {
         });
 
 
-        it("logout works", function (done) {
+        it.skip("logout works", function (done) {
             var mock_req = _.defaults({
                 url: "/logout",
                 headers: {},

@@ -1,6 +1,6 @@
 'use strict';
 /*global framework,makeRes,mock_req_proto,mock_res_proto,makeRes,renderedEmbeded,should,describe,before,after,it,expect,_,mockFind,sanitizeRequireCache */
-describe("misc requests on mongoose", function () {
+describe.skip("misc requests on mongoose", function () {
     before(function (done) {
         sanitizeRequireCache();
         var ctx = this;
@@ -27,7 +27,7 @@ describe("misc requests on mongoose", function () {
                     default_section: 'Main',
                     admin_users_gui: true
                 });
-                ctx.app = mock_req_proto.app = app.adminRouter;
+                ctx.app = mock_req_proto.app = app.admin_app;
                 ctx.admin_app = mock_req_proto.admin_app = app.admin_app;
                 ctx.startTheTest = function startTheTest(req, res, argOut) {
                     var done = ctx._runnable.callback;

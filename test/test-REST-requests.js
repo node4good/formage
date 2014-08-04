@@ -1,6 +1,6 @@
 'use strict';
 /*global framework,makeRes,mock_req_proto,mock_res_proto,makeRes,should,test_post_body_multipart,describe,before,after,it,expect,_,sanitizeRequireCache */
-describe("REST requests", function () {
+describe.skip("REST requests", function () {
     describe("mongoose", function () {
         before(function (done) {
             sanitizeRequireCache();
