@@ -19,8 +19,9 @@ block breadcrumb
     | editor
 
 block body
-    .page-header
-        h2 #{model_label} editor
+    - if (!isDialog)
+        .page-header
+            h2 #{model_label} editor
 
     - if (errors)
         p.alert.alert-error Saving failed, fix the following errors and try again.
