@@ -1,12 +1,12 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="app.js on juggling" type="NodeJSConfigurationType" factoryName="Node.js" singleton="true" path-to-node="$NODE_PATH$/node" path-to-js-file="classic/app.js" working-dir="$PROJECT_DIR$/example">
     <envs>
+      <env name="NODE_DEBUG" value="formage" />
       <env name="PORT" value="80" />
       <env name="FILEPICKER_API_KEY" value="AcEDKhuboQQCmFYm99XJez" />
       <env name="NODE_ENV" value="development" />
       <env name="ADMIN_TITLE" value="abcd" />
       <env name="MONGOLAB_URI_" value="mongodb://heroku_app11868944:pfgea8icrgft9tqsc6p3jlasvr@ds031957.mongolab.com:31957/heroku_app11868944" />
-      <env name="NODE_DEBUG" value="formage" />
     </envs>
     <RunnerSettings RunnerId="NodeJS.debug" />
     <RunnerSettings RunnerId="NodeJS.run" />

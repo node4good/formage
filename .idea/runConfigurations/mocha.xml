@@ -5,8 +5,8 @@
     <pass-parent-env>true</pass-parent-env>
     <envs>
       <env name="CLOUDINARY_URL" value="cloudinary://585968645961973:QKIr5QDRS3mp9F9QYxa3DC7-Omg@ho0xbnxzd" />
-      <env name="NODE_PATH" value="" />
       <env name="DEBUG" value="formage" />
+      <env name="NODE_PATH" value="" />
     </envs>
     <ui>BDD</ui>
     <extra-mocha-options>--require asynctrace</extra-mocha-options>

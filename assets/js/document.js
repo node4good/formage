@@ -485,13 +485,22 @@ $(function () {
         var diag = window.bootbox.alert("Saving...");
         $buttons.prop('disabled', true);
         var q = $.post(url, $form.serialize())
+            .done(function(data) {
+                var urlParts = url.split('/document/');
+                if (urlParts[1].slice(0,3) === 'new') {
+                    url = urlParts[0] + '/document/' + data.id.$oid;
+                    window.history.pushState(data, data.id.$oid, url);
+                }
+            })
             .fail(function (jqXHR) {
                 var ret = jqXHR.responseJSON;
                 window.bootbox.alert("Save failed - " + ret.name + '\n' + ret.fields);
             })
             .always(function () {
-                diag.modal('hide');
-                $buttons.prop('disabled', false);
+                setTimeout(function () {
+                    diag.modal('hide');
+                    $buttons.prop('disabled', false);
+                }, 1000);
             });
         if (window.isDialog)
             q.done(function (data) { window.parent.hideDialog({id: data.id, label: data.label}); });
