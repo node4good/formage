@@ -490,7 +490,7 @@ $(function () {
                 if (urlParts[1].slice(0,3) === 'new') {
                     var id = _.isString(data._id) ? data._id : data._id.$oid;
                     url = urlParts[0] + '/document/' + id;
-                    window.history.pushState(data, id, url.slice('/json'.length));
+                    window.history.pushState(data, id, url.replace('/json', ''));
                 }
             })
             .fail(function (jqXHR) {
