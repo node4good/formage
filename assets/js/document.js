@@ -488,8 +488,9 @@ $(function () {
             .done(function(data) {
                 var urlParts = url.split('/document/');
                 if (urlParts[1].slice(0,3) === 'new') {
-                    url = urlParts[0] + '/document/' + data.id.$oid;
-                    window.history.pushState(data, data.id.$oid, url);
+                    var id = _.isString(data._id) ? data._id : data._id.$oid;
+                    url = urlParts[0] + '/document/' + id;
+                    window.history.pushState(data, id, url.slice('/json'.length));
                 }
             })
             .fail(function (jqXHR) {
