@@ -123,5 +123,5 @@
     "start": "node example/classic/app",
     "test": "npm run generate && mocha"
   },
-  "version": "3.2.17"
+  "version": "3.2.18"
 }
