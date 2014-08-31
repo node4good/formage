@@ -6,7 +6,7 @@ $(function () {
     $('.free_search').click(function () {
         var $this = $(this);
         var $input = $this.parent().siblings('input');
-        var value = encodeURIComponent($input.val());
+        var value = $input.val();
         var name = $input.attr('name');
         var q = $.parseQueryString();
         q[name] = value;
