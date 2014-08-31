@@ -9,8 +9,13 @@ if (!module.parent) console.error('Please don\'t call me directly.I am just the 
 
 var Class = require('sji'),
     util = require('util'),
-    cloudinary = require('cloudinary'),
     _ = require('lodash');
+	
+var cloudinary;
+try {
+   cloudinary = require('cloudinary')
+}
+catch(ex) {}
 
 
 function escape(str) {

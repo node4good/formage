@@ -8,8 +8,14 @@ var widgets = require('./widgets'),
 	common = require('./common'),
 	path = require('path'),
 	fs = require('fs'),
-	util = require('util'),
-    cloudinary = require('cloudinary');
+	util = require('util');
+	
+	
+var cloudinary;
+
+try {
+   cloudinary = require('cloudinary');
+ } catch(ex) {}
 
 var mongoose = require.main.require('mongoose');
 
