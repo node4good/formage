@@ -1,5 +1,5 @@
 {
-  "name": "formage-admin-ij",
+  "name": "formage-admin",
   "description": "Admin gui app for mongoose and non mongoose projects",
   "version": "1.4.52",
   "author": {
