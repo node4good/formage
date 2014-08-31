@@ -24,7 +24,6 @@
     }
   ],
   "dependencies": {
-    "dependencies": {
     "lodash": "",
     "async": "",
     "jade": "0.32.0",
