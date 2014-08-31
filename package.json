@@ -1,7 +1,7 @@
 {
-  "name": "formage-admin",
+  "name": "formage-admin-ij",
   "description": "Admin gui app for mongoose and non mongoose projects",
-  "version": "1.4.50",
+  "version": "1.4.51",
   "author": {
     "name": "Ishai Jaffe",
     "email": "ishai@empeeric.com"
@@ -24,13 +24,14 @@
     }
   ],
   "dependencies": {
+    "dependencies": {
     "lodash": "",
     "async": "",
     "jade": "0.32.0",
-    "sji": "",
-    "jest": "",
-    "cloudinary": "",
-    "underscore": "",
+    "sji": "~0.0.1",
+    "jest": "~0.1.37",
+    "cloudinary": "~1.0.10",
+    "underscore": "~1.3.3",
     "formidable": "~1.0.14",
     "multiparty": "~3.1.0",
     "qs": "~0.6.5"
