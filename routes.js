@@ -468,7 +468,7 @@ var routes = {
                     search: model.options.search,
                     search_value: search_value,
 
-                    cloudinary:function() { return try { return require('cloudinary'); } catch(ex){ return null; } },
+                    cloudinary:function() { try { return require('cloudinary'); } catch(ex){ return null; } },
                     actions: actions,
                     editable: permissions.hasPermissions(req.admin_user, name, 'update'),
                     sortable: typeof(model.options.sortable) == 'string' && permissions.hasPermissions(req.admin_user, name, 'order'),
