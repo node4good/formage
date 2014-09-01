@@ -179,9 +179,11 @@ exports.DateTimeWidget = exports.InputWidget.extend({
     render: function (res) {
         var widget_id =  'datetimepicker' + this.name;
         res.write('\n<div class="input-append date nf_timepicker" id="' + widget_id + '">\n');
+        if(this.value)
+            this.value = Number(this.value);
         this._super(res);
         res.write('\n<span class="add-on">\n<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>\n</span>\n</div>\n');
-        var script = "$('#" + widget_id + "').datetimepicker(); ";
+        var script = "$('#" + widget_id + "').datetimepicker().datetimepicker('setDate'," + this.value  + "); ";
         res.write('<script>' + script + '</script>');
     }
 });

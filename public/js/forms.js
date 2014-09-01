@@ -414,7 +414,7 @@
                     var date = data.date || data._date;
                     if(date && date != new Date()){
                         var $input = this.tagName == 'INPUT' ? $(this) : $('input',this);
-                        $input.val(date);
+                        $input.val(Number(date));
                     }
                 }
             });

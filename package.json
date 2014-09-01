@@ -1,7 +1,7 @@
 {
   "name": "formage-admin",
   "description": "Admin gui app for mongoose and non mongoose projects",
-  "version": "1.4.54",
+  "version": "1.4.55",
   "author": {
     "name": "Ishai Jaffe",
     "email": "ishai@empeeric.com"

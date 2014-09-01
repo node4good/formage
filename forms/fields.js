@@ -326,6 +326,8 @@ var DateField = exports.DateField = BaseField.extend({
     clean_value:function(req,callback){
         if(this.value){
             var ts = Date.parse(this.value);
+            if(isNaN(ts))
+                ts = Number(this.value);
             this.value = isNaN(ts) ? null : new Date(ts);
         }
         return this._super(req,callback);
