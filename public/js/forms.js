@@ -418,6 +418,13 @@
                     }
                 }
             });
+            $('select[multiple]').each(function(){
+                var val = $(this).val();
+                if(!val){
+                    $('<input type="hidden" name="' + $(this).attr('name') + '" value="">').insertAfter(this);
+                    $(this).remove();
+                }
+            })
             $('p.submit button').prop('disabled', true);
         });
         if(dialog){
