@@ -263,7 +263,7 @@ function renderForm(res, form, model, allow_delete, clone,dialog) {
  * @return {Object}
  * dict of filters
  */
-var parseFilters = function (model_settings, filters, search) {
+var parseFilters = function (model_settings, filters, search,dontRegex) {
     var model = model_settings.model;
     var new_filters = {};
     _.each(filters, function (value, key) {
@@ -276,7 +276,7 @@ var parseFilters = function (model_settings, filters, search) {
         if (model.schema && model.schema.paths[key]) {
             var type = model.schema.paths[key].options.type;
             if (type == String) {
-                new_filters[key] = new RegExp(value, 'i');
+                new_filters[key] = dontRegex ? value : new RegExp(value, 'i');
             }
             else if (type == Number) {
                 new_filters[key] = Number(value) || undefined;
