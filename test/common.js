@@ -1,9 +1,9 @@
 'use strict';
 require('nodestrum');
 Error.stackTraceLimit = 100;
-//var Path = require('path');
-//global.MONGOOSE_DRIVER_PATH = Path.dirname(require.resolve('grist/driver'));
-global.CONN_STR_PREFIX = 'mongodb://localhost/formage-test-data---';
+var Path = require('path');
+global.MONGOOSE_DRIVER_PATH = Path.dirname(require.resolve('grist/driver'));
+global.CONN_STR_PREFIX = 'grist://.tmp/formage-test-data---';
 
 var _ = require('lodash-contrib');
 var chai = require('chai');
