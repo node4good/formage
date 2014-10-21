@@ -127,6 +127,10 @@ block body
                                 - each value in filter.values
                                     - if(value && value.text)
                                         option(value="#{value.value || ''}",selected=(current_filters[filter.key] !== String(value.value) ? undefined : 'selected')) #{value.text}
+                            - if (filter.isString)
+                                div
+                                    input(type='text',style='width:217px; !important ',name='#{filter.key}',value='#{current_filters[filter.key] || ""}')
+                                    button.free_search(data-href='#{makeLink(filter.key, "__replace__")}') search
                         - else
                             - if (current_filters[filter.key])
                                 li

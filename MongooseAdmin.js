@@ -89,8 +89,8 @@ function buildModelFilters (model, filters, dict) {
                         }
                         else {
                             dict.push({key: filter, values: _.map(results, function (result) {
-                                return { value: result, text: result, isString: model.schema.paths[filter] && model.schema.paths[filter].options && model.schema.paths[filter].options.type == String };
-                            })});
+                                return { value: result, text: result };
+                            }), isString: model.schema.paths[filter] && model.schema.paths[filter].options && model.schema.paths[filter].options.type == String});
                             cbk();
                         }
                     }
