@@ -183,7 +183,7 @@ exports.DateTimeWidget = exports.InputWidget.extend({
             this.value = Number(this.value);
         this._super(res);
         res.write('\n<span class="add-on">\n<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>\n</span>\n</div>\n');
-        var script = "$('#" + widget_id + "').datetimepicker().datetimepicker('setLocalDate'," + this.value  + "); ";
+        var script = "$('#" + widget_id + "').datetimepicker().datetimepicker('setLocalDate',new Date(" + this.value  + ")); ";
         res.write('<script>' + script + '</script>');
     }
 });
