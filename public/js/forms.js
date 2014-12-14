@@ -71,6 +71,10 @@
             $('select', ctx).select2();
         }
         if ($.fn.datepicker) $('.nf_datepicker:not([readonly])', ctx).datepicker({format:'mm/dd/yyyy'});
+        if($.fn.datetimepicker)
+            $('.nf_timepicker:not([readonly])').on('changeDate',function(e){
+                $(this).data('time', e.localDate);
+            });
 //        if ($.fn.timepicker) $('.nf_timepicker', ctx).timepicker({format:'MM/dd/yyyy HH:mm:ss PP'}).on('change', function(e) {
 //            var val = $(this).val();
 //            console.log(val);
@@ -411,7 +415,7 @@
                     return;
                 var data = $(this).data('datepicker') || $(this).data('datetimepicker');
                 if(data){
-                    var date = data.date || data._date;
+                    var date = $(this).data('time') || data.date || data._date;
                     if(date && date != new Date()){
                         var $input = this.tagName == 'INPUT' ? $(this) : $('input',this);
                         $input.val(Number(date));
