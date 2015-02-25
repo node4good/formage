@@ -82,10 +82,10 @@ block body
                                             - if (doc[field] && doc[field].public_id)
                                                 a(href=url)
                                                     img(src=cloudinary.url(doc[field].public_id + '.png', { width: 80, height: 80, crop: 'fill' }))
-                                        - else if (editable)
-                                            a(href=url) #{doc[field]}
+                                        - else if (editable && !/<.*>/.test(doc[field] || ''))
+                                            a(href=url) !{doc[field]}
                                         - else
-                                            p #{doc[field]}
+                                            p !{doc[field]}
 
                                 td.span2.btn-group
                                     a.btn.btn-primary(href=url) Edit
