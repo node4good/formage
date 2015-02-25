@@ -337,21 +337,25 @@ exports.RefWidget = exports.ChoicesWidget.extend({
         }
         else
             qry = {};
-        this.ref.find(qry).limit(self.limit).exec(function (err, objects) {
-            if (err) {
-                callback(err);
-            } else {
-                self.choices = [];
-                for (var i = 0; i < objects.length; i++) {
-                    var label = objects[i].name || objects[i].title || objects[i].toString;
-                    if (typeof(label) == 'function') {
-                        label = label.call(objects[i]);
+        if (!this.ref.hasOwnProperty('find')) {
+            return base.call(self, callback);
+        } else {
+            this.ref.find(qry).limit(self.limit).exec(function (err, objects) {
+                if (err) {
+                    callback(err);
+                } else {
+                    self.choices = [];
+                    for (var i = 0; i < objects.length; i++) {
+                        var label = objects[i].name || objects[i].title || objects[i].toString;
+                        if (typeof(label) == 'function') {
+                            label = label.call(objects[i]);
+                        }
+                        self.choices.push([objects[i].id, label]);
                     }
-                    self.choices.push([objects[i].id, label]);
+                    return base.call(self, callback);
                 }
-                return base.call(self, callback);
-            }
-        });
+            });
+        }
     }
 });
 
