@@ -117,9 +117,7 @@ MongooseAdmin.prototype.registerMongooseModel = function (name, model, fields, o
         label: 'Delete',
         func: function (user, ids, callback) {
             if(MongooseAdmin.singleton.ignoreDependencies)
-                return model.remove({_id: {'$in': ids}}, function(err) {
-                    return callback(err);
-                });
+                return removeDocs(ids,callback);
 
             //noinspection JSUnresolvedFunction
             async.map(
@@ -129,13 +127,26 @@ MongooseAdmin.prototype.registerMongooseModel = function (name, model, fields, o
                     if (err) return callback(err);
                     results = _(results).compact().object().valueOf();
                     var with_deps = ids.filter(function (id) {return id in results;});
+                    if(with_deps.length)
+                        return callback(new Error("can't delete " + with_deps.join(',') + " as they have dependencies"));
+
                     var no_dependencies = _.difference(ids, with_deps);
-                    return model.remove({_id: {'$in': no_dependencies}}, function(err, docs) {
-                        err = err || (!with_deps.length)? null : new Error("can't delete " + with_deps.join(',') + " as they have dependencies");
-                        return callback(err)
-                    });
+                    removeDocs(no_dependencies,callback);
                 }
             );
+
+            function removeDocs(ids,cbk){
+                model.find().where('_id').in(ids).exec(function(err,docs){
+                    if(err)
+                        return cbk(err);
+
+                    async.each(docs,function(doc,cbk){
+                        doc.remove(cbk);
+                    },function(err){
+                        cbk(err);
+                    });
+                });
+            }
         }
     });
     if(model.schema.paths._preview){
