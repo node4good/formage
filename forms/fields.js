@@ -628,7 +628,7 @@ var TempFileField = exports.TempFileField = BaseField.extend({
                 this.value = {
                     path:uploaded_file.path,
                     size: uploaded_file.size,
-                    originalFilename:file.originalFilename,
+                    originalFilename:uploaded_file.originalFilename,
                     timestamp:Date.now()
                 };
         }
