@@ -2,7 +2,7 @@
 if (!module.parent) console.error('Please don\'t call me directly.I am just the main app\'s minion.') || process.process.exit(1);
 
 var forms = require('./forms')
-    , mongoose = require.main.require('mongoose')
+    , mongoose = require('mongoose')
     , fields = forms.fields
     , widgets = forms.widgets
     , MongooseForm = forms.forms.MongooseForm
@@ -110,7 +110,13 @@ var _JestAdminResource = jest.Resource.extend({
                 obj['$where'] = query;
                 qry = model.find(obj);
             }
-            else{
+            else if(Array.isArray(data.query)){
+                qry = model.find(obj).or(data.query.map(function(field){
+                    var obj = {};
+                    obj[field] = new RegExp('^' + escaped_filters);
+                    return obj;
+                }));
+            }else{
                 qry = model.find(obj).where(data.query,new RegExp('^' + escaped_filters));
             }
             qry.limit(20).exec(function (err, results) {

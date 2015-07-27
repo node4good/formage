@@ -11,7 +11,7 @@ var Class = require('sji'),
     widgets = require('./widgets'),
     path = require('path'),
     common = require('./common');
-var mongoose = require.main.require('mongoose');
+var mongoose = require('mongoose');
 
 
 var FORM_EXCLUDE_FIELDS = ['__v'];

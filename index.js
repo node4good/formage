@@ -4,7 +4,7 @@ if (!module.parent) console.error('Please don\'t call me directly.I am just the 
 var MongooseAdmin = require('./MongooseAdmin.js'),
     path = require('path'),
     routes = require('./routes'),
-    express = require.main.require('express'),
+    express = require('express'),
     jade = require('jade');
 
 exports.forms = require('./forms');

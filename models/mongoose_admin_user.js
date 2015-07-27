@@ -1,7 +1,7 @@
 'use strict';
 if (!module.parent) console.error('Please don\'t call me directly.I am just the main app\'s minion.') || process.process.exit(1);
 
-var mongoose = require.main.require('mongoose');
+var mongoose = require('mongoose');
 var crypto = require('crypto');
 
 //noinspection SpellCheckingInspection
@@ -26,13 +26,13 @@ var AdminUserData = new mongoose.Schema({
     permissions: [
         {
             type: mongoose.Schema.ObjectId,
-            ref: '_MongooseAdminPermission',
+            ref: 'MongooseAdminPermission',
             query:'name'
         }
     ],
     lastVisit:{type:Date,'default':Date.now}
 }, {strict: true});
-var AdminUserModel = mongoose.model('_MongooseAdminUser', AdminUserData);
+var AdminUserModel = mongoose.model('MongooseAdminUser', AdminUserData);
 
 
 function MongooseAdminUser(data) {
@@ -50,7 +50,10 @@ MongooseAdminUser.fromSessionStore = function (sessionStore) {
 };
 
 MongooseAdminUser.ensureExists = function (username, password, callback) {
-    AdminUserModel.findOne({'username': username}, function (err, adminUserData) {
+    console.log(username)
+    AdminUserModel.findOne({'username': username}).exec(function (err, adminUserData) {
+        console.error(err);
+        console.log(adminUserData);
         if (err) return callback(err);
         if (!adminUserData) {
             adminUserData = new AdminUserModel();
@@ -59,6 +62,7 @@ MongooseAdminUser.ensureExists = function (username, password, callback) {
         adminUserData.passwordHash = crypt.encryptSync(password);
         adminUserData.is_superuser = true;
         adminUserData.save(function (err) {
+            console.log(password);
             if (err) {
                 console.log('Unable to create or update admin user because: ' + err);
                 callback('Unable to create or update admin user', null);
@@ -71,7 +75,9 @@ MongooseAdminUser.ensureExists = function (username, password, callback) {
 };
 
 MongooseAdminUser.getByUsernamePassword = function (username, password, callback) {
-    mongoose.model('_MongooseAdminUser').findOne({'username': username}, function (err, adminUserData) {
+    console.log(arguments);
+    mongoose.model('MongooseAdminUser').findOne({'username': username}).exec(function (err, adminUserData) {
+        console.log(arguments);
         if (err) return callback('Unable to get admin user');
         if (!adminUserData) return callback();
         if (!crypt.compareSync(password, adminUserData.passwordHash)) {

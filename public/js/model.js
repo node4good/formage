@@ -80,7 +80,12 @@ $(function() {
         var msg = 'Are you sure you want to ' + $(this).text().toLowerCase() + ' ' + ids.length + ' documents?';
 
         function fireAction(data){
-            $.post(url + '/action/' + action_id, { ids: ids,data:data }).always(function(data) {
+            $.ajax({
+                url: url + '/action/' + action_id,
+                type:'POST',
+                contentType:'application/json',
+                data: JSON.stringify({ids: ids, data: data})
+            }).always(function(data) {
                 if (data.responseText) data = JSON.parse(data.responseText);
                 if (data.error) {
                     bootbox.dialog("Some documents failed: " + data.error, [{

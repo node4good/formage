@@ -1,7 +1,7 @@
 'use strict';
 if (!module.parent) console.console.error('Please don\'t call me directly.I am just the main app\'s minion.') || process.process.exit(1);
 
-var mongoose = require.main.require('mongoose');
+var mongoose = require('mongoose');
 var AuditData = new mongoose.Schema({
     created: {type: Date, required: true, 'default': new Date},
     user: {type: mongoose.Schema.ObjectId, required: true},
@@ -11,7 +11,7 @@ var AuditData = new mongoose.Schema({
     action: {type: String, required: true},
     note: String
 });
-'_MongooseAdminAudit' in Object.keys(mongoose['models']) || mongoose.model('_MongooseAdminAudit', AuditData);
+'MongooseAdminAudit' in Object.keys(mongoose['models']) || mongoose.model('MongooseAdminAudit', AuditData);
 
 exports.MongooseAdminAudit = function (fields) {
     this.fields = fields || {};
@@ -30,7 +30,7 @@ exports.MongooseAdminAudit = function (fields) {
  * @api private
  */
 exports.MongooseAdminAudit.logActivity = function (user, modelName, collectionName, documentId, action, note, onReady) {
-    var auditLogData = new mongoose.model('_MongooseAdminAudit')();
+    var auditLogData = new mongoose.model('MongooseAdminAudit')();
     auditLogData.user = user.fields._id;
     auditLogData.model = modelName;
     auditLogData.collectionName = collectionName;

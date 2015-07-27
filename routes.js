@@ -19,7 +19,10 @@ var json_routes = {
             if (!admin_user)
                 return res.send(401, 'Not authorized');
 
+            console.log('logged in');
             req.session._mongooseAdminUser = admin_user.toSessionStore();
+            req.session.save();
+            console.log(req.session);
             return res.json({});
         });
     },
@@ -132,6 +135,7 @@ var json_routes = {
         var admin_user = MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser);
         if (!admin_user) return res.send(401);
 
+        console.log(req.body);
         /** @namespace req.params.actionId */
         return MongooseAdmin.singleton.actionDocuments(admin_user, req.params.collectionName, req.params.actionId, req.body, function (err,result) {
             if (err) {
@@ -443,7 +447,7 @@ var routes = {
 
                 var actions = model.options.actions || [];
 
-                res.locals({
+                _.extend(res.locals,{
                     adminTitle: MongooseAdmin.singleton.getAdminTitle(),
                     pageTitle: 'Admin - ' + model.model.label,
                     rootPath: MongooseAdmin.singleton.root,
@@ -526,7 +530,7 @@ var routes = {
         var name = req.params.modelName,
             doc_id = req.params['documentId'],
             model = MongooseAdmin.singleton.models[name],
-            target_url = req.path.split('/document/')[0].slice(1) + '?saved=true';
+            target_url = MongooseAdmin.singleton.root + '/' + req.path.split('/document/')[0].slice(1) + '?saved=true';
 
         if (doc_id === 'new') doc_id = null;
         if (doc_id === 'single') doc_id = req.body['_id'];
@@ -537,13 +541,13 @@ var routes = {
                     return renderForm(res, err, model, true);
                 return res.send(500);
             }
-            if(preview){
-                var match,regex = /{([a-zA-Z0-9_!$]+)}/g;
-                var url = model.options.preview.replace(regex,function(param){
-                    return doc[param.substr(1,param.length-2)];
-                });
-                return res.redirect(url);
-            }
+            //if(preview){
+            //    var match,regex = /{([a-zA-Z0-9_!$]+)}/g;
+            //    var url = model.options.preview.replace(regex,function(param){
+            //        return doc[param.substr(1,param.length-2)];
+            //    });
+            //    return res.redirect(url);
+            //}
             if(req.query._dialog && doc){
                 var docName = doc.name || doc.title || doc.toString;
                 if(typeof(docName) == 'function')
@@ -616,7 +620,9 @@ var routes = {
 
 var auth = function(role) {
     return function(req, res, next) {
+        console.log(req.session);
         var admin_user = MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser);
+
         if (!admin_user)
             return res.redirect(MongooseAdmin.singleton.buildPath('/login'));
 
@@ -625,11 +631,9 @@ var auth = function(role) {
 
         req.admin_user = admin_user;
 
-		res.locals({
-			tabs:(MongooseAdmin.singleton.tabs || []).filter(function(tab){
+		res.locals.tabs = (MongooseAdmin.singleton.tabs || []).filter(function(tab){
                 return !tab.permission || permissions.hasPermissions(admin_user,'',tab.permission);
-            })
-		});
+            });
         next();
     };
 };
@@ -638,7 +642,8 @@ function userPanel(req,res,next){
     MongooseAdmin.singleton.renderUserPanel(req,function(err,html){
         if (err) return res.redirect(MongooseAdmin.singleton.buildPath('/error'));
 
-        res.locals({userPanel:html,tab:''});
+        res.locals.userPanel = html;
+        res.locals.tab = '';
         next();
     });
 }
@@ -647,7 +652,7 @@ function userPanel(req,res,next){
 module.exports = function (admin, outer_app, root) {
     MongooseAdmin = admin;
 
-    var app = require.main.require('express')();
+    var app = require('express')();
     app.engine('jade', require('jade').__express);
     app.set('views', __dirname + '/views');
 
@@ -675,7 +680,7 @@ module.exports = function (admin, outer_app, root) {
 		MongooseAdmin.singleton.tabs.forEach(function(tab){
 			tab.handler.engine('jade', require('jade').__express);
 			//tab.handler.set("view options", { layout: __dirname + "/views/layout.jade" });
-			tab.handler.locals({rootPath:root,tab:tab.root});
+            _.extend(tab.handler.locals,{rootPath:root,tab:tab.root});
 			tab.handler.use(auth(tab.permission));
 			tab.handler.loadRoutes();
 			app.use('/' + tab.root, tab.handler);

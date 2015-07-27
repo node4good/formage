@@ -2,7 +2,7 @@
 if (!module.parent) console.error('Please don\'t call me directly.I am just the main app\'s minion.') || process.process.exit(1);
 
 var async = require('async'),
-    mongoose = require.main.require('mongoose'),
+    mongoose = require('mongoose'),
     _ = require('lodash');
 
 var Schema = new mongoose.Schema({
@@ -13,7 +13,7 @@ Schema.methods.toString = function(){
     return this.name;
 };
 
-exports.model = mongoose.model('_MongooseAdminPermission', Schema,'mongooseadminpermissions');
+exports.model = mongoose.model('MongooseAdminPermission', Schema,'mongooseadminpermissions');
 
 var permodel_permission = ['view','delete','create','update','order'];
 

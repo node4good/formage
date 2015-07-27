@@ -140,3 +140,7 @@ p.alert-error {
 #content .span9{
 	width: calc(100% - 260px);
 }
+
+input{
+    box-sizing:content-box;
+}

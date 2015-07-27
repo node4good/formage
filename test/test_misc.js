@@ -4,7 +4,6 @@ var express = require('express');
 var request = require('request');
 //var supertest = require('supertest');
 var mongoose = require('mongoose');
-require.main.require = require;
 //var app = require('../example/app').app;
 var _ = require('lodash');
 

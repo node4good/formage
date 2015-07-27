@@ -1,13 +1,16 @@
 'use strict';
 var MongooseAdminUser = require('./models/mongoose_admin_user.js').MongooseAdminUser,
-    _ = require('lodash'),
-    async = require('async'),
-    permissions = require('./models/permissions'),
-    mongoose = require.main.require('mongoose'),
     AdminForm = require('./AdminForm').AdminForm,
+    _ = require('lodash'),
     forms = require('./forms').forms,
-    dependencies = require('./dependencies');
+    async = require('async'),
 
+
+    dependencies = require('./dependencies');
+    var permissions = require('./models/permissions');
+
+
+var mongoose = require('mongoose');
 /**
  * MongooseAdmin Constructor
  *
@@ -116,6 +119,7 @@ MongooseAdmin.prototype.registerMongooseModel = function (name, model, fields, o
         value: 'delete',
         label: 'Delete',
         func: function (user, ids, callback) {
+            console.trace();
             if(MongooseAdmin.singleton.ignoreDependencies)
                 return removeDocs(ids,callback);
 
@@ -136,6 +140,7 @@ MongooseAdmin.prototype.registerMongooseModel = function (name, model, fields, o
             );
 
             function removeDocs(ids,cbk){
+                console.log(ids);
                 model.find().where('_id').in(ids).exec(function(err,docs){
                     if(err)
                         return cbk(err);
@@ -301,7 +306,7 @@ MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, cou
         });
     }
     query._admin = true;
-    return query.skip(start).limit(count).execFind(function (err, documents) {
+    return query.skip(start).limit(count).exec(function (err, documents) {
         if (err) {
             console.error('Unable to get documents for model because: ' + err);
             onReady(null, []);
@@ -535,6 +540,7 @@ MongooseAdmin.prototype.ensureUserExists = function(username, password) {
  * @api public
  */
 MongooseAdmin.prototype.login = function(username, password, onReady) {
+    console.log(arguments);
     MongooseAdminUser.getByUsernamePassword(username, password, function(err, adminUser) {
         onReady(err, adminUser);
     });
@@ -548,7 +554,7 @@ exports.AdminForm = AdminForm;
 exports.AdminUserForm = require('./AdminForm').AdminUserForm;
 
 MongooseAdmin.prototype.registerAdminUserModel = function(name,options){
-    this.registerMongooseModel(name || 'Admin Users',mongoose.model('_MongooseAdminUser'),null, _.extend({
+    this.registerMongooseModel(name || 'Admin Users',mongoose.model('MongooseAdminUser'),null, _.extend({
         form:exports.AdminUserForm,
         list:['username'],
         order_by:['username']

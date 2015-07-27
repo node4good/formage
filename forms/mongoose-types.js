@@ -2,7 +2,7 @@
 if (!module.parent) console.error('Please don\'t call me directly.I am just the main app\'s minion.') || process.process.exit(1);
 
 var util = require('util');
-var mongoose = require.main.require('mongoose');
+var mongoose = require('mongoose');
 
 
 var CDN_PREFIX = '';

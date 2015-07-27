@@ -17,7 +17,7 @@ try {
    cloudinary = require('cloudinary');
  } catch(ex) {}
 
-var mongoose = require.main.require('mongoose');
+var mongoose = require('mongoose');
 
 var UPLOAD_DIRECTROY =  (path.join(__dirname, '..','..', '..', 'public', 'cdn') + '/');
 
