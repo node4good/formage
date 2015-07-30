@@ -19,10 +19,8 @@ var json_routes = {
             if (!admin_user)
                 return res.send(401, 'Not authorized');
 
-            console.log('logged in');
             req.session._mongooseAdminUser = admin_user.toSessionStore();
             req.session.save();
-            console.log(req.session);
             return res.json({});
         });
     },
@@ -135,7 +133,6 @@ var json_routes = {
         var admin_user = MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser);
         if (!admin_user) return res.send(401);
 
-        console.log(req.body);
         /** @namespace req.params.actionId */
         return MongooseAdmin.singleton.actionDocuments(admin_user, req.params.collectionName, req.params.actionId, req.body, function (err,result) {
             if (err) {
@@ -239,7 +236,7 @@ function renderForm(res, form, model, allow_delete, clone,dialog) {
                 model: model.model,
                 model_name: model.modelName,
                 model_label: model.label,
-
+                form:form,
                 renderedDocument: html,
                 renderedHead: head,
                 document: {},

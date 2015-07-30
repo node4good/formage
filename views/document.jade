@@ -4,13 +4,13 @@ block head
     script.
         var model = '#{model_name}';
         var dialog = #{dialog||false};
-    - if (model.static)
-        - if (model.static.js)
-            - each f in model.static.js
-                script(src=f)
-        - if (model.static.css)
-            - each f in model.static.css
-                link(rel='stylesheet', href=f)
+    - if (form.static)
+        - if (form.static.js)
+            - each f in form.static.js.valueOf()
+                script(src="#{rootPath}" + f)
+        - if (form.static.css)
+            - each f in form.static.css.valueOf()
+                link(rel='stylesheet', href="#{rootPath}" + f)
 
 block breadcrumb
     span.divider /
