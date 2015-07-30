@@ -140,7 +140,6 @@ MongooseAdmin.prototype.registerMongooseModel = function (name, model, fields, o
             );
 
             function removeDocs(ids,cbk){
-                console.log(ids);
                 model.find().where('_id').in(ids).exec(function(err,docs){
                     if(err)
                         return cbk(err);
@@ -540,7 +539,6 @@ MongooseAdmin.prototype.ensureUserExists = function(username, password) {
  * @api public
  */
 MongooseAdmin.prototype.login = function(username, password, onReady) {
-    console.log(arguments);
     MongooseAdminUser.getByUsernamePassword(username, password, function(err, adminUser) {
         onReady(err, adminUser);
     });

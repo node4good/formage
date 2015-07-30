@@ -50,10 +50,7 @@ MongooseAdminUser.fromSessionStore = function (sessionStore) {
 };
 
 MongooseAdminUser.ensureExists = function (username, password, callback) {
-    console.log(username)
     AdminUserModel.findOne({'username': username}).exec(function (err, adminUserData) {
-        console.error(err);
-        console.log(adminUserData);
         if (err) return callback(err);
         if (!adminUserData) {
             adminUserData = new AdminUserModel();
@@ -62,7 +59,6 @@ MongooseAdminUser.ensureExists = function (username, password, callback) {
         adminUserData.passwordHash = crypt.encryptSync(password);
         adminUserData.is_superuser = true;
         adminUserData.save(function (err) {
-            console.log(password);
             if (err) {
                 console.log('Unable to create or update admin user because: ' + err);
                 callback('Unable to create or update admin user', null);
@@ -75,9 +71,7 @@ MongooseAdminUser.ensureExists = function (username, password, callback) {
 };
 
 MongooseAdminUser.getByUsernamePassword = function (username, password, callback) {
-    console.log(arguments);
     mongoose.model('MongooseAdminUser').findOne({'username': username}).exec(function (err, adminUserData) {
-        console.log(arguments);
         if (err) return callback('Unable to get admin user');
         if (!adminUserData) return callback();
         if (!crypt.compareSync(password, adminUserData.passwordHash)) {

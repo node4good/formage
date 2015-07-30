@@ -244,7 +244,7 @@ var BaseForm = exports.BaseForm = Class.extend({
         } else {
             render_fields(Object.keys(self.fields));
         }
-        if (_.indexOf(self.exclude, 'id') === -1 && self.instance) {
+        if (_.indexOf(self.exclude, 'id') === -1 && self.instance && !self.fields._id) {
             res.write('\n<input type="hidden" id="document_id" name="_id" value="' + (self.instance.isNew ? '' : self.instance.id) + '" />\n');
         }
     },
@@ -518,7 +518,7 @@ var MongooseForm = exports.MongooseForm = BaseForm.extend({
                     else
                         newArray.push(obj);
                 });
-                if(originalArray){
+                if(originalArray && Array.isArray(originalArray)){
                     originalArray.forEach(function(item){
                         if(item.remove)
                             item.remove();
@@ -558,7 +558,8 @@ var MongooseForm = exports.MongooseForm = BaseForm.extend({
             }
             else {
                 if(err.code == 11000){
-                    err.message = 'Conflict in DB: "' + /\{\s*\:\s*"(.*?)"\s*\}/.exec(err.message)[1] + '" must be unique.';
+                    var match = /\{\s*\:\s*"(.*?)"\s*\}/.exec(err.message);
+                    err.message = 'Conflict in DB: "' + (match ? match[1] : '') + '" must be unique.';
                 }
                 self.errors['__self__'] = err.message;
             }
