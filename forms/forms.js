@@ -124,7 +124,15 @@ var BaseForm = exports.BaseForm = Class.extend({
         });
     },
     get_value: function (field_name) {
-        return this.data[field_name];
+        if(this.data[field_name])
+            return this.data[field_name];
+        // support new body parser
+
+        var parts = field_name.split('.');
+        var inner = this.data;
+        while(parts.length && inner)
+            inner = inner[parts.shift()];
+        return inner;
     },
     init_fields: function () {
         this.get_fields();
@@ -482,7 +490,8 @@ var MongooseForm = exports.MongooseForm = BaseForm.extend({
 
 
     get_value: function (field_name) {
-        return (typeof(this.data[field_name]) === 'undefined' || this.data[field_name] == null) ? this.instance.get(field_name) : this.data[field_name];
+        var fromData = this._super(field_name);
+        return (typeof(fromData) === 'undefined' || fromData == null) ? this.instance.get(field_name) : fromData;
     },
 
     /**
