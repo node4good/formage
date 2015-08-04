@@ -43,9 +43,8 @@ html(lang='en')
                                 a(href='#{rootPath}/') #{adminTitle}
                             block breadcrumb
                         - if(typeof(userPanel) != 'undefined' && userPanel)
-                            .user-panel
+                            .user-panel.
                                 !{userPanel}
-
         .container
             #content
                 block body

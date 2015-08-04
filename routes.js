@@ -617,7 +617,6 @@ var routes = {
 
 var auth = function(role) {
     return function(req, res, next) {
-        console.log(req.session);
         var admin_user = MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser);
 
         if (!admin_user)
