@@ -71,34 +71,39 @@ function buildModelFilters (model, filters, dict) {
                     dict.push({key:filter,values:model.schema.paths[filter].options.enum.map(function(option) { return {value:option,text:option,isString:true}; })});
                     return cbk();
                 }
-                model.collection.distinct(filter, function (err, results) {
-                    if (results) {
-                        if (results[0] && Array.isArray(results[0])) {
-                            results = _.flatten(results);
-                        }
-                        if (results.length > 30)
-                            results.splice(5);
+                if(model.schema.paths[filter] && model.schema.paths[filter].options && model.schema.paths[filter].options.ref){
+                    var f = {key:filter};
+                    dict.push(f);
+                    mongoose.model(model.schema.paths[filter].options.ref).find().limit(40).exec(function(err,docs){
+                        if(err)
+                            return cbk(err);
 
-                        if (model.schema.paths[filter] && model.schema.paths[filter].options.ref) {
-                            mongoose.model(model.schema.paths[filter].options.ref).find()
-                                .where('_id').in(results)
-                                .exec(function (err, refs) {
-                                    if (refs)
-                                        dict.push({ key: filter, isString: false, values: _.map(refs, function (ref) {
-                                            return { value: ref.id, text: ref.toString()};
-                                        }) });
-                                    cbk(err);
-                                });
-                        }
-                        else {
-                            dict.push({key: filter, values: _.map(results, function (result) {
-                                return { value: result, text: result };
-                            }), isString: model.schema.paths[filter] && model.schema.paths[filter].options && model.schema.paths[filter].options.type == String});
-                            cbk();
-                        }
-                    }
-                    else
-                        cbk(err);
+                        f.values = docs.map(function(doc){
+                            return {value:doc._id,text:doc + '',isString:false};
+                        });
+                        cbk();
+                    });
+                    return;
+                }
+                var sel = {};
+                sel[filter] = 1;
+                // dont use distinct
+                model.find({}).select(sel).lean(true).limit(100).exec(function(err,docs){
+                    if(err)
+                        return cbk(err);
+                    var distinct = {};
+                    docs.forEach(function(doc){
+                        distinct[doc[filter]] = true;
+                    });
+
+                    var isStr = model.schema.paths[filter] && model.schema.paths[filter].options && model.schema.paths[filter].options.type == String;
+                    dict.push({
+                        key: filter,
+                        values: Object.keys(distinct).map(function (result) {
+                            return { value: result, text: result,isString:isStr };
+                        })
+                    });
+                    cbk();
                 });
 
             }, function () {
