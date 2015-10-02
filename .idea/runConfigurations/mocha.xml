@@ -6,8 +6,9 @@
     <envs>
       <env name="CLOUDINARY_URL" value="cloudinary://585968645961973:QKIr5QDRS3mp9F9QYxa3DC7-Omg@ho0xbnxzd" />
     </envs>
-    <ui>BDD</ui>
+    <ui>bdd</ui>
     <extra-mocha-options />
+    <test-kind>DIRECTORY</test-kind>
     <test-directory>$PROJECT_DIR$/test</test-directory>
     <recursive>false</recursive>
     <RunnerSettings RunnerId="MochaDebugRunner" />
