@@ -277,6 +277,7 @@ var parseFilters = function (model_settings, filters, search,dontRegex) {
         if (model.schema && model.schema.paths[key]) {
             var type = model.schema.paths[key].options.type;
             if (type == String) {
+                value = (value || '').toString().trim();
                 new_filters[key] = dontRegex ? value : new RegExp(value, 'i');
             }
             else if (type == Number) {
@@ -319,6 +320,8 @@ function getSearchQuery(model,searchValue){
 
     var valueEscaped = escapeRegExp(searchValue);
     var query;
+    if(typeof(searchRule) == 'function')
+        return searchRule(searchValue);
     if(Array.isArray(searchRule)){
 //        query = searchRule.map(function(field){
 //            return '/__value__/i.test(this.' + field + ')';
@@ -527,7 +530,7 @@ var routes = {
         var name = req.params.modelName,
             doc_id = req.params['documentId'],
             model = MongooseAdmin.singleton.models[name],
-            target_url = MongooseAdmin.singleton.root + '/' + req.path.split('/document/')[0].slice(1) + '?saved=true';
+            target_url = MongooseAdmin.singleton.root + req.path.split('?')[0] + '?saved=true';
 
         if (doc_id === 'new') doc_id = null;
         if (doc_id === 'single') doc_id = req.body['_id'];

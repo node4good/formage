@@ -120,7 +120,7 @@
 		},
 		
 		set: function() {
-			var formated = DPGlobal.formatDate(this.date, this.format);
+			var formated = Number(this.date) === 0 ? '' : DPGlobal.formatDate(this.date, this.format);
 			if (!this.isInput) {
 				if (this.component){
 					this.element.find('input').prop('value', formated);
@@ -151,11 +151,12 @@
 		},
 		
 		update: function(newDate){
-			this.date = DPGlobal.parseDate(
-				typeof newDate === 'string' ? newDate : (this.isInput ? this.element.prop('value') : this.element.data('date')),
-				this.format
-			);
-			this.viewDate = new Date(this.date.getFullYear(), this.date.getMonth(), 1, 0, 0, 0, 0);
+            var toParse = typeof newDate === 'string' ? newDate : (this.isInput ? this.element.prop('value') : this.element.data('date'));
+            if(toParse === '')
+                this.date = new Date(0);
+            else
+                this.date = DPGlobal.parseDate(toParse, this.format);
+            this.viewDate = new Date(this.date.getFullYear(), this.date.getMonth(), 1, 0, 0, 0, 0);
 			this.fill();
 		},
 		

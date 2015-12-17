@@ -124,7 +124,7 @@ var BaseForm = exports.BaseForm = Class.extend({
         });
     },
     get_value: function (field_name) {
-        if(this.data[field_name])
+        if(field_name in this.data)
             return this.data[field_name];
         // support new body parser
 

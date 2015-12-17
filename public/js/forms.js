@@ -41,13 +41,8 @@
 
             t.css('min-height', h2.height());
 
-            t.off('click').click(function (e) {
-                var is_closed = t.is('.closed');
-                if (!(is_closed || $(e.target).is(h2) || $(e.target).is(i)))
-                    return;
-
+            h2.off('click').click(function (e) {
                 i.toggleClass('icon-chevron-right icon-chevron-down');
-
                 t.toggleClass('closed');
                 div.stop(1, 1).slideToggle('fast');
             });
@@ -150,7 +145,7 @@
 
         self.add = function (e) {
             e.preventDefault();
-
+            e.stopPropagation();
             var li = $('<li />').hide()
                 .append(self.template)
                 .append(btn.delete())
@@ -412,6 +407,8 @@
 
             $('.nf_datepicker,.nf_timepicker').each(function(){
                 if($(this).is('[readonly]'))
+                    return;
+                if(!$(this).val())
                     return;
                 var data = $(this).data('datepicker') || $(this).data('datetimepicker');
                 if(data){
