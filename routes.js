@@ -274,9 +274,9 @@ var parseFilters = function (model_settings, filters, search,dontRegex) {
         catch(e){}
         var parts = key.split('__');
         key = parts[0];
-        if (model.schema && model.schema.paths[key]) {
+        if (model.schema && model.schema.paths[key] && typeof(value) != 'object') {
             var type = model.schema.paths[key].options.type;
-            if (type == String && typeof(value) != 'object') {
+            if (type == String) {
                 value = (value || '').toString().trim();
                 new_filters[key] = dontRegex ? value : new RegExp(value, 'i');
             }
