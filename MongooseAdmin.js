@@ -165,7 +165,7 @@ MongooseAdmin.prototype.registerMongooseModel = function (name, model, fields, o
 
     var filters = [];
     buildModelFilters(model, options.filters, filters);
-
+    options.limit = options.limit || function(user,query,cbk){ cbk(); };
     this.models[name] = {
         model: model,
         filters: filters,
@@ -174,6 +174,7 @@ MongooseAdmin.prototype.registerMongooseModel = function (name, model, fields, o
         label : options.label || model.label,
         fields: fields
     };
+
 
     console.log('\x1b[36mformage-admin:\x1b[0m %s', name);
 
@@ -234,7 +235,12 @@ MongooseAdmin.prototype.getRegisteredModels = function (user, callback) {
         })
         .filter(function (model) {
         return permissions.hasPermissions(user, model.modelName, 'view');
-    });
+    }).map(function(model){
+            return {
+                model:model,
+                createable:permissions.hasPermissions(user,model.modelName,'create')
+            };
+        });
     callback(null, out_models);
 };
 
@@ -246,21 +252,26 @@ MongooseAdmin.prototype.getRegisteredModels = function (user, callback) {
  *
  * @api public
  */
-MongooseAdmin.prototype.modelCounts = function(collectionName,filters, onReady) {
-    if(this.models[collectionName].is_single) {
+MongooseAdmin.prototype.modelCounts = function(user,collectionName,filters, onReady) {
+    var ModelObj = this.models[collectionName];
+    if(ModelObj.is_single) {
         onReady(null,1);
         return;
     }
-    var model = this.models[collectionName].model;
+    var query = ModelObj.model.count(filters);
+    ModelObj.options.limit(user,query,function(err){
+        if(err)
+            return onReady(err);
 
-    this.models[collectionName].model.count(filters, function(err, count) {
-        if (err) {
-            console.error('Unable to get counts for model because: ' + err);
-            onReady(null,0);
-        } else {
-            onReady(null, count);
-        }
-    });
+        query.exec(function(err, count) {
+            if (err) {
+                console.error('Unable to get counts for model because: ' + err);
+                onReady(null,0);
+            } else {
+                onReady(null, count);
+            }
+        });
+    })
 };
 
 var IS_OLD_MONGOOSE = Number(mongoose.version.split('.')[0]) < 3;
@@ -287,7 +298,7 @@ function mongooseSort(query,sort) {
  * @param sort
  * @param {Function} onReady
  */
-MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, count,filters,sort, onReady) {
+MongooseAdmin.prototype.listModelDocuments = function(user,collectionName, start, count,filters,sort, onReady) {
     var listFields = this.models[collectionName].options.list;
     if (!listFields) {
         return onReady(null, []);
@@ -310,38 +321,46 @@ MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, cou
         });
     }
     query._admin = true;
-    return query.skip(start).limit(count).exec(function (err, documents) {
-        if (err) {
-            console.error('Unable to get documents for model because: ' + err);
-            onReady(null, []);
-        } else {
-            var filteredDocuments = [];
-            documents.forEach(function (document) {
-                var d = {};
-                d['_id'] = document['_id'];
-                listFields.forEach(function (listField) {
-                    d[listField] = typeof(document[listField]) == 'function' ? document[listField]() : document.get(listField);
+    this.models[collectionName].options.limit(user,query,function(err){
+        if(err)
+            return onReady(err);
+        return query.skip(start).limit(count).exec(function (err, documents) {
+            if (err) {
+                console.error('Unable to get documents for model because: ' + err);
+                onReady(null, []);
+            } else {
+                var filteredDocuments = [];
+                documents.forEach(function (document) {
+                    var d = {};
+                    d['_id'] = document['_id'];
+                    listFields.forEach(function (listField) {
+                        d[listField] = typeof(document[listField]) == 'function' ? document[listField]() : document.get(listField);
+                    });
+                    filteredDocuments.push(d);
                 });
-                filteredDocuments.push(d);
-            });
 
-            onReady(null, filteredDocuments);
-        }
+                onReady(null, filteredDocuments);
+            }
+        });
     });
 };
 
 
-MongooseAdmin.prototype.getDocument = function(collectionName, documentId, onReady) {
+MongooseAdmin.prototype.getDocument = function(user,collectionName, documentId, onReady) {
     var self = this;
     var query = this.models[collectionName].model.findById(documentId);
     query._admin = true;
-    query.exec(function(err, document) {
-        if (err) {
-            console.log('Unable to get document because: ' + err);
-            onReady('Unable to get document', null);
-        } else {
-            onReady(null, document);
-        }
+    this.models[collectionName].options.limit(user,query,function(err){
+        if(err)
+            return onReady(err);
+        query.exec(function(err, document) {
+            if (err) {
+                console.log('Unable to get document because: ' + err);
+                onReady('Unable to get document', null);
+            } else {
+                onReady(null, document);
+            }
+        });
     });
 };
 

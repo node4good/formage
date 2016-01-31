@@ -5,17 +5,18 @@ block body
         h2 Model List
     ul.models
         - each model in allModels
-            - var url = rootPath + '/model/' + model.modelName
+            - var url = rootPath + '/model/' + model.model.modelName
             li
                 .btn-group.pull-right
-                    - if (model.is_single)
+                    - if (model.model.is_single)
                         a.btn(href='#{url}/document/single') Edit
                     - else
-                        a.btn(href='#{url}/document/new') New
+                        - if(model.createable)
+                            a.btn(href='#{url}/document/new') New
                         a.btn.btn-info(href=url)
-                            span(id='viewAll_#{model.modelName}') View All
-                a(href=url + (model.is_single ? '/document/single' : ''))
-                    h3 #{model.label}
+                            span(id='viewAll_#{model.model.modelName}') View All
+                a(href=url + (model.model.is_single ? '/document/single' : ''))
+                    h3 #{model.model.label}
 
 
 block scripts

@@ -143,7 +143,7 @@ p.error {
     line-height: 1.5em;
 }
 .nf_fieldset .field {
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 .nf_fieldset > i,.nf_listfield_container > i {
     position: absolute; top: 5px; left: 5px;

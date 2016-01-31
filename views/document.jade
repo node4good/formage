@@ -33,9 +33,10 @@ block body
             - each sub in subCollections
                 a.subCollection(href="#{rootPath}/model/#{sub.model}?#{sub.field}=#{sub.value}") #{sub.label} - #{sub.count? sub.count + ' Items' : 'No items'}
         p.submit.btn-group
-            button#saveButton.btn.btn-large.btn-primary(type='submit',data-saving-text="Saving...") Save
+            - if(editable)
+                button#saveButton.btn.btn-large.btn-primary(type='submit',data-saving-text="Saving...") Save
             a#cancelButton.btn.btn-large(href="#{rootPath}/model/#{model_name}") Cancel
-            - if (allow_delete)
+            - if (allow_delete && deleteable)
                 button#deleteButton.btn.btn-large.btn-danger(type='button',data-loading-text='Deleting...') Delete
             - each action in actions
                 - if (action.value != 'delete')

@@ -88,7 +88,7 @@ block body
                                             p !{doc[field]}
 
                                 td.span2.btn-group
-                                    a.btn.btn-primary(href=url) Edit
+                                    a.btn.btn-primary(href=url) #{editable ? 'Edit' : 'View'}
                                     - if (cloneable)
                                         a.btn(href=url+'?clone=true') Duplicate
                                     - if (model.options.preview)

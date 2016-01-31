@@ -202,7 +202,7 @@ var json_routes = {
 };
 
 
-function renderForm(res, form, model, allow_delete, clone,dialog) {
+function renderForm(res, form, model, allow_delete, clone,dialog,user) {
     if (clone)
         form.exclude.push('id');
 
@@ -228,6 +228,9 @@ function renderForm(res, form, model, allow_delete, clone,dialog) {
             var html = form.to_html(),
                 head = form.render_head();
 
+            var actions = (form.instance.isNew ? [] : model.options.actions || []).filter(function(action){
+                return permissions.hasPermissions(user, model.modelName,action.value);
+            });
             return res.render('document.jade', {
                 rootPath: MongooseAdmin.singleton.root,
                 adminTitle: MongooseAdmin.singleton.getAdminTitle(),
@@ -240,7 +243,7 @@ function renderForm(res, form, model, allow_delete, clone,dialog) {
                 renderedDocument: html,
                 renderedHead: head,
                 document: {},
-                actions: form.instance.isNew ? [] : model.options.actions || [],
+                actions: actions,
                 preview:model.options.preview,
                 errors: form.errors ? Object.keys(form.errors).length > 0 : false,
                 generalError:form.errors['__self__'] || '',
@@ -248,6 +251,8 @@ function renderForm(res, form, model, allow_delete, clone,dialog) {
                 layout: 'layout.jade',
                 dialog:dialog,
                 pretty: true,
+                editable: permissions.hasPermissions(user, model.modelName, 'update'),
+                deleteable: permissions.hasPermissions(user, model.modelName, 'delete'),
                 subCollections:subs
             });
         })
@@ -401,12 +406,11 @@ var routes = {
         delete query._search;
 
         var filters = parseFilters(model, query, search_value);
-
-        MongooseAdmin.singleton.modelCounts(name, filters, function (err, total_count) {
+        MongooseAdmin.singleton.modelCounts(req.admin_user,name, filters, function (err, total_count) {
             if (err)
                 return res.redirect('/');
 
-            MongooseAdmin.singleton.listModelDocuments(name, start, count, filters, sort, function (err, documents) {
+            MongooseAdmin.singleton.listModelDocuments(req.admin_user,name, start, count, filters, sort, function (err, documents) {
                 if (err)
                     return res.redirect('/');
 
@@ -445,7 +449,9 @@ var routes = {
                     });
                 };
 
-                var actions = model.options.actions || [];
+                var actions = (model.options.actions || []).filter(function(action){
+                    return permissions.hasPermissions(req.admin_user, name,action.value);
+                });
 
                 _.extend(res.locals,{
                     adminTitle: MongooseAdmin.singleton.getAdminTitle(),
@@ -498,7 +504,7 @@ var routes = {
                 if (model.is_single)
                     model.model.findOne().exec(cb);
                 else if (id !== 'new')
-                    MongooseAdmin.singleton.getDocument(name, id, cb);
+                    MongooseAdmin.singleton.getDocument(req.admin_user,name, id, cb);
                 else
                     cb(null, null);
             },
@@ -522,7 +528,7 @@ var routes = {
 
             var editing = !model.is_single && id !== 'new',
                 clone = editing ? req.query.clone : false;
-            renderForm(res, form, model, editing, clone, !!req.query._dialog);
+            renderForm(res, form, model, editing, clone, !!req.query._dialog,req.admin_user);
         });
     },
 
@@ -538,7 +544,7 @@ var routes = {
         var callback = function (err,doc) {
             if (err) {
                 if (err.to_html)
-                    return renderForm(res, err, model, true);
+                    return renderForm(res, err, model, true,req.admin_user);
                 return res.send(500);
             }
             //if(preview){
@@ -661,8 +667,8 @@ module.exports = function (admin, outer_app, root) {
     app.get('/login', routes.login);
     app.get('/logout', routes.logout);
     app.get('/model/:modelName', auth('view'),userPanel, routes.model);
-    app.get('/model/:modelName/document/:documentId', auth('update'), routes.document);
-    app.post('/model/:modelName/document/:documentId', auth(), routes.documentPost);
+    app.get('/model/:modelName/document/:documentId', auth('view'), routes.document);
+    app.post('/model/:modelName/document/:documentId', auth('update'), routes.documentPost);
 	app.get('/dialog/:dialogName',auth(),routes.dialogGet);
 	app.post('/dialog/:dialogName',auth(),routes.dialogPost);
 

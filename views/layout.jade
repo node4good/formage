@@ -26,9 +26,10 @@ html(lang='en')
                         block nav
                             .btn-group.pull-right
                                 - each t in tabs
-                                    a.btn(href='#{rootPath}/#{t.root}',class=tab == t.root ? 'active' : '')
-                                        i.icon-white
-                                        | #{t.label}
+                                    if !t.hide
+                                        a.btn(href='#{rootPath}/#{t.root}',class=tab == t.root ? 'active' : '')
+                                            i.icon-white
+                                            | #{t.label}
                                 a.btn.btn-inverse(href='#{rootPath}/')
                                     i.icon-home.icon-white
                                     | Admin

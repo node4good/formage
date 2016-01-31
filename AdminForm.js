@@ -150,7 +150,7 @@ var crypt = require('./models/mongoose_admin_user').crypt;
 exports.AdminUserForm = AdminForm.extend({
     init:function(request,options)
     {
-        this._super(request,options,mongoose.model('_MongooseAdminUser'));
+        this._super(request,options,mongoose.model('MongooseAdminUser'));
     }
     ,get_fields:function(){
         this._super();
@@ -165,7 +165,8 @@ exports.AdminUserForm = AdminForm.extend({
 
         this.fields['password_again'] = new forms.fields.StringField({widget:forms.widgets.PasswordWidget,label:'Again'});
 
-        this.fieldsets[0].fields = ['username','is_superuser','permissions','current_password','password','password_again'];
+        this.fieldsets[0].fields = ['username','is_superuser','permissions','current_password','password','password_again','scopes'];
+        this.fields['permissions'].widget.limit = 500;
 
         return fields;
     },

@@ -27,11 +27,15 @@ var AdminUserData = new mongoose.Schema({
         {
             type: mongoose.Schema.ObjectId,
             ref: 'MongooseAdminPermission',
-            query:'name'
+            query:['name']
         }
     ],
-    lastVisit:{type:Date,'default':Date.now}
+    lastVisit:{type:Date,'default':Date.now},
+    scopes:[String]
 }, {strict: true});
+AdminUserData.methods.toString = function(){
+    return this.username;
+}
 var AdminUserModel = mongoose.model('MongooseAdminUser', AdminUserData);
 
 
