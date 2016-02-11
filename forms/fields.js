@@ -405,7 +405,7 @@ var ListField_ = exports.ListField = BaseField.extend({
                         parent_errors[field_name] = _.clone(inner_field.errors);
                     }
                     // set data to output
-                    old_value[field_name] = inner_field.value;
+                    //old_value[field_name] = inner_field.value;
                     output_data[field_name] = inner_field.value;
                     cbk(null);
                 });

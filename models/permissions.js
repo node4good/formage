@@ -58,6 +58,8 @@ exports.getPermission = function (modelName, action) {
 };
 
 exports.hasPermissions = function (user, modelName, action) {
+    if(!user)
+        return false;
     if(user.fields)
         user = user.fields;
     return user.is_superuser || _.indexOf(user.permissions,exports.getPermission(modelName,action)) > -1;
