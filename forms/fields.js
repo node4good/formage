@@ -384,7 +384,7 @@ var ListField_ = exports.ListField = BaseField.extend({
         self.value = [];
         var clean_funcs = [];
         self.children_errors = [];
-
+        
         function create_clean_func(field_name, post_data, file_data, output_data, old_value, parent_errors)
         {
             return function (cbk) {
@@ -424,6 +424,7 @@ var ListField_ = exports.ListField = BaseField.extend({
                 return seed;
             }, {});
 
+        
         // Subset req.body according to subfield prefix and extract the submitted list order
         var new_key_order = [];
         var inner_body = Object.keys(req.body)
@@ -441,6 +442,7 @@ var ListField_ = exports.ListField = BaseField.extend({
                 return seed;
             }, {});
 
+       
         // Setup the embedded fields according the new order
         new_key_order.forEach(function (key) {
             var output_data = {};
@@ -468,6 +470,7 @@ var ListField_ = exports.ListField = BaseField.extend({
                 if ('__self__' in self.value[i])
                     self.value[i] = self.value[i].__self__;
             }
+            
             base.call(self, simpleReq(req), callback);
         });
         return self;
