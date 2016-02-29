@@ -414,7 +414,7 @@ var ListField_ = exports.ListField = BaseField.extend({
 
         // First subset req.files according to subfield prefix
         var inner_files = Object.keys(req.files)
-            .filter(function (field_name) {return ~field_name.indexOf(prefix, 0);})
+            .filter(function (field_name) {return field_name.indexOf(prefix, 0) == 0;})
             .reduce(function (seed, field_name) {
                 var pair = extractSubFieldKeyAndName(field_name, prefix);
                 var key = pair.key;
@@ -428,7 +428,7 @@ var ListField_ = exports.ListField = BaseField.extend({
         // Subset req.body according to subfield prefix and extract the submitted list order
         var new_key_order = [];
         var inner_body = Object.keys(req.body)
-            .filter(function (field_name) {return ~field_name.indexOf(prefix, 0);})
+            .filter(function (field_name) {return field_name.indexOf(prefix, 0) == 0;})
             .reduce(function (seed, field_name) {
                 var pair = extractSubFieldKeyAndName(field_name, prefix);
                 var key = pair.key;
