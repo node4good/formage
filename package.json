@@ -28,7 +28,7 @@
     "debug": "",
     "express": "4",
     "formage-mongoose-types": "",
-    "lodash-contrib": "",
+    "lodash-contrib": "31001.1.0",
     "lru-cache": "",
     "mpromise": "latest",
     "node-ckeditor": "",
