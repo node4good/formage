@@ -124,7 +124,6 @@ MongooseAdmin.prototype.registerMongooseModel = function (name, model, fields, o
         value: 'delete',
         label: 'Delete',
         func: function (user, ids, callback) {
-            console.trace();
             if(MongooseAdmin.singleton.ignoreDependencies)
                 return removeDocs(ids,callback);
 
@@ -342,6 +341,31 @@ MongooseAdmin.prototype.listModelDocuments = function(user,collectionName, start
                 onReady(null, filteredDocuments);
             }
         });
+    });
+};
+
+MongooseAdmin.prototype.streamModelDocuments = function(user,collectionName, filters,sort, onReady) {
+    var query = this.models[collectionName].model.find(filters);
+
+    var sorts = this.models[collectionName].options.order_by || [];
+    var populates = this.models[collectionName].options.list_populate;
+    if (sort)
+        sorts.unshift(sort);
+    if (sorts) {
+        for (var i = 0; i < sorts.length; i++)
+            mongooseSort(query, sorts[i]);
+    }
+    if (populates) {
+        _.each(populates, function (populate) {
+            query.populate(populate);
+        });
+    }
+    query._admin = true;
+    this.models[collectionName].options.limit(user,query,function(err){
+        if(err)
+            return onReady(err);
+        var stream = query.stream();
+        onReady(null,stream);
     });
 };
 

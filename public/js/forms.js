@@ -214,6 +214,7 @@
         var query_data = decodeURIComponent(jElem.data('data'));
 
 		var allowCustom = jElem.data('allowcustom');
+        var required = jElem.is('.required_label');
 
         var initResult;
         jElem.select2({query:function (options) {
@@ -237,6 +238,8 @@
 					if(allowCustom){
 						result.results.push({id:term,text:term});
 					}
+                    if(!required)
+                        result.results.unshift({id:'',text:''});
                     callback(result);
                 });
         },

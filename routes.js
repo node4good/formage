@@ -380,6 +380,79 @@ var routes = {
         res.redirect(MongooseAdmin.singleton.buildPath('/'));
     },
 
+    exportToCSV:function(req,res){
+        var name = req.params.modelName,
+            model = MongooseAdmin.singleton.models[name];
+
+        if (model.is_single)
+            return res.redirect(req.path.split('/model/')[0]);
+
+        delete req.query._dialog;
+        // query
+        var query = req.query;
+        var currentQuery = _.clone(req.query);
+        var sort = query.order_by;
+        delete query.order_by;
+        delete query.saved;
+        var search_value = query._search || '';
+        delete query._search;
+
+        var filters = parseFilters(model, query, search_value);
+        MongooseAdmin.singleton.streamModelDocuments(req.admin_user,name, filters, sort, function (err, stream) {
+            if (err)
+                return res.redirect('/');
+
+            stream.on('error',function(error){
+                console.error(error.stack);
+                if(!headSent && !responseFinished) {
+                    res.status(500);
+                    res.send(error.stack);
+                    headSent = true;
+                    responseFinished = true;
+                }
+            });
+            stream.on('close',function(){
+                console.log('closing');
+                if(!headSent){
+                    res.header('Content-Disposition','attachment; filename=' + name + '.csv');
+                    res.header('Content-Type','text/csv');
+                    res.status(200);
+                    headSent = true;
+                }
+                if(!responseFinished) {
+                    res.end();
+                    responseFinished = true;
+                }
+            });
+            var listFields = MongooseAdmin.singleton.models[name].options.list || [];
+
+            var headSent = false, responseFinished = false;
+            stream.on('data',function(doc){
+                if(!headSent){
+                    res.header('Content-Disposition','attachment; filename=' + name + '.csv');
+                    res.header('Content-Type','text/csv');
+                    res.status(200);
+                    headSent = true;
+                    var schema = model.model.schema.tree;
+                    res.write('ID');
+                    listFields.forEach(function (listField) {
+                        res.write(',' + (schema[listField] && schema[listField].label
+                            ? schema[listField].label
+                            : listField[0].toUpperCase() + listField.slice(1).replace(/_/g,' ')));
+                    });
+                    res.write('\n');
+                }
+                res.write(doc.id);
+                listFields.forEach(function (listField) {
+                    var text = (typeof(doc[listField]) == 'function' ? doc[listField]() : doc.get(listField)).toString();
+                    text = text.replace(/<.*?>/g,'');
+                    text = text.replace(/"/g,'""');
+                    res.write(',"' + text + '"');
+                });
+                res.write('\n');
+            });
+        });
+    },
     model: function (req, res) {
         var name = req.params.modelName,
             model = MongooseAdmin.singleton.models[name];
@@ -669,6 +742,7 @@ module.exports = function (admin, outer_app, root) {
     app.get('/model/:modelName', auth('view'),userPanel, routes.model);
     app.get('/model/:modelName/document/:documentId', auth('view'), routes.document);
     app.post('/model/:modelName/document/:documentId', auth('update'), routes.documentPost);
+    app.get('/model/:modelName/export', auth('view'), routes.exportToCSV);
 	app.get('/dialog/:dialogName',auth(),routes.dialogGet);
 	app.post('/dialog/:dialogName',auth(),routes.dialogPost);
 

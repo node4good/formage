@@ -350,6 +350,8 @@ exports.RefWidget = exports.ChoicesWidget.extend({
                 }
                 self.choices.push([objects[i].id, label]);
             }
+            if(!self.required)
+                self.choices.unshift(['','']);
             return base.call(self, callback);
         });
     }

@@ -11,16 +11,18 @@ block body
     #content.row
         div(class='span#{filters.length ? 9 : 12}')
             .btn-toolbar.clearfix
-                - if (creatable)
-                    a.btn.pull-right.btn-warning(href="#{rootPath}/model/#{model_name}/document/new#{makeLink()}")
-                        i.icon-plus.icon-white
-                        |  New
-                        - if (model.model.singular)
-                            strong  #{model.model.singular}
-                        - else
-                            strong  #{model_name}
-                            |  item
-
+                .btn-group.pull-right
+                    - if (creatable)
+                        a.btn.btn-warning(href="#{rootPath}/model/#{model_name}/document/new#{makeLink()}")
+                            i.icon-plus.icon-white
+                            |  New
+                            - if (model.model.singular)
+                                strong  #{model.model.singular}
+                            - else
+                                strong  #{model_name}
+                                |  item
+                    a.btn.btn-primary(href="#{rootPath}/model/#{model_name}/export#{makeLink()}")
+                        |  Export
                 - if (search)
                     p
                         form
