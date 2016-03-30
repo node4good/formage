@@ -424,7 +424,7 @@ var routes = {
                     responseFinished = true;
                 }
             });
-            var listFields = MongooseAdmin.singleton.models[name].options.list || [];
+            var listFields = MongooseAdmin.singleton.models[name].options.exportFields || MongooseAdmin.singleton.models[name].options.list || [];
 
             var headSent = false, responseFinished = false;
             stream.on('data',function(doc){
@@ -444,7 +444,7 @@ var routes = {
                 }
                 res.write(doc.id);
                 listFields.forEach(function (listField) {
-                    var text = (typeof(doc[listField]) == 'function' ? doc[listField]() : doc.get(listField)).toString();
+                    var text = ((typeof(doc[listField]) == 'function' ? doc[listField]() : doc.get(listField)) || '') + '';
                     text = text.replace(/<.*?>/g,'');
                     text = text.replace(/"/g,'""');
                     res.write(',"' + text + '"');
