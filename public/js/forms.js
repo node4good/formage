@@ -65,7 +65,14 @@
             $('.nf_ref', ctx).each(getQueryFunctionForSelect2);
             $('select', ctx).select2();
         }
-        if ($.fn.datepicker) $('.nf_datepicker:not([readonly])', ctx).datepicker({format:'mm/dd/yyyy'});
+        if ($.fn.datepicker) {
+            $('.nf_datepicker:not([readonly])', ctx).each(function(){
+                if($(this).data('original'))
+                    return;
+                $(this).data('original',$(this).val());
+                $(this).datepicker({format:'mm/dd/yyyy'});
+            });
+        }
         if($.fn.datetimepicker)
             $('.nf_timepicker:not([readonly])').on('changeDate',function(e){
                 $(this).data('time', e.localDate);
@@ -413,11 +420,15 @@
                     return;
                 if(!$(this).val())
                     return;
+                var $input = this.tagName == 'INPUT' ? $(this) : $('input',this);
+                if($(this).val() == $(this).data('original')){
+                    $input.remove();
+                    return;
+                }
                 var data = $(this).data('datepicker') || $(this).data('datetimepicker');
                 if(data){
                     var date = $(this).data('time') || data.date || data._date;
                     if(date && date != new Date()){
-                        var $input = this.tagName == 'INPUT' ? $(this) : $('input',this);
                         $input.val(Number(date));
                     }
                 }
