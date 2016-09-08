@@ -414,7 +414,7 @@
         initWidgets();
 
         $('form#document').submit(function () {
-
+            $('input[readonly],textarea[readonly]').remove();
             $('.nf_datepicker,.nf_timepicker').each(function(){
                 if($(this).is('[readonly]'))
                     return;
