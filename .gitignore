@@ -1,4 +1,5 @@
 *.tgz
+*.log
 .idea/
 dump/
 node_modules/
@@ -23,3 +24,4 @@ assets/vendor/socket.io-client/lib
 assets/vendor/socket.io-client/support
 
 formage-test-data*/
+/jspm_packages

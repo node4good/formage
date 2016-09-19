@@ -1,18 +1,18 @@
+sudo: false
 language: node_js
-
 node_js:
-  - "0.11"
-  - "0.10"
+- '4'
+- '6'
 
-notifications:
-  slack: empeeric:Hsm2xE5SNniMiUAEgM0Ngcnb
+services: mongodb
+
 deploy:
   provider: npm
-  email: refael@empeeric.com
+  email: refack
   api_key:
-    secure: Tb4amuc/AVifAsiuRAy1aBibfOnZ5WiC+Jbx9i7k/IzpYbou1zDLejlvFOYYegeDY099zs1vrS2wkcBgkLYcTVY7FneIQgIBrVaP2RQC27X4XgnqtYiNXJmsMwT2/gmah/+2Ix7Yf/v1n6Cyufe5VuX0yN+jPtrygcH30+iaUvg=
+    secure: a/Jy+kf7oOpjhVNrbXufwDufn6BFU1pVgZLUaV68zhnmnwTNLMFs5IwgxZfNgBswcLVfiw3Kdq/owbO9KD6yb+pa71oMr/5s1uyjwi9y6R6I4NZ3S9nGG7YbxPx3RFW3F81USLbxFopYfCbk77s0o3//pEp9gtglcUVRTCIbKD8=
   on:
     all_branches: true
     tags: true
-    node: "0.10"
-    repo: TheNodeILs/formage
+    node: '6'
+    repo: node4good/formage
