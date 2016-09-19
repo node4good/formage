@@ -3,60 +3,33 @@
   "description": "Admin GUI addon for mongoose, jugglingdb, or just as a form generator",
   "version": "2.7.34",
   "main": "lib/index.js",
-  "author": {
-    "name": "Etai Peretz",
-    "email": "etai@empeeric.com",
-    "url": "http://www.empeeric.com/"
-  },
+  "author": "Etai Peretz <etai@empeeric.com> (http://www.empeeric.com/)",
   "contributors": [
-    {
-      "name": "Ishai Jaffe",
-      "email": "ishai@bablic.com",
-      "url": "http://www.bablic.com/"
-    },
-    {
-      "name": "Refael Ackermann",
-      "email": "refael@empeeric.com",
-      "url": "http://www.empeeric.com/"
-    },
-    {
-      "email": "etaypere@gmail.com",
-      "url": "http://www.empeeric.com/"
-    },
-    {
-      "name": "Alon Valadji",
-      "email": "alon@empeeric.com",
-      "url": "http://www.empeeric.com/"
-    }
+    "Ishai Jaffe <ishai@bablic.com> (http://www.bablic.com/)",
+    "Refael Ackermann <refael@node4good.org> (https://github.com/node4good)",
+    "Alon Valadji <alon@ronin.co.il> (http://www.ronin.co.il)"
   ],
   "dependencies": {
-    "async": "",
-    "cloudinary": "",
-    "connect-multiparty": "",
-    "debug": "",
-    "grist": "",
-    "formage-mongoose-types": "",
-    "lodash": "",
-    "lodash-contrib": "",
-    "mpromise": "^0.5.4",
-    "node-ckeditor": "",
-    "nodestrum": "",
-    "socket.io": "< 1.0.0"
+    "async": "^2.1.4",
+    "cloudinary": "^1.5.0",
+    "connect-multiparty": "^2.0.0",
+    "debug": "^2.6.0",
+    "formage-mongoose-types": "^1.0.1",
+    "lodash-contrib": "4.1200.1",
+    "node-ckeditor": "^4.5.9",
+    "nodestrum": "^0.10.1",
+    "socket.io": "^0.9.17"
   },
   "devDependencies": {
-    "bower": "",
-    "chai": "",
-    "express": "< 4",
-    "istanbul": "",
-    "jade": "0.35.x",
-    "jshint": "",
-    "jugglingdb": "",
-    "mocha": "",
-    "mongoose": ""
-  },
-  "peerDependencies": {
-    "express": "< 4",
-    "mongoose": ">= 3.8.0"
+    "chai": "^3.5.0",
+    "express": "^3.21.2",
+    "grist": "^1.3.0",
+    "istanbul": "^0.4.5",
+    "jade": "^0.35.x",
+    "jshint": "^2.9.3",
+    "jspm": "^0.16.39",
+    "mocha": "^3.1.0",
+    "mongoose": "^4.0.0"
   },
   "keywords": [
     "admin",
@@ -67,12 +40,10 @@
     "MongoDB-gui",
     "mongoose",
     "mongoose-gui",
-    "juggling",
-    "jugglingdb",
     "backoffice",
     "cms"
   ],
-  "repository": "Empeeric/formage",
+  "repository": "node4good/formage",
   "scripts": {
     "start": "node example/classic/app",
     "test": "npm run generate && mocha",
@@ -81,20 +52,17 @@
     "generate": "node utils/CompileTempletes.js",
     "setassets": "npm run generate && bower i && git clean -X -d -f assets",
     "prepublish": "npm run generate",
-    "mypublish": "npm run setassets && npm version patch --version-with-shrinkwrap && git push --follow-tags"
+    "mypublish": "npm run setassets && npm version patch && git push --follow-tags"
   },
   "directories": {
-    "example": "./example"
+    "lib": "lib",
+    "example": "example",
+    "packages": "jspm_packages"
   },
   "engines": {
-    "node": "^0.10.0"
+    "node": "> 6.0.0"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://raw.github.com/Empeeric/formage/master/LICENSE"
-    }
-  ],
+  "license": "MIT",
   "jshintConfig": {
     "esnext": true,
     "expr": true,

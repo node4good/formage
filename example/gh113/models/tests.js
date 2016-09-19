@@ -2,7 +2,6 @@
 
 //noinspection JSUnresolvedVariable
 var mongoose = require('mongoose'),
-    fTypes = require('formage-mongoose-types'),
     Schema = mongoose.Schema,
     SchemaTypes = Schema.Types,
     fWidgets = require('../../../').widgets;
@@ -22,7 +21,7 @@ var schema = module.exports = new Schema({
     ref_with_socket: { type: SchemaTypes.ObjectId, ref: 'pages', socket: true },
     date: { type: Date },
     datetime: { type: Date, widget: fWidgets.DateTimeWidget },
-    'time': { type: SchemaTypes.Time },
+    time: { type: SchemaTypes.Time },
     'enum': { type: String, 'enum': ['1', '2', '3'] },
     rich_text: { type: SchemaTypes.Html },
     text: { type: SchemaTypes.Text },
@@ -54,7 +53,7 @@ var schema = module.exports = new Schema({
         object: {
             object: {
                 nested_string: { type: String },
-                nested_string_req: { type: String }
+                nested_string_req: { type: String, required: true }
             }
         }
     },
@@ -83,7 +82,8 @@ var schema = module.exports = new Schema({
     req_test: { type: String, required: true, 'default': '1' },
     req_number: { type: Number, required: true, 'default': 1 },
     req_boolean: { type: Boolean, required: true, 'default': true },
-    req_date: { type: Date, required: true, 'default': Date.now },
+    req_date: { type: Date, required: true, 'default':Date.now },
+    should_be_excluded: { type: Date },
     many: { type: String, validate: manyValidator }
 
 });
@@ -95,7 +95,8 @@ schema.formage = {
     subCollections: [
         {label: 'Sub Tests', model: 'pages', field: 'ref'}
     ],
-    list_populate: ['ref']
+    list_populate: ['ref'],
+    exclude: ['should_be_excluded']
 };
 
 schema.virtual('swizzle').get(function () {
