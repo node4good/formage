@@ -12,6 +12,9 @@
       <env name="MONGOLAB_URI_" value="mongodb://heroku_app11868944:pfgea8icrgft9tqsc6p3jlasvr@ds031957.mongolab.com:31957/heroku_app11868944" />
     </envs>
     <browser name="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" with-js-debugger="true" url="http://dev.empeeric.com/admin/model/tests" />
+    <EXTENSION ID="com.jetbrains.nodejs.run.NodeJSStartBrowserRunConfigurationExtension">
+      <browser name="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" with-js-debugger="true" url="http://dev.empeeric.com/admin/model/tests" />
+    </EXTENSION>
     <RunnerSettings RunnerId="NodeJS.debug" />
     <RunnerSettings RunnerId="NodeJS.run" />
     <ConfigurationWrapper RunnerId="NodeJS.debug" />
