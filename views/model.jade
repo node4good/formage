@@ -40,9 +40,9 @@ block body
                         |  Save Order
 
                 - if (actions.length && documents.length)
-                    #actions.input-prepend.hide
+                    #actions.input-prepend.hide(style="white-space:normal;")
                         span.add-on With selected: &nbsp;
-                        div.btn-group
+                        div.btn-group(style="white-space:normal;")
                             - each action in actions
                                 - if (action.value == 'delete')
                                     button.btn.btn-danger(value='#{action.value}',data-multi='true')
