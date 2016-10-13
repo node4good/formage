@@ -5,7 +5,7 @@ block body
         h2 Model List
     ul.models
         - each model in allModels
-            - var url = rootPath + '/model/' + model.model.modelName
+            - var url = rootPath + '/model/' + model.model.modelName + (model.model.options && model.model.options.defaultFilter ? '?' + model.model.options.defaultFilter : '')
             li
                 .btn-group.pull-right
                     - if (model.model.is_single)
