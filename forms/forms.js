@@ -510,18 +510,19 @@ var MongooseForm = exports.MongooseForm = BaseForm.extend({
                 // remove non-existing items
                 // add new items
                 // modify existing
-                var originalArray = model[field_name];
+                var originalArray = model[field_name] || [];
+                var hasIds = _.any(originalArray,function(item){ return item.id});
+                var originalArrayById = _.indexBy(originalArray,'id');
                 var newArray = [];
                 value.forEach(function(obj){
-                    if(obj.id){
-                        var match = _.find(originalArray || [],function(iter){
-                            return iter.id == obj.id;
-                        });
-                        if(match){
-                            self.setValuesToModel(match,obj);
-                            newArray.push(match);
-                            if(originalArray)
-                                originalArray.splice(originalArray.indexOf(match),1);
+                    var match = hasIds ? originalArrayById[obj.id] : originalArray.shift();
+                    if (match) {
+                        self.setValuesToModel(match, obj);
+                        newArray.push(match);
+                        if(hasIds) {
+                            delete originalArrayById[obj.id];
+                            if (originalArray)
+                                originalArray.splice(originalArray.indexOf(match), 1);
                         }
                     }
                     else
