@@ -32,13 +32,13 @@ html(lang='en')
                                             | #{t.label}
                                 a.btn.btn-inverse(href='#{rootPath}/')
                                     i.icon-home.icon-white
-                                    | Admin
+                                    | #{__('Admin')}
                                 a.btn(href="/")
                                     i.icon-share
-                                    | Site
+                                    | #{__('Site')}
                                 a.btn(href='#{rootPath}/logout')
                                     .icon-lock
-                                    | Logout
+                                    | #{__('Logout')}
                         h1
                             block title
                                 a(href='#{rootPath}/') #{adminTitle}

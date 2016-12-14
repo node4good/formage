@@ -91,8 +91,8 @@ var BaseForm = exports.BaseForm = Class.extend({
             self.static.js = self.static.js.concat(_(_static.js || []).value());
             self.static.css = self.static.css.concat(_(_static.css || []).value());
         });
-        self.static.js = _(self.static.js).unique();
-        self.static.css = _(self.static.css).unique();
+        self.static.js = _.unique(self.static.js);
+        self.static.css = _.unique(self.static.css);
         return self.static;
     },
     render_head: function () {

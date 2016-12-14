@@ -736,6 +736,14 @@ module.exports = function (admin, outer_app, root) {
 
     app.use(multipartMiddleware);
 
+    app.use(function(req,res,next){
+        if(MongooseAdmin.singleton)
+            res.locals.__ = getText;
+        else
+            res.locals.__ = identity;
+        next();
+    });
+
     app.get('/', auth(),userPanel, routes.index);
     app.get('/login', routes.login);
     app.get('/logout', routes.logout);
@@ -836,4 +844,24 @@ function multipartMiddleware(req,res,next){
 	req.resume();
     }
     catch(ex) {}
+}
+
+var translations = {};
+var fs = require('fs');
+try {
+    translations = JSON.parse(fs.readFileSync('./admin-locale.json','utf8'));
+}
+catch(e){}
+function getText(original){
+    if(original in translations)
+        return translations[original];
+    translations[original] = original;
+    fs.writeFile('./admin-locale.json',JSON.stringify(translations),function(e){
+        e && console.error(e);
+    });
+    return original;
+}
+
+function identity(str){
+    return str;
 }

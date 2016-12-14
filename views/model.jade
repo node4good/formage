@@ -15,14 +15,14 @@ block body
                     - if (creatable)
                         a.btn.btn-warning(href="#{rootPath}/model/#{model_name}/document/new#{makeLink()}")
                             i.icon-plus.icon-white
-                            |  New
+                            |  #{__('New')}
                             - if (model.model.singular)
                                 strong  #{model.model.singular}
                             - else
                                 strong  #{model_name}
-                                |  item
+                                |  #{__('item')}
                     a.btn.btn-primary(href="#{rootPath}/model/#{model_name}/export#{makeLink()}")
-                        |  Export
+                        |  #{__('Export')}
                 - if (search)
                     p
                         form
@@ -32,12 +32,12 @@ block body
                                     input(type="hidden",name="#{key}",value="#{current_filters[key]}")
                             - if(dialog)
                                 input(type="hidden",name="_dialog",value="yes")
-                            button(type="submit") Search
+                            button(type="submit") #{__('Search')}
 
                 - if (sortable)
                     button#reorder.btn.btn-success.pull-left.hide(data-loading-text='Saving...', data-saved-text='Saved!')
                         i.icon-ok.icon-white
-                        |  Save Order
+                        |  #{__('Save Order')}
 
                 - if (actions.length && documents.length)
                     #actions.input-prepend.hide(style="white-space:normal;")
@@ -52,10 +52,10 @@ block body
                                     button.btn(value='#{action.value}',data-dialogs='#{(action.dialogs || []).join("")}',data-multi='#{action.multi === false ? "false" : "true"}') #{action.label}
 
             - if (!documents.length)
-                p.center No documents yet
+                p.center #{__('No documents yet')}
 
             - else
-                p.counter Viewing #{start+1}–#{start + documents.length} of #{total_count} documents
+                p.counter #{__('Viewing')} #{start+1}–#{start + documents.length} #{__('of')} #{total_count} #{__('documents')}
 
                 table.table.table-bordered.table-hover
                     thead
@@ -90,13 +90,13 @@ block body
                                             p !{doc[field]}
 
                                 td.span2.btn-group
-                                    a.btn.btn-primary(href=url) #{editable ? 'Edit' : 'View'}
+                                    a.btn.btn-primary(href=url) #{__(editable ? 'Edit' : 'View')}
                                     - if (cloneable)
-                                        a.btn(href=url+'?clone=true') Duplicate
+                                        a.btn(href=url+'?clone=true') #{__('Duplicate')}
                                     - if (model.options.preview)
-                                        a.btn(href="#{previewLink(doc)}") View
+                                        a.btn(href="#{previewLink(doc)}") #{__('View')}
 
-                p.counter Viewing #{start+1}–#{start + documents.length} of #{total_count} documents
+                p.counter #{__('Viewing')} #{start+1}–#{start + documents.length} #{__('of')} #{total_count} #{__('documents')}
                 - if (total_count > count)
                     .pagination
                         ul
@@ -112,9 +112,9 @@ block body
             #filters.span3.well
                 h3
                     i.icon-filter
-                    | Filters
+                    | #{__('Filters')}
                     small.pull-right
-                        a(href='#{rootPath}/model/#{model_name}') Clear
+                        a(href='#{rootPath}/model/#{model_name}') #{__('Clear')}
 
                 ul.nav.nav-list
                     - each filter in filters
@@ -133,7 +133,7 @@ block body
                             - if (filter.isString)
                                 div
                                     input(type='text',style='width:217px; !important ',name='#{filter.key}',value='#{current_filters[filter.key] || ""}')
-                                    button.free_search(data-href='#{makeLink(filter.key, "__replace__")}') search
+                                    button.free_search(data-href='#{makeLink(filter.key, "__replace__")}') #{__('search')}
                         - else
                             - if (current_filters[filter.key])
                                 li
@@ -152,7 +152,7 @@ block body
                             - if (filter.isString)
                                 div
                                     input(type='text',style='width:217px; !important ',name='#{filter.key}',value='#{current_filters[filter.key] || ""}')
-                                    button.free_search(data-href='#{makeLink(filter.key, "__replace__")}') search
+                                    button.free_search(data-href='#{makeLink(filter.key, "__replace__")}') #{__('search')}
 
 block scripts
     script.

@@ -266,6 +266,13 @@ var RefField = exports.RefField = EnumField.extend({
         this._super(options, []);
         this.required = required;
     },
+    set: function (value) {
+        if(this.ref.modelName == 'MongooseAdminUser' && typeof(value) == 'undefined' && typeof(this.default) == 'undefined' && this.form && this.form.request && this.form.request.session && this.form.request.session._mongooseAdminUser){
+            this.value = this.form.request.session._mongooseAdminUser._id;
+            return this;
+        }
+        return this._super(value);
+    },
     to_schema: function () {
         var schema = RefField.super_.prototype.to_schema.call(this);
         schema['type'] = mongoose.Schema.ObjectId;
@@ -273,6 +280,7 @@ var RefField = exports.RefField = EnumField.extend({
         return schema;
     }
 });
+
 
 
 var NumberField = exports.NumberField = StringField.extend({

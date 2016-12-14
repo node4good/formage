@@ -344,10 +344,7 @@ exports.RefWidget = exports.ChoicesWidget.extend({
                 return callback(err);
             self.choices = [];
             for (var i = 0; i < objects.length; i++) {
-                var label = objects[i].name || objects[i].title || objects[i].toString;
-                if (typeof(label) == 'function') {
-                    label = label.call(objects[i]);
-                }
+                var label = objects[i].toString ? objects[i].toString() : '';
                 self.choices.push([objects[i].id, label]);
             }
             if(!self.required)
@@ -401,7 +398,8 @@ exports.PictureWidget = exports.InputWidget.extend({
         if (this.value && this.value.url) {
             var thumbnail_url = cloudinary.image(
                 this.value.public_id, {
-                   // format: 'png',
+                    //format: 'png',
+                    version:this.value.version,
                     width: 150,
                     height: 110,
                     crop: 'fill',

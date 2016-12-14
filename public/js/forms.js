@@ -217,11 +217,11 @@
 
     var getQueryFunctionForSelect2 = function () {
         var jElem = $(this);
-        var query_url = jElem.data('url');
-        var query_data = decodeURIComponent(jElem.data('data'));
 
 		var allowCustom = jElem.data('allowcustom');
         var required = jElem.is('.required_label');
+        var query_url = jElem.data('url');
+        var query_data = decodeURIComponent(jElem.data('data'));
 
         var initResult;
         jElem.select2({query:function (options) {
@@ -229,6 +229,7 @@
             var page = options.page;
             var context = options.context;
             var callback = options.callback;
+            query_data = decodeURIComponent(jElem.data('data'));
             $.get(query_url, {
                 data:query_data,
                 query:term

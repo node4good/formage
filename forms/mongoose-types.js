@@ -119,6 +119,16 @@ var init = function () {
 
     mongoose.Types.Html = String;
     mongoose.Schema.Types.Html = Html;
+
+    var User = function User (path, options) {
+        User.super_.call(this, path, options);
+    };
+    util.inherits(User, mongoose.Schema.ObjectId);
+
+    exports.User = User;
+
+    mongoose.Types.User = mongoose.Schema.ObjectId;
+    mongoose.Schema.Types.User = User;
 };
 
 exports.setCdnPrefix = function (prefix) {
