@@ -616,8 +616,10 @@ var routes = {
         var preview = req.body['_preview'];
         var callback = function (err,doc) {
             if (err) {
-                if (err.to_html)
-                    return renderForm(res, err, model, true,req.admin_user);
+                if (err.to_html) {
+                    var clone = req.query.clone;
+                    return renderForm(res, err, model, true, clone, !!req.query._dialog, req.admin_user);
+                }
                 return res.send(500);
             }
             //if(preview){
