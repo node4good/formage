@@ -1,6 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="mocha" type="mocha-javascript-test-runner" factoryName="Mocha" singleton="true">
-    <node-options>--harmony</node-options>
+    <node-interpreter>project</node-interpreter>
+    <node-options>--preserve-symlinks</node-options>
     <working-directory>$PROJECT_DIR$</working-directory>
     <pass-parent-env>true</pass-parent-env>
     <envs>
@@ -8,8 +9,9 @@
       <env name="DEBUG" value="formage" />
       <env name="NODE_PATH" value="" />
     </envs>
-    <ui>BDD</ui>
-    <extra-mocha-options>--require asynctrace</extra-mocha-options>
+    <ui>bdd</ui>
+    <extra-mocha-options />
+    <test-kind>DIRECTORY</test-kind>
     <test-directory>$PROJECT_DIR$/test</test-directory>
     <recursive>false</recursive>
     <RunnerSettings RunnerId="MochaDebugRunner" />

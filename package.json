@@ -21,20 +21,20 @@
     }
   ],
   "dependencies": {
-    "async": "",
-    "basic-auth": "latest",
-    "body-parser": "latest",
-    "cookie-session": "",
-    "debug": "",
-    "express": "4",
-    "formage-mongoose-types": "",
+    "async": "^0.9.0",
+    "basic-auth": "^1.0.0",
+    "body-parser": "^1.9.0",
+    "cookie-session": "^1.0.2",
+    "debug": "^2.0.0",
+    "express": "^4.9.5",
+    "formage-mongoose-types": "1.0.1",
     "lodash-contrib": "^241.4.14",
-    "lru-cache": "",
-    "mpromise": "latest",
-    "node-ckeditor": "",
-    "nodestrum": "",
-    "serve-static": "latest",
-    "socket.io": "latest"
+    "lru-cache": "^2.5.0",
+    "mpromise": "^0.5.5",
+    "node-ckeditor": "^4.3.2",
+    "nodestrum": "^0.10.1",
+    "serve-static": "^1.6.3",
+    "socket.io": "^1.1.0"
   },
   "description": "Admin GUI addon for mongoose, jugglingdb, or just as a form generator",
   "devDependencies": {
@@ -105,9 +105,6 @@
   ],
   "main": "lib/Formage.js",
   "name": "formage",
-  "optionalDependencies": {
-    "asynctrace": ""
-  },
   "publishConfig": {
     "tag": "beta"
   },
