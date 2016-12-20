@@ -28,7 +28,7 @@
     "debug": "",
     "express": "4",
     "formage-mongoose-types": "",
-    "lodash-contrib": "",
+    "lodash-contrib": "^241.4.14",
     "lru-cache": "",
     "mpromise": "latest",
     "node-ckeditor": "",
@@ -46,7 +46,7 @@
     "jshint": "",
     "jugglingdb": "",
     "mocha": "",
-    "mongoose": "unstable"
+    "mongoose": "3.8.x"
   },
   "directories": {
     "example": "./example"

@@ -1,7 +1,9 @@
+sudo: false
 language: node_js
 node_js:
-- "0.11"
-- "0.10"
+- "0.12"
+- "4"
+- "6"
 
 notifications:
   slack: empeeric:Hsm2xE5SNniMiUAEgM0Ngcnb
@@ -14,5 +16,5 @@ deploy:
   on:
     all_branches: true
     tags: true
-    node: "0.10"
-    repo: TheNodeILs/formage
+    node: "6"
+    repo: node4good/formage
