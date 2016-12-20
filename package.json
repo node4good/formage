@@ -46,7 +46,7 @@
     "jshint": "",
     "jugglingdb": "",
     "mocha": "",
-    "mongoose": "unstable"
+    "mongoose": "3.8.x"
   },
   "directories": {
     "example": "./example"
