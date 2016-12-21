@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="app.js" type="NodeJSConfigurationType" factoryName="Node.js" singleton="true" path-to-node="project" path-to-js-file="classic/app.js" node-parameters="--harmony" working-dir="$PROJECT_DIR$/example">
+  <configuration default="false" name="app.js" type="NodeJSConfigurationType" factoryName="Node.js" singleton="true" path-to-node="project" path-to-js-file="classic/app.js" working-dir="$PROJECT_DIR$/example">
     <envs>
       <env name="NODE_DEBUG" value="formage" />
       <env name="PORT" value="80" />
