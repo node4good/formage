@@ -1,24 +1,9 @@
 {
-  "author": {
-    "name": "Refael Ackermann",
-    "email": "refael@empeeric.com",
-    "url": "http://www.empeeric.com/"
-  },
+  "author": "Refael Ackermann<me@refack.com>",
   "contributors": [
-    {
-      "name": "Ishai Jaffe",
-      "email": "ishai@bablic.com",
-      "url": "http://www.bablic.com/"
-    },
-    {
-      "email": "etaypere@gmail.com",
-      "url": "http://www.empeeric.com/"
-    },
-    {
-      "name": "Alon Valadji",
-      "email": "alon@empeeric.com",
-      "url": "http://www.empeeric.com/"
-    }
+    "Ishai Jaffe<ishai@bablic.com>",
+    "Etai Peretz<etaypere@gmail.com>",
+    "Alon Valadji<alon@ronin.co.il>"
   ],
   "dependencies": {
     "async": "^0.9.0",
@@ -46,13 +31,14 @@
     "jshint": "",
     "jugglingdb": "",
     "mocha": "",
-    "mongoose": "3.8.x"
+    "mongoose": "3.8.x",
+    "request": "^2.79.0"
   },
   "directories": {
     "example": "./example"
   },
   "engines": {
-    "node": "> 0.10.0"
+    "node": ">= 4"
   },
   "jshintConfig": {
     "esnext": true,
@@ -97,24 +83,18 @@
     "backoffice",
     "cms"
   ],
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://raw.github.com/Empeeric/formage/master/LICENSE"
-    }
-  ],
+  "license": "MIT",
   "main": "lib/Formage.js",
   "name": "formage",
   "publishConfig": {
     "tag": "beta"
   },
-  "repository": "Empeeric/formage",
+  "repository": "node4good/formage",
   "scripts": {
     "cover": "istanbul cover ./node_modules/mocha/bin/_mocha -x generated/**",
     "generate": "node utils/CompileTempletes.js",
     "lint": "jshint .",
-    "mypublish": "npm run setassets && npm version patch --version-with-shrinkwrap && git push --follow-tags",
-    "prepublish": "npm run generate",
+    "mypublish": "npm run setassets && npm version patch && git push --follow-tags",
     "setassets": "npm run generate && bower i && git clean -X -d -f assets",
     "start": "node example/classic/app",
     "test": "npm run generate && mocha"
