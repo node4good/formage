@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="app.js" type="NodeJSConfigurationType" factoryName="Node.js" singleton="true" path-to-node="$NODE_PATH$/node" path-to-js-file="classic/app.js" node-parameters="--harmony" working-dir="$PROJECT_DIR$/example">
+  <configuration default="false" name="app.js" type="NodeJSConfigurationType" factoryName="Node.js" singleton="true" path-to-node="project" path-to-js-file="classic/app.js" node-parameters="--harmony" working-dir="$PROJECT_DIR$/example">
     <envs>
       <env name="NODE_DEBUG" value="formage" />
       <env name="PORT" value="80" />
@@ -12,6 +12,31 @@
       <env name="MONGOLAB_URI_" value="mongodb://heroku_app11868944:pfgea8icrgft9tqsc6p3jlasvr@ds031957.mongolab.com:31957/heroku_app11868944" />
     </envs>
     <browser name="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" with-js-debugger="true" url="http://dev.empeeric.com/admin/model/tests" />
+    <profiling v8-profiler-path="" />
+    <EXTENSION ID="com.jetbrains.nodejs.remote.docker.NodeJSDockerRunConfigurationExtension">
+      <option name="envVars">
+        <list />
+      </option>
+      <option name="extraHosts">
+        <list />
+      </option>
+      <option name="links">
+        <list />
+      </option>
+      <option name="networkDisabled" value="false" />
+      <option name="networkMode" value="bridge" />
+      <option name="portBindings">
+        <list />
+      </option>
+      <option name="publishAllPorts" value="false" />
+      <option name="version" value="1" />
+      <option name="volumeBindings">
+        <list />
+      </option>
+    </EXTENSION>
+    <EXTENSION ID="com.jetbrains.nodejs.run.NodeJSProfilingRunConfigurationExtension">
+      <profiling v8-profiler-path="" />
+    </EXTENSION>
     <EXTENSION ID="com.jetbrains.nodejs.run.NodeJSStartBrowserRunConfigurationExtension">
       <browser name="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" with-js-debugger="true" url="http://dev.empeeric.com/admin/model/tests" />
     </EXTENSION>
