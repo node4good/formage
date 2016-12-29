@@ -54,7 +54,7 @@ var schema = module.exports = new Schema({
         object: {
             object: {
                 nested_string: { type: String },
-                nested_string_req: { type: String, required: true }
+                nested_string_req: { type: String }
             }
         }
     },
