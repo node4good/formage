@@ -1,7 +1,7 @@
 {
   "name": "formage",
   "description": "Admin GUI addon for mongoose, jugglingdb, or just as a form generator",
-  "version": "2.7.34",
+  "version": "2.8.0",
   "main": "lib/index.js",
   "author": "Etai Peretz <etai@empeeric.com> (http://www.empeeric.com/)",
   "contributors": [
@@ -43,6 +43,7 @@
     "backoffice",
     "cms"
   ],
+  "license": "MIT",
   "repository": "node4good/formage",
   "scripts": {
     "start": "node example/classic/app",
@@ -60,9 +61,8 @@
     "packages": "jspm_packages"
   },
   "engines": {
-    "node": "> 6.0.0"
+    "node": "> 4.0.0"
   },
-  "license": "MIT",
   "jshintConfig": {
     "esnext": true,
     "expr": true,

@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="mocha" type="mocha-javascript-test-runner" factoryName="Mocha" singleton="true">
     <node-interpreter>project</node-interpreter>
-    <node-options>--preserve-symlinks</node-options>
+    <node-options />
     <working-directory>$PROJECT_DIR$</working-directory>
     <pass-parent-env>true</pass-parent-env>
     <envs>
