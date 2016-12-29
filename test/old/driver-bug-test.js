@@ -1,32 +1,17 @@
 'use strict';
+const assert = require('assert');
 Error.stackTraceLimit = Infinity;
 
-var s = 'mongodb://localhost/mongodb-driver-find-bug';
+const s = 'mongodb://127.0.0.1:27017/test';
 
-exports['Driver Bug'] = {
-    'With Driver': function (test) {
-        var domain = require('domain');
-        var d = domain.create();
-        var errOrig = new TypeError('let me out');
-        d.once('error', function (err) {
-            test.equals(err, errOrig);
-            test.done();
+describe("Driver Bug", function () {
+    this.timeout(20000);
+    it('With Driver', function (done) {
+        const MongoClient = require('mongodb').MongoClient;
+        MongoClient.connect(s, function (err, db) {
+            if (err) done(err);
+            if (!db) done('no db');
+            done();
         });
-        d.run(function () {
-            var mongodb = require('mongodb');
-            mongodb.connect(s, {w: 1}, function (err, db) {
-                db.on('error', function (err) {
-                    test.equals(err, errOrig);
-                    throw err;
-                });
-                db.collection('_formageuser_s').remove({}, function () {
-                    db.collection('_formageuser_s').findOne({'username': ''}, function (err) {
-                        if (err) throw err;
-                    });
-
-                    throw errOrig;
-                });
-            });
-        });
-    }
-}
+    });
+});

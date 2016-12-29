@@ -2,6 +2,7 @@
 
 //noinspection JSUnresolvedVariable
 var mongoose = require('mongoose'),
+    fTypes = require('formage-mongoose-types'),
     Schema = mongoose.Schema,
     SchemaTypes = Schema.Types,
     fWidgets = require('../../../').widgets;
@@ -21,7 +22,7 @@ var schema = module.exports = new Schema({
     ref_with_socket: { type: SchemaTypes.ObjectId, ref: 'pages', socket: true },
     date: { type: Date },
     datetime: { type: Date, widget: fWidgets.DateTimeWidget },
-    time: { type: SchemaTypes.Time },
+    'time': { type: SchemaTypes.Time },
     'enum': { type: String, 'enum': ['1', '2', '3'] },
     rich_text: { type: SchemaTypes.Html },
     text: { type: SchemaTypes.Text },

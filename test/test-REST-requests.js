@@ -3,6 +3,7 @@
 describe("REST requests", function () {
     describe("mongoose", function () {
         before(function (done) {
+            this.timeout(20000);
             sanitizeRequireCache();
             var ctx = this;
             var formage = require('../');
@@ -50,6 +51,7 @@ describe("REST requests", function () {
 
 
         after(function () {
+            this.timeout(20000);
             this.mongoose.disconnect();
             delete this.registry;
             delete this.mongoose;
