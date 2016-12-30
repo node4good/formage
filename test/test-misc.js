@@ -249,7 +249,7 @@ describe("misc requests on mongoose", function () {
         var ctx = this;
         var Embed = ctx.registry.models['embed'].model;
         var old_embed_findbyid = Embed.findById;
-        Embed.findById = function (_, cb) { cb(null, new Embed(embedMockObj)); };
+        Embed.findById = () => Promise.resolve(new Embed(embedMockObj));
         var Pages = ctx.registry.models['pages'].model;
         var old_pages_find = Pages.find;
         Pages.find = mockFind([new Pages({_id: '529321b430de15681b00000b', title:'gaga'})]);
@@ -288,7 +288,7 @@ describe("misc requests on mongoose", function () {
         var ctx = this;
         var Embed = ctx.registry.models['embed'].model;
         var old_embed_findbyid = Embed.findById;
-        Embed.findById = function (_, cb) { cb(null, new Embed(embedMockObj)); };
+        Embed.findById = () => Promise.resolve(new Embed(embedMockObj));
         var Pages = ctx.registry.models['pages'].model;
         var old_pages_find = Pages.find;
         Pages.find = mockFind([new Pages({_id: '529321b430de15681b00000b', title:'gaga'})]);

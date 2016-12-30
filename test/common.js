@@ -8,7 +8,6 @@ global.CONN_STR_PREFIX = 'mongodb://127.0.0.1/';
 
 var _ = require('lodash-contrib');
 var chai = require('chai');
-var MPromise = require('mpromise');
 var fs = require('fs');
 
 process.env.FORMAGE_DISABLE_DOMAINS = true;
@@ -67,11 +66,7 @@ global.mockFind = function mockFindFactory(arr) {
             skip: function mockLimit() { return this; },
             limit: function mockLimit() { return this; },
             sort: function mockLimit() { return this; },
-            exec: function mockExec(cb) {
-                var p = new MPromise(cb);
-                p.fulfill(arr);
-                return p;
-            }
+            exec: cb => Promise.resolve(arr).then(arr => cb ? cb(null, arr) : arr)
         };
     };
 };

@@ -103,7 +103,7 @@ schema.statics.findPrevAndNext = function(show, callback) {
                 ret.prev_show = prev_show ? prev_show._id : null;
                 callback(null, ret);
             }
-        ).end(
+        ).catch(
             function (err) {
                 console.error(err.stack);
                 callback(err);
@@ -211,7 +211,7 @@ var parseShowData = function(show, callback){
             models.comments.getCommentsByTypeAndEntity(item.lineupItem._id, 'info_item').then(function (comments) {
                 item.comments = comments;
                 cbk();
-            }).end();
+            });
         }, function (err) {
             callback(err, show);
         });

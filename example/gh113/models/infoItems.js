@@ -1,89 +1,93 @@
 "use strict";
 
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema,
-    request = require('request'),
-    MPromise = require('mpromise'),
-    _ = require('lodash-contrib'),
-    Types = Schema.Types;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const request = require('request');
+const _ = require('lodash-contrib');
+const Types = Schema.Types;
 
-var ITEM_LIMT = 10;
+const ITEM_LIMIT = 10;
 
-var schema = new Schema({
-    item_type: { type: String, enum: ['track', 'text', 'artist', 'image', 'interview', 'article', 'other'], default: 'track'},
-    title: { type: String, important: 1},
-    artist: { type: String, important: 1 },
-    album: { type: String, important: 1 },
-    label: { type: String },
-    year: { type: String },
+const schema = new Schema({
+    item_type: {
+        type: String,
+        enum: ['track', 'text', 'artist', 'image', 'interview', 'article', 'other'],
+        default: 'track'
+    },
+    title: {type: String, important: 1},
+    artist: {type: String, important: 1},
+    album: {type: String, important: 1},
+    label: {type: String},
+    year: {type: String},
     text: Types.Text,
-    image: { type: Types.Filepicker, widget: 'FilepickerPictureWidget' },
-    url: { type: String }
+    image: {type: Types.Filepicker, widget: 'FilepickerPictureWidget'},
+    url: {type: String}
 });
 
 schema.statics.selected = function (item) {
-    var InfoItems = this;
-    var item_to_save = _.find(InfoItems._tempDiscogs, {'id': item.id});
+    const InfoItems = this;
+    let item_to_save = _.find(InfoItems._tempDiscogs, {'id': item.id});
 //    request.post('https://www.filepicker.io/api/store/S3?key=AxlFO5ZRNQse9kP2RpUFez', {form: {'url': 'http://api.discogs.com/image/R-90-5757801-1401826971-3778.jpeg'}}, function(err, res, data){
 //        console.log(err, res);
 //    });
-    if (!item_to_save) return MPromise.fulfilled(item);
+    if (!item_to_save) return Promise.resolve(item);
     return item_to_save.save();
 };
 
 schema.statics.getFromDiscogs = function getFromDiscogs(term) {
-    var InfoItems = this;
-    var p = new MPromise;
-    request.get("http://api.discogs.com/database/search?per_page=5&title=" + term + '&per_page=5', {
-        timeout: 1500,
-        headers: {
-            'User-Agent': 'KZRadio/1.0',
-            'Content-Type': 'application/json'
-        }
-    }, function (err, response, body) {
-        if (err) {
-            console.log(err.stack);
-            return p.fulfill([]);
-        }
-        if (response.statusCode > 200) return p.fulfill([]);
-        try {
-            var results = JSON.parse(body).results;
-            var temp = results.map(
-                function (item) {
-                    return new InfoItems({
-                        title: item.title,
-                        image: item.thumb,
-                        artist: item.artist,
-                        album: item.title,
-                        year: item.year,
-                        label: item.label ? item.label[0] : ""
-                    });
-                }
-            );
-            InfoItems._tempDiscogs = (InfoItems._tempDiscogs || []).concat(temp);
-            var discogs = temp.map(function (item) {
-                return { 'id': item.id, text: item.title, type: 'discogs' };
-            });
-            console.log("found %d items from discogs", discogs.length);
-            return p.fulfill(discogs);
-        } catch (e) {
-            console.log("Bad discogs response for", term);
-            console.log(e.stack);
-            return p.fulfill([]);
-        }
+    const InfoItems = this;
+    const p = new Promise(res => {
+        request.get("http://api.discogs.com/database/search?per_page=5&title=" + term + '&per_page=5', {
+            timeout: 1500,
+            headers: {
+                'User-Agent': 'KZRadio/1.0',
+                'Content-Type': 'application/json'
+            }
+        }, function (err, response, body) {
+            if (err) {
+                console.log(err.stack);
+                return res([]);
+            }
+            if (response.statusCode > 200) return res([]);
+            try {
+                const results = JSON.parse(body).results;
+                const temp = results.map(
+                    function (item) {
+                        return new InfoItems({
+                            title: item.title,
+                            image: item.thumb,
+                            artist: item.artist,
+                            album: item.title,
+                            year: item.year,
+                            label: item.label ? item.label[0] : ""
+                        });
+                    }
+                );
+                InfoItems._tempDiscogs = (InfoItems._tempDiscogs || []).concat(temp);
+                const discogs = temp.map(item => ({'id': item.id, text: item.title, type: 'discogs'}));
+                console.log("found %d items from discogs", discogs.length);
+                return res(discogs);
+            } catch (e) {
+                console.log("Bad discogs response for", term);
+                console.log(e.stack);
+                return res([]);
+            }
+        });
     });
     return p;
 };
 
 
 schema.statics.search = function (term) {
-    var InfoItems = this;
-    var discogs = [];
-    var p = InfoItems.getFromDiscogs(term).then(
+    const InfoItems = this;
+    const discogs = [];
+    const p = InfoItems.getFromDiscogs(term).then(
         function (argDiscogs) {
-            discogs = (argDiscogs && argDiscogs.length) ? [{ 'id': null, text: "==== from discogs ==="}].concat(argDiscogs) : [];
+            if (argDiscogs && argDiscogs.length) {
+                discogs.push({ 'id': null, text: "==== from discogs ===" });
+            }
 
-            var terms = term.split(' ').map(function (t) {
+            const terms = term.split(' ').map(function (t) {
                 try {
                     return new RegExp(t, "i");
                 } catch (e) {
@@ -91,25 +95,29 @@ schema.statics.search = function (term) {
                 }
             });
 
-            var t = terms.pop();
-            var q = InfoItems.find({ $or: [
-                { title: t },
-                { artist: t },
-                { label: t }
-            ]});
+            const t = terms.pop();
+            let q = InfoItems.find({
+                $or: [
+                    {title: t},
+                    {artist: t},
+                    {label: t}
+                ]
+            });
             q = terms.reduce(function (q1, t) {
-                return q1.and({ $or: [
-                    { title: t },
-                    { artist: t },
-                    { label: t }
-                ]});
+                return q1.and({
+                    $or: [
+                        {title: t},
+                        {artist: t},
+                        {label: t}
+                    ]
+                });
             }, q);
-            return q.limit(ITEM_LIMT).exec();
+            return q.limit(ITEM_LIMIT).exec();
         }
     ).then(
         function (items) {
             items = (items || [])
-                .map(function (item) { return { 'id': item._id.toString(), text: item.toString() }; })
+                .map(item => ({'id': item._id.toString(), text: item.toString()}))
                 .concat(discogs);
             return items;
         }

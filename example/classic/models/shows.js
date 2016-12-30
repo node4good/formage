@@ -61,7 +61,7 @@ schema.statics.lastShow = function (callback) {
                 models.comments.getCommentsByTypeAndEntity(item.lineupItem._id, 'info_item').then(function (comments) {
                     item.comments = comments;
                     cbk();
-                }).end();
+                });
             }, function (err) {
                 callback(err, show);
             });
