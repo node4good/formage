@@ -12,7 +12,7 @@ Originally forked from [mongoose-admin](https://github.com/marccampbell/mongoose
 var express = require('express'),
     app = express();
 
-require('formage').init(app, express, models]);
+require('formage').init(app, express, models);
 ```
 
 Look at the `\example` directory.
