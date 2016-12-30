@@ -50,9 +50,10 @@
     "lint": "jshint .",
     "cover": "istanbul cover ./node_modules/mocha/bin/_mocha -x generated/**",
     "generate": "node utils/CompileTempletes.js",
-    "setassets": "npm run generate && bower i && git clean -X -d -f assets",
+    "setassets": "npm run generate && bower i",
+    "cleanassets": "git clean -X -d -f assets",
     "prepublish": "npm run generate",
-    "mypublish": "npm run setassets && npm version patch && git push --follow-tags"
+    "mypublish": "npm run setassets && npm run cleanassets && npm version patch && git push --follow-tags"
   },
   "directories": {
     "lib": "lib",
