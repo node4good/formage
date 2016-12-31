@@ -5,6 +5,7 @@ describe("edge cases on mongoose", function () {
         sanitizeRequireCache();
         this.formage = require('../');
         var mongoose = this.mongoose = require("mongoose");
+        mongoose.Promise = global.Promise;
         this.express = require('express');
         var conn_str = global.CONN_STR_PREFIX + this.test.parent.title.replace(/\s/g, '_');
         mongoose.connect(conn_str, function (err) {

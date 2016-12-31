@@ -29,7 +29,7 @@
     "jshint": "^2.9.3",
     "jspm": "^0.16.39",
     "mocha": "^3.1.0",
-    "mongoose": "^4.0.0"
+    "mongoose": "^4.7.3"
   },
   "keywords": [
     "admin",

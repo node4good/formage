@@ -8,6 +8,7 @@ describe("REST requests", function () {
             var ctx = this;
             var formage = require('../');
             var mongoose = ctx.mongoose = require("mongoose");
+            mongoose.Promise = global.Promise;
             var conn_str = global.CONN_STR_PREFIX + this.test.parent.title.replace(/\s/g, '_');
             mongoose.connect(conn_str, function (err) {
                 if (err) return done(err);
