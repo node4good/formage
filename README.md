@@ -3,7 +3,7 @@
 [Bootstraped](http://twitter.github.com/bootstrap/) Admin GUI addon for [Mongoose](http://mongoosejs.com/), [JugglingDB](https://github.com/1602/jugglingdb), or just as a form generator.
 Originally forked from [mongoose-admin](https://github.com/marccampbell/mongoose-admin).
 
-[![Build Status](https://travis-ci.org/TheNodeILs/formage.png?branch=master "Build Status")](https://travis-ci.org/TheNodeILs/formage) 
+[![Build Status](https://travis-ci.org/node4good/formage.png?branch=master "Build Status")](https://travis-ci.org/node4good/formage) 
 
 [![NPM](https://nodei.co/npm-dl/formage.png)](https://nodei.co/npm/formage/)
 
