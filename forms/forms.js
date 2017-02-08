@@ -517,7 +517,10 @@ var MongooseForm = exports.MongooseForm = BaseForm.extend({
                 value.forEach(function(obj){
                     var match = hasIds ? originalArrayById[obj.id] : originalArray.shift();
                     if (match) {
-                        self.setValuesToModel(match, obj);
+                        if(typeof(match) == 'object')
+                            self.setValuesToModel(match, obj);
+                        else
+                            match = obj;
                         newArray.push(match);
                         if(hasIds) {
                             delete originalArrayById[obj.id];
