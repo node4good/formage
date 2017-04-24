@@ -273,6 +273,8 @@ var parseFilters = function (model_settings, filters, search,dontRegex) {
     var model = model_settings.model;
     var new_filters = {};
     _.each(filters, function (value, key) {
+        if(key == '_search' || key == 'start' || key == 'saved' || key == '_dialog')
+            return;
         try{
             value = JSON.parse(value);
         }
@@ -577,7 +579,7 @@ var routes = {
                 if (model.is_single)
                     model.model.findOne().exec(cb);
                 else if (id !== 'new')
-                    MongooseAdmin.singleton.getDocument(req.admin_user,name, id, cb);
+                    MongooseAdmin.singleton.getDocument(req.admin_user,name, id, parseFilters(model,_.clone(req.query)), cb);
                 else
                     cb(null, null);
             },
@@ -640,7 +642,7 @@ var routes = {
         };
         // Update
         if (doc_id && !req.query.clone) {
-            MongooseAdmin.singleton.updateDocument(req, req.admin_user, name, doc_id, req.body, callback);
+            MongooseAdmin.singleton.updateDocument(req,req.admin_user, name, doc_id, parseFilters(model,_.clone(req.query)), req.body, callback);
         // Create
         } else {
             MongooseAdmin.singleton.createDocument(req, req.admin_user, name, req.body, callback);

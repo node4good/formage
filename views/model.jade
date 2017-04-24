@@ -70,7 +70,7 @@ block body
                                 th &nbsp;
                     tbody(class=sortable?'sortable':'')
                         - each doc in documents
-                            - var url = rootPath + '/model/' + model_name + '/document/' + doc._id
+                            - var url = rootPath + '/model/' + model_name + '/document/' + doc._id +  makeLink()
                             tr(id=doc._id)
                                 td.span1.center
                                     input.select-row(type='checkbox')
@@ -92,7 +92,7 @@ block body
                                 td.span2.btn-group
                                     a.btn.btn-primary(href=url) #{__(editable ? 'Edit' : 'View')}
                                     - if (cloneable)
-                                        a.btn(href=url+'?clone=true') #{__('Duplicate')}
+                                        a.btn(href=url + '&clone=true') #{__('Duplicate')}
                                     - if (model.options.preview)
                                         a.btn(href="#{previewLink(doc)}") #{__('View')}
 

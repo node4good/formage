@@ -63,7 +63,7 @@ function buildModelFilters (model, filters, dict) {
                     dict.push(filter);
                     return cbk();
                 }
-                if(model.schema.paths[filter] && model.schema.paths[filter].type == Boolean){
+                if(model.schema.paths[filter] && (model.schema.paths[filter].type == Boolean || (model.schema.paths[filter].options && model.schema.paths[filter].options.type == Boolean))){
                     dict.push({key:filter,values:[{value:true,text:'True'},{value:false,text:'False'}]});
                     return cbk();
                 }
@@ -370,9 +370,9 @@ MongooseAdmin.prototype.streamModelDocuments = function(user,collectionName, fil
 };
 
 
-MongooseAdmin.prototype.getDocument = function(user,collectionName, documentId, onReady) {
-    var self = this;
-    var query = this.models[collectionName].model.findById(documentId);
+MongooseAdmin.prototype.getDocument = function(user,collectionName, documentId, filters, onReady) {
+    filters._id = documentId;
+    var query = this.models[collectionName].model.findOne(filters);
     query._admin = true;
     this.models[collectionName].options.limit(user,query,function(err){
         if(err)
@@ -467,13 +467,14 @@ MongooseAdmin.prototype.saveForPreview = function(form,cbk){
 }
 
 
-MongooseAdmin.prototype.updateDocument = function (req, user, collectionName, documentId, params, onReady) {
+MongooseAdmin.prototype.updateDocument = function (req, user, collectionName, documentId, filters, params, onReady) {
     var self = this,
         model = this.models[collectionName].model;
 
     if (!permissions.hasPermissions(user, collectionName, 'update')) return onReady('unauthorized');
     var FormType2 = this.models[collectionName].options.form || AdminForm;
-    var qry =  model.findById(documentId);
+    filters._id = documentId;
+    var qry =  model.findOne(filters);
     qry._admin = true;
     return qry.exec(function (err, document) {
         if (err) return onReady(err, null);
