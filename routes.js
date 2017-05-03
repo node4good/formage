@@ -273,7 +273,7 @@ var parseFilters = function (model_settings, filters, search,dontRegex) {
     var model = model_settings.model;
     var new_filters = {};
     _.each(filters, function (value, key) {
-        if(key == '_search' || key == 'start' || key == 'saved' || key == '_dialog')
+        if(key == '_search' || key == 'start' || key == 'saved' || key == '_dialog' || key == 'clone')
             return;
         try{
             value = JSON.parse(value);
