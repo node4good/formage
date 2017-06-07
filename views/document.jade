@@ -4,6 +4,7 @@ block head
     script.
         var model = '#{model_name}';
         var dialog = #{dialog||false};
+        var hooks = !{hooks};
 
 block breadcrumb
     span.divider /
@@ -24,7 +25,7 @@ block body
         != renderedDocument
         - if(subCollections && subCollections.length)
             - each sub in subCollections
-                a.subCollection(href="#{rootPath}/model/#{sub.model}?#{sub.field}=#{sub.value}")
+                a.subCollection(href="#{rootPath}/model/#{sub.model}?#{sub.field}=#{sub.value}",style="display:#{sub.count>0?'':'none'};")
                     span(bablic-exclude) #{sub.label}
                     span - #{sub.count? sub.count + ' ' + __('Items') : __('No items')}
         p.submit.btn-group
@@ -32,10 +33,10 @@ block body
                 button#saveButton.btn.btn-large.btn-primary(type='submit',data-saving-text="Saving...") #{__('Save')}
             a#cancelButton.btn.btn-large(href="#{rootPath}/model/#{model_name}") #{__('Cancel')}
             - if (allow_delete && deleteable)
-                button#deleteButton.btn.btn-large.btn-danger(type='button',data-loading-text='Deleting...') #{__('Delete')}
+                button#deleteButton.btn.btn-large.btn-danger(type='button',data-loading-text='Deleting...',data-confirm='true') #{__('Delete')}
             - each action in actions
                 - if (action.value != 'delete')
-                    button.action.btn.btn-large(value='#{action.value}',data-dialogs='#{(action.dialogs || []).join("")}') #{action.label}
+                    button.action.btn.btn-large(value='#{action.value}',data-dialogs='#{(action.dialogs || []).join("")}',data-confirm='#{action.confirm === false ? "false" : "true"}') #{action.label}
 
             - if(preview)
                 button.action.btn.btn-large.preview Preview

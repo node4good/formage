@@ -130,7 +130,7 @@ exports.TextAreaWidget = Widget.extend({
         res.write('\n<textarea ');
         this.render_attributes(res);
         res.write(' >');
-        res.write(escape(this.value));
+        res.write(escape(this.value || ''));
         res.write('</textarea>\n');
         return this;
     }

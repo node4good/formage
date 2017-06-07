@@ -52,63 +52,11 @@ $(function() {
 
     $actions.find('button').click(function(e) {
         e.preventDefault();
-
-        var action_id = $(this).val();
-        if (!action_id) return;
-
-        var ids = [];
+        let ids = [];
         $('.select-row:checked').each(function(){
             ids.push($(this).closest('tr').attr('id'));
         });
-        if (!ids.length) return;
-
-        var dialogs = $(this).data('dialogs');
-
-        if(dialogs){
-            dialogs = dialogs.split(',');
-            var i=0;
-            var allData = {};
-            var cbk = function(data){
-                $.extend(allData,data);
-                if(i < dialogs.length)
-                    formageDialog(dialogs[i++],cbk);
-                else
-                    fireAction(allData);
-            }
-            return cbk();
-        }
-        var msg = 'Are you sure you want to ' + $(this).text().toLowerCase() + ' ' + ids.length + ' documents?';
-
-        function fireAction(data){
-            $.ajax({
-                url: url + '/action/' + action_id,
-                type:'POST',
-                contentType:'application/json',
-                data: JSON.stringify({ids: ids, data: data})
-            }).always(function(data) {
-                if (data.responseText) data = JSON.parse(data.responseText);
-                if (data.error) {
-                    bootbox.dialog("Some documents failed: " + data.error, [{
-                        "label" : "Error",
-                        "class" : "btn-danger",
-                        "callback": function() {
-                            location.reload();
-                        }}]);
-                } else {
-                    if(data.result)
-                        bootbox.alert(data.result,function(){
-                            location.reload();
-                        });
-                    else
-                        location.reload()
-                };
-            });
-        }
-
-        bootbox.confirm(msg, function(result) {
-            if (!result) return;
-            fireAction();
-        });
+        actionClicked($(this),ids);
     });
 
     var btn = $('button#reorder');

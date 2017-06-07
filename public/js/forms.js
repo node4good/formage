@@ -41,11 +41,15 @@
 
             t.css('min-height', h2.height());
 
-            h2.off('click').click(function (e) {
+            const onClick = () => {
                 i.toggleClass('icon-chevron-right icon-chevron-down');
                 t.toggleClass('closed');
                 div.stop(1, 1).slideToggle('fast');
-            });
+            }
+
+            h2.off('click').click(onClick);
+            i.off('click').click(onClick);
+
             if (t.is('.nf_listfield_container')) {
                 var length = $('.nf_listfield > ul > li', t).length;
                 var summary = length ? length + ' items' : 'No items';
@@ -314,99 +318,8 @@
     function initActions(){
         $('button.action').click(function(e) {
             e.preventDefault();
-
-            var action_id = $(this).val();
-            if (!action_id) return;
-
-            var ids = [$('#document_id').val()];
-
-            var isPreview = $(this).hasClass('preview');
-            if(isPreview){
-                var $action = $('<input type="hidden" name="_preview" value="true">').appendTo('form');
-                $('form').attr('target','_blank').submit();
-                setTimeout(function(){
-                    $('p.submit button').prop('disabled', false);
-                    $action.remove();
-                },1000);
-                return;
-            }
-
-            var dialogs = $(this).data('dialogs');
-
-            if(dialogs){
-                dialogs = dialogs.split(',');
-                var i=0;
-                var allData = {};
-                var cbk = function(data){
-                    $.extend(allData,data);
-                    if(i < dialogs.length)
-                        formageDialog(dialogs[i++],cbk);
-                    else
-                        fireAction(allData);
-                }
-                return cbk();
-            }
-            var msg = 'Are you sure you want to ' + $(this).text().toLowerCase() + ' this document?';
-
-            function fireAction(data){
-                $.post(root + '/json/model/' + model + '/action/' + action_id, { ids: ids,data:data }).always(function(data) {
-                    if (data.responseText) data = JSON.parse(data.responseText);
-                    if (data.error) {
-                        bootbox.dialog("Some documents failed: " + data.error, [{
-                            "label" : "Error",
-                            "class" : "btn-danger",
-                            "callback": function() {
-                                if(dialog){
-                                    dialogCallback({});
-                                }
-                                else
-                                    location.href = location.href.split('/document/')[0];
-                            }}]);
-                    } else {
-                        if(dialog){
-                            dialogCallback({});
-                        }
-                        else
-                            location.href = location.href.split('/document/')[0];
-                    };
-                });
-            }
-
-            bootbox.confirm(msg, function(result) {
-                if (!result) return;
-                fireAction();
-            });
-
-            return;
-
-            var action_id = $(this).val();
-            if (!action_id) return;
-
-            var ids = [$('#document_id').val()];
-
-            var msg = 'Are you sure you want to ' + $(this).text().toLowerCase() + ' this document?';
-
-            bootbox.confirm(msg, function(result) {
-                if (!result) return;
-
-                $.post(root + '/json/model/' + model + '/action/' + action_id, { ids: ids }).always(function(data) {
-                    if (data.responseText) data = JSON.parse(data.responseText);
-                    if (data.error) {
-                        bootbox.dialog("Some documents failed: " + data.error, [{
-                            "label" : "Error",
-                            "class" : "btn-danger",
-                            "callback": function() {
-                                location.reload();
-                            }}]);
-                    } else {
-                        if(dialog){
-                            dialogCallback({});
-                        }
-                        else
-                            location.href = location.href.split('/document/')[0];
-                    };
-                });
-            });
+            let ids = [$('#document_id').val()];
+            actionClicked($(this),ids);
         });
 
     }
@@ -465,6 +378,16 @@
             var win = window.open(href +'&_dialog=yes',$(this).text().split('-')[0],qry);
         });
         initActions();
+
+        if(hooks){
+            let isSaved = location.search.indexOf('saved=true') > -1;
+            let isCreated = location.search.indexOf('_created=true') > -1;
+            if(isCreated && hooks.afterCreate){
+                if(hooks.afterCreate.action){
+                    $(`.action[value="${hooks.afterCreate.action}"]`).click();
+                }
+            }
+        }
     });
 
 
