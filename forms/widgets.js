@@ -161,7 +161,7 @@ exports.DateWidget = exports.InputWidget.extend({
     render: function (res) {
         res.write('\n<div class="input-append date">\n');
         if(this.value)
-            this.value = !this.value.getMonth ? this.value : [this.value.getMonth() + 1,this.value.getDate(),this.value.getYear() + 1900].join('/');
+            this.value = Number(this.value);
         this._super(res);
         res.write('\n<span class="add-on"><i class="icon-calendar"></i></span>\n');
         res.write('\n</div>\n');

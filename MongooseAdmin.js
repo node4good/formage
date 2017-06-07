@@ -593,16 +593,9 @@ MongooseAdmin.prototype.login = function(username, password, onReady) {
     });
 };
 
-
-exports.loadApi = require('./AdminForm').loadApi;
-
-exports.AdminForm = AdminForm;
-
-exports.AdminUserForm = require('./AdminForm').AdminUserForm;
-
 MongooseAdmin.prototype.registerAdminUserModel = function(name,options){
     this.registerMongooseModel(name || 'Admin Users',mongoose.model('MongooseAdminUser'),null, _.extend({
-        form:exports.AdminUserForm,
+        form:require('./AdminForm').AdminUserForm,
         list:['username'],
         order_by:['username']
     },options||{}));

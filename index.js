@@ -11,6 +11,7 @@ exports.forms = require('./forms');
 exports.init = require('./init');
 exports.loadApi = require('./AdminForm').loadApi;
 exports.AdminForm = require('./AdminForm').AdminForm;
+exports.AdminUserForm = require('./AdminForm').AdminUserForm
 
 
 // Create the admin singleton object

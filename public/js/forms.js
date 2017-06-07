@@ -71,10 +71,14 @@
         }
         if ($.fn.datepicker) {
             $('.nf_datepicker:not([readonly])', ctx).each(function(){
-                if($(this).data('original'))
-                    return;
-                $(this).data('original',$(this).val());
+                //if($(this).data('original'))
+                //    return;
+                let value = $(this).val();
+                if(Number(value))
+                    value = new Date(Number(value));
+                $(this).data('original',value);
                 $(this).datepicker({format:'mm/dd/yyyy'});
+                $(this).datepicker('setValue',value);
             });
         }
         if($.fn.datetimepicker)
@@ -277,7 +281,7 @@
             root + '/json/dependencies',
             {
                 model:model,
-                id:$('#document_id').val()
+                id:$('#document_id,#id__id').val()
             },
             function (result) {
                 var msg = result.length
@@ -287,7 +291,7 @@
                 if (confirm(msg))
                     $.ajax({
                         type:'DELETE',
-                        url:root + '/json/model/' + model + '/document?document_id=' + encodeURIComponent($('#document_id').val()),
+                        url:root + '/json/model/' + model + '/document?document_id=' + encodeURIComponent($('#document_id,#id__id').val()),
                         success:function (result) {
                             $('#deleteButton').button('reset');
                             if(dialog){
@@ -318,7 +322,7 @@
     function initActions(){
         $('button.action').click(function(e) {
             e.preventDefault();
-            let ids = [$('#document_id').val()];
+            let ids = [$('#document_id,#id__id').val()];
             actionClicked($(this),ids);
         });
 
@@ -382,11 +386,20 @@
         if(hooks){
             let isSaved = location.search.indexOf('saved=true') > -1;
             let isCreated = location.search.indexOf('_created=true') > -1;
-            if(isCreated && hooks.afterCreate){
-                if(hooks.afterCreate.action){
-                    $(`.action[value="${hooks.afterCreate.action}"]`).click();
-                }
-            }
+            history.replaceState(null,null,location.href.replace(/[?&]_created=true/,'').replace(/[?&]saved=true/,''));
+            const handleHook = (hook) => {
+                if(hook.action)
+                    $(`.action[value="${hook.action}"]`).click();
+                else if(hook == 'back')
+                    location.href = root + '/model/' + model;
+                else if(hook.redirect)
+                    location.href = hook.redirect.replace('${root}',root);
+
+            };
+            if(isCreated && hooks.afterCreate)
+                handleHook(hooks.afterCreate);
+            else if(isSaved && hooks.afterUpdate)
+                handleHook(hooks.afterUpdate);
         }
     });
 

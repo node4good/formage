@@ -20,7 +20,7 @@ function actionClicked($button, ids) {
                 data = JSON.parse(data.responseText);
 
             if (data.error) {
-                return bootbox.dialog("Some documents failed: " + data.error, [{
+                return bootbox.dialog(data.error || 'Failed', [{
                     "label": "Error",
                     "class": "btn-danger",
                     "callback": function () {
@@ -59,7 +59,7 @@ function actionClicked($button, ids) {
     if (confirm === 'false' || confirm === false)
         return fireAction();
 
-    let msg = `Are you sure you want to ${$button.text().toLowerCase()}?`;
+    let msg = confirm && confirm != 'true' && typeof(confirm) == 'string' ? confirm : `Are you sure you want to ${$button.text().toLowerCase()}?`;
     bootbox.confirm(msg, result => {
         if (!result) return;
         fireAction();

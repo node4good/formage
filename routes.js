@@ -253,7 +253,8 @@ function renderForm(res, form, model, allow_delete, clone,dialog,user) {
                 pretty: true,
                 editable: permissions.hasPermissions(user, model.modelName, 'update'),
                 deleteable: permissions.hasPermissions(user, model.modelName, 'delete'),
-                subCollections:subs
+                subCollections:subs,
+                hooks:JSON.stringify(model.options.hooks || null)
             });
         })
     });
@@ -273,7 +274,7 @@ var parseFilters = function (model_settings, filters, search,dontRegex) {
     var model = model_settings.model;
     var new_filters = {};
     _.each(filters, function (value, key) {
-        if(key == '_search' || key == 'start' || key == 'saved' || key == '_dialog' || key == 'clone')
+        if(key == '_search' || key == 'start' || key == 'saved' || key == '_created' || key == '_dialog' || key == 'clone')
             return;
         try{
             value = JSON.parse(value);
@@ -396,6 +397,7 @@ var routes = {
         var sort = query.order_by;
         delete query.order_by;
         delete query.saved;
+        delete query._created;
         var search_value = query._search || '';
         delete query._search;
 
@@ -476,6 +478,7 @@ var routes = {
         /** @namespace query.saved */
         //var saved = query.saved;
         delete query.saved;
+        delete query._created;
         /** @namespace query._search */
         var search_value = query._search || '';
         delete query._search;
@@ -610,12 +613,13 @@ var routes = {
     documentPost: function (req, res) {
         var name = req.params.modelName,
             doc_id = req.params['documentId'],
-            model = MongooseAdmin.singleton.models[name],
-            target_url = MongooseAdmin.singleton.root + req.path.split('?')[0] + '?saved=true';
+            model = MongooseAdmin.singleton.models[name];
 
         if (doc_id === 'new') doc_id = null;
         if (doc_id === 'single') doc_id = req.body['_id'];
         var preview = req.body['_preview'];
+        let isNew = !doc_id || req.query.clone;
+
         var callback = function (err,doc) {
             if (err) {
                 if (err.to_html) {
@@ -637,11 +641,17 @@ var routes = {
                     docName = docName.call(doc);
                 res.render('dialog_callback.jade',{data:{id:doc.id,label:docName}});
             }
-            else
-                return res.redirect(target_url);
+            else if(isNew)
+                res.redirect(`${MongooseAdmin.singleton.root}/model/${name}/document/${doc._id}?_created=true`);
+            else {
+                let path = req.path.replace(/[?&]saved=true/,'');
+                let sep = path.indexOf('?') > -1 ? '&' : '?';
+                path += sep + 'saved=true';
+                res.redirect(MongooseAdmin.singleton.root + path);
+            }
         };
         // Update
-        if (doc_id && !req.query.clone) {
+        if (!isNew) {
             MongooseAdmin.singleton.updateDocument(req,req.admin_user, name, doc_id, parseFilters(model,_.clone(req.query)), req.body, callback);
         // Create
         } else {

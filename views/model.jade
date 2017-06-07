@@ -49,7 +49,7 @@ block body
                                         i.icon-trash.icon-white
                                         |  #{action.label}
                                 - else
-                                    button.btn(value='#{action.value}',data-dialogs='#{(action.dialogs || []).join("")}',data-multi='#{action.multi === false ? "false" : "true"}',data-confirm='#{action.confirm === false ? "false" : "true"}') #{action.label}
+                                    button.btn(value='#{action.value}',data-dialogs='#{(action.dialogs || []).join("")}',data-multi='#{action.multi === false ? "false" : "true"}',data-confirm='#{action.confirm}') #{action.label}
 
             - if (!documents.length)
                 p.center #{__('No documents yet')}

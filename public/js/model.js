@@ -1,7 +1,14 @@
+"use strict";
 $(function() {
     //noinspection JSUnresolvedVariable
     var url = root + '/json/model/' + model;
 
+    $('eval').each(function(){
+        let elm = $(this);
+        let html = eval(elm.attr('value'));
+        $('<span>' + html + '</span>').insertAfter(elm);
+        elm.remove();
+    });
     $('.free_search').click(function() {
         var value = $(this).siblings('input').val();
         location.href = $(this).data('href').replace('__replace__', encodeURIComponent(value));
