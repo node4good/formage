@@ -70,7 +70,7 @@ block body
                                 th &nbsp;
                     tbody(class=sortable?'sortable':'')
                         - each doc in documents
-                            - var url = rootPath + '/model/' + model_name + '/document/' + doc._id +  makeLink()
+                            - var url = rootPath + '/model/' + model_name + '/document/' + doc._id +  makeLink('order_by','__all__')
                             tr(id=doc._id)
                                 td.span1.center
                                     input.select-row(type='checkbox')

@@ -274,7 +274,7 @@ var parseFilters = function (model_settings, filters, search,dontRegex) {
     var model = model_settings.model;
     var new_filters = {};
     _.each(filters, function (value, key) {
-        if(key == '_search' || key == 'start' || key == 'saved' || key == '_created' || key == '_dialog' || key == 'clone')
+        if(key == '_search' || key == 'start' || key == 'saved' || key == '_created' || key == '_dialog' || key == 'clone' || key == 'order_by')
             return;
         try{
             value = JSON.parse(value);
