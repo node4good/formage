@@ -438,6 +438,7 @@ var routes = {
                     res.status(200);
                     headSent = true;
                     var schema = model.model.schema.tree;
+                    res.write('\uFEFF');
                     res.write('ID');
                     listFields.forEach(function (listField) {
                         res.write(',' + (schema[listField] && schema[listField].label
@@ -588,6 +589,14 @@ var routes = {
             },
             function(document, cb) {
 
+                if(req.query.clone){
+                    var schema = model.model.schema;
+                    let path = schema.paths._id;
+                    if(path && path.options && path.options.default){
+                        console.log('setting default id',path.options.default);
+                        document._id = typeof(path.options.default) == 'function' ? path.options.default() : path.options.default;
+                    }
+                }
                 var FormType = model.options.form || AdminForm,
                     options = _.extend({ instance: document }, model.options);
                 if(id === 'new') {
