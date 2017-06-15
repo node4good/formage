@@ -71,14 +71,15 @@
         }
         if ($.fn.datepicker) {
             $('.nf_datepicker:not([readonly])', ctx).each(function(){
-                //if($(this).data('original'))
-                //    return;
+                if($(this).data('original'))
+                   return;
                 let value = $(this).val();
                 if(Number(value))
                     value = new Date(Number(value));
                 $(this).data('original',value);
                 $(this).datepicker({format:'mm/dd/yyyy'});
-                $(this).datepicker('setValue',value);
+                if(value)
+                    $(this).datepicker('setValue',value);
             });
         }
         if($.fn.datetimepicker)

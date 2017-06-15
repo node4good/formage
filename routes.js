@@ -229,7 +229,7 @@ function renderForm(res, form, model, allow_delete, clone,dialog,user) {
                 head = form.render_head();
 
             var actions = (form.instance.isNew ? [] : model.options.actions || []).filter(function(action){
-                return permissions.hasPermissions(user, model.modelName,action.value);
+                return permissions.hasPermissions(user, model.modelName,action && action.value);
             });
             return res.render('document.jade', {
                 rootPath: MongooseAdmin.singleton.root,
