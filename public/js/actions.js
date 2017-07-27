@@ -11,7 +11,7 @@ function actionClicked($button, ids) {
 
     const fireAction = (data)  => {
         $.ajax({
-            url: url + '/action/' + action_id,
+            url: url + '/action/' + action_id + location.search,
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({ids: ids, data: data})

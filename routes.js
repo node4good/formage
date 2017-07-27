@@ -134,7 +134,7 @@ var json_routes = {
         if (!admin_user) return res.send(401);
 
         /** @namespace req.params.actionId */
-        return MongooseAdmin.singleton.actionDocuments(admin_user, req.params.collectionName, req.params.actionId, req.body, function (err,result) {
+        return MongooseAdmin.singleton.actionDocuments(admin_user, req.params.collectionName, req.params.actionId, req.body, req, function (err,result) {
             if (err) {
                 console.error(err.stack || err.message || err);
                 return res.json(422, {error: err.message || err});

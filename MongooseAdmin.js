@@ -544,11 +544,11 @@ MongooseAdmin.prototype.orderDocuments = function (user, collectionName, data, c
 };
 
 
-MongooseAdmin.prototype.actionDocuments = function (user, collectionName, actionId, data, onReady) {
+MongooseAdmin.prototype.actionDocuments = function (user, collectionName, actionId, data, req, onReady) {
     if (!permissions.hasPermissions(user, collectionName, 'action')) return onReady('unauthorized');
     var action = _.find(this.models[collectionName].options.actions, {value: actionId});
     if (!action) return onReady('no action');
-    return action.func(user, data.ids, onReady,data.data);
+    return action.func(user, data.ids, onReady,data.data, req);
 };
 
 
