@@ -261,7 +261,7 @@ exports.ChoicesWidget = Widget.extend({
             this.names = new Array(this.choices.length);
             this.values = new Array(this.choices.length);
             for (var i = 0; i < this.choices.length; i++) {
-                if (typeof(this.choices[i]) == 'object') {
+                if (typeof(this.choices[i]) == 'object' && this.choices[i]) {
                     this.names[i] = this.choices[i][1];
                     this.values[i] = this.choices[i][0];
                 } else {
