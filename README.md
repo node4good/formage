@@ -5,7 +5,7 @@ Originally forked from [mongoose-admin](https://github.com/marccampbell/mongoose
 
 [![Build Status](https://travis-ci.org/node4good/formage.png?branch=master "Build Status")](https://travis-ci.org/node4good/formage) 
 
-[![NPM](https://nodei.co/npm-dl/formage.png)](https://nodei.co/npm/formage/)
+[![NPM](https://nodei.co/npm/formage.png)](https://www.npmjs.com/package/formage)
 
 ## Example Usage
 ```js
