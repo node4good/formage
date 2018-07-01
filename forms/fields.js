@@ -9,8 +9,8 @@ var widgets = require('./widgets'),
 	path = require('path'),
 	fs = require('fs'),
 	util = require('util');
-	
-	
+
+
 var cloudinary;
 
 try {
@@ -38,6 +38,14 @@ exports.setUploadDirectory = function(folder){
 exports.getKnoxClient = function () {
     return module.knox_client;
 };
+
+let FileStorage;
+exports.setFileStorage = function(storage) {
+  FileStorage = storage;
+}
+exports.getFileStorage = function(){
+  return FileStorage;
+}
 
 var global_counter = 0;
 
@@ -392,7 +400,7 @@ var ListField_ = exports.ListField = BaseField.extend({
         self.value = [];
         var clean_funcs = [];
         self.children_errors = [];
-        
+
         function create_clean_func(field_name, post_data, file_data, output_data, old_value, parent_errors)
         {
             return function (cbk) {
@@ -432,7 +440,7 @@ var ListField_ = exports.ListField = BaseField.extend({
                 return seed;
             }, {});
 
-        
+
         // Subset req.body according to subfield prefix and extract the submitted list order
         var new_key_order = [];
         var inner_body = Object.keys(req.body)
@@ -450,7 +458,7 @@ var ListField_ = exports.ListField = BaseField.extend({
                 return seed;
             }, {});
 
-       
+
         // Setup the embedded fields according the new order
         new_key_order.forEach(function (key) {
             var output_data = {};
@@ -478,7 +486,7 @@ var ListField_ = exports.ListField = BaseField.extend({
                 if ('__self__' in self.value[i])
                     self.value[i] = self.value[i].__self__;
             }
-            
+
             base.call(self, simpleReq(req), callback);
         });
         return self;
@@ -683,11 +691,12 @@ var FileField_ = exports.FileField = BaseField.extend({
         }
 
         function handleDelete(cbk){
-            if(module.knox_client){
-                // Remove file from S3 Bucket
+            if(FileStorage){
+              FileStorage.delete(self.value.path).then(() => {
                 self.value = null;
                 if(cbk)
-                    cbk();
+                  cbk();
+              },(e) => cbk && cbk(e));
             }
             else
                 fs.unlink(self.directory + self.value.path, function(err){
@@ -728,38 +737,30 @@ var FileField_ = exports.FileField = BaseField.extend({
             }
             var uploaded_file = req.files[self.name];
             // copy file from temp location
-            if (module.knox_client) {
+            if (FileStorage) {
                 var stream = fs.createReadStream(uploaded_file.path);
                 var filename_to_upload
                 if(self.options.createFilename)
-                    filename_to_upload = '/' + self.options.createFilename(self,uploaded_file.name);
+                    filename_to_upload = self.options.createFilename(self,uploaded_file.name);
                 else
-                    filename_to_upload = '/' + self.create_filename(uploaded_file.name);
+                    filename_to_upload = self.create_filename(uploaded_file.name);
 
                 var contentType = getContentType(uploaded_file.path);
-                module.knox_client.putStream(stream, filename_to_upload, {'Content-Length': uploaded_file.size,'Content-Type':contentType}, function (err, res) {
-                    if (err) {
-                        //noinspection JSUnresolvedVariable
-                        if (err.socket && err.socket._httpMessage) {
-                            res = err;
-                        } else {
-                            console.error('upload to amazon failed', err.stack || err);
-                            return callback(err);
-                        }
-                    }
-
+                FileStorage.upload(stream, filename_to_upload, {'Content-Length': uploaded_file.size,'Content-Type':contentType}).then((res) => {
                     fs.unlink(uploaded_file.path);
                     //noinspection JSUnresolvedVariable
-                    var http_message = res.socket._httpMessage;
-                    var url = http_message.url.replace(/https:/, 'http:');
                     self.value = {
-                        path: uploaded_file.name,
-                        url: url,
-                        size: uploaded_file.size,
-                        timestamp:Date.now()
+                      path: filename_to_upload,
+                      url: res.url,
+                      size: uploaded_file.size,
+                      timestamp:Date.now()
                     };
                     on_finish();
-                });
+
+                }, (err) => {
+                  console.error('upload to amazon failed', err.stack || err);
+                  return callback(err);
+                })
             } else {
                 var input_stream = fs.createReadStream(uploaded_file.path);
                 var filename = self.create_filename(uploaded_file.path);
