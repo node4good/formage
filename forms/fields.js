@@ -751,7 +751,7 @@ var FileField_ = exports.FileField = BaseField.extend({
                     //noinspection JSUnresolvedVariable
                     self.value = {
                       path: filename_to_upload,
-                      url: res.url,
+                      url: "s3://" + filename_to_upload,
                       size: uploaded_file.size,
                       timestamp:Date.now()
                     };
