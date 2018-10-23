@@ -511,7 +511,7 @@ var MongooseForm = exports.MongooseForm = BaseForm.extend({
                 // add new items
                 // modify existing
                 var originalArray = model[field_name] || [];
-                var hasIds = _.any(originalArray,function(item){ return item.id});
+                var hasIds = _.any(originalArray,function(item){ return item && item.id});
                 var originalArrayById = _.indexBy(originalArray,'id');
                 var newArray = [];
                 value.forEach(function(obj){
