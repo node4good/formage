@@ -10,7 +10,7 @@ if (!module.parent) console.error('Please don\'t call me directly.I am just the 
 var Class = require('sji'),
     util = require('util'),
     _ = require('lodash');
-	
+
 var cloudinary;
 try {
    cloudinary = require('cloudinary')
@@ -382,8 +382,20 @@ exports.FileWidget = exports.InputWidget.extend({
     },
     render: function (res) {
         this._super(res);
-        if (this.value && this.value.path) {
-            res.write('\n<a href="' + this.value.url + '">\n' + this.value.path + '</a>\n<input type="checkbox" name="' + this.name + '_clear" value="Clear" />\n Clear\n');
+        let url = this.value && this.value.url;
+        if(url) {
+          try {
+            const fields = require("./fields");
+            const storage = fields.getFileStorage();
+            if (storage) {
+              url = storage.getReadableUrl(url);
+            }
+          } catch (e) {
+
+          }
+        }
+        if (url) {
+            res.write('\n<a href="' + url + '">\n' + this.value.path + '</a>\n<input type="checkbox" name="' + this.name + '_clear" value="Clear" />\n Clear\n');
         }
     }
 });
