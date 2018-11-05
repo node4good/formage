@@ -67,7 +67,32 @@
         initFieldSet(ctx);
         if ($.fn.select2) {
             $('.nf_ref', ctx).each(getQueryFunctionForSelect2);
-            $('select', ctx).select2();
+            $('select', ctx).each(function () {
+                var select = $(this);
+
+                if (select.data('allowcustom')) {
+                    let last = $('option:contains(Current)', select);
+                    if (last.length && last.text() === 'Current') {
+                        last.text(last.attr('value'));
+                    }
+                    select.select2();
+                    const query = select.data('select2').opts.query;
+                    select.data('select2').opts.query = function(queryOptions) {
+                        $('option[fake]', select).remove();
+                        const {callback, term} = queryOptions;
+                        queryOptions.callback = (data) => {
+                            if (data.results.length === 0) {
+                                $(`<option fake value="${term}">${term}</option>`).appendTo(select);
+                                data.results.push({id: term, text: term});
+                            }
+                            callback(data);
+                        };
+                        query(queryOptions);
+                    }
+                } else {
+                    select.select2();
+                }
+            });
         }
         if ($.fn.datepicker) {
             $('.nf_datepicker:not([readonly])', ctx).each(function(){
