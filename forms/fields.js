@@ -27,7 +27,7 @@ exports.setAmazonCredentials = function (credentials) {
         module.knox_client = knox.createClient(credentials);
     }
     catch (e) {
-        util.puts('no knox');
+        console.error('Amazon credentials added, but no knox package found');
     }
 };
 
