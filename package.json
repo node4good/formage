@@ -11,14 +11,15 @@
   ],
   "dependencies": {
     "async": "^2.1.4",
+    "bower": "^1.8.4",
     "cloudinary": "^1.5.0",
-    "connect-multiparty": "^2.0.0",
-    "debug": "^2.6.0",
+    "connect-multiparty": "^2.2.0",
+    "debug": "^2.6.9",
     "formage-mongoose-types": "^1.0.1",
     "lodash-contrib": "4.1200.1",
     "node-ckeditor": "^4.5.9",
     "nodestrum": "^0.10.1",
-    "socket.io": "^0.9.17"
+    "socket.io": "^0.9.19"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -28,8 +29,8 @@
     "jade": "^0.35.x",
     "jshint": "^2.9.3",
     "jspm": "^0.16.39",
-    "mocha": "^3.1.0",
-    "mongoose": "^4.7.3"
+    "mocha": "^3.5.3",
+    "mongoose": "^4.13.17"
   },
   "keywords": [
     "admin",

@@ -1,6 +1,7 @@
 'use strict';
 /*global makeRes,mock_req_proto,mock_res_proto,makeRes,should,test_post_body_multipart,describe,before,after,it,expect,_,sanitizeRequireCache */
 describe("REST requests", function () {
+    this.timeout(10000);
     describe("mongoose", function () {
         before(function (done) {
             this.timeout(20000);
@@ -10,7 +11,7 @@ describe("REST requests", function () {
             var mongoose = ctx.mongoose = require("mongoose");
             mongoose.Promise = global.Promise;
             var conn_str = global.CONN_STR_PREFIX + this.test.parent.title.replace(/\s/g, '_');
-            mongoose.connect(conn_str, function (err) {
+            mongoose.connect(conn_str, {useMongoClient: true}, function (err) {
                 if (err) return done(err);
                 return mongoose.connection.db.dropDatabase(function (err) {
                     var AppliesTo = mongoose.model('AppliesTo', new mongoose.Schema({

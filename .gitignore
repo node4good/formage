@@ -25,3 +25,4 @@ assets/vendor/socket.io-client/support
 
 formage-test-data*/
 /jspm_packages
+package-lock.json

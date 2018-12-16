@@ -1,6 +1,7 @@
 "use strict";
 /*global makeRes,mock_req_proto,should,describe,before,after,it,expect,_,sanitizeRequireCache */
 describe("edge cases on mongoose", function () {
+    this.timeout(10000);
     before(function (done) {
         sanitizeRequireCache();
         this.formage = require('../');
@@ -8,7 +9,7 @@ describe("edge cases on mongoose", function () {
         mongoose.Promise = global.Promise;
         this.express = require('express');
         var conn_str = global.CONN_STR_PREFIX + this.test.parent.title.replace(/\s/g, '_');
-        mongoose.connect(conn_str, function (err) {
+        mongoose.connect(conn_str, {useMongoClient: true}, function (err) {
             if (err) return done(err);
             let db = mongoose.connection.db;
             db.on('error', e => {
