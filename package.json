@@ -28,8 +28,7 @@
     "istanbul": "^0.4.5",
     "jade": "^0.35.x",
     "jshint": "^2.9.3",
-    "jspm": "^0.16.39",
-    "mocha": "^3.5.3",
+    "mocha": "^5.2.0",
     "mongoose": "^4.13.17"
   },
   "keywords": [
@@ -58,8 +57,7 @@
   },
   "directories": {
     "lib": "lib",
-    "example": "example",
-    "packages": "jspm_packages"
+    "example": "example"
   },
   "engines": {
     "node": "> 6.0.0"
