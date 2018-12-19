@@ -10,8 +10,7 @@ services: mongodb
 deploy:
   provider: npm
   email: refack
-  api_key:
-    secure: a/Jy+kf7oOpjhVNrbXufwDufn6BFU1pVgZLUaV68zhnmnwTNLMFs5IwgxZfNgBswcLVfiw3Kdq/owbO9KD6yb+pa71oMr/5s1uyjwi9y6R6I4NZ3S9nGG7YbxPx3RFW3F81USLbxFopYfCbk77s0o3//pEp9gtglcUVRTCIbKD8=
+  api_key: $NPM_REFACK_PUBLISH
   on:
     all_branches: true
     tags: true
