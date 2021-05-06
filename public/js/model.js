@@ -102,4 +102,24 @@ $(function() {
             btn.fadeIn('fast');
         }
     });
+
+    $('.copy-id').click(function(e) {
+        e.preventDefault();
+        if (!navigator.clipboard) {
+            if (location.protocol === 'http:')
+                alert("Works only on https");
+            else 
+                alert("not working on this browser");
+            return;
+        }
+        const $this = $(this);
+        const $tr = $this.parents('tr');
+        navigator.clipboard.writeText($tr.attr('id'));
+        $this.attr('disabled', true);
+        $this.text("Copied!");
+        setTimeout(() => {
+            $this.text("Copy Id");
+            $this.attr('disabled', false);
+        }, 8000);
+    });
 });

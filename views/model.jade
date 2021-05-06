@@ -90,11 +90,13 @@ block body
                                             p !{doc[field]}
 
                                 td.span2.btn-group
-                                    a.btn.btn-primary(href=url) #{__(editable ? 'Edit' : 'View')}
+                                    - if (!hideRowButton)
+                                        a.btn.btn-primary(href=url) #{__(editable ? 'Edit' : 'View')}
                                     - if (cloneable)
                                         a.btn(href=url + '&clone=true') #{__('Duplicate')}
                                     - if (model.options.preview)
                                         a.btn(href="#{previewLink(doc)}") #{__('View')}
+                                    a.btn.btn-secondary.copy-id(href='#') Copy Id
 
                 p.counter #{__('Viewing')} #{start+1}–#{start + documents.length} #{__('of')} #{total_count} #{__('documents')}
                 - if (total_count > count)

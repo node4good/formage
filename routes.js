@@ -562,6 +562,7 @@ var routes = {
                     editable: permissions.hasPermissions(req.admin_user, name, 'update'),
                     sortable: typeof(model.options.sortable) == 'string' && permissions.hasPermissions(req.admin_user, name, 'order'),
                     cloneable: model.options.cloneable !== false && permissions.hasPermissions(req.admin_user, name, 'create'),
+                    hideRowButton: model.options.hideRowButton || false,
                     creatable: model.options.creatable !== false && permissions.hasPermissions(req.admin_user, name, 'create'),
                     dialog:isDialog
                 });
